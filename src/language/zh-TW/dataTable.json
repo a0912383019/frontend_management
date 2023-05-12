@@ -1,0 +1,7 @@
+{
+  "sZeroRecords": "查無資料",
+  "sInfo": "_START_ - _END_ / 共 _TOTAL_ 筆",
+  "sInfoEmpty": "0 - 0 / 共 0 筆",
+  "sInfoFiltered": "(由 _MAX_ 筆中進行篩選)",
+  "sProcessing": "資料載入中..."
+}

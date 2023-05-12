@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+$font-default: 'Source Sans Pro', sans-serif;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  position: relative;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.6;
+  font-family: $font-default;
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input, textarea, select {
+  font-family: $font-default;
+  &:focus {
+    outline: none;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+.ulReset {
+  list-style-type: none;
+  padding: 0;
+}
+
+//vue transition
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+//捲軸底色
+::-webkit-scrollbar-track {
+  border-radius: 4px;
+  background-color: #dcdfe6;
+}
+//捲軸寬度
+::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 4px;
+  background-color: #dcdfe6;
+}
+//捲軸本體顏色
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #c1c5cc;
+}
+
+.flex-row	{flex-direction: row;}
+.flex-row-reverse	{flex-direction: row-reverse;}
+.flex-col	{flex-direction: column;}
+.flex-col-reverse	{flex-direction: column-reverse;}
+.flex-wrap	{flex-wrap: wrap;}
+.flex-wrap-reverse	{flex-wrap: wrap-reverse;}
+.flex-nowrap	{flex-wrap: nowrap;}
+.grow	{flex-grow: 1;}
+.grow-0	{flex-grow: 0;}
+.shrink	{flex-shrink: 1;}
+.shrink-0	{flex-shrink: 0;}
+.justify-start	{justify-content: flex-start;}
+.justify-end	{justify-content: flex-end;}
+.justify-center	{justify-content: center;}
+.justify-between	{justify-content: space-between;}
+.justify-around	{justify-content: space-around;}
+.justify-evenly	{justify-content: space-evenly;}
+.justify-items-start	{justify-items: start;}
+.justify-items-end	{justify-items: end;}
+.justify-items-center	{justify-items: center;}
+.justify-items-stretch	{justify-items: stretch;}
+.justify-self-auto	{justify-self: auto;}
+.justify-self-start	{justify-self: start;}
+.justify-self-end	{justify-self: end;}
+.justify-self-center	{justify-self: center;}
+.justify-self-stretch	{justify-self: stretch;}
+.content-center	{align-content: center;}
+.content-start	{align-content: flex-start;}
+.content-end	{align-content: flex-end;}
+.content-between	{align-content: space-between;}
+.content-around	{align-content: space-around;}
+.content-evenly	{align-content: space-evenly;}
+.content-baseline	{align-content: baseline;}
+.items-start	{align-items: flex-start;}
+.items-end	{align-items: flex-end;}
+.items-center	{align-items: center;}
+.items-baseline	{align-items: baseline;}
+.items-stretch	{align-items: stretch;}
+.self-auto	{align-self: auto;}
+.self-start	{align-self: flex-start;}
+.self-end	{align-self: flex-end;}
+.self-center	{align-self: center;}
+.self-stretch	{align-self: stretch;}
+.self-baseline	{align-self: baseline;}
+.text-left	{text-align: left;}
+.text-center	{text-align: center;}
+.text-right	{text-align: right;}
+.text-justify	{text-align: justify;}
+.text-start	{text-align: start;}
+.text-end	{text-align: end;}
+.cursor-default {cursor: default;}
+.cursor-pointer {	cursor: pointer;}
