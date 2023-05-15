@@ -1,16 +1,5 @@
 #!/bin/bash
 
-#各環境config存放路徑
-CONFIGPATH=build_config/
-
-#project用的urlList
-URLLISTPATH=dist/js/
-URLLISTNAME=urlList.js
-
-#project用的system_config
-SYSTEMCONFIGPATH=dist/js/
-SYSTEMCONFIGNAME=system_config.js
-
 #google container registry設定
 AREA=asia.gcr.io/gcp-20190903-01/
 PROJECT=cdp_vue_frontend
@@ -21,33 +10,15 @@ BUILDENV=$1
 #版本號碼 [讀取第二個參數]
 VERSION=$2
 
-if [ -z "$BUILDENV" ]; then
-	echo "用法: sh build.sh [Arg1] [Arg2]"
-	echo "Arg1: Build版環境(local/dev/demo/prod)"
-	echo "Arg2: 版本號碼"
-	exit 0
-fi
+npm run build:$BUILDENV
 
-if [ -z "$VERSION" ]; then
- 	echo "\n沒有指定版本號碼"
- 	exit 0
-fi
+echo '\n完成vue build:'$BUILDENV
 
 #將版本號碼寫入檔案並更新git
 echo "$VERSION" > release.txt
-git add release.txt
-git commit -m "Build Version"
-git push
-
-#處理各環境對應config檔案
-echo "\n切換為 $BUILDENV 環境config"
-if [[ ! $(cp -v "$CONFIGPATH${URLLISTNAME%.*}_$BUILDENV.${URLLISTNAME##*.}" "$URLLISTPATH$URLLISTNAME") ]] \
-|| [[ ! $(cp -v "$CONFIGPATH${SYSTEMCONFIGNAME%.*}_$BUILDENV.${SYSTEMCONFIGNAME##*.}" "$SYSTEMCONFIGPATH$SYSTEMCONFIGNAME") ]]; \
-then
-  exit 0
-else
-  echo "config切換成功"
-fi
+#git add release.txt
+#git commit -m "Build Version"
+#git push
 
 echo "\n建立image檔案..."
 docker build -t $AREA$PROJECT:"$BUILDENV"_"$VERSION" .

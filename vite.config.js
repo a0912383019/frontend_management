@@ -7,7 +7,7 @@ import { svgBuilder } from './src/utils/svgBuilder'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/',
   // build: {
   //   outDir: 'CDP'
   // },

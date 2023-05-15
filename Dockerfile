@@ -1,20 +1,22 @@
-FROM node:lts-alpine as build-stage
+#FROM nginx:alpine
+# 將 nginx.conf 文件複製到容器中的 /etc/nginx 目錄下
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-# 創建應用程序目錄
-WORKDIR /app
+#COPY /dist /usr/share/nginx/html
 
-# 將package.json文件複製到應用程序目錄中
-COPY package.json ./
+# vue.js environment
+# FROM node:14-alpine as vue-build
+# WORKDIR /app
+# COPY package*.json ./
+# RUN npm install
+# COPY ./ .
+# RUN npm build
 
-# 安裝依賴
-RUN npm install
-
-COPY . .
-
-# 執行構建命令
-RUN npm run build
-
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+# server environment
+FROM nginx:alpine
+COPY nginx.conf /etc/nginx/conf.d/configfile.template
+COPY /dist /usr/share/nginx/html
+ENV PORT 80
+ENV HOST 0.0.0.0
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD sh -c "envsubst '\$PORT' < /etc/nginx/conf.d/configfile.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"

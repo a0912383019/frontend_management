@@ -7,7 +7,7 @@ import errorText from '@/components/errorText.vue'
 const router = useRouter()
 
 const test = import.meta.env.VITE_LOCAL_IP
-console.log(test)
+console.log('目前環境：', test)
 
 const failMsg = reactive({
   msg1: {
@@ -151,6 +151,10 @@ const handleLogin = ({ credential }) => {
     min-height: 100vh;
     background-color: #272d44;
     overflow: hidden;
+    .env {
+      font-size: 30px;
+      color: #fff;
+    }
   }
   &__content {
     position: relative;
@@ -174,7 +178,7 @@ const handleLogin = ({ credential }) => {
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      animation: rotateAni 250s infinite linear, opacityAni 2s infinite linear alternate-reverse;
+      // animation: rotateAni 250s infinite linear, opacityAni 2s infinite linear alternate-reverse;
     }
   }
   &__logo {
