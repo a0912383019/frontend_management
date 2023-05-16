@@ -16,9 +16,9 @@ echo '\n完成vue build:'$BUILDENV
 
 #將版本號碼寫入檔案並更新git
 echo "$VERSION" > release.txt
-#git add release.txt
-#git commit -m "Build Version"
-#git push
+git add release.txt
+git commit -m "Build Version"
+git push
 
 echo "\n建立image檔案..."
 docker build -t $AREA$PROJECT:"$BUILDENV"_"$VERSION" .

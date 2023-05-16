@@ -85,12 +85,15 @@ const handleLogin = ({ credential }) => {
         reject()
       }
     } catch (error) {
+      console.log('error', error)
       const { status, statusText } = error.response
       if (status === 401) {
         if (statusText === 'Unauthorized') {
           failMsg['msg1']['isShow'] = true //若回傳的錯誤訊息為Unauthorized，顯示登入失敗錯誤訊息
         } else if (statusText === 'Suspended') {
           failMsg['msg4']['isShow'] = true //若回傳的錯誤訊息為Suspended，顯示帳戶未啟用錯誤訊息
+        } else {
+          failMsg['msg1']['isShow'] = true
         }
       } else {
         failMsg['msg2']['isShow'] = true //若為其他錯誤，顯示系統繁忙中
