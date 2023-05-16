@@ -1,8 +1,9 @@
 <script setup>
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { goLogin } from '@/api/login.js'
+import { login } from '@/api/system.js'
 import errorText from '@/components/errorText.vue'
+import { ElNotification } from 'element-plus'
 
 const router = useRouter()
 
@@ -43,6 +44,13 @@ const googleLoginCallback = (response) => {
     .then((res) => {
       //  登入成功取得api access_token後才導至首頁
       router.push({ name: 'Home' })
+
+      let { user_name } = JSON.parse(sessionStorage.user_info)
+      ElNotification({
+        title: '',
+        message: `Hello, ${user_name}`,
+        type: 'success'
+      })
       console.log('success>>', res)
     })
     .catch((err) => {
@@ -56,7 +64,7 @@ const handleLogin = ({ credential }) => {
   hideErrorMsg()
   return new Promise(async (resolve, reject) => {
     try {
-      const reslut = await goLogin({
+      const reslut = await login({
         id_token: credential
       })
       console.log(reslut)
@@ -67,7 +75,8 @@ const handleLogin = ({ credential }) => {
             user_id: reslut.data.user_id,
             user_name: reslut.data.user_name,
             user_type: reslut.data.user_type,
-            access_hall: reslut.data.access_hall
+            access_hall: reslut.data.access_hall,
+            user_picture: reslut.data.picture
           }
           // console.log('user_info_entity', user_info_entity)
           sessionStorage.user_info = JSON.stringify(user_info_entity)

@@ -1,14 +1,14 @@
 import axios from 'axios'
 const baseURL = import.meta.env.VITE_LOCAL_IP
 
-const loginRequest = axios.create({
+const systemRequest = axios.create({
   baseURL,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
 })
 
-loginRequest.interceptors.request.use(
+systemRequest.interceptors.request.use(
   (request) => {
     console.log('request', request)
     return request
@@ -20,7 +20,7 @@ loginRequest.interceptors.request.use(
   }
 )
 
-loginRequest.interceptors.response.use(
+systemRequest.interceptors.response.use(
   (response) => {
     console.log(response)
     return Promise.resolve(response)
@@ -31,10 +31,25 @@ loginRequest.interceptors.response.use(
   }
 )
 
-export const goLogin = (params) => {
-  console.log('goLogin', params)
+//登入
+export const login = (params) => {
+  console.log('login', params)
   const { id_token } = params
-  return loginRequest.post('/api/auth/login_google', {
+  return systemRequest.post('/api/auth/login_google', {
     id_token
   })
+}
+
+//登出
+export const logout = (params) => {
+  console.log('logout', params)
+  return systemRequest.post(
+    '/api/auth/logout',
+    {},
+    {
+      headers: {
+        Authorization: sessionStorage.access_token
+      }
+    }
+  )
 }

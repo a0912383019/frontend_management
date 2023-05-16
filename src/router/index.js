@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import HomeView from '../views/HomeView.vue'
+import MainLayout from '@/layout/Main.vue'
 
 //不用登入即可觀看的頁面
 const whiteList = ['/login']
@@ -33,7 +33,14 @@ const router = createRouter({
     {
       path: '/home',
       name: 'Home',
-      component: () => import('../views/Home/Home.vue')
+      component: MainLayout,
+      children: [
+        {
+          path: '/home',
+          name: 'Home',
+          component: () => import('../views/Home/Home.vue')
+        }
+      ]
     }
   ]
 })
