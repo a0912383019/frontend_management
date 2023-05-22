@@ -1,14 +1,26 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { login } from '@/api/system.js'
-import errorText from '@/components/errorText.vue'
+import { apiLogin } from '@/api/system.js'
+import ErrorText from '@/components/ErrorText.vue'
 import { ElNotification } from 'element-plus'
+import { useGlobalStore } from '@/stores/global.js'
+
+const globalStore = useGlobalStore()
 
 const router = useRouter()
 
 const test = import.meta.env.VITE_LOCAL_IP
 console.log('目前環境：', test)
+
+//震動
+const isShake = ref(false)
+const shake = () => {
+  isShake.value = true
+  setTimeout(() => {
+    isShake.value = false
+  }, 2000)
+}
 
 const failMsg = reactive({
   msg1: {
@@ -42,6 +54,7 @@ const googleLoginCallback = (response) => {
   // his Google account from the popup
   handleLogin({ credential: response.credential })
     .then((res) => {
+      globalStore.isLoading = false
       //  登入成功取得api access_token後才導至首頁
       router.push({ name: 'Home' })
 
@@ -55,82 +68,82 @@ const googleLoginCallback = (response) => {
     })
     .catch((err) => {
       console.log('error>>', err)
+      globalStore.isLoading = false
+      shake()
     })
   // console.log('Handle the response', response)
 }
 
-const handleLogin = ({ credential }) => {
+const handleLogin = async ({ credential }) => {
   // console.log('credential', credential)
   hideErrorMsg()
-  return new Promise(async (resolve, reject) => {
-    try {
-      const reslut = await login({
-        id_token: credential
-      })
-      console.log(reslut)
-      if (Storage !== undefined) {
-        //判斷瀏覽器是否有支援web storage
-        if (reslut.data.status.return_code === '0000') {
-          let user_info_entity = {
-            user_id: reslut.data.user_id,
-            user_name: reslut.data.user_name,
-            user_type: reslut.data.user_type,
-            access_hall: reslut.data.access_hall,
-            user_picture: reslut.data.picture
-          }
-          // console.log('user_info_entity', user_info_entity)
-          sessionStorage.user_info = JSON.stringify(user_info_entity)
+  globalStore.isLoading = true
+  try {
+    const result = await apiLogin({
+      id_token: credential
+    })
+    if (Storage !== undefined) {
+      //判斷瀏覽器是否有支援web storage
+      if (result.data.status.return_code === '0000') {
+        let user_info_entity = {
+          user_id: result.data.user_id,
+          user_name: result.data.user_name,
+          user_type: result.data.user_type,
+          access_hall: result.data.access_hall,
+          user_picture: result.data.picture
+        }
+        // console.log('user_info_entity', user_info_entity)
+        sessionStorage.user_info = JSON.stringify(user_info_entity)
 
-          // 將取得的access_token存入sessionStorage
-          sessionStorage.access_token = reslut.data.token_type + ' ' + reslut.data.access_token
-          resolve()
-        } else {
-          //若為其他錯誤，顯示系統繁忙中
-          failMsg['msg2']['isShow'] = true
-          reject()
-        }
+        // 將取得的access_token存入sessionStorage
+        sessionStorage.access_token = result.data.token_type + ' ' + result.data.access_token
+        return result
       } else {
-        failMsg['msg3']['isShow'] = true
-        reject()
+        //若為其他錯誤，顯示系統繁忙中
+        failMsg['msg2']['isShow'] = true
+        throw new Error()
       }
-    } catch (error) {
-      console.log('error', error)
-      const { status, statusText } = error.response
-      if (status === 401) {
-        if (statusText === 'Unauthorized') {
-          failMsg['msg1']['isShow'] = true //若回傳的錯誤訊息為Unauthorized，顯示登入失敗錯誤訊息
-        } else if (statusText === 'Suspended') {
-          failMsg['msg4']['isShow'] = true //若回傳的錯誤訊息為Suspended，顯示帳戶未啟用錯誤訊息
-        } else {
-          failMsg['msg1']['isShow'] = true
-        }
-      } else {
-        failMsg['msg2']['isShow'] = true //若為其他錯誤，顯示系統繁忙中
-      }
-      console.error(error)
-      reject()
+    } else {
+      failMsg['msg3']['isShow'] = true
+      throw new Error()
     }
-  })
+  } catch (error) {
+    console.log('error', error)
+    const { status, statusText } = error.response
+    if (status === 401) {
+      if (statusText === 'Unauthorized') {
+        failMsg['msg1']['isShow'] = true //若回傳的錯誤訊息為Unauthorized，顯示登入失敗錯誤訊息
+      } else if (statusText === 'Suspended') {
+        failMsg['msg4']['isShow'] = true //若回傳的錯誤訊息為Suspended，顯示帳戶未啟用錯誤訊息
+      } else {
+        failMsg['msg1']['isShow'] = true
+      }
+    } else {
+      failMsg['msg2']['isShow'] = true //若為其他錯誤，顯示系統繁忙中
+    }
+    console.error(error)
+    throw error
+  }
 }
 </script>
 <template>
   <section class="login__box">
     <div class="login__content">
       <div class="login__logo"><img src="@/assets/images/logo.svg" alt="" /></div>
-      <div class="login__form">
+      <div class="login__form" :class="{ isShake }">
         <GoogleLogin :callback="googleLoginCallback" />
         <div class="login__msg">
           <div class="login__fail__msg">
-            <errorText v-show="failMsg.msg1.isShow">{{ failMsg.msg1.text }}</errorText>
+            <ErrorText v-show="failMsg.msg1.isShow">{{ failMsg.msg1.text }}</ErrorText>
           </div>
           <div class="login__fail__msg">
-            <errorText v-show="failMsg.msg2.isShow">{{ failMsg.msg2.text }}</errorText>
+            <ErrorText v-show="failMsg.msg2.isShow">{{ failMsg.msg2.text }}</ErrorText>
           </div>
           <div class="login__fail__msg">
-            <errorText v-show="failMsg.msg3.isShow">{{ failMsg.msg3.text }}</errorText>
+            <ErrorText v-show="failMsg.msg3.isShow">{{ failMsg.msg3.text }}</ErrorText>
           </div>
           <div class="login__fail__msg">
-            <errorText v-show="failMsg.msg4.isShow">{{ failMsg.msg4.text }}</errorText>
+            <ErrorText v-show="failMsg.msg4.isShow">{{ failMsg.msg4.text }}</ErrorText>
           </div>
         </div>
       </div>
@@ -153,6 +166,31 @@ const handleLogin = ({ credential }) => {
   100% {
     opacity: 0.5;
   }
+}
+@keyframes shakeAni {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+.isShake {
+  animation: shakeAni infinite 1s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 .login {
   &__box {

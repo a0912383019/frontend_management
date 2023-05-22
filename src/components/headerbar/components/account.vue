@@ -1,12 +1,9 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useRouter } from 'vue-router'
-import { logout } from '@/api/system.js'
-import { ElNotification } from 'element-plus'
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
+import { useSystemStore } from '@/stores/system'
 
-const { t } = useI18n()
-const router = useRouter()
+const systemStore = useSystemStore()
+
 const { user_name, user_picture } = JSON.parse(sessionStorage.user_info)
 
 const dropdownMenu = ref(null)
@@ -17,40 +14,20 @@ const handleToggleDropdown = () => {
   dropdownVisible.value = !dropdownVisible.value
 }
 
-const handleDocumentClick = (e) => {
-  console.log(!dropdownVisible.value, e.target, !dropdownMenu.value.contains(e.target))
-  if (!dropdownVisible.value && !dropdownMenu.value.contains(e.target)) {
-    dropdownVisible.value = false
-    console.log('asd')
-  }
-}
+// const handleDocumentClick = (e) => {
+//   console.log(!dropdownVisible.value, e.target, !dropdownMenu.value.contains(e.target))
+//   if (!dropdownVisible.value && !dropdownMenu.value.contains(e.target)) {
+//     dropdownVisible.value = false
+//     console.log('asd')
+//   }
+// }
 
-//登出
-const handleLogout = async () => {
-  console.log('logout')
-  try {
-    const reslut = await logout()
-    console.log(reslut)
-    router.push({ name: 'Login' })
-    ElNotification({
-      title: '',
-      message: t('msg.logout'),
-      type: 'success'
-    })
-  } catch (error) {
-    console.log('error', error)
-  }
-  // 不管logout的ajax成功或失敗，都清除所有sessionStorage與localStorage
-  sessionStorage.clear()
-  localStorage.clear()
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleDocumentClick)
-})
-onBeforeUnmount(() => {
-  document.removeEventListener('click', handleDocumentClick)
-})
+// onMounted(() => {
+//   document.addEventListener('click', handleDocumentClick)
+// })
+// onBeforeUnmount(() => {
+//   document.removeEventListener('click', handleDocumentClick)
+// })
 </script>
 <template>
   <div class="accountbox">
@@ -64,7 +41,9 @@ onBeforeUnmount(() => {
       </div>
       <transition name="slide-up-fade">
         <div class="accountbox__dropdown" ref="dropdownMenu" v-show="dropdownVisible">
-          <button class="btn-reset" @click="handleLogout">{{ $t('nav.log_out') }}</button>
+          <button class="btn-reset" @click="systemStore.storeLogout">
+            {{ $t('nav.log_out') }}
+          </button>
         </div>
       </transition>
     </div>

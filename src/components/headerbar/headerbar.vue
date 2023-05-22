@@ -1,9 +1,13 @@
 <script setup>
-import account from './components/account.vue'
+import Hall from './components/Hall.vue'
+import Account from './components/Account.vue'
 </script>
 <template>
   <header>
-    <account />
+    <ul class="list">
+      <li class="list__hall"><Hall /></li>
+      <li class="list__account"><Account /></li>
+    </ul>
   </header>
 </template>
 <style lang="scss" scoped>
@@ -19,5 +23,17 @@ header {
   padding-left: 250px;
   background-color: #171d32;
   border-bottom: 1px solid #dee2e6;
+  color: #fff;
+}
+.list {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  li {
+    list-style: none;
+  }
+  &__hall {
+    margin-right: 10px;
+  }
 }
 </style>

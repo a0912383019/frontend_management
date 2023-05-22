@@ -32,7 +32,7 @@ systemRequest.interceptors.response.use(
 )
 
 //登入
-export const login = (params) => {
+export const apiLogin = (params) => {
   console.log('login', params)
   const { id_token } = params
   return systemRequest.post('/api/auth/login_google', {
@@ -41,11 +41,37 @@ export const login = (params) => {
 }
 
 //登出
-export const logout = (params) => {
-  console.log('logout', params)
+export const apiLogout = () => {
   return systemRequest.post(
     '/api/auth/logout',
     {},
+    {
+      headers: {
+        Authorization: sessionStorage.access_token
+      }
+    }
+  )
+}
+
+//重新取得token
+export const apiRefresh = () => {
+  return systemRequest.post(
+    '/api/auth/refresh',
+    {},
+    {
+      headers: {
+        Authorization: sessionStorage.access_token
+      }
+    }
+  )
+}
+
+export const apiGetSystemConfig = (params) => {
+  console.log('apiGetSystemConfig', params)
+  const { hall_name, locale } = params
+  return systemRequest.post(
+    '/api/auth/systemConfig/get_system_config',
+    { hall_name, locale },
     {
       headers: {
         Authorization: sessionStorage.access_token

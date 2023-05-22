@@ -4,12 +4,12 @@ import zhCN from '@/language/zh-CN/zh-CN.json'
 import en from '@/language/en/en.json'
 const i18n = createI18n({
   legacy: false, //使用vue3 Composition Api 一定要設為false才可使用
-  locale: localStorage.languageType ?? 'zh-TW', //設定預設語系
+  locale: sessionStorage.languageType ?? 'zh-TW', //設定預設語系
   fallbackLocale: 'zh-TW',
   messages: {
     'zh-TW': zhTw,
     'zh-CN': zhCN,
-    'en-US': en
+    en: en
   }
 })
 export const i18nRegister = (app) => {

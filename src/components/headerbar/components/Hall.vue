@@ -1,0 +1,412 @@
+<script setup>
+import { ref, reactive, h } from 'vue'
+import {
+  hall_config_dict,
+  logout_counter_min,
+  logout_counter_sec
+} from '@/../public/js/system_config.js'
+import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
+import { ElNotification } from 'element-plus'
+import { useSystemStore } from '@/stores/system.js'
+import { useGlobalStore } from '@/stores/global.js'
+import { apiRefresh, apiGetSystemConfig } from '@/api/system.js'
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import ButtonIcon from '@/components/Button/ButtonIcon.vue'
+
+const { t, locale: i18nLocale } = useI18n()
+const systemStore = useSystemStore()
+const globalStore = useGlobalStore()
+const router = useRouter()
+
+const activeHall = reactive({
+  hall_name: '',
+  hall_code: ''
+}) //當前選取的廳別
+const hallDropdownList = ref([]) //廳別下拉選單選項
+
+//檢查目前選取的廳別是否存在廳別下拉選項內
+const checkActiveHall = () => {
+  const activeHallName = activeHall.hall_name
+  return hallDropdownList.value.findIndex((item) => {
+    return item['hall_name'] === activeHallName
+  })
+}
+
+//產生廳別下拉選單選項
+const generateHeaderHallDropdown = () => {
+  //取得storage內的可檢視廳別
+  let hallAry = getSessionStorageEntity('user_info').access_hall.split(',')
+  console.log(hallAry)
+  //清空廳別下拉選單選項
+  hallDropdownList.value = []
+  //根據storage內的可檢視廳別，產生出對應的廳別資料
+  for (let i = 0; i < hallAry.length; i++) {
+    const hallData = hall_config_dict[findRootHall(hallAry[i])][hallAry[i]]
+    hallDropdownList.value.push(hallData)
+    //將選取狀態預設為false
+    hallDropdownList.value[i]['is_active'] = false
+  }
+
+  //若目前無選取的廳別，則預設選取第一個廳別
+  // activeHall.value = `kresball測試廳(krtt)`
+  let hasHall = checkActiveHall()
+  if (activeHall.hall_name === '') {
+    const { hall_name, hall_code } = hallDropdownList.value[0]
+    hallDropdownList.value[0]['is_active'] = true
+    activeHall.hall_name = hall_name
+    activeHall.hall_code = hall_code
+    return false
+  } else {
+    //若有選取，檢查選取的廳別有無在下拉選項內
+    if (hasHall !== -1) {
+      const { hall_name, hall_code } = hallDropdownList.value[hasHall]
+      hallDropdownList.value[hasHall]['is_active'] = true
+      activeHall.hall_name = hall_name
+      activeHall.hall_code = hall_code
+      return false
+    } else {
+      //沒有在下拉選項內，回傳true
+      return true
+    }
+  }
+}
+
+generateHeaderHallDropdown()
+
+//處理選取廳別
+const changeHeaderHall = (element) => {
+  const { hall_name, hall_code } = element
+  // 目前選取的廳別
+  activeHall.hall_name = hall_name
+  activeHall.hall_code = hall_code
+
+  // 將所有廳別選取狀態取消，並選取目前的廳別
+  const updatedDropdownList = Object.values(hallDropdownList.value).map((item) => {
+    const isCurrentHall = item.hall_name === hall_name
+    return { ...item, is_active: isCurrentHall }
+  })
+
+  // 更新 hallDropdownList.value
+  hallDropdownList.value = updatedDropdownList
+
+  // 依據所選廳別產生對應的sidebar功能
+  // generateSidebarMenu()
+
+  //導回首頁
+  router.push({ name: 'Home' })
+}
+
+// 倒數計時
+const isDisabledResetBtn = ref(false)
+const counter = ref(null)
+const timeoutMinText = ref(null)
+const timeoutSecText = ref(null)
+const timeoutZero = (value) => {
+  return value < 10 ? '0' + value : value
+}
+const doAutoLogoutCounter = () => {
+  let timeoutMin = 59
+  let timeoutSec = 59
+  timeoutMinText.value = timeoutZero(timeoutMin)
+  timeoutSecText.value = timeoutZero(timeoutSec)
+  counter.value = setInterval(() => {
+    //  若倒數時間小於設定時間，跳出提醒
+    if (timeoutMin === logout_counter_min && timeoutSec === logout_counter_sec) {
+      ElNotification({
+        message: h('div', null, [
+          h('div', { style: { marginBottom: '10px' } }, t('nav.idle')),
+          h(ButtonIcon, {
+            name: t('nav.reset'),
+            icon: 'history',
+            onClick() {
+              console.log('isClick')
+              resetCounter()
+            }
+          })
+        ]),
+        type: 'warning',
+        duration: 0
+      })
+    }
+    if (timeoutMin >= 0) {
+      if (timeoutSec > 0) {
+        timeoutSec--
+        timeoutSecText.value = timeoutZero(timeoutSec)
+        if (timeoutSec == 0) {
+          timeoutMin--
+          if (timeoutMin >= 0) {
+            timeoutMinText.value = timeoutZero(timeoutMin)
+          }
+        }
+      } else {
+        timeoutSec = 59
+        timeoutSecText.value = timeoutZero(timeoutSec)
+        if (timeoutMin >= 0) {
+          timeoutMinText.value = timeoutZero(timeoutMin)
+        }
+      }
+    } else {
+      clearInterval(counter.value)
+      systemStore.storeLogout()
+    }
+  }, 1000)
+}
+doAutoLogoutCounter()
+
+const resetCounter = (is_need_close_loading = true) => {
+  return refresh(is_need_close_loading).then((reset_success) => {
+    console.log('isRefresh', reset_success)
+    if (reset_success) {
+      let redirect_home = generateHeaderHallDropdown() // 更新header廳別下拉選單
+      return getSystemConfig().then(function (get_success) {
+        if (get_success) {
+          // generateSidebarMenu() // 更新sidebar item
+          if (redirect_home) {
+            router.push({ name: 'Login' }) // 導回至首頁
+          }
+          return redirect_home
+        }
+      })
+    }
+  })
+}
+
+const refresh = (is_need_close_loading = true) => {
+  if (typeof counter.value !== 'undefined') {
+    isDisabledResetBtn.value = true //將重新計時按鈕disabled
+    globalStore.isLoading = true // 顯示Loading視窗
+    const refreshToken = () => {
+      return new Promise((resolve, reject) => {
+        apiRefresh()
+          .then((result) => {
+            if (result.data.status.return_code === '0000') {
+              let user_info_entity = getSessionStorageEntity('user_info')
+              user_info_entity.user_type = result.data.user_type // 更新使用者身份權限
+              user_info_entity.access_hall = result.data.access_hall // 更新使用者可存取廳別
+              sessionStorage.setItem('user_info', JSON.stringify(user_info_entity))
+              sessionStorage.access_token = result.data.token_type + ' ' + result.data.access_token // 將新取得的access_token更新至sessionStorage
+
+              resolve('Refresh success') //表示Promise物件執行成功，可往下繼續執行
+            } else {
+              reject(result.data.status) //表示Promise物件執行失敗，拒絕後續的程式執行
+            }
+          })
+          .catch((error) => {
+            console.error(error)
+            if (error.response.status === 401) {
+              // 若api回應401 http error code，導至登入頁
+              sessionStorage.clear()
+              localStorage.clear()
+              sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
+              router.push({ name: 'Login' })
+              let failMsg = `${error.response.status} : ${error.response.data.message}`
+              reject(failMsg) //表示Promise物件執行失敗，拒絕後續的程式執行
+            }
+          })
+      })
+    }
+    //  refresh成功取得api access_token後才重新倒數
+    return refreshToken()
+      .then(() => {
+        clearInterval(counter.value)
+        doAutoLogoutCounter()
+        isDisabledResetBtn.value = false //將重新計時按鈕enabled
+        //  若沒有導回首頁且is_need_close_loading = true才關閉loading視窗
+        if (is_need_close_loading) {
+          setTimeout(function () {
+            // 等待0.1秒後才關閉loading視窗
+            globalStore.isLoading = false // 關閉loading視窗
+          }, 100)
+        }
+        return true
+      })
+      .catch((error) => {
+        isDisabledResetBtn.value = false //將重新計時按鈕enabled
+        globalStore.isLoading = false // 關閉loading視窗
+        throw error
+      })
+  }
+}
+
+const getSystemConfig = () => {
+  globalStore.isLoading = true // 顯示Loading視窗
+  const getConfig = () => {
+    return new Promise((resolve, reject) => {
+      apiGetSystemConfig({
+        hall_name: activeHall.hall_code,
+        locale: i18nLocale.value
+      })
+        .then((result) => {
+          if (result.data.status.return_code === '0000') {
+            sessionStorage.setItem('system_config', JSON.stringify(result.data.result))
+            resolve('Get config success') //表示Promise物件執行成功，可往下繼續執行
+          } else {
+            let failMsg = {
+              return_code: result.data.status.return_code,
+              message: result.data.status.message
+            }
+            reject(failMsg) //表示Promise物件執行失敗，拒絕後續的程式執行
+          }
+        })
+        .catch((error) => {
+          reject(error) //表示Promise物件執行失敗，拒絕後續的程式執行
+        })
+    })
+  }
+  return getConfig()
+    .then(() => {
+      return true
+    })
+    .catch((failMessage) => {
+      console.error(failMessage)
+      globalStore.isLoading = false // 關閉loading視窗
+      if (failMessage.response.status === 401) {
+        // 若api回應401 http error code，導至登入頁
+        sessionStorage.clear()
+        localStorage.clear()
+        sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新的資料
+        router.push({ name: 'Login' })
+      } else {
+        ElNotification({
+          title: '',
+          message: t('msg.query_failed'),
+          type: 'error'
+        })
+      }
+      return false
+    })
+}
+</script>
+<template>
+  <div class="hallbox">
+    <div class="hallbox__label">{{ $t('nav.hall') }}</div>
+    <div class="hallbox__name">{{ activeHall.hall_name }}({{ activeHall.hall_code }})</div>
+    <div class="hallbox__dropbox">
+      <div class="hallbox__arrow">
+        <font-awesome-icon icon="fa-solid fa-angle-down" />
+      </div>
+      <div class="hallbox__content">
+        <div class="hallbox__counter">
+          <div class="hallbox__counter__time">{{ timeoutMinText }}</div>
+          <div class="hallbox__counter__text">{{ $t('unit.minute') }}</div>
+          <div class="hallbox__counter__time">{{ timeoutSecText }}</div>
+          <div class="hallbox__counter__text">{{ $t('unit.second') }}</div>
+          <div class="hallbox__counter__text">{{ $t('nav.auto_logout') }}</div>
+          <ButtonIcon
+            :name="$t('nav.reset')"
+            icon="history"
+            :disabled="isDisabledResetBtn"
+            @click="resetCounter"
+          />
+        </div>
+        <ul class="hallbox__list ul-reset">
+          <li
+            v-for="(item, index) in hallDropdownList"
+            :key="index"
+            :class="{ active: item.is_active }"
+            @click="changeHeaderHall(item)"
+          >
+            {{ item['hall_name'] }}({{ item['hall_code'] }})
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+<style lang="scss" scoped>
+.hallbox {
+  display: flex;
+  height: 38px;
+  &__label {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-color: #ddd;
+    color: #444;
+    border-radius: 0.25rem 0 0 0.25rem;
+    padding: 0.375rem 0.75rem;
+  }
+  &__name {
+    font-weight: 700;
+    padding: 0.375rem 0.75rem;
+    background-color: #343a40;
+  }
+  &__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    transition: all 0.4s;
+  }
+  &__dropbox {
+    position: relative;
+    width: 30px;
+    border-radius: 0 0.25rem 0.25rem 0;
+    background-color: #343a40;
+    font-size: 12px;
+    cursor: pointer;
+    &:hover {
+      .hallbox {
+        &__arrow {
+          transform: rotate(180deg);
+        }
+        &__content {
+          opacity: 1;
+          pointer-events: auto;
+        }
+      }
+    }
+  }
+  &__content {
+    position: absolute;
+    right: 0;
+    top: 105%;
+    width: 280px;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease-in-out;
+  }
+  &__list {
+    li {
+      text-align: center;
+      padding: toRem(8) toRem(16);
+      cursor: pointer;
+      border-top: 1px solid #e9ecef;
+      transition: all 0.5s;
+      &:hover {
+        background-color: #f8f9fa;
+      }
+      &.active {
+        background-color: #007bff;
+        color: #fff;
+      }
+    }
+  }
+  &__counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: toRem(8) toRem(16);
+    font-size: toRem(14);
+    &__time {
+      font-weight: 700;
+      color: $red;
+    }
+    &__time,
+    &__text {
+      margin-right: toRem(4);
+    }
+  }
+}
+</style>
