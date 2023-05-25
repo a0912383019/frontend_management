@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, h } from 'vue'
+import { ref, reactive, h, onMounted } from 'vue'
 import {
   hall_config_dict,
   logout_counter_min,
@@ -19,6 +19,11 @@ const { t, locale: i18nLocale } = useI18n()
 const systemStore = useSystemStore()
 const globalStore = useGlobalStore()
 const router = useRouter()
+const emit = defineEmits(['time'])
+
+const updateTime = () => {
+  emit('time', Date.now())
+}
 
 const activeHall = reactive({
   hall_name: '',
@@ -57,7 +62,8 @@ const generateHeaderHallDropdown = () => {
     hallDropdownList.value[0]['is_active'] = true
     activeHall.hall_name = hall_name
     activeHall.hall_code = hall_code
-    return false
+    sessionStorage['active_hall'] = JSON.stringify(activeHall)
+    return true
   } else {
     //若有選取，檢查選取的廳別有無在下拉選項內
     if (hasHall !== -1) {
@@ -65,15 +71,14 @@ const generateHeaderHallDropdown = () => {
       hallDropdownList.value[hasHall]['is_active'] = true
       activeHall.hall_name = hall_name
       activeHall.hall_code = hall_code
-      return false
-    } else {
-      //沒有在下拉選項內，回傳true
+      sessionStorage['active_hall'] = JSON.stringify(activeHall)
       return true
+    } else {
+      //沒有在下拉選項內，回傳false
+      return false
     }
   }
 }
-
-generateHeaderHallDropdown()
 
 //處理選取廳別
 const changeHeaderHall = (element) => {
@@ -81,6 +86,7 @@ const changeHeaderHall = (element) => {
   // 目前選取的廳別
   activeHall.hall_name = hall_name
   activeHall.hall_code = hall_code
+  sessionStorage['active_hall'] = JSON.stringify(activeHall)
 
   // 將所有廳別選取狀態取消，並選取目前的廳別
   const updatedDropdownList = Object.values(hallDropdownList.value).map((item) => {
@@ -153,7 +159,6 @@ const doAutoLogoutCounter = () => {
     }
   }, 1000)
 }
-doAutoLogoutCounter()
 
 const resetCounter = (is_need_close_loading = true) => {
   return refresh(is_need_close_loading).then((reset_success) => {
@@ -163,8 +168,11 @@ const resetCounter = (is_need_close_loading = true) => {
       return getSystemConfig().then(function (get_success) {
         if (get_success) {
           // generateSidebarMenu() // 更新sidebar item
+          ElNotification.closeAll() //關閉所有ElNotification
           if (redirect_home) {
-            router.push({ name: 'Login' }) // 導回至首頁
+            globalStore.isLoading = false // 關閉loading視窗
+            router.push({ name: 'Home' }) // 導回至首頁
+            updateTime()
           }
           return redirect_home
         }
@@ -278,6 +286,36 @@ const getSystemConfig = () => {
       return false
     })
 }
+
+//init 舊版function名稱為initI18next
+const initPageNext = () => {
+  if (typeof getSessionStorageEntity('user_info').user_name !== 'undefined') {
+    doAutoLogoutCounter() // 開始系統自動登出倒數
+    let redirect_home = generateHeaderHallDropdown() // 產生廳別下拉選單
+    console.log('redirect_home', redirect_home)
+    getSystemConfig().then((get_success) => {
+      if (get_success) {
+        // generateSidebarMenu();  // 動態產生sidebar menu
+        if (redirect_home) {
+          globalStore.isLoading = false // 關閉loading視窗
+          // gotoHomePage();  // 導回至首頁
+          router.push({ name: 'Home' })
+          updateTime()
+        }
+      }
+    })
+  } else {
+    // 清除所有sessionStorage與localStorage
+    sessionStorage.clear()
+    localStorage.clear()
+    sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
+    router.push({ name: 'Login' })
+  }
+}
+
+onMounted(() => {
+  initPageNext()
+})
 </script>
 <template>
   <div class="hallbox">

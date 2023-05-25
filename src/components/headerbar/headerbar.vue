@@ -1,11 +1,20 @@
 <script setup>
+import { ref } from 'vue'
 import Hall from './components/Hall.vue'
 import Account from './components/Account.vue'
+import Tag from './components/Tag.vue'
+
+const times = ref(null)
+const updateTimes = (data) => {
+  times.value = data
+  console.log(times.value)
+}
 </script>
 <template>
   <header>
     <ul class="list">
-      <li class="list__hall"><Hall /></li>
+      <li class="list__tag"><Tag :times="times" /></li>
+      <li class="list__hall"><Hall @time="updateTimes" /></li>
       <li class="list__account"><Account /></li>
     </ul>
   </header>

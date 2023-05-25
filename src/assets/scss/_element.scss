@@ -1,0 +1,99 @@
+//element plust自訂樣式
+
+//dialog
+.cdp-dialog {
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 10px;
+  overflow: hidden;
+  .el-dialog {
+    &__header {
+      display: flex;
+      align-items: center;
+      height: 60px;
+      padding: 13px 20px;
+      background-color: #171d32;
+      margin-right: 0;
+    }
+    &__title {
+      // line-height: 2;
+      color: #fff;
+    }
+    &__close {
+      font-size: 24px;
+      color: #fff;
+    }
+    &__body {
+      padding: 20px;
+      background-color: #f4f6f9;
+    }
+  }
+}
+
+.cdp-tabs {
+  .el-tabs {
+    &__active-bar {
+      display: none;
+    }
+    &__nav {
+      display: flex;
+      width: 100%;
+      float: none;
+      box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.16);
+      border: solid 1px #eef1f9;
+      background-color: #fff;
+      border-radius: 5px;
+      &-wrap {
+        &::after {
+            display: none;
+        }
+      }
+    }
+    &__item {
+      position: relative;
+      flex: 1;
+      min-height: 44px;
+      transition: all .3s ease-in-out;
+      &:hover {
+          color: $blue;
+      }
+      &:not(:last-child) {
+          &::after {
+              content: '';
+              position: absolute;
+              right: 0;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 1px;
+              height: 16px;
+              background-color: rgba(79, 132, 207, 0.6);
+          }
+      }
+      &.is-active {
+        color: #fff;
+        &::before {
+          content: "";
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          position: absolute;
+          box-sizing: border-box;
+          border-radius: 5px;
+          box-shadow: 1px 1px 6px 0 rgba(0, 0, 0, 0.3);
+          background-color: #4f84cf;
+          color: #ffffff;
+          z-index: -1;
+        }
+      }
+      &.is-top {
+        &:nth-of-type(2) {
+          padding-left: 20px;
+        }
+        &:last-child {
+          padding-right: 20px;
+        }
+      }
+    }
+  }
+}
