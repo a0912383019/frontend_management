@@ -21,6 +21,8 @@ BUILDENV=$1
 #版本號碼 [讀取第二個參數]
 VERSION=$2
 
+if [ -d "dist/" ]; then rm -Rf dist/; fi
+
 npm run build:$BUILDENV
 
 echo '\n完成vue build:'$BUILDENV
