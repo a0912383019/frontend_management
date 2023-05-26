@@ -2,10 +2,12 @@
 
 //dialog
 .cdp-dialog {
-  width: 100%;
-  max-width: 1000px;
-  border-radius: 10px;
-  overflow: hidden;
+  &.el-dialog{
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
   .el-dialog {
     &__header {
       display: flex;
@@ -94,6 +96,16 @@
           padding-right: 20px;
         }
       }
+    }
+  }
+}
+
+.cdp-select {
+  .el-input {
+    &__inner {
+      height: 36px;
+      color: #444;
+      font-size: 16px;
     }
   }
 }

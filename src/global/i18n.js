@@ -15,3 +15,9 @@ const i18n = createI18n({
 export const i18nRegister = (app) => {
   app.use(i18n)
 }
+
+export const lngs = {
+  en: { nativeName: 'English' },
+  'zh-TW': { nativeName: '繁體' },
+  'zh-CN': { nativeName: '简体' }
+}

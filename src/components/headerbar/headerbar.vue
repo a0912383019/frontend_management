@@ -1,20 +1,28 @@
 <script setup>
 import { ref } from 'vue'
-import Hall from './components/Hall.vue'
-import Account from './components/Account.vue'
+import { storeToRefs } from 'pinia'
+import { useSidebarStore } from '@/stores/sidebar.js'
 import Tag from './components/Tag.vue'
+import Hall from './components/Hall.vue'
+import Language from './components/Language.vue'
+import Account from './components/Account.vue'
 
+const sidebarStore = useSidebarStore()
+const { isSidebarClose } = storeToRefs(sidebarStore)
 const times = ref(null)
 const updateTimes = (data) => {
   times.value = data
-  console.log(times.value)
 }
 </script>
 <template>
-  <header>
+  <header :class="{ isClose: isSidebarClose }">
+    <button class="m_menu_button" @click="sidebarStore.toggleSidebarOpen">
+      <font-awesome-icon icon="fa-solid fa-bars" />
+    </button>
     <ul class="list">
       <li class="list__tag"><Tag :times="times" /></li>
       <li class="list__hall"><Hall @time="updateTimes" /></li>
+      <li class="list__lang"><Language /></li>
       <li class="list__account"><Account /></li>
     </ul>
   </header>
@@ -33,6 +41,19 @@ header {
   background-color: #171d32;
   border-bottom: 1px solid #dee2e6;
   color: #fff;
+  transition: all 0.3s ease-in-out;
+  &.isClose {
+    padding-left: 75px;
+  }
+}
+.m_menu_button {
+  width: 60px;
+  height: 60px;
+  font-size: 20px;
+  color: #fff;
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 .list {
   display: flex;
@@ -43,6 +64,10 @@ header {
   }
   &__hall {
     margin-right: 10px;
+  }
+  &__lang {
+    width: 110px;
+    margin-right: 15px;
   }
 }
 </style>

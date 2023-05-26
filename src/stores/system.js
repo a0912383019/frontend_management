@@ -22,7 +22,6 @@ export const useSystemStore = defineStore('system', () => {
         type: 'success'
       })
     } catch (error) {
-      console.log('error', error)
       router.push({ name: 'Login' })
     }
     globalStore.isLoading = false

@@ -5,6 +5,45 @@ import {
   faHistory,
   faBook,
   faMagnifyingGlass,
-  faXmark
+  faXmark,
+  faHome,
+  faTags,
+  faPeopleArrows,
+  faDonate,
+  faBars,
+  faChartPie,
+  faDice,
+  faChartLine,
+  faGift,
+  faSortAmountDown,
+  faCog,
+  faSyncAlt,
+  faList,
+  faUserCog,
+  faUsersCog
 } from '@fortawesome/free-solid-svg-icons'
-library.add(faExclamationTriangle, faAngleDown, faHistory, faBook, faMagnifyingGlass, faXmark)
+import { faVimeoV } from '@fortawesome/free-brands-svg-icons'
+library.add(
+  faExclamationTriangle,
+  faAngleDown,
+  faHistory,
+  faBook,
+  faMagnifyingGlass,
+  faXmark,
+  faHome,
+  faTags,
+  faPeopleArrows,
+  faDonate,
+  faVimeoV,
+  faBars,
+  faChartPie,
+  faDice,
+  faChartLine,
+  faGift,
+  faSortAmountDown,
+  faCog,
+  faSyncAlt,
+  faList,
+  faUserCog,
+  faUsersCog
+)

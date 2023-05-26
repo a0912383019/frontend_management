@@ -9,6 +9,7 @@ import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
 import { ElNotification } from 'element-plus'
 import { useSystemStore } from '@/stores/system.js'
 import { useGlobalStore } from '@/stores/global.js'
+import { useSidebarStore } from '@/stores/sidebar.js'
 import { apiRefresh, apiGetSystemConfig } from '@/api/system.js'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -18,6 +19,7 @@ import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 const { t, locale: i18nLocale } = useI18n()
 const systemStore = useSystemStore()
 const globalStore = useGlobalStore()
+const sidebarStore = useSidebarStore()
 const router = useRouter()
 const emit = defineEmits(['time'])
 
@@ -43,7 +45,6 @@ const checkActiveHall = () => {
 const generateHeaderHallDropdown = () => {
   //取得storage內的可檢視廳別
   let hallAry = getSessionStorageEntity('user_info').access_hall.split(',')
-  console.log(hallAry)
   //清空廳別下拉選單選項
   hallDropdownList.value = []
   //根據storage內的可檢視廳別，產生出對應的廳別資料
@@ -98,7 +99,7 @@ const changeHeaderHall = (element) => {
   hallDropdownList.value = updatedDropdownList
 
   // 依據所選廳別產生對應的sidebar功能
-  // generateSidebarMenu()
+  sidebarStore.generateSidebarMenu()
 
   //導回首頁
   router.push({ name: 'Home' })
@@ -162,12 +163,12 @@ const doAutoLogoutCounter = () => {
 
 const resetCounter = (is_need_close_loading = true) => {
   return refresh(is_need_close_loading).then((reset_success) => {
-    console.log('isRefresh', reset_success)
+    // console.log('isRefresh', reset_success)
     if (reset_success) {
       let redirect_home = generateHeaderHallDropdown() // 更新header廳別下拉選單
       return getSystemConfig().then(function (get_success) {
         if (get_success) {
-          // generateSidebarMenu() // 更新sidebar item
+          sidebarStore.generateSidebarMenu() // 更新sidebar item
           ElNotification.closeAll() //關閉所有ElNotification
           if (redirect_home) {
             globalStore.isLoading = false // 關閉loading視窗
@@ -290,12 +291,13 @@ const getSystemConfig = () => {
 //init 舊版function名稱為initI18next
 const initPageNext = () => {
   if (typeof getSessionStorageEntity('user_info').user_name !== 'undefined') {
-    doAutoLogoutCounter() // 開始系統自動登出倒數
+    // doAutoLogoutCounter() // 開始系統自動登出倒數
+    resetCounter()
     let redirect_home = generateHeaderHallDropdown() // 產生廳別下拉選單
-    console.log('redirect_home', redirect_home)
+    // console.log('redirect_home', redirect_home)
     getSystemConfig().then((get_success) => {
       if (get_success) {
-        // generateSidebarMenu();  // 動態產生sidebar menu
+        sidebarStore.generateSidebarMenu() // 動態產生sidebar menu
         if (redirect_home) {
           globalStore.isLoading = false // 關閉loading視窗
           // gotoHomePage();  // 導回至首頁
@@ -401,7 +403,7 @@ onMounted(() => {
   &__content {
     position: absolute;
     right: 0;
-    top: 105%;
+    top: 100%;
     width: 280px;
     font-size: 1rem;
     color: #212529;

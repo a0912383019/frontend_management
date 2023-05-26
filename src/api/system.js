@@ -67,7 +67,7 @@ export const apiRefresh = () => {
 }
 
 export const apiGetSystemConfig = (params) => {
-  console.log('apiGetSystemConfig', params)
+  // console.log('apiGetSystemConfig', params)
   const { hall_name, locale } = params
   return systemRequest.post(
     '/api/auth/systemConfig/get_system_config',
