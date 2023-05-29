@@ -3,11 +3,13 @@ import { ref, reactive, watch, computed } from 'vue'
 import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
 import { ElDialog } from 'element-plus'
 import { useI18n } from 'vue-i18n'
+import { useGlobalStore } from '@/stores/global.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import Tab from '@/components/Tab.vue'
 import Search from '@/components/Search.vue'
 
 const { t } = useI18n()
+const globalStore = useGlobalStore()
 const dialogTableVisible = ref(false) //dialog開啟狀態
 
 const props = defineProps({
@@ -83,27 +85,29 @@ const transformTagsConfig = () => {
   Object.keys(tagsData).forEach((item) => {
     tagsData[item] = []
   })
-  Object.entries(tagsConfig).forEach((key) => {
-    Object.entries(key[1]).forEach((item) => {
-      let value = item[1]
-      if (value.tag_enabled && value.tag_category === 1) {
-        // 僅列出啟用及tag_category = 1(一般標籤)的標籤
-        tagsData['all'].push(value)
-        if (value.tag_type === 1) {
-          tagsData['type1'].push(value)
-        } else if (value.tag_type === 3) {
-          tagsData['type3'].push(value)
-        } else if (value.tag_type === 4) {
-          tagsData['type4'].push(value)
-        } else if (value.tag_type === 5) {
-          tagsData['type5'].push(value)
-        }
+
+  let tagsConfigData = tagsConfig[globalStore.activeHall.hall_code]
+  // console.log(tagsConfigData)
+
+  Object.entries(tagsConfigData).forEach((key) => {
+    let value = key[1]
+    if (value.tag_enabled && value.tag_category === 1) {
+      // 僅列出啟用及tag_category = 1(一般標籤)的標籤
+      tagsData['all'].push(value)
+      if (value.tag_type === 1) {
+        tagsData['type1'].push(value)
+      } else if (value.tag_type === 3) {
+        tagsData['type3'].push(value)
+      } else if (value.tag_type === 4) {
+        tagsData['type4'].push(value)
+      } else if (value.tag_type === 5) {
+        tagsData['type5'].push(value)
       }
-    })
+    }
   })
 
   // 加入tag_type = 3的tag_category說明(2~7)
-  let root_hall = findRootHall(getSessionStorageEntity('active_hall')['hall_code'])
+  let root_hall = findRootHall(globalStore.activeHall.hall_code)
   let type3_data = []
   for (let i = 2; i <= 9; i++) {
     switch (i) {
@@ -177,6 +181,15 @@ watch(
   () => props.times,
   () => {
     //當Hall.vue處理完後會更新時間，監聽到異動後，這邊會才會執行
+    tagsConfig = getTagsConfig()
+    transformTagsConfig()
+  }
+)
+
+watch(
+  () => globalStore.activeHall.hall_code,
+  () => {
+    console.log('globalStore.activeHall.hall_code')
     tagsConfig = getTagsConfig()
     transformTagsConfig()
   }

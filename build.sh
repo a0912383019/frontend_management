@@ -8,7 +8,7 @@ URLLISTPATH=dist/js/
 URLLISTNAME=urlList.js
 
 #project用的system_config
-SYSTEMCONFIGPATH=dist/js/
+SYSTEMCONFIGPATH=public/js/
 SYSTEMCONFIGNAME=system_config.js
 
 #google container registry設定
@@ -21,16 +21,13 @@ BUILDENV=$1
 #版本號碼 [讀取第二個參數]
 VERSION=$2
 
+#如果有dist資料夾，刪除dist資料夾
 if [ -d "dist/" ]; then rm -Rf dist/; fi
-
-npm run build:$BUILDENV
-
-echo '\n完成vue build:'$BUILDENV
 
 #處理各環境對應config檔案
 echo "\n切換為 $BUILDENV 環境config"
-#先刪除經過build完後打包到dist/js內的本地設定檔
-rm -r dist/js/${SYSTEMCONFIGNAME}
+#先刪除經過public/js內的本地設定檔
+rm -r public/js/${SYSTEMCONFIGNAME}
 
 #將對應環境的設定檔搬到dist/js內
 # if [[ ! $(cp -v "$CONFIGPATH${URLLISTNAME%.*}_$BUILDENV.${URLLISTNAME##*.}" "$URLLISTPATH$URLLISTNAME") ]] \
@@ -40,6 +37,10 @@ then
 else
   echo "config切換成功"
 fi
+
+npm run build:$BUILDENV
+
+echo '\n完成vue build:'$BUILDENV
 
 
 #將版本號碼寫入檔案並更新git
@@ -55,5 +56,10 @@ if [ "$BUILDENV" != "local" ]; then
   echo "\n上傳至gcp..."
   docker push $AREA$PROJECT:"$BUILDENV"_"$VERSION"
 fi
+
+#先刪除經過public/js內的本地設定檔
+rm -r public/js/${SYSTEMCONFIGNAME}
+#將local環境的設定檔複製到public/js內
+$(cp -v "$CONFIGPATH${SYSTEMCONFIGNAME%.*}_local.${SYSTEMCONFIGNAME##*.}" "$SYSTEMCONFIGPATH$SYSTEMCONFIGNAME")
 
 echo "\nAll Done!!"

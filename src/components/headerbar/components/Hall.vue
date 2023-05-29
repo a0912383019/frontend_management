@@ -27,15 +27,13 @@ const updateTime = () => {
   emit('time', Date.now())
 }
 
-const activeHall = reactive({
-  hall_name: '',
-  hall_code: ''
-}) //當前選取的廳別
+const isDropOpen = ref(false) //下拉開啟狀態
+
 const hallDropdownList = ref([]) //廳別下拉選單選項
 
 //檢查目前選取的廳別是否存在廳別下拉選項內
 const checkActiveHall = () => {
-  const activeHallName = activeHall.hall_name
+  const activeHallName = globalStore.activeHall.hall_name
   return hallDropdownList.value.findIndex((item) => {
     return item['hall_name'] === activeHallName
   })
@@ -56,23 +54,23 @@ const generateHeaderHallDropdown = () => {
   }
 
   //若目前無選取的廳別，則預設選取第一個廳別
-  // activeHall.value = `kresball測試廳(krtt)`
+  // globalStore.activeHall.value = `kresball測試廳(krtt)`
   let hasHall = checkActiveHall()
-  if (activeHall.hall_name === '') {
+  if (globalStore.activeHall.hall_name === '') {
     const { hall_name, hall_code } = hallDropdownList.value[0]
     hallDropdownList.value[0]['is_active'] = true
-    activeHall.hall_name = hall_name
-    activeHall.hall_code = hall_code
-    sessionStorage['active_hall'] = JSON.stringify(activeHall)
+    globalStore.activeHall.hall_name = hall_name
+    globalStore.activeHall.hall_code = hall_code
+    // sessionStorage['active_hall'] = JSON.stringify(activeHall)
     return true
   } else {
     //若有選取，檢查選取的廳別有無在下拉選項內
     if (hasHall !== -1) {
       const { hall_name, hall_code } = hallDropdownList.value[hasHall]
       hallDropdownList.value[hasHall]['is_active'] = true
-      activeHall.hall_name = hall_name
-      activeHall.hall_code = hall_code
-      sessionStorage['active_hall'] = JSON.stringify(activeHall)
+      globalStore.activeHall.hall_name = hall_name
+      globalStore.activeHall.hall_code = hall_code
+      // sessionStorage['active_hall'] = JSON.stringify(activeHall)
       return true
     } else {
       //沒有在下拉選項內，回傳false
@@ -83,11 +81,12 @@ const generateHeaderHallDropdown = () => {
 
 //處理選取廳別
 const changeHeaderHall = (element) => {
+  isDropOpen.value = false //關閉下拉
   const { hall_name, hall_code } = element
   // 目前選取的廳別
-  activeHall.hall_name = hall_name
-  activeHall.hall_code = hall_code
-  sessionStorage['active_hall'] = JSON.stringify(activeHall)
+  globalStore.activeHall.hall_name = hall_name
+  globalStore.activeHall.hall_code = hall_code
+  // sessionStorage['active_hall'] = JSON.stringify(activeHall)
 
   // 將所有廳別選取狀態取消，並選取目前的廳別
   const updatedDropdownList = Object.values(hallDropdownList.value).map((item) => {
@@ -244,7 +243,7 @@ const getSystemConfig = () => {
   const getConfig = () => {
     return new Promise((resolve, reject) => {
       apiGetSystemConfig({
-        hall_name: activeHall.hall_code,
+        hall_name: globalStore.activeHall.hall_code,
         locale: i18nLocale.value
       })
         .then((result) => {
@@ -321,13 +320,19 @@ onMounted(() => {
 </script>
 <template>
   <div class="hallbox">
-    <div class="hallbox__label">{{ $t('nav.hall') }}</div>
-    <div class="hallbox__name">{{ activeHall.hall_name }}({{ activeHall.hall_code }})</div>
-    <div class="hallbox__dropbox">
-      <div class="hallbox__arrow">
-        <font-awesome-icon icon="fa-solid fa-angle-down" />
+    <div class="hallbox__box" @click="isDropOpen = !isDropOpen">
+      <div class="hallbox__label">{{ $t('nav.hall') }}</div>
+      <div class="hallbox__name">
+        {{ globalStore.activeHall.hall_name }}({{ globalStore.activeHall.hall_code }})
       </div>
-      <div class="hallbox__content">
+      <div class="hallbox__dropbox">
+        <div class="hallbox__arrow">
+          <font-awesome-icon icon="fa-solid fa-angle-down" />
+        </div>
+      </div>
+    </div>
+    <transition name="slide-up-fade">
+      <div class="hallbox__content" v-show="isDropOpen">
         <div class="hallbox__counter">
           <div class="hallbox__counter__time">{{ timeoutMinText }}</div>
           <div class="hallbox__counter__text">{{ $t('unit.minute') }}</div>
@@ -352,13 +357,17 @@ onMounted(() => {
           </li>
         </ul>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 <style lang="scss" scoped>
 .hallbox {
-  display: flex;
-  height: 38px;
+  position: relative;
+  &__box {
+    display: flex;
+    height: 38px;
+    cursor: pointer;
+  }
   &__label {
     display: flex;
     align-items: center;
@@ -388,22 +397,22 @@ onMounted(() => {
     background-color: #343a40;
     font-size: 12px;
     cursor: pointer;
-    &:hover {
-      .hallbox {
-        &__arrow {
-          transform: rotate(180deg);
-        }
-        &__content {
-          opacity: 1;
-          pointer-events: auto;
-        }
-      }
-    }
+    // &:hover {
+    //   .hallbox {
+    //     &__arrow {
+    //       transform: rotate(180deg);
+    //     }
+    //     &__content {
+    //       opacity: 1;
+    //       pointer-events: auto;
+    //     }
+    //   }
+    // }
   }
   &__content {
     position: absolute;
     right: 0;
-    top: 100%;
+    top: 110%;
     width: 280px;
     font-size: 1rem;
     color: #212529;
@@ -413,9 +422,6 @@ onMounted(() => {
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 0.25rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease-in-out;
   }
   &__list {
     li {
