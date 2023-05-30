@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, h, onMounted } from 'vue'
+import { ref, h, onMounted } from 'vue'
 import {
   hall_config_dict,
   logout_counter_min,
@@ -171,7 +171,7 @@ const resetCounter = (is_need_close_loading = true) => {
           ElNotification.closeAll() //關閉所有ElNotification
           if (redirect_home) {
             globalStore.isLoading = false // 關閉loading視窗
-            router.push({ name: 'Home' }) // 導回至首頁
+            // router.push({ name: 'Home' }) // 導回至首頁
             updateTime()
           }
           return redirect_home
@@ -292,19 +292,19 @@ const initPageNext = () => {
   if (typeof getSessionStorageEntity('user_info').user_name !== 'undefined') {
     // doAutoLogoutCounter() // 開始系統自動登出倒數
     resetCounter()
-    let redirect_home = generateHeaderHallDropdown() // 產生廳別下拉選單
+    // let redirect_home = generateHeaderHallDropdown() // 產生廳別下拉選單
     // console.log('redirect_home', redirect_home)
-    getSystemConfig().then((get_success) => {
-      if (get_success) {
-        sidebarStore.generateSidebarMenu() // 動態產生sidebar menu
-        if (redirect_home) {
-          globalStore.isLoading = false // 關閉loading視窗
-          // gotoHomePage();  // 導回至首頁
-          router.push({ name: 'Home' })
-          updateTime()
-        }
-      }
-    })
+    // getSystemConfig().then((get_success) => {
+    //   if (get_success) {
+    //     sidebarStore.generateSidebarMenu() // 動態產生sidebar menu
+    //     if (redirect_home) {
+    //       globalStore.isLoading = false // 關閉loading視窗
+    //       // gotoHomePage();  // 導回至首頁
+    //       router.push({ name: 'Home' })
+    //       updateTime()
+    //     }
+    //   }
+    // })
   } else {
     // 清除所有sessionStorage與localStorage
     sessionStorage.clear()
@@ -316,6 +316,13 @@ const initPageNext = () => {
 
 onMounted(() => {
   initPageNext()
+})
+
+//路由換頁後執行的內容
+router.afterEach((to) => {
+  if (to.name !== 'Login') {
+    initPageNext()
+  }
 })
 </script>
 <template>

@@ -1,13 +1,16 @@
 <script setup>
 import { RouterView } from 'vue-router'
+import { useSidebarStore } from '@/stores/sidebar.js'
 import Headerbar from '@/components/Headerbar/Headerbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
+
+const sidebarStore = useSidebarStore()
 </script>
 <template>
   <div class="mainArea">
     <Headerbar />
     <Sidebar />
-    <div class="mainArea__rightbox">
+    <div class="mainArea__rightbox" :class="{ close: sidebarStore.isSidebarClose }">
       <RouterView />
     </div>
   </div>
@@ -22,7 +25,10 @@ import Sidebar from '@/components/Sidebar.vue'
   &__rightbox {
     width: calc(100% - 250px);
     margin-left: auto;
-    padding: 20px;
+    padding: 80px 20px 20px;
+    &.close {
+      width: calc(100% - 75px);
+    }
   }
 }
 </style>

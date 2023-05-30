@@ -33,7 +33,7 @@ systemRequest.interceptors.response.use(
 
 //登入
 export const apiLogin = (params) => {
-  console.log('login', params)
+  // console.log('login', params)
   const { id_token } = params
   return systemRequest.post('/api/auth/login_google', {
     id_token

@@ -2,7 +2,9 @@
 import { version } from '../../package.json'
 import { storeToRefs } from 'pinia'
 import { useSidebarStore } from '@/stores/sidebar.js'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const sidebarStore = useSidebarStore()
 const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
 </script>
@@ -14,7 +16,7 @@ const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
     <div class="sidebar__content">
       <div class="sidebar__menu">
         <el-menu
-          default-active="1"
+          default-active="0"
           class="cdp-menu"
           :class="{ isClose: isSidebarClose }"
           :unique-opened="true"
@@ -22,11 +24,11 @@ const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
           <template v-for="(item, index) in menuLists" :key="index">
             <el-menu-item :index="index.toString()" v-if="item.sub_menu.length === 0">
               <div class="cdp-menu__item">
-                <router-link to="./home/">
+                <router-link :to="item.url_path">
                   <span class="cdp-menu__icon">
                     <font-awesome-icon :icon="`${item.prefix_icon} ${item.nav_icon}`" />
                   </span>
-                  <span class="cdp-menu__title">{{ item.item_name }}</span>
+                  <span class="cdp-menu__title">{{ t(`sidebar.${item.item_id}`) }}</span>
                 </router-link>
               </div>
             </el-menu-item>
@@ -37,14 +39,14 @@ const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
                     <span class="cdp-menu__icon">
                       <font-awesome-icon :icon="`${item.prefix_icon} ${item.nav_icon}`" />
                     </span>
-                    <span class="cdp-menu__title">{{ item.item_name }}</span>
+                    <span class="cdp-menu__title">{{ t(`sidebar.${item.item_id}`) }}</span>
                   </a>
                 </div>
               </template>
               <template v-for="(subItem, subIndex) in item.sub_menu" :key="subIndex">
                 <el-menu-item :index="`${index.toString()}-${subIndex.toString()}`">
                   <div class="cdp-menu__subitem">
-                    <router-link to="./home/">
+                    <router-link :to="item.url_path">
                       <span class="cdp-menu__icon">
                         <font-awesome-icon :icon="`${item.prefix_icon} ${item.nav_icon}`" />
                       </span>

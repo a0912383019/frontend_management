@@ -188,10 +188,12 @@ watch(
 
 watch(
   () => globalStore.activeHall.hall_code,
-  () => {
+  (newVal, oldVal) => {
     console.log('globalStore.activeHall.hall_code')
-    tagsConfig = getTagsConfig()
-    transformTagsConfig()
+    if (oldVal !== '') {
+      tagsConfig = getTagsConfig()
+      transformTagsConfig()
+    }
   }
 )
 

@@ -161,6 +161,7 @@
     "activity_analysis_list": "Campaign Analysis",
     "target_group_analysis_list": "Compare Groups",
     "custom_tags_setting": "Custom Tags",
+    "tag_synchronization": "Tag Sync",
     "user_export_report": "Exported Namelists",
     "user_detail_info": "Profile",
     "admin_user_list": "Account Management",
@@ -182,7 +183,6 @@
     "xbb_offer_analysis_list": "Bonus Analysis",
     "xbb_rank_analysis": "Gambler Rankings",
     "xbb_bad_customer_analysis": "",
-    "xbb_tag_synchronization": "Tag Sync",
     "xbb_member_realtime_observation": "會員即時觀測"
   },
 
@@ -203,7 +203,20 @@
     "next_two_months": "In 2 mos",
     "custom": "Custom",
     "daysOfWeek": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-    "monthNames": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    "monthNames": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ]
   },
 
   "introJs": {
@@ -843,7 +856,8 @@
     "blank_active_level_error_msg": "Please at least select one Active Level",
 
     "cdp_people_num": "CDP Users",
-    "backstage_people_num": "Backstage Users",
+    "namelist_people_num": "Namelist Users",
+    "download": "Download",
     "A_B_test_people_num": "A/B Testing：Split Gamblers",
     "last_sync_time": "Last Updated At",
 

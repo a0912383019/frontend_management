@@ -162,6 +162,7 @@
     "activity_analysis_list": "活動成效分析",
     "target_group_analysis_list": "目標族群分析",
     "custom_tags_setting": "自訂標籤設置",
+    "tag_synchronization": "標籤同步管理",
     "user_export_report": "匯出報表清單",
     "user_detail_info": "帳戶資訊",
     "admin_user_list": "使用者帳戶管理",
@@ -183,7 +184,6 @@
     "xbb_offer_analysis_list": "優惠成效分析",
     "xbb_rank_analysis": "數據排名分析",
     "xbb_bad_customer_analysis": "壞壞客分析",
-    "xbb_tag_synchronization": "標籤同步管理",
     "xbb_member_realtime_observation": "會員即時觀測"
   },
 
@@ -204,7 +204,20 @@
     "next_two_months": "未來2個月",
     "custom": "自訂日期區間",
     "daysOfWeek": ["日", "ㄧ", "二", "三", "四", "五", "六"],
-    "monthNames": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+    "monthNames": [
+      "1月",
+      "2月",
+      "3月",
+      "4月",
+      "5月",
+      "6月",
+      "7月",
+      "8月",
+      "9月",
+      "10月",
+      "11月",
+      "12月"
+    ]
   },
 
   "introJs": {
@@ -805,7 +818,7 @@
     "sync_date_type_forever": "永久",
     "sync_date": "有效時間區間",
     "activity_analysis_generate_reminder": "自動生成活動成效分析",
-    "sync_from_tag_sync": "(由$t(sidebar.xbb_tag_synchronization)產生)",
+    "sync_from_tag_sync": "(由$t(sidebar.tag_synchronization)產生)",
     "activity_date_cycle": "活動循環結算",
     "activity_date_cycle_year": "年",
     "activity_date_cycle_season": "季",
@@ -843,7 +856,8 @@
     "blank_active_level_error_msg": "請至少勾選一種VIP活躍度",
 
     "cdp_people_num": "CDP人數",
-    "backstage_people_num": "管端人數",
+    "namelist_people_num": "名單人數",
+    "download": "下載",
     "A_B_test_people_num": "A/B測試集人數",
     "last_sync_time": "最後同步時間",
 
