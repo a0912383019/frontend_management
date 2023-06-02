@@ -1,47 +1,47 @@
 <script setup>
-import { computed, reactive } from "vue";
-import CustomPagination from "@/components/Pagination/Pagination.vue";
+import { computed, reactive } from 'vue'
+import CustomPagination from '@/components/Pagination/Pagination.vue'
 const props = defineProps({
   tableData: {
-    type: Array,
+    type: Array
   },
   tableColumns: {
-    type: Array,
+    type: Array
   },
   tableHeight: {
     type: Number,
-    default: 600,
+    default: 600
   },
   defaultSort: {
-    type: Object,
-  },
-});
+    type: Object
+  }
+})
 
-const emit = defineEmits(["sort"]);
+const emit = defineEmits(['sort'])
 
 const handleTableSort = ({ prop, order }) => {
-  emit("sort", { prop, order });
-};
+  emit('sort', { prop, order })
+}
 
 //頁碼相關
 const page = reactive({
   currentPage: 1,
-  pageSize: 10,
-});
+  pageSize: 10
+})
 const updateCurrentPage = (val) => {
-  page.currentPage = val;
-};
+  page.currentPage = val
+}
 
 const updatePageSize = (val) => {
-  page.pageSize = val;
-};
+  page.pageSize = val
+}
 
 const pageTableData = computed(() => {
   return props.tableData.slice(
     page.pageSize * page.currentPage - page.pageSize,
     page.pageSize * page.currentPage
-  );
-});
+  )
+})
 </script>
 <template>
   <div>
@@ -49,7 +49,7 @@ const pageTableData = computed(() => {
       :data="pageTableData"
       :default-sort="defaultSort"
       :height="tableHeight"
-      class="customTable"
+      class="cdp-table"
       @sort-change="handleTableSort"
       style="width: 100%"
     >
@@ -121,7 +121,7 @@ const pageTableData = computed(() => {
       font-style: normal;
       line-height: 0.5;
       &::after {
-        content: "▾";
+        content: '▾';
         display: inline-block;
       }
       &.ascending {

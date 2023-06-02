@@ -1,4 +1,5 @@
 <script setup>
+import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { locale } = useI18n()
@@ -17,6 +18,11 @@ const options = [
     label: '简体'
   }
 ]
+
+watch(locale, (newlocale) => {
+  //將目前語系存到sessionStorage
+  sessionStorage.setItem('languageType', newlocale)
+})
 </script>
 <template>
   <el-select v-model="locale" class="cdp-select" placeholder="Select">

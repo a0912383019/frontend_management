@@ -1,0 +1,24 @@
+//產生0~30px的margin
+//ex: mt-0 = margin-top:0px
+@for $i from 0 through 30 {
+  .mt-#{$i} {
+    margin-top: #{$i}px;
+  }
+}
+@for $i from 0 through 30 {
+  .mb-#{$i} {
+    margin-bottom: #{$i}px;
+  }
+}
+
+@for $i from 0 through 30 {
+  .ml-#{$i} {
+    margin-left: #{$i}px;
+  }
+}
+
+@for $i from 0 through 30 {
+  .mr-#{$i} {
+    margin-right: #{$i}px;
+  }
+}

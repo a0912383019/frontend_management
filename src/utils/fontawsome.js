@@ -20,7 +20,18 @@ import {
   faSyncAlt,
   faList,
   faUserCog,
-  faUsersCog
+  faUsersCog,
+  faInfoCircle,
+  faCircleInfo,
+  faPersonRunning,
+  faBaby,
+  faPersonSkating,
+  faPersonHiking,
+  faWheelchair,
+  faBedPulse,
+  faSkullCrossbones,
+  faSpinner,
+  faTriangleExclamation
 } from '@fortawesome/free-solid-svg-icons'
 import { faVimeoV } from '@fortawesome/free-brands-svg-icons'
 library.add(
@@ -45,5 +56,16 @@ library.add(
   faSyncAlt,
   faList,
   faUserCog,
-  faUsersCog
+  faUsersCog,
+  faInfoCircle,
+  faCircleInfo,
+  faPersonRunning,
+  faBaby,
+  faPersonSkating,
+  faPersonHiking,
+  faWheelchair,
+  faBedPulse,
+  faSkullCrossbones,
+  faSpinner,
+  faTriangleExclamation
 )

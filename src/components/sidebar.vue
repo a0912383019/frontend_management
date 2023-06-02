@@ -11,7 +11,7 @@ const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
 <template>
   <div class="sidebar" :class="{ isClose: isSidebarClose }">
     <div class="sidebar__logo">
-      <router-link to="./home/"><img src="@/assets/images/logo.svg" alt="CDP" /></router-link>
+      <router-link to="/home"><img src="@/assets/images/logo.svg" alt="CDP" /></router-link>
     </div>
     <div class="sidebar__content">
       <div class="sidebar__menu">
@@ -26,7 +26,7 @@ const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
               <div class="cdp-menu__item">
                 <router-link :to="item.url_path">
                   <span class="cdp-menu__icon">
-                    <font-awesome-icon :icon="`${item.prefix_icon} ${item.nav_icon}`" />
+                    <font-awesome-icon :icon="item.nav_icon" />
                   </span>
                   <span class="cdp-menu__title">{{ t(`sidebar.${item.item_id}`) }}</span>
                 </router-link>
@@ -37,7 +37,7 @@ const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
                 <div class="cdp-menu__item">
                   <a href="javascript:;">
                     <span class="cdp-menu__icon">
-                      <font-awesome-icon :icon="`${item.prefix_icon} ${item.nav_icon}`" />
+                      <font-awesome-icon :icon="item.nav_icon" />
                     </span>
                     <span class="cdp-menu__title">{{ t(`sidebar.${item.item_id}`) }}</span>
                   </a>
@@ -48,7 +48,7 @@ const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
                   <div class="cdp-menu__subitem">
                     <router-link :to="item.url_path">
                       <span class="cdp-menu__icon">
-                        <font-awesome-icon :icon="`${item.prefix_icon} ${item.nav_icon}`" />
+                        <font-awesome-icon :icon="item.nav_icon" />
                       </span>
                       <span class="cdp-menu__title">{{ subItem.item_name }}</span>
                     </router-link>

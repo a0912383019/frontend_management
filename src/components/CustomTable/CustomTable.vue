@@ -9,8 +9,8 @@ const props = defineProps({
     type: Array
   },
   tableHeight: {
-    type: Number,
-    default: 590
+    type: String,
+    default: 'auto'
   },
   defaultSort: {
     type: Object
@@ -22,6 +22,13 @@ const props = defineProps({
   stripe: {
     type: Boolean,
     default: false
+  },
+  border: {
+    type: Boolean,
+    default: false
+  },
+  spanMethod: {
+    type: Function
   }
 })
 
@@ -67,7 +74,9 @@ const pageTableData = computed(() => {
       :default-sort="defaultSort"
       :height="tableHeight"
       :stripe="props.stripe"
-      class="customTable"
+      :border="props.border"
+      :span-method="spanMethod"
+      class="cdp-table"
       @sort-change="handleTableSort"
       style="width: 100%"
     >
@@ -76,7 +85,9 @@ const pageTableData = computed(() => {
           :prop="column.prop"
           :label="column.label"
           :width="column.width"
+          :min-width="column.minWidth"
           :align="column.align"
+          :header-align="column.headerAlign"
           :sort-orders="['descending', 'ascending']"
           :sortable="column.sortable"
         >
@@ -87,6 +98,9 @@ const pageTableData = computed(() => {
           </template>
         </el-table-column>
       </template>
+
+      <!-- append插槽：插入至表格最后一行之后的内容 -->
+      <template #append><slot name="append"></slot></template>
     </el-table>
     <div class="paginationBox" v-if="hasPagination">
       <CustomPagination
@@ -111,6 +125,53 @@ const pageTableData = computed(() => {
   </div>
 </template>
 <style lang="scss">
+.cdp-table {
+  border-radius: 5px;
+  overflow: hidden;
+  // border: 1px solid #e6eaf2;
+  &.el-table--border {
+    border: none;
+    &::before,
+    &::after,
+    .el-table__inner-wrapper::after,
+    .el-table__inner-wrapper::before {
+      background-color: #e6eaf2;
+    }
+    .el-table__cell {
+      border-right-color: #e6eaf2;
+    }
+  }
+  &.el-table {
+    td.el-table__cell,
+    th.el-table__cell.is-leaf {
+      border-bottom-color: #e6eaf2;
+    }
+    th.el-table__cell.is-leaf {
+      background-color: #f6f8fb;
+      color: #3b4667;
+    }
+  }
+  &.el-table--enable-row-hover {
+    .el-table__body {
+      tr {
+        &:hover {
+          > td.el-table__cell {
+            background-color: rgba(107, 207, 223, 0.05);
+          }
+        }
+      }
+    }
+  }
+  &.el-table--striped {
+    .el-table__body {
+      tr.el-table__row--striped {
+        td.el-table__cell {
+          background-color: #f4f6f9;
+        }
+      }
+    }
+  }
+}
 .customTable {
   // border-radius: 15px;
   box-shadow: 3px 3px 5px 0 rgba(162, 162, 162, 0.2);

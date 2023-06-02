@@ -189,7 +189,6 @@ watch(
 watch(
   () => globalStore.activeHall.hall_code,
   (newVal, oldVal) => {
-    console.log('globalStore.activeHall.hall_code')
     if (oldVal !== '') {
       tagsConfig = getTagsConfig()
       transformTagsConfig()
@@ -230,7 +229,12 @@ watch(
           <div class="cdp-dialog__search">
             <Search v-model="searchText"></Search>
           </div>
-          <CustomTable :stripe="true" :tableData="tableData" :tableColumns="tableColumns">
+          <CustomTable
+            :stripe="true"
+            :tableData="tableData"
+            :tableColumns="tableColumns"
+            class="cdp-tag-table"
+          >
           </CustomTable>
         </div>
       </div>
@@ -276,6 +280,21 @@ watch(
     display: flex;
     justify-content: flex-end;
     margin-bottom: 12px;
+  }
+}
+</style>
+<style lang="scss">
+.cdp-tag-table {
+  .el-table {
+    th.el-table__cell.is-leaf {
+      background-color: #e9eef6;
+    }
+    .el-table__cell {
+      border: none;
+    }
+    td.el-table__cell {
+      height: 54px;
+    }
   }
 }
 </style>

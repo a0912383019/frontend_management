@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap');
 $font-default: 'Source Sans Pro', sans-serif;
+@import "_for.scss";
 @import "_element.scss";
+@import "_custom.scss";
 *,
 *::before,
 *::after {
@@ -17,6 +19,10 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+table {
+  border-collapse: collapse;
 }
 
 input, textarea, select {
@@ -90,6 +96,14 @@ button {
 //   background-color: #c1c5cc;
 // }
 
+.cdp-section {
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.14);
+  border-radius: 5px;
+}
+
+.flex {display: flex;}
 .flex-row	{flex-direction: row;}
 .flex-row-reverse	{flex-direction: row-reverse;}
 .flex-col	{flex-direction: column;}

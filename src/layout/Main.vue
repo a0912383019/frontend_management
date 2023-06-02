@@ -11,7 +11,9 @@ const sidebarStore = useSidebarStore()
     <Headerbar />
     <Sidebar />
     <div class="mainArea__rightbox" :class="{ close: sidebarStore.isSidebarClose }">
-      <RouterView />
+      <div class="mainArea__container">
+        <RouterView />
+      </div>
     </div>
   </div>
 </template>
@@ -29,6 +31,11 @@ const sidebarStore = useSidebarStore()
     &.close {
       width: calc(100% - 75px);
     }
+  }
+  &__container {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 0.25rem;
   }
 }
 </style>

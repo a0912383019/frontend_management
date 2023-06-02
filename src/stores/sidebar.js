@@ -83,8 +83,6 @@ export const useSidebarStore = defineStore(
       menuLists.value = storageMenu.map((item) => {
         return {
           ...item,
-          nav_icon: item.nav_icon.split(' ')[1],
-          prefix_icon: item.nav_icon.split(' ')[0],
           url_path: getMockMenuUrlPath(item).url_path
         }
       })
