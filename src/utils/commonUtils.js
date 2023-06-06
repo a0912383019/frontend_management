@@ -32,6 +32,31 @@ export function findRootHall(hall_name) {
 }
 
 /**
+ * 返回輸入廳別的key
+hall_config_dict_xbb['178t'] = {
+  hall_code: 'demo1'
+}
+例如：輸入demo1返回178t
+ * @param hall_name 要搜尋的廳別
+ */
+export function findParentKey(hall_name) {
+  let root_hall = null
+  for (let root_key in hall_config_dict) {
+    if (Object.prototype.hasOwnProperty.call(hall_config_dict, root_key)) {
+      Object.entries(hall_config_dict[root_key]).forEach((item) => {
+        if (item[1]['hall_code'] === hall_name) {
+          root_hall = item[0]
+        }
+      })
+      if (root_hall !== null) {
+        break
+      }
+    }
+  }
+  return root_hall
+}
+
+/**
  * 錯誤訊息通用顯示格式
  * @param {object} error 錯誤物件
  * @returns {string}
@@ -107,5 +132,58 @@ export function addNumberColor(n, class_name = 'text-danger') {
     return '<span class="' + class_name + '">' + n + '</span>'
   } else {
     return n
+  }
+}
+
+/**
+ * 格式化日期格式為yyyy-MM-dd
+ * @param {string} date 要處理的date
+ * @returns {string}
+ */
+export function formatDate(date) {
+  let date_entity = new Date(date)
+  let format_date = new Intl.DateTimeFormat('zh', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(date_entity)
+
+  return format_date.replaceAll('/', '-')
+}
+
+/**
+ * 格式化日期區間格式為yyyy-MM-dd ~ yyyy-MM-dd
+ * @param {string} date_duration 要處理的date區間
+ * @returns {string}
+ */
+export function formatDateDuration(date_duration) {
+  let date_ary = date_duration.split('~')
+  let start_date = new Date(date_ary[0].trim())
+  let end_date = new Date(date_ary[1].trim())
+
+  return formatDate(start_date) + ' ~ ' + formatDate(end_date)
+}
+
+/**
+ * 取得廳別對應的幣別符號
+ * @param root_hall 對應的根廳別
+ * @param hall_name 對應的廳別
+ * @return {string} 幣別符號
+ */
+export function getHallCurrencySign(root_hall, hall_name) {
+  return hall_config_dict[root_hall][hall_name].currency_sign
+}
+
+/**
+ * 取得廳別對應的幣別符號文字
+ * @param root_hall 對應的根廳別
+ * @param hall_name 對應的廳別
+ * @return {string} 幣別符號文字
+ */
+export function getCurrencySignText(root_hall, hall_name) {
+  return {
+    currency: 'currency.currency',
+    currencySign: `currency.currency_${hall_config_dict[root_hall][hall_name].currency_sign}`,
+    currencySignText: hall_config_dict[root_hall][hall_name].currency_sign
   }
 }
