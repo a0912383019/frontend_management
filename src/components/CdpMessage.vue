@@ -1,18 +1,18 @@
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 const props = defineProps({
-  title: {
-    type: String,
-    default: ''
-  },
-  type: {
+  messageKey: {
     type: String,
     default: ''
   }
 })
-const icon = computed(() => {
+
+const { t } = useI18n()
+
+const getIcon = (key) => {
   let result = ''
-  switch (props.type) {
+  switch (key) {
     case 'loading':
       result = 'fa-solid fa-spinner'
       break
@@ -24,14 +24,48 @@ const icon = computed(() => {
       break
   }
   return result
+}
+
+const messageData = computed(() => {
+  let result = {
+    icon: '',
+    title: ''
+  }
+  switch (props.messageKey) {
+    case 'loading':
+      result['icon'] = getIcon('loading')
+      result['title'] = t('msg.long_loading')
+      break
+    case 'noResult':
+      result['icon'] = getIcon('warning')
+      result['title'] = t('msg.no_results')
+      break
+    case 'chartFailed':
+      result['icon'] = getIcon('warning')
+      result['title'] = t('msg.chart_failed')
+      break
+    case 'queryFailed':
+      result['icon'] = getIcon('warning')
+      result['title'] = t('msg.query_failed')
+      break
+    case 'noPermission':
+      result['icon'] = getIcon('warning')
+      result['title'] = t('msg.no_permission')
+      break
+    case 'clickNumberAboveToShow':
+      result['icon'] = getIcon('info')
+      result['title'] = t('manage_analysis.click_number_above_to_show')
+      break
+  }
+  return result
 })
 </script>
 <template>
   <div class="message">
-    <div class="message__icon" :class="{ loading: props.type === 'loading' }">
-      <font-awesome-icon :icon="icon" />
+    <div class="message__icon" :class="{ loading: props.messageKey === 'loading' }">
+      <font-awesome-icon :icon="messageData['icon']" />
     </div>
-    <div class="message__title">{{ props.title }}</div>
+    <div class="message__title">{{ messageData['title'] }}</div>
   </div>
 </template>
 <style lang="scss" scoped>

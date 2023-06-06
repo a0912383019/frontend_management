@@ -21,6 +21,18 @@ BUILDENV=$1
 #版本號碼 [讀取第二個參數]
 VERSION=$2
 
+if [ -z "$BUILDENV" ]; then
+	echo "用法: sh build.sh [Arg1] [Arg2]"
+	echo "Arg1: Build版環境(local/dev/demo/prod)"
+	echo "Arg2: 版本號碼"
+	exit 0
+fi
+
+if [ -z "$VERSION" ]; then
+ 	echo "\n沒有指定版本號碼"
+ 	exit 0
+fi
+
 #如果有dist資料夾，刪除dist資料夾
 if [ -d "dist/" ]; then rm -Rf dist/; fi
 

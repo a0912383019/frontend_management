@@ -31,7 +31,8 @@ import {
   faBedPulse,
   faSkullCrossbones,
   faSpinner,
-  faTriangleExclamation
+  faTriangleExclamation,
+  faPiggyBank
 } from '@fortawesome/free-solid-svg-icons'
 import { faVimeoV } from '@fortawesome/free-brands-svg-icons'
 library.add(
@@ -67,5 +68,6 @@ library.add(
   faBedPulse,
   faSkullCrossbones,
   faSpinner,
-  faTriangleExclamation
+  faTriangleExclamation,
+  faPiggyBank
 )

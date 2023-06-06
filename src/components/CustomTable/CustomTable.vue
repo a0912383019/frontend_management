@@ -1,39 +1,68 @@
 <script setup>
 import { computed, reactive } from 'vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
+import TotalPagination from '@/components/Pagination/TotalPagination.vue'
 const props = defineProps({
   tableData: {
+    //表格資料
     type: Array
   },
   tableColumns: {
+    //表頭
     type: Array
   },
+  tableTotal: {
+    //自定義資料總數，遇到每次換頁都需要call api，但又需要顯示資料總數逾頁面上
+    type: Number,
+    default: 0
+  },
   tableHeight: {
+    //表格高度
     type: String,
     default: 'auto'
   },
   defaultSort: {
+    //預設排序設定
     type: Object
   },
   hasPagination: {
+    //頁碼
     type: Boolean,
     default: true
   },
+  pageSize: {
+    //一頁幾筆
+    type: Number,
+    default: 10
+  },
   stripe: {
+    //斑馬紋表格樣式
     type: Boolean,
     default: false
   },
   border: {
+    //邊框
     type: Boolean,
     default: false
   },
   spanMethod: {
+    //合併儲存格規則
     type: Function
+  },
+  paginationLayout: {
+    //頁碼
+    type: String,
+    default: 'prev, pager, next'
+  },
+  serverSide: {
+    //是否啟用後端服務器模式(每頁單獨發api)，啟用後pageTableData會有差異
+    type: Boolean,
+    default: false
   }
 })
 
 //排序相關
-const emit = defineEmits(['sort'])
+const emit = defineEmits(['sort', 'update:currentPage'])
 
 const handleTableSort = ({ prop, order }) => {
   emit('sort', { prop, order })
@@ -42,11 +71,12 @@ const handleTableSort = ({ prop, order }) => {
 //頁碼相關
 const page = reactive({
   currentPage: 1,
-  pageSize: 10
+  pageSize: props.pageSize
 })
 
 const updateCurrentPage = (val) => {
   page.currentPage = val
+  emit('update:currentPage', val)
 }
 
 const updatePageSize = (val) => {
@@ -56,7 +86,7 @@ const updatePageSize = (val) => {
 //表格資料
 const pageTableData = computed(() => {
   let data
-  if (props.hasPagination) {
+  if (props.hasPagination && props.serverSide === false) {
     data = props.tableData.slice(
       (page.currentPage - 1) * page.pageSize,
       page.pageSize * page.currentPage
@@ -65,6 +95,14 @@ const pageTableData = computed(() => {
     data = props.tableData
   }
   return data
+})
+
+const pageTableTotla = computed(() => {
+  if (props.tableTotal === 0) {
+    return props.tableData.length
+  } else {
+    return props.tableTotal
+  }
 })
 </script>
 <template>
@@ -106,20 +144,16 @@ const pageTableData = computed(() => {
       <CustomPagination
         :page="page.currentPage"
         :pageSize="page.pageSize"
-        :total="tableData.length"
-        layout="prev, pager, next"
+        :total="pageTableTotla"
+        :layout="paginationLayout"
         class="customPagination"
         @update:currentPage="updateCurrentPage"
         @update:pageSize="updatePageSize"
       />
-      <CustomPagination
+      <TotalPagination
         :page="page.currentPage"
-        :pageSize="page.pageSize"
-        :total="tableData.length"
-        layout="total, sizes"
-        class="customPagination customPagination__right"
-        @update:currentPage="updateCurrentPage"
-        @update:pageSize="updatePageSize"
+        :pageSize="props.pageSize"
+        :total="pageTableTotla"
       />
     </div>
   </div>
@@ -129,6 +163,9 @@ const pageTableData = computed(() => {
   border-radius: 5px;
   overflow: hidden;
   // border: 1px solid #e6eaf2;
+  .cdp-link-click {
+    color: #4f84cf;
+  }
   &.el-table--border {
     border: none;
     &::before,

@@ -4,7 +4,9 @@ import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
 import { useRouter } from 'vue-router'
 import { apiQueryLifeCycleAnalysisOverview } from '@/api/manageAnalysis.js'
+import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
+import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
 import { FormatNumber } from '@/utils/commonUtils.js'
 import { date_range_picker_config_4 } from '@/utils/dateConfig.js'
@@ -14,18 +16,18 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import DotsSM from '@/components/Dots/DotsSM.vue'
 
 const { t, locale: i18nLocale } = useI18n()
-const globalStore = useGlobalStore()
 const router = useRouter()
+const globalStore = useGlobalStore()
+const { messageData } = storeToRefs(globalStore)
+const { activeHall, updateMessageKey } = globalStore
+const manageAnalysisStore = useManageAnalysisStore()
+const { searchName, queryDate, fuzzySearch, useCustomList } = manageAnalysisStore
+
+const emit = defineEmits(['queryStepTrendAnalysis'])
 
 const query_life_cycle_analysis = () => {
   query_life_cycle_analysis_overview_tbl() // 產生會員生命週期階段表格
 }
-
-//進階篩選內的欄位資料
-const searchName = ref('') //搜尋的名稱
-const queryDate = dayjs(date_range_picker_config_4['startDate']).format('YYYY-MM-DD') //查詢日期
-const fuzzySearch = ref(false) //模糊搜尋
-const useCustomList = ref(false) //手動匯入名單
 
 const apiTableResult = ref([]) //會員生命週期階段api資料
 const tableData = ref([]) //會員生命週期階段表格
@@ -33,37 +35,6 @@ const tableTotalPeopleNum = ref(0) //會員生命週期階段表尾總人數
 
 //處理Message
 const apiSuccess = ref(false) //會員生命週期階段api是否成功
-const messageKey = ref('loading')
-const messageData = (key) => {
-  //依照不同的messageKey產生不同的message
-  let result = {
-    type: '',
-    title: ''
-  }
-  switch (key) {
-    case 'loading':
-      result['type'] = 'loading'
-      result['title'] = t('msg.long_loading')
-      break
-    case 'noResult':
-      result['type'] = 'warning'
-      result['title'] = t('msg.no_results')
-      break
-    case 'chartFailed':
-      result['type'] = 'warning'
-      result['title'] = t('msg.chart_failed')
-      break
-    case 'queryFailed':
-      result['type'] = 'warning'
-      result['title'] = t('msg.query_failed')
-      break
-    case 'noPermission':
-      result['type'] = 'warning'
-      result['title'] = t('msg.no_permission')
-      break
-  }
-  return result
-}
 
 //會員生命週期階段總覽表格表頭
 const tableColumns = computed(() => {
@@ -127,6 +98,9 @@ const tableConfig = computed(() => {
   return config
 })
 
+//依照不同的messageKey產生不同的message
+const messageKey = ref('loading')
+
 //tooltip顯示對應日期
 const tooltipDate = computed(() => {
   return {
@@ -140,21 +114,22 @@ const tooltipDate = computed(() => {
 
 //取得會員階段人數變化api
 const query_life_cycle_analysis_overview_tbl = async () => {
+  messageKey.value = 'loading'
   try {
-    const res = await apiQueryLifeCycleAnalysisOverview({
-      hall_name: globalStore.activeHall.hall_code,
+    const result = await apiQueryLifeCycleAnalysisOverview({
+      hall_name: activeHall.hall_code,
       query_date: queryDate,
-      search_name: searchName.value,
-      fuzzy_search: fuzzySearch.value,
-      use_custom_list: useCustomList.value
+      search_name: searchName,
+      fuzzy_search: fuzzySearch,
+      use_custom_list: useCustomList
     })
-    const { return_code } = res.data.status
+    const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true //取得資料成功
       apiTableResult.value = []
-      apiTableResult.value = res.data.result //存放取得的api資料
+      apiTableResult.value = result.data.result //存放取得的api資料
       //資料處理
-      transform_life_cycle_analysis_overview_tbl(res.data.result)
+      transform_life_cycle_analysis_overview_tbl(result.data.result)
       console.log(tableData.value)
     } else if (return_code === '0001') {
       apiSuccess.value = false //取得資料失敗
@@ -191,7 +166,9 @@ const transform_life_cycle_analysis_overview_tbl = (data) => {
     tempObj['config'] = tableConfig.value[i] //階段名稱的設定
     tempObj['total_num'] = {
       data: FormatNumber(result[i].total_num),
-      id: Date.now() + Math.floor(Math.random(10) * 100000)
+      id: i + '0',
+      step: i,
+      detail: 0
     } //本日人數
     tempObj['people_percent'] = FormatNumber(result[i].people_percent) + ' %' //人數佔比
     //對比前日差異
@@ -209,11 +186,15 @@ const transform_life_cycle_analysis_overview_tbl = (data) => {
     }
     tempObj['increase_num'] = {
       data: FormatNumber(result[i].increase_num),
-      id: Date.now() + Math.floor(Math.random(10) * 100000)
+      id: i + '1',
+      step: i,
+      detail: 1
     } //本日新增
     tempObj['decrease_num'] = {
       data: FormatNumber(result[i].decrease_num),
-      id: Date.now() + Math.floor(Math.random(10) * 100000)
+      id: i + '2',
+      step: i,
+      detail: 2
     } //本日減少
     ary.push(tempObj)
   }
@@ -223,9 +204,9 @@ const transform_life_cycle_analysis_overview_tbl = (data) => {
   tableTotalPeopleNum.value = FormatNumber(data.total_people_num)
 }
 watch(
-  () => globalStore.activeHall.hall_code,
+  () => activeHall.hall_code,
   () => {
-    console.log('globalStore.activeHall.hall_code')
+    console.log('activeHall.hall_code')
     query_life_cycle_analysis()
   }
 )
@@ -235,25 +216,19 @@ watch(i18nLocale, () => {
 })
 
 onMounted(() => {
-  if (globalStore.activeHall.hall_code !== '' && globalStore.activeHall.hall_code !== undefined) {
+  if (activeHall.hall_code !== '' && activeHall.hall_code !== undefined) {
     query_life_cycle_analysis()
   }
-  // apiTest({
-  //   hall_name: globalStore.activeHall.hall_code,
-  //   query_date: date_range_picker_config_4.startDate,
-  //   search_name: '',
-  //   fuzzy_search: false,
-  //   use_custom_list: false
-  // }).then((res) => {
-  //   console.log(res)
-  // })
 })
 
 const selectRow = ref(null)
 
 const handleClick = (data) => {
-  console.log(data)
-  selectRow.value = data
+  console.log('handleClick', data)
+  selectRow.value = data.id
+  manageAnalysisStore.stepType = data.step
+  manageAnalysisStore.detailType = data.detail
+  emit('queryStepTrendAnalysis')
 }
 </script>
 <template>
@@ -266,11 +241,7 @@ const handleClick = (data) => {
         </div>
       </template>
     </SectionTitle>
-    <CdpMessage
-      :type="messageData(messageKey)['type']"
-      :title="messageData(messageKey)['title']"
-      v-if="apiSuccess === false"
-    />
+    <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
     <CustomTable
       :tableData="tableData"
       :tableColumns="tableColumns"
@@ -295,7 +266,7 @@ const handleClick = (data) => {
         <div
           class="cdp-link-box cursor-pointer"
           :class="{ selected: scope.row.total_num.id === selectRow }"
-          @click="handleClick(scope.row.total_num.id)"
+          @click="handleClick(scope.row.total_num)"
         >
           <div class="cdp-link-click">
             {{ scope['row']['total_num']['data'] }}
@@ -313,7 +284,7 @@ const handleClick = (data) => {
         <div
           class="cdp-link-box cursor-pointer"
           :class="{ selected: scope.row.increase_num.id === selectRow }"
-          @click="handleClick(scope.row.increase_num.id)"
+          @click="handleClick(scope.row.increase_num)"
         >
           <div class="cdp-link-click">
             {{ scope['row']['increase_num']['data'] }}
@@ -325,7 +296,7 @@ const handleClick = (data) => {
         <div
           class="cdp-link-box cursor-pointer"
           :class="{ selected: scope.row.decrease_num.id === selectRow }"
-          @click="handleClick(scope.row.decrease_num.id)"
+          @click="handleClick(scope.row.decrease_num)"
         >
           <div class="cdp-link-click">
             {{ scope['row']['decrease_num']['data'] }}
@@ -351,6 +322,7 @@ const handleClick = (data) => {
 .step-name {
   display: flex;
   flex-wrap: wrap;
+  color: #404040;
   &__icon {
     margin-right: 6px;
     margin-top: 4px;

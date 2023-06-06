@@ -1,7 +1,24 @@
 <script setup>
-import LifeCyclePeopleChanges from './components/LifeCyclePeopleChanges.vue'
+import { ref } from 'vue'
+import LifeCyclePeopleChanges from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/LifeCyclePeopleChanges.vue'
+import StepOverview from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/StepOverview.vue'
+import MemberDetails from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails.vue'
+
+const step = ref(null)
+const member = ref(null)
+
+const callApi = () => {
+  step.value.query_life_cycle_analysis_avg_data()
+  member.value.query_life_cycle_analysis_detail_tbl()
+}
 </script>
 <template>
-  <LifeCyclePeopleChanges />
+  <!-- 會員階段人數變化 -->
+  <LifeCyclePeopleChanges @queryStepTrendAnalysis="callApi" />
+  <section class="cdp-section">
+    <!-- 階段總覽 -->
+    <StepOverview ref="step" class="mb-30" />
+    <MemberDetails ref="member" />
+  </section>
 </template>
 <style lang="scss" scoped></style>
