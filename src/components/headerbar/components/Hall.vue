@@ -5,7 +5,7 @@ import {
   logout_counter_min,
   logout_counter_sec
 } from '@/../public/js/system_config.js'
-import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
+import { findRootHall, getSessionStorageEntity, findParentKey } from '@/utils/commonUtils'
 import { ElNotification } from 'element-plus'
 import { useSystemStore } from '@/stores/system.js'
 import { useGlobalStore } from '@/stores/global.js'
@@ -243,10 +243,11 @@ const getSystemConfig = () => {
   const getConfig = () => {
     return new Promise((resolve, reject) => {
       apiGetSystemConfig({
-        hall_name: globalStore.activeHall.hall_code,
+        hall_name: findParentKey(globalStore.activeHall.hall_code),
         locale: i18nLocale.value
       })
         .then((result) => {
+          console.log(result)
           if (result.data.status.return_code === '0000') {
             sessionStorage.setItem('system_config', JSON.stringify(result.data.result))
             resolve('Get config success') //表示Promise物件執行成功，可往下繼續執行
