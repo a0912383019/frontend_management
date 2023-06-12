@@ -1,6 +1,6 @@
 #!/bin/bash
 # gcloud auth configure-docker us-central1-docker.pkg.dev
-# ex： sh build-cicd.sh dev activity0606_2023-06-12-1553
+# ex： sh build-cicd.sh dev activity0606_2023-06-12-1635
 
 #google container registry設定
 PROJECT=gcp-20190903-01
@@ -25,7 +25,7 @@ echo '\n完成vue build:'$BUILDENV
 ReleaseInfo="[Build-Time] $NOWTIME\r\n[Build-Env] $BUILDENV\r\n[Version] $VERSION\r\n"
 
 #將版本號碼寫入檔案並更新git
-echo "$ReleaseInfo" > release.txt
+echo "$ReleaseInfo" > dist/release.txt
 
 echo "\n建立image檔案..."$IMAGEFULLPATH
 docker build -t $IMAGEFULLPATH .
@@ -36,6 +36,6 @@ docker push $IMAGEFULLPATH
 docker rmi $IMAGEFULLPATH
 
 gcloud config set project $PROJECT
-gcloud run deploy $BUILDENV-$SERVICE  --region=asia-northeast1 --image $IMAGEFULLPATH
+gcloud run deploy $BUILDENV-$SERVICE  --region=us-central1 --image $IMAGEFULLPATH
 
 echo "\nAll Done!!"
