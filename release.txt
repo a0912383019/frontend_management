@@ -1,1 +1,4 @@
-194ac40
+[Build-Time] Mon Jun 12 16:08:03 CST 2023
+[Build-Env] dev
+[Version] activity0606_2023-06-12-1608
+
