@@ -5,15 +5,12 @@ import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { apiQueryLifeCycleAnalysisDetailTbl } from '@/api/manageAnalysis.js'
-import {
-  formatDateDuration,
-  FormatNumber,
-  addNumberColor,
-  getCurrencySignText
-} from '@/utils/commonUtils.js'
+import { FormatNumber, addNumberColor, getCurrencySignText } from '@/utils/commonUtils.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
+import ButtonIcon from '@/components/Button/ButtonIcon.vue'
+import MemberStepDetail from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberStepDetail.vue'
 
 const { t } = useI18n()
 const globalStore = useGlobalStore()
@@ -21,10 +18,20 @@ const { activeHall } = globalStore
 
 const manageAnalysisStore = useManageAnalysisStore()
 const { queryDate } = manageAnalysisStore
-const { searchName, fuzzySearch, useCustomList, stepType, detailType } =
-  storeToRefs(manageAnalysisStore)
+const {
+  searchName,
+  fuzzySearch,
+  useCustomList,
+  stepType,
+  detailType,
+  filterTimestamp,
+  deatilRangeDate,
+  filterDateTimestamp
+} = storeToRefs(manageAnalysisStore)
 
 const apiSuccess = ref(false) //會員生明細api是否成功
+
+const memberStepDetail = ref(null) //歷程紀錄組件ref
 
 //依照不同的messageKey產生不同的message
 const messageKey = ref('loading')
@@ -51,49 +58,56 @@ const tableColumns = computed(() => {
       prop: 'deposit_amount',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '10%',
+      sortable: 'custom'
     },
     {
       label: t('data_name.bet_amount'),
       prop: 'bet_amount',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '10%',
+      sortable: 'custom'
     },
     {
       label: t('data_name.payoff'),
       prop: 'payoff',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '10%',
+      sortable: 'custom'
     },
     {
       label: t('data_name.active_days'),
       prop: 'activity_day',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '10%',
+      sortable: 'custom'
     },
     {
       label: t('data_name.daily_avg_deposit'),
       prop: 'deposit_amount_avg',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '10%',
+      sortable: 'custom'
     },
     {
       label: t('data_name.daily_avg_bet_amount'),
       prop: 'bet_amount_avg',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '10%',
+      sortable: 'custom'
     },
     {
       label: t('data_name.daily_avg_payoff'),
       prop: 'payoff_avg',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '10%',
+      sortable: 'custom'
     },
     {
       label: t('data_name.life_cycle_step'),
@@ -112,8 +126,25 @@ const apiStart = ref(0) //起始筆數
 const apiLength = ref(15) //一頁幾筆
 const apiRecordsTotal = ref(0) //資料總數
 
+//會員明細表格排序規則
+const querySortRule = reactive({
+  column: 2,
+  dir: 'desc'
+})
+
+//自定義排序執行的內容
+const upadteCurrentSort = (data) => {
+  let column = tableColumns.value.findIndex((item) => {
+    return item.prop === data.prop
+  })
+  let dir = data['order'] == 'descending' ? 'desc' : 'asc'
+  querySortRule['column'] = column
+  querySortRule['dir'] = dir
+  query_life_cycle_analysis_detail_tbl()
+}
+
+//頁碼切換執行的內容
 const updateCurrentPage = (data) => {
-  //頁碼切換執行的內容
   console.log(data)
   apiDraw.value = data
   apiStart.value = apiDraw.value * apiLength.value - apiLength.value
@@ -127,7 +158,7 @@ const query_life_cycle_analysis_detail_tbl = async () => {
   try {
     const result = await apiQueryLifeCycleAnalysisDetailTbl({
       hall_name: activeHall.hall_code,
-      life_cycle_analysis_detail_date: formatDateDuration('2023/05/07 ~ 2023/06/04'),
+      life_cycle_analysis_detail_date: deatilRangeDate.value,
       life_cycle_analysis_step: stepType.value,
       detail_type: detailType.value,
       query_date: queryDate,
@@ -137,12 +168,7 @@ const query_life_cycle_analysis_detail_tbl = async () => {
       draw: apiDraw.value,
       start: apiStart.value,
       length: apiLength.value,
-      order: [
-        {
-          column: 2,
-          dir: 'desc'
-        }
-      ], //預設排序欄位
+      order: [querySortRule], //預設排序欄位
       columns: [
         //列表表頭欄位
         {
@@ -270,20 +296,34 @@ const query_life_cycle_analysis_detail_tbl = async () => {
   }
 }
 
-let tt = reactive({})
+let currencyObj = reactive({ currency: '', currencySign: '', currencySignText: '' })
 
 watch(
   () => activeHall.hall_code,
   () => {
-    tt['currency'] = getCurrencySignText('BBIN', activeHall.hall_code)['currency']
-    tt['currencySign'] = getCurrencySignText('BBIN', activeHall.hall_code)['currencySign']
-    tt['currencySignText'] = getCurrencySignText('BBIN', activeHall.hall_code)['currencySignText']
+    currencyObj['currency'] = getCurrencySignText('BBIN', activeHall.hall_code)['currency']
+    currencyObj['currencySign'] = getCurrencySignText('BBIN', activeHall.hall_code)['currencySign']
+    currencyObj['currencySignText'] = getCurrencySignText('BBIN', activeHall.hall_code)[
+      'currencySignText'
+    ]
   }
 )
 
-const test = computed(() => {
-  return tt['currency']
+//幣別文字顯示
+const currencyText = computed(() => {
+  let result = ''
+  if (apiSuccess.value) {
+    result = `(${t(currencyObj['currency'])}${t(currencyObj['currencySign'])}${
+      currencyObj['currencySignText']
+    })`
+  }
+  return result
 })
+
+//歷程紀錄點擊
+const handleStepClick = (val) => {
+  memberStepDetail.value.handleOpenDialog(val)
+}
 
 //處理Message
 onMounted(() => {
@@ -291,21 +331,43 @@ onMounted(() => {
   messageKey.value = 'clickNumberAboveToShow'
 })
 
+//監聽FilterMemberName.vue時間戳記
+watch(
+  () => filterTimestamp.value,
+  () => {
+    apiSuccess.value = false
+    messageKey.value = 'clickNumberAboveToShow'
+  }
+)
+
+//監聽FilterDate.vue時間戳記
+watch(
+  () => filterDateTimestamp.value,
+  () => {
+    query_life_cycle_analysis_detail_tbl()
+  }
+)
+
 defineExpose({ query_life_cycle_analysis_detail_tbl })
 </script>
 <template>
-  {{ test }}
   <CdpMessage :messageKey="messageKey" v-show="apiSuccess === false" />
   <div v-show="apiSuccess">
-    <SectionTitle class="mb-15" :title="t('manage_analysis.member_details')" />
+    <div class="top-box">
+      <SectionTitle class="mb-15" :title="t('manage_analysis.member_details')" />
+      <div>{{ currencyText }}</div>
+    </div>
+    <MemberStepDetail ref="memberStepDetail" />
     <CustomTable
       :serverSide="true"
       :tableData="tableData"
       :tableColumns="tableColumns"
       :pageSize="apiLength"
       :tableTotal="apiRecordsTotal"
+      :defaultSort="{ prop: 'deposit_amount', order: 'descending' }"
       stripe
       class="cdp-life-cycle-member-table"
+      @sort="upadteCurrentSort"
       @update:currentPage="updateCurrentPage"
     >
       <template #user_name="scope">
@@ -346,6 +408,13 @@ defineExpose({ query_life_cycle_analysis_detail_tbl })
           v-html="addNumberColor(FormatNumber(scope.row.payoff_avg), 'cdp-text-candypink')"
         ></div>
       </template>
+      <template #life_cycle_step="scope">
+        <ButtonIcon
+          @click="handleStepClick(scope.row)"
+          icon="eye"
+          :name="t('manage_analysis.life_cycle_history')"
+        />
+      </template>
     </CustomTable>
   </div>
 </template>
@@ -363,5 +432,9 @@ defineExpose({ query_life_cycle_analysis_detail_tbl })
       height: 54px;
     }
   }
+}
+.top-box {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

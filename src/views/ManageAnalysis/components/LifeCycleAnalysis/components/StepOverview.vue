@@ -1,12 +1,14 @@
 <script setup>
-import { ref, reactive, onMounted, defineExpose } from 'vue'
+import { ref, reactive, watch, onMounted, defineExpose } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { apiQueryLifeCycleAnalysisAvgData } from '@/api/manageAnalysis.js'
-import { formatDateDuration, FormatNumber, getHallCurrencySign } from '@/utils/commonUtils.js'
+import { FormatNumber, getHallCurrencySign } from '@/utils/commonUtils.js'
+import FilterDate from './FilterDate.vue'
+import ExportReport from './ExportReport.vue'
 import AvgCard from './AvgCard.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -18,8 +20,16 @@ const { activeHall } = globalStore
 
 const manageAnalysisStore = useManageAnalysisStore()
 const { queryDate } = manageAnalysisStore
-const { searchName, fuzzySearch, useCustomList, stepType, detailType } =
-  storeToRefs(manageAnalysisStore)
+const {
+  searchName,
+  fuzzySearch,
+  useCustomList,
+  stepType,
+  detailType,
+  filterTimestamp,
+  deatilRangeDate,
+  filterDateTimestamp
+} = storeToRefs(manageAnalysisStore)
 const apiSuccess = ref(false) //階段總覽api是否成功
 
 //依照不同的messageKey產生不同的message
@@ -45,7 +55,7 @@ const query_life_cycle_analysis_avg_data = async () => {
   try {
     const result = await apiQueryLifeCycleAnalysisAvgData({
       hall_name: activeHall.hall_code,
-      life_cycle_analysis_detail_date: formatDateDuration('2023/05/07 ~ 2023/06/04'),
+      life_cycle_analysis_detail_date: deatilRangeDate.value,
       life_cycle_analysis_step: stepType.value,
       detail_type: detailType.value,
       query_date: queryDate,
@@ -100,11 +110,34 @@ onMounted(() => {
   messageKey.value = 'clickNumberAboveToShow'
 })
 
+//監聽FilterMemberName.vue時間戳記
+watch(
+  () => filterTimestamp.value,
+  () => {
+    apiSuccess.value = false
+    messageKey.value = 'clickNumberAboveToShow'
+  }
+)
+
+//監聽FilterDate.vue時間戳記
+watch(
+  () => filterDateTimestamp.value,
+  () => {
+    query_life_cycle_analysis_avg_data()
+  }
+)
+
 defineExpose({ query_life_cycle_analysis_avg_data })
 </script>
 <template>
   <div>
-    <SectionTitle class="mb-15" :title="t('manage_analysis.life_cycle_step_overview')" />
+    <div class="step-top-box">
+      <SectionTitle class="mb-15" :title="t('manage_analysis.life_cycle_step_overview')" />
+      <div class="step-top-box__right">
+        <ExportReport class="mr-10" />
+        <FilterDate />
+      </div>
+    </div>
     <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
     <el-row :gutter="20" v-else>
       <el-col :span="8">
@@ -141,4 +174,13 @@ defineExpose({ query_life_cycle_analysis_avg_data })
     </el-row>
   </div>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.step-top-box {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  &__right {
+    display: flex;
+  }
+}
+</style>

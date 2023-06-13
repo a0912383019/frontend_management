@@ -126,6 +126,7 @@ const doAutoLogoutCounter = () => {
           h(ButtonIcon, {
             name: t('nav.reset'),
             icon: 'history',
+            size: 'small',
             onClick() {
               console.log('isClick')
               resetCounter()
@@ -350,6 +351,7 @@ router.afterEach((to) => {
           <ButtonIcon
             :name="$t('nav.reset')"
             icon="history"
+            size="small"
             :disabled="isDisabledResetBtn"
             @click="resetCounter"
           />

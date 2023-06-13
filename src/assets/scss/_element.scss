@@ -109,3 +109,15 @@
     }
   }
 }
+
+.cdp-popover {
+  &.el-popover.el-popper {
+    padding: 20px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+  }
+  .el-popper {
+    &__arrow {
+      display: none;
+    }
+  }
+}

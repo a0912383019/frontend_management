@@ -4,7 +4,13 @@
 // BBIN
 export const hall_config_dict_bbin = {}
 // BEGIN TODO:20230117 資料庫架構調整，BBIN先全部註解
-// hall_config_dict_bbin['esb'] = {hall_id: 6, domain_id: 0, hall_code: 'esb', hall_name: 'e世博', currency_sign: '¥'};
+hall_config_dict_bbin['esb'] = {
+  hall_id: 3820698,
+  domain_id: 0,
+  hall_code: 'esb',
+  hall_name: 'e世博',
+  currency_sign: '¥'
+}
 // hall_config_dict_bbin['b9'] = {hall_id: 98, domain_id: 0, hall_code:'demo', hall_name: 'demo廳', currency_sign: '℗'};
 // hall_config_dict_bbin['55'] = {hall_id: 3820004, domain_id: 0, hall_code:'55', hall_name: '澳門sands金沙娛樂場', currency_sign: '¥'};
 // hall_config_dict_bbin['hh'] = {hall_id: 3819497, domain_id: 0, hall_code:'hh', hall_name: '輝煌國際-银河GALAXY', currency_sign: '¥'};

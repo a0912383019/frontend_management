@@ -1,4 +1,5 @@
 import axiosInstance from './axiosInstance.js'
+import { findRootHall } from '@/utils/commonUtils.js'
 
 //會員階段人數變化
 export const apiQueryLifeCycleAnalysisOverview = (params) => {
@@ -78,6 +79,46 @@ export const apiQueryLifeCycleAnalysisDetailTbl = (params) => {
       length,
       order,
       columns
+    }
+  )
+}
+
+//歷程紀錄
+export const apiQueryMemberStepDetail = (params) => {
+  const { hall_name, member_id, member_step_detail_date } = params
+  const url_hall = findRootHall(hall_name).toLowerCase()
+  return axiosInstance.post(
+    '/api/auth/manage/' + url_hall + '/query_member_step_detail' + sessionStorage.from_page,
+    {
+      hall_name,
+      member_id,
+      member_step_detail_date
+    }
+  )
+}
+
+//使用手動匯入名單
+export const apiUploadMemberTagList = (params) => {
+  const { hall_name, upload_file } = params
+  console.log('upload_file', upload_file)
+  return axiosInstance.post(
+    '/api/auth/member/bbin/upload_member_tag_list' + sessionStorage.from_page,
+    {
+      hall_name,
+      upload_file
+    },
+    {
+      headers: { 'Content-Type': 'multipart/form-data' } //upload_file為binary，須改headers content-type
+    }
+  )
+}
+
+export const apiImportUploadMemberList = (params) => {
+  const { hall_name } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/import_upload_member_list' + sessionStorage.from_page,
+    {
+      hall_name
     }
   )
 }

@@ -44,6 +44,10 @@ const messageData = computed(() => {
       result['icon'] = getIcon('warning')
       result['title'] = t('msg.chart_failed')
       break
+    case 'noResults':
+      result['icon'] = getIcon('warning')
+      result['title'] = t('msg.no_results')
+      break
     case 'queryFailed':
       result['icon'] = getIcon('warning')
       result['title'] = t('msg.query_failed')

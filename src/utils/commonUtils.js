@@ -187,3 +187,13 @@ export function getCurrencySignText(root_hall, hall_name) {
     currencySignText: hall_config_dict[root_hall][hall_name].currency_sign
   }
 }
+
+/**
+ * chart.js隨機產生背景顏色
+ * @param {int[]} rgb_ary 顏色rgb數值
+ * @param {number} alpha 顏色透明度
+ * @returns {string} 顏色rgb字串
+ */
+export function generateRGBColors(rgb_ary, alpha) {
+  return 'rgb(' + rgb_ary[0] + ',' + rgb_ary[1] + ',' + rgb_ary[2] + ',' + alpha + ')'
+}

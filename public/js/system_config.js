@@ -3,56 +3,73 @@
  */
 // BBIN
 export const hall_config_dict_bbin = {}
-hall_config_dict_bbin['bbinTest'] = {
-  hall_id: 99999999,
+hall_config_dict_bbin['esb'] = {
+  hall_id: 3820698,
   domain_id: 0,
-  hall_code: 'bbinTest',
-  hall_name: 'BBIN測試',
+  hall_code: 'esb',
+  hall_name: 'e世博',
   currency_sign: '¥'
 }
+hall_config_dict_bbin['b9'] = {
+  hall_id: 98,
+  domain_id: 0,
+  hall_code: 'b9',
+  hall_name: '博九',
+  currency_sign: '¥'
+}
+// BEGIN TODO:20221223 spanner架構調整，BBIN只先保留部分，其餘註解
+// hall_config_dict_bbin['55'] = {hall_id: 3820004, domain_id: 0, hall_code:'55', hall_name: '澳門sands金沙娛樂場', currency_sign: '¥'};
+// hall_config_dict_bbin['hh'] = {hall_id: 3819497, domain_id: 0, hall_code:'hh', hall_name: '輝煌國際-银河GALAXY', currency_sign: '¥'};
+// hall_config_dict_bbin['jg'] = {hall_id: 281, domain_id: 0, hall_code:'jg', hall_name: '金冠娱乐城-金沙集團sands', currency_sign: '¥'};
+// hall_config_dict_bbin['710'] = {hall_id: 3819496, domain_id: 0, hall_code:'710', hall_name: '公海赌船', currency_sign: '¥'};
+// hall_config_dict_bbin['bc'] = {hall_id: 3817629, domain_id: 0, hall_code:'bc', hall_name: '奔馳線上娛樂-金沙娛樂城casino sands', currency_sign: '¥'};
+// hall_config_dict_bbin['294'] = {hall_id: 10000007, domain_id: 0, hall_code:'294', hall_name: '俄羅斯專享會', currency_sign: '¥'};
+// hall_config_dict_bbin['xj'] = {hall_id: 3820420, domain_id: 0, hall_code:'xj', hall_name: '星際娛樂Star World‧Enertain', currency_sign: '¥'};
+// hall_config_dict_bbin['349'] = {hall_id: 3820422, domain_id: 0, hall_code:'349', hall_name: '拉斯维加斯Las Vegas World Casino', currency_sign: '¥'};
+// END
 
 // XBB
 export const hall_config_dict_xbb = {}
-hall_config_dict_xbb['241'] = {
+hall_config_dict_xbb['178'] = {
   hall_id: 3820325,
-  domain_id: 241,
-  hall_code: '241',
-  hall_name: 'VX88測試站',
+  domain_id: 38,
+  hall_code: '178',
+  hall_name: 'ESBP',
+  currency_sign: '¥'
+}
+hall_config_dict_xbb['vx88'] = {
+  hall_id: 3820325,
+  domain_id: 70,
+  hall_code: 'vx88',
+  hall_name: 'VX88',
   currency_sign: '₫'
 }
-hall_config_dict_xbb['e178'] = {
+hall_config_dict_xbb['kr'] = {
   hall_id: 3820325,
-  domain_id: 500016,
-  hall_code: 'e178',
-  hall_name: 'esball+測試站',
-  currency_sign: '¥'
-}
-hall_config_dict_xbb['888t'] = {
-  hall_id: 3820325,
-  domain_id: 9999905,
-  hall_code: '888t',
-  hall_name: '51國際測試廳',
-  currency_sign: '¥'
-}
-hall_config_dict_xbb['mat'] = {
-  hall_id: 3820325,
-  domain_id: 9999907,
-  hall_code: 'mat',
-  hall_name: '澳門線上娛樂測試廳',
-  currency_sign: '¥'
-}
-hall_config_dict_xbb['krtt'] = {
-  hall_id: 3820325,
-  domain_id: 9999911,
-  hall_code: 'krtt',
-  hall_name: 'kresball測試廳',
+  domain_id: 82,
+  hall_code: 'kr',
+  hall_name: 'KR',
   currency_sign: '₩'
 }
-hall_config_dict_xbb['hatt'] = {
+hall_config_dict_xbb['5151'] = {
   hall_id: 3820325,
-  domain_id: 9999914,
-  hall_code: 'hatt',
-  hall_name: 'halo win QA站',
+  domain_id: 94,
+  hall_code: '5151',
+  hall_name: '51國際',
+  currency_sign: '¥'
+}
+hall_config_dict_xbb['ma'] = {
+  hall_id: 3820325,
+  domain_id: 96,
+  hall_code: 'ma',
+  hall_name: '澳門線上娛樂',
+  currency_sign: '¥'
+}
+hall_config_dict_xbb['halo'] = {
+  hall_id: 3820325,
+  domain_id: 102,
+  hall_code: 'halo',
+  hall_name: 'HaloWin',
   currency_sign: '₱'
 }
 

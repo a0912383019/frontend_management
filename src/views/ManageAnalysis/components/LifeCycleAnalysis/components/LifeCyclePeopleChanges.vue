@@ -10,6 +10,7 @@ import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
 import { FormatNumber } from '@/utils/commonUtils.js'
 import { date_range_picker_config_4 } from '@/utils/dateConfig.js'
+import FilterMemberName from './FilterMemberName.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -18,10 +19,10 @@ import DotsSM from '@/components/Dots/DotsSM.vue'
 const { t, locale: i18nLocale } = useI18n()
 const router = useRouter()
 const globalStore = useGlobalStore()
-const { messageData } = storeToRefs(globalStore)
-const { activeHall, updateMessageKey } = globalStore
+const { activeHall } = globalStore
 const manageAnalysisStore = useManageAnalysisStore()
-const { searchName, queryDate, fuzzySearch, useCustomList } = manageAnalysisStore
+const { searchName, fuzzySearch, useCustomList, filterTimestamp } = storeToRefs(manageAnalysisStore)
+const { queryDate } = manageAnalysisStore
 
 const emit = defineEmits(['queryStepTrendAnalysis'])
 
@@ -114,14 +115,16 @@ const tooltipDate = computed(() => {
 
 //取得會員階段人數變化api
 const query_life_cycle_analysis_overview_tbl = async () => {
+  apiSuccess.value = false
   messageKey.value = 'loading'
+  console.log('pinia searchName', searchName.value)
   try {
     const result = await apiQueryLifeCycleAnalysisOverview({
       hall_name: activeHall.hall_code,
       query_date: queryDate,
-      search_name: searchName,
-      fuzzy_search: fuzzySearch,
-      use_custom_list: useCustomList
+      search_name: searchName.value,
+      fuzzy_search: fuzzySearch.value,
+      use_custom_list: useCustomList.value
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -230,9 +233,24 @@ const handleClick = (data) => {
   manageAnalysisStore.detailType = data.detail
   emit('queryStepTrendAnalysis')
 }
+
+//按了進階篩選內的篩選按鈕
+// const handleQueryFilter = () => {
+//   query_life_cycle_analysis()
+//   selectRow.value = null
+// }
+watch(
+  () => filterTimestamp.value,
+  () => {
+    console.log('filterTimestamp', filterTimestamp)
+    query_life_cycle_analysis()
+    selectRow.value = null
+  }
+)
 </script>
 <template>
   <section class="cdp-section">
+    <div class="section-top-filter"><FilterMemberName /></div>
     <SectionTitle class="mb-15" :title="t('manage_analysis.life_cycle_people_changes')">
       <template #tooltip>
         <div class="tooltip-date">
@@ -316,6 +334,14 @@ const handleClick = (data) => {
   </section>
 </template>
 <style lang="scss" scoped>
+.cdp-section {
+  position: relative;
+}
+.section-top-filter {
+  position: absolute;
+  right: 0;
+  top: -67px;
+}
 .tooltip-date {
   font-size: 14px;
 }
