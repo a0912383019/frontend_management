@@ -14,6 +14,28 @@ BUILDENV=$1
 #版本號碼 [讀取第二個參數]
 VERSION=$2
 
+#各環境config存放路徑
+CONFIGPATH=build_config/
+
+#project用的system_config
+SYSTEMCONFIGPATH=public/js/
+SYSTEMCONFIGNAME=system_config.js
+
+#如果有dist資料夾，刪除dist資料夾
+if [ -d "dist/" ]; then rm -Rf dist/; fi
+
+#處理各環境對應config檔案
+echo "\n切換為 $BUILDENV 環境config"
+#先刪除經過public/js內的本地設定檔
+rm -r public/js/${SYSTEMCONFIGNAME}
+
+if [[ ! $(cp -v "$CONFIGPATH${SYSTEMCONFIGNAME%.*}_$BUILDENV.${SYSTEMCONFIGNAME##*.}" "$SYSTEMCONFIGPATH$SYSTEMCONFIGNAME") ]]; \
+then
+  exit 0
+else
+  echo "config切換成功"
+fi
+
 IMAGEHOST=us-central1-docker.pkg.dev/gcp-20190903-01/cdp-backend-images
 IMAGENAME=cdp_frontend_vue
 IMAGEFULLPATH=$IMAGEHOST/$IMAGENAME:"$BUILDENV"_$VERSION
