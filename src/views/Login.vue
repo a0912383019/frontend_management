@@ -131,7 +131,7 @@ const handleLogin = async ({ credential }) => {
     <div class="login__content">
       <div class="login__logo"><img src="@/assets/images/logo.svg" alt="" /></div>
       <div class="login__form" :class="{ isShake }">
-        <GoogleLogin :callback="googleLoginCallback" size="large" theme="filled_blue" />
+        <GoogleLogin :callback="googleLoginCallback" />
         <div class="login__msg">
           <div class="login__fail__msg">
             <ErrorText v-show="failMsg.msg1.isShow">{{ failMsg.msg1.text }}</ErrorText>
