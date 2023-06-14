@@ -48,6 +48,8 @@ ReleaseInfo="[Build-Time] $NOWTIME\r\n[Build-Env] $BUILDENV\r\n[Version] $VERSIO
 
 #將版本號碼寫入檔案並更新git
 echo "$ReleaseInfo" > dist/release.txt
+git commit -m "Build Version"
+git push
 
 echo "\n建立image檔案..."$IMAGEFULLPATH
 docker build -t $IMAGEFULLPATH .
