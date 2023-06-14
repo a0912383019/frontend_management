@@ -1,5 +1,5 @@
 <script setup>
-import { ref, h, onMounted } from 'vue'
+import { ref, h, watch, onMounted, onUnmounted } from 'vue'
 import {
   hall_config_dict,
   logout_counter_min,
@@ -12,7 +12,7 @@ import { useGlobalStore } from '@/stores/global.js'
 import { useSidebarStore } from '@/stores/sidebar.js'
 import { apiRefresh, apiGetSystemConfig } from '@/api/system.js'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 
@@ -21,6 +21,7 @@ const systemStore = useSystemStore()
 const globalStore = useGlobalStore()
 const sidebarStore = useSidebarStore()
 const router = useRouter()
+const route = useRoute()
 const emit = defineEmits(['time'])
 
 const updateTime = () => {
@@ -28,6 +29,7 @@ const updateTime = () => {
 }
 
 const isDropOpen = ref(false) //下拉開啟狀態
+const countdownInterval = ref(1000) // 每秒倒數
 
 const hallDropdownList = ref([]) //廳別下拉選單選項
 
@@ -107,19 +109,32 @@ const changeHeaderHall = (element) => {
 // 倒數計時
 const isDisabledResetBtn = ref(false)
 const counter = ref(null)
-const timeoutMinText = ref(null)
-const timeoutSecText = ref(null)
+const timeoutMinText = ref(null) // 顯示於畫面的分
+const timeoutSecText = ref(null) // 顯示於畫面的秒
+const timeoutMin = ref(59) // 計時器計算用的分
+const timeoutSec = ref(59) // 計時器計算用的秒
 const timeoutZero = (value) => {
   return value < 10 ? '0' + value : value
 }
+
+//重置時間
+const resetTimer = () => {
+  timeoutMinText.value = 59
+  timeoutSecText.value = 59
+  timeoutMin.value = 59
+  timeoutSec.value = 59
+}
+
 const doAutoLogoutCounter = () => {
-  let timeoutMin = 59
-  let timeoutSec = 59
-  timeoutMinText.value = timeoutZero(timeoutMin)
-  timeoutSecText.value = timeoutZero(timeoutSec)
+  // let timeoutMin = 59
+  // let timeoutSec = 59
+  resetTimer()
+  timeoutMinText.value = timeoutZero(timeoutMin.value)
+  timeoutSecText.value = timeoutZero(timeoutSec.value)
+  sessionStorage.start_timer = new Date().getTime() //設定起始時間
   counter.value = setInterval(() => {
     //  若倒數時間小於設定時間，跳出提醒
-    if (timeoutMin === logout_counter_min && timeoutSec === logout_counter_sec) {
+    if (timeoutMin.value === logout_counter_min && timeoutSec.value === logout_counter_sec) {
       ElNotification({
         message: h('div', null, [
           h('div', { style: { marginBottom: '10px' } }, t('nav.idle')),
@@ -137,28 +152,29 @@ const doAutoLogoutCounter = () => {
         duration: 0
       })
     }
-    if (timeoutMin >= 0) {
-      if (timeoutSec > 0) {
-        timeoutSec--
-        timeoutSecText.value = timeoutZero(timeoutSec)
-        if (timeoutSec == 0) {
-          timeoutMin--
-          if (timeoutMin >= 0) {
-            timeoutMinText.value = timeoutZero(timeoutMin)
+    if (timeoutMin.value >= 0) {
+      if (timeoutSec.value > 0) {
+        timeoutSec.value--
+        timeoutSecText.value = timeoutZero(timeoutSec.value)
+        if (timeoutSec.value == 0) {
+          timeoutMin.value--
+          if (timeoutMin.value >= 0) {
+            timeoutMinText.value = timeoutZero(timeoutMin.value)
           }
         }
       } else {
-        timeoutSec = 59
-        timeoutSecText.value = timeoutZero(timeoutSec)
-        if (timeoutMin >= 0) {
+        timeoutSec.value = 59
+        timeoutSecText.value = timeoutZero(timeoutSec.value)
+        if (timeoutMin.value >= 0) {
           timeoutMinText.value = timeoutZero(timeoutMin)
         }
       }
     } else {
       clearInterval(counter.value)
       systemStore.storeLogout()
+      resetTimer()
     }
-  }, 1000)
+  }, countdownInterval.value)
 }
 
 const resetCounter = (is_need_close_loading = true) => {
@@ -316,16 +332,55 @@ const initPageNext = () => {
   }
 }
 
+// 監聽瀏覽器頁籤是否被切換
+const handleVisibilityChange = (e) => {
+  console.log(e, document.visibilityState)
+  if (document.visibilityState === 'visible') {
+    //當畫面切回當前頁籤，則取得時間計算相差時間
+    const startTime = JSON.parse(sessionStorage.start_timer) //倒數計時器開始後設定的時間
+    const currentTime = new Date().getTime() //頁籤切回後的時間
+
+    const timeDifference = currentTime - startTime // 兩個相減取得相差的時間
+
+    const minutes = Math.floor(timeDifference / (countdownInterval.value * 60)) // 計算分鐘數
+    const seconds = Math.floor((timeDifference / countdownInterval.value) % 60) // 計算秒數
+
+    //將正確時間更新到計時器上
+    timeoutMinText.value = 59 - minutes
+    timeoutSecText.value = 59 - seconds
+    timeoutMin.value = 59 - minutes
+    timeoutSec.value = 59 - seconds
+
+    // console.log(`相差 ${minutes} 分 ${seconds} 秒`)
+  }
+}
+
 onMounted(() => {
   initPageNext()
+  document.addEventListener('visibilitychange', handleVisibilityChange)
 })
 
-//路由換頁後執行的內容
-router.afterEach((to) => {
-  if (to.name !== 'Login') {
+onUnmounted(() => {
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
+})
+
+//監聽語系切換
+watch(
+  () => i18nLocale.value,
+  () => {
+    console.log('i18nLocale', i18nLocale.value)
     initPageNext()
   }
-})
+)
+
+// 監聽route.path，換頁後執行的內容
+watch(
+  () => route.path,
+  () => {
+    console.log(route.path)
+    initPageNext()
+  }
+)
 </script>
 <template>
   <div class="hallbox">
@@ -352,6 +407,7 @@ router.afterEach((to) => {
             :name="$t('nav.reset')"
             icon="history"
             size="small"
+            class="hallbox__counter__button"
             :disabled="isDisabledResetBtn"
             @click="resetCounter"
           />
@@ -423,7 +479,8 @@ router.afterEach((to) => {
     position: absolute;
     right: 0;
     top: 110%;
-    width: 280px;
+    // width: 280px;
+    min-width: 285px;
     font-size: 1rem;
     color: #212529;
     text-align: left;
@@ -462,6 +519,11 @@ router.afterEach((to) => {
     &__time,
     &__text {
       margin-right: toRem(4);
+      white-space: nowrap;
+    }
+    &__button {
+      flex-shrink: 0;
+      margin-left: 4px;
     }
   }
 }

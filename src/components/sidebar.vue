@@ -1,12 +1,17 @@
 <script setup>
 import { version } from '../../package.json'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSidebarStore } from '@/stores/sidebar.js'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const { t } = useI18n()
 const sidebarStore = useSidebarStore()
 const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
+
+const activePath = computed(() => route.path) // 根據路由變化，更新menu高亮項目
 </script>
 <template>
   <div class="sidebar" :class="{ isClose: isSidebarClose }">
@@ -16,13 +21,13 @@ const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
     <div class="sidebar__content">
       <div class="sidebar__menu">
         <el-menu
-          default-active="0"
+          :default-active="activePath"
           class="cdp-menu"
           :class="{ isClose: isSidebarClose }"
           :unique-opened="true"
         >
           <template v-for="(item, index) in menuLists" :key="index">
-            <el-menu-item :index="index.toString()" v-if="item.sub_menu.length === 0">
+            <el-menu-item :index="`/${item.url_path}`" v-if="item.sub_menu.length === 0">
               <div class="cdp-menu__item">
                 <router-link :to="item.url_path">
                   <span class="cdp-menu__icon">
@@ -103,11 +108,21 @@ const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
   transition: all 0.3s ease-in-out;
   &.isClose {
     width: 75px;
+    .sidebar {
+      &__version {
+        display: none;
+      }
+      &__content {
+        &__logo {
+          display: none;
+        }
+      }
+    }
   }
   &__logo {
     padding-top: 10px;
     height: 50px;
-    margin-bottom: 10px;
+    margin-bottom: 18px;
     a {
       display: flex;
       align-items: center;
@@ -124,6 +139,7 @@ const { menuLists, isSidebarClose } = storeToRefs(sidebarStore)
     max-height: calc(100vh - 60px);
     padding-left: 15px;
     padding-right: 15px;
+    padding-bottom: 30px;
     &__logo {
       display: flex;
       justify-content: center;

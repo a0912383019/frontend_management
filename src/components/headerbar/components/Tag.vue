@@ -18,45 +18,51 @@ const props = defineProps({
   }
 })
 
-const tableColumns = [
-  {
-    label: t('tags.tag_name'),
-    prop: 'tag_name',
-    width: 200,
-    align: 'center'
-  },
-  {
-    label: t('tags.tag_description'),
-    prop: 'tag_description',
-    align: 'center'
-  }
-]
+const tableColumns = computed(() => {
+  return [
+    {
+      label: t('tags.tag_name'),
+      prop: 'tag_name',
+      width: 200,
+      align: 'center'
+    },
+    {
+      label: t('tags.tag_description'),
+      prop: 'tag_description',
+      align: 'center'
+    }
+  ]
+})
 
 const currentTabs = ref('all') //當前顯示的tabs
 
+const refTable = ref(null) // ref table
+
 // tab 資料
-const tabData = ref([
-  {
-    label: t('tags.all_tags'),
-    name: 'all'
-  },
-  {
-    label: t('tags.type_1'),
-    name: 'type1'
-  },
-  {
-    label: t('tags.type_3'),
-    name: 'type3'
-  },
-  {
-    label: t('tags.type_4'),
-    name: 'type4'
-  },
-  {
-    label: t('tags.type_5'),
-    name: 'type5'
-  }
-])
+const tabData = computed(() => {
+  return [
+    {
+      label: t('tags.all_tags'),
+      name: 'all'
+    },
+    {
+      label: t('tags.type_1'),
+      name: 'type1'
+    },
+    {
+      label: t('tags.type_3'),
+      name: 'type3'
+    },
+    {
+      label: t('tags.type_4'),
+      name: 'type4'
+    },
+    {
+      label: t('tags.type_5'),
+      name: 'type5'
+    }
+  ]
+})
 
 let tagsConfig = reactive({})
 const tagsData = reactive({
@@ -153,12 +159,6 @@ const tableData = computed(() => {
   return tagsData[currentTabs.value]
 })
 
-//開啟 dialog
-const handleOpenDialog = () => {
-  dialogTableVisible.value = true
-  console.log(tagsData)
-}
-
 //search
 const searchText = ref('')
 const handleSearch = () => {
@@ -177,6 +177,17 @@ const handleSearch = () => {
   }
 }
 
+//開啟 dialog
+const handleOpenDialog = () => {
+  dialogTableVisible.value = true
+  console.log(tagsData)
+}
+
+//dialog close callback
+const handleCloseDialog = () => {
+  searchText.value = ''
+}
+
 watch(
   () => props.times,
   () => {
@@ -193,6 +204,19 @@ watch(
       tagsConfig = getTagsConfig()
       transformTagsConfig()
     }
+  }
+)
+
+watch(
+  () => currentTabs.value,
+  (newVal, oldVal) => {
+    //切換頁籤時，如果有搜尋關鍵字，將關鍵字清除，並復原切換前頁籤的內容
+    if (searchText.value !== '') {
+      searchText.value = ''
+      tagsData[oldVal] = JSON.parse(JSON.stringify(tagsDataOriginal[oldVal]))
+    }
+    //切換頁籤時，將表格的頁碼初始化到第一頁
+    refTable.value.page.currentPage = 1
   }
 )
 
@@ -217,6 +241,7 @@ watch(
       class="cdp-dialog"
       :append-to-body="true"
       :title="t('tags.tag_description')"
+      @close="handleCloseDialog"
     >
       <tab
         :tabData="tabData"
@@ -234,6 +259,7 @@ watch(
             :tableData="tableData"
             :tableColumns="tableColumns"
             class="cdp-tag-table"
+            ref="refTable"
           >
           </CustomTable>
         </div>

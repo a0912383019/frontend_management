@@ -104,6 +104,8 @@ const pageTableTotla = computed(() => {
     return props.tableTotal
   }
 })
+
+defineExpose({ page })
 </script>
 <template>
   <div>

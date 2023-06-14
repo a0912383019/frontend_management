@@ -18,8 +18,18 @@ const handleClick = () => {
       icon="download"
       size="large"
       :name="t('import_export_file.export')"
+      class="export__button"
       @click="handleClick"
     />
   </div>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.export__button {
+  background-color: transparent;
+  border: 1px solid $blue;
+  color: $blue;
+  &:hover {
+    border-color: #214c89;
+  }
+}
+</style>

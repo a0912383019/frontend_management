@@ -134,7 +134,7 @@ defineExpose({ query_life_cycle_analysis_avg_data })
     <div class="step-top-box">
       <SectionTitle class="mb-15" :title="t('manage_analysis.life_cycle_step_overview')" />
       <div class="step-top-box__right">
-        <ExportReport class="mr-10" />
+        <ExportReport class="mr-10" v-if="apiSuccess" />
         <FilterDate />
       </div>
     </div>
@@ -178,7 +178,7 @@ defineExpose({ query_life_cycle_analysis_avg_data })
 .step-top-box {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 43px;
   &__right {
     display: flex;
   }

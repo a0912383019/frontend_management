@@ -15,19 +15,20 @@ export const useSystemStore = defineStore('system', () => {
     try {
       const reslut = await apiLogout()
       console.log(reslut)
+    } catch (error) {
+      router.push({ name: 'Login' })
+    } finally {
+      globalStore.isLoading = false
+      // 不管logout的ajax成功或失敗，都清除所有sessionStorage與localStorage
+      sessionStorage.clear()
+      localStorage.clear()
       router.push({ name: 'Login' })
       ElNotification({
         title: '',
         message: t('msg.logout'),
         type: 'success'
       })
-    } catch (error) {
-      router.push({ name: 'Login' })
     }
-    globalStore.isLoading = false
-    // 不管logout的ajax成功或失敗，都清除所有sessionStorage與localStorage
-    sessionStorage.clear()
-    localStorage.clear()
   }
 
   return { storeLogout }
