@@ -938,5 +938,13 @@
     "user_id": "ID",
     "demo": "模擬畫面",
     "demo_failed": "模擬畫面失敗，請重新操作"
+  },
+
+  "table": {
+    "sZeroRecords": "查無資料",
+    "sInfo": "{START} - {END} / 共 {TOTAL} 筆",
+    "sInfoEmpty": "0 - 0 / 共 0 筆",
+    "sInfoFiltered": "(由 _MAX_ 筆中進行篩選)",
+    "sProcessing": "資料載入中..."
   }
 }

@@ -938,5 +938,13 @@
     "user_id": "ID",
     "demo": "模拟画面",
     "demo_failed": "模拟画面失败，请重新操作"
+  },
+
+  "table": {
+    "sZeroRecords": "查无资料",
+    "sInfo": "{START} - {END} / 共 {TOTAL} 笔",
+    "sInfoEmpty": "0 - 0 / 共 0 笔",
+    "sInfoFiltered": "(由 _MAX_ 笔中进行筛选)",
+    "sProcessing": "资料载入中..."
   }
 }

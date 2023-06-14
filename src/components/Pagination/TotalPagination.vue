@@ -30,8 +30,15 @@ const pageEnd = computed(() => {
 </script>
 <template>
   <div class="totalPagination">
-    {{ FormatNumber(pageStart) }} - {{ FormatNumber(pageEnd) }} / 共
-    {{ FormatNumber(props.total) }} 筆
+    {{
+      $t('table.sInfo', {
+        START: FormatNumber(pageStart),
+        END: FormatNumber(pageEnd),
+        TOTAL: FormatNumber(props.total)
+      })
+    }}
+    <!-- {{ FormatNumber(pageStart) }} - {{ FormatNumber(pageEnd) }} / 共
+    {{ FormatNumber(props.total) }} 筆 -->
   </div>
 </template>
 <style lang="scss" scoped>

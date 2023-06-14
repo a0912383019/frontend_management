@@ -938,5 +938,13 @@
     "user_id": "ID",
     "demo": "Demo",
     "demo_failed": "Demo failed, please retry"
+  },
+
+  "table": {
+    "sZeroRecords": "No results",
+    "sInfo": "{START} - {END} out of {TOTAL}",
+    "sInfoEmpty": "0 - 0 out of 0",
+    "sInfoFiltered": "(filtered from _MAX_ total records)",
+    "sProcessing": "Loading..."
   }
 }
