@@ -5,6 +5,9 @@ const props = defineProps({
   messageKey: {
     type: String,
     default: ''
+  },
+  height: {
+    type: Number
   }
 })
 

@@ -5,12 +5,13 @@ import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { apiQueryLifeCycleAnalysisDetailTbl } from '@/api/manageAnalysis.js'
-import { FormatNumber, addNumberColor, getCurrencySignText } from '@/utils/commonUtils.js'
+import { FormatNumber, addNumberColor } from '@/utils/commonUtils.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import MemberStepDetail from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberStepDetail.vue'
+import CurrencySignText from '@/components/CurrencySignText.vue'
 
 const { t } = useI18n()
 const globalStore = useGlobalStore()
@@ -296,30 +297,6 @@ const query_life_cycle_analysis_detail_tbl = async () => {
   }
 }
 
-let currencyObj = reactive({ currency: '', currencySign: '', currencySignText: '' })
-
-watch(
-  () => activeHall.hall_code,
-  () => {
-    currencyObj['currency'] = getCurrencySignText('BBIN', activeHall.hall_code)['currency']
-    currencyObj['currencySign'] = getCurrencySignText('BBIN', activeHall.hall_code)['currencySign']
-    currencyObj['currencySignText'] = getCurrencySignText('BBIN', activeHall.hall_code)[
-      'currencySignText'
-    ]
-  }
-)
-
-//幣別文字顯示
-const currencyText = computed(() => {
-  let result = ''
-  if (apiSuccess.value) {
-    result = `(${t(currencyObj['currency'])}${t(currencyObj['currencySign'])}${
-      currencyObj['currencySignText']
-    })`
-  }
-  return result
-})
-
 //歷程紀錄點擊
 const handleStepClick = (val) => {
   memberStepDetail.value.handleOpenDialog(val)
@@ -355,7 +332,7 @@ defineExpose({ query_life_cycle_analysis_detail_tbl })
   <div v-show="apiSuccess">
     <div class="top-box">
       <SectionTitle class="mb-15" :title="t('manage_analysis.member_details')" />
-      <div>{{ currencyText }}</div>
+      <CurrencySignText />
     </div>
     <MemberStepDetail ref="memberStepDetail" />
     <CustomTable

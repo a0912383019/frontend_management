@@ -296,3 +296,14 @@
 .cdp-bg__disabled input:read-only {
   background-color: rgba(207, 216, 230, 0) !important;
 }
+
+.cdp-w {
+  &__720 {
+    width: 100%;
+    max-width: 720px;
+  }
+}
+
+.text-danger {
+  color: #dc3545!important;
+}

@@ -14,7 +14,7 @@ import FilterMemberName from './FilterMemberName.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import DotsSM from '@/components/Dots/DotsSM.vue'
+import StepConfig from '@/components/StepConfig.vue'
 
 const { t, locale: i18nLocale } = useI18n()
 const router = useRouter()
@@ -34,7 +34,6 @@ const apiTableResult = ref([]) //會員生命週期階段api資料
 const tableData = ref([]) //會員生命週期階段表格
 const tableTotalPeopleNum = ref(0) //會員生命週期階段表尾總人數
 
-//處理Message
 const apiSuccess = ref(false) //會員生命週期階段api是否成功
 
 //會員生命週期階段總覽表格表頭
@@ -83,20 +82,6 @@ const tableColumns = computed(() => {
       minWidth: '16%'
     }
   ]
-})
-
-//會員生命週期階段總覽資料config
-const tableConfig = computed(() => {
-  const config = RFM_NAPL_step_config
-  config[1]['step_name'] = t('member_life_cycles.active')
-  config[2]['step_name'] = t('member_life_cycles.newBorn')
-  config[3]['step_name'] = t('member_life_cycles.growing')
-  config[4]['step_name'] = t('member_life_cycles.churning_return')
-  config[5]['step_name'] = t('member_life_cycles.churned_return')
-  config[6]['step_name'] = t('member_life_cycles.churning')
-  config[7]['step_name'] = t('member_life_cycles.churned')
-  config[7]['step_name'] = t('member_life_cycles.churned')
-  return config
 })
 
 //依照不同的messageKey產生不同的message
@@ -166,7 +151,7 @@ const transform_life_cycle_analysis_overview_tbl = (data) => {
   for (let i = 1; i < result.length; i++) {
     //產生階段對應文字
     let tempObj = {}
-    tempObj['config'] = tableConfig.value[i] //階段名稱的設定
+    tempObj['step_index'] = i //階段名稱的設定
     tempObj['total_num'] = {
       data: FormatNumber(result[i].total_num),
       id: i + '0',
@@ -270,13 +255,8 @@ watch(
     >
       <template #step_name="scope">
         <!-- 階段名稱內容 -->
-        <div class="step-name cdp-link-box">
-          <font-awesome-icon
-            class="step-name__icon"
-            :icon="scope['row']['config']['step_vue_icon']"
-          />
-          <div class="step-name__title">{{ scope['row']['config']['step_name'] }}</div>
-          <DotsSM class="step-name__dots" :class="scope['row']['config']['step_vue_dot_color']" />
+        <div class="cdp-link-box">
+          <StepConfig :stepIndex="scope.row.step_index" />
         </div>
       </template>
       <template #total_num="scope">
@@ -344,23 +324,6 @@ watch(
 }
 .tooltip-date {
   font-size: 14px;
-}
-.step-name {
-  display: flex;
-  flex-wrap: wrap;
-  color: #404040;
-  &__icon {
-    margin-right: 6px;
-    margin-top: 4px;
-    flex-shrink: 0;
-  }
-  &__title {
-    margin-right: 6px;
-  }
-  &__dots {
-    flex-shrink: 0;
-    margin-top: 6px;
-  }
 }
 
 .table-total {

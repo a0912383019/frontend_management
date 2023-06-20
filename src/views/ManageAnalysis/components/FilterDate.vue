@@ -9,8 +9,6 @@ import { formatDateDuration } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
 
-const emit = defineEmits(['query:filter'])
-
 const manageAnalysisStore = useManageAnalysisStore()
 
 //popover 開啟狀態
@@ -75,7 +73,6 @@ const handleClick = () => {
       dayjs(dateValue.value[1]).format('YYYY-MM-DD')
   )
   popoverVisible.value = false
-  emit('query:filter')
 }
 </script>
 <template>

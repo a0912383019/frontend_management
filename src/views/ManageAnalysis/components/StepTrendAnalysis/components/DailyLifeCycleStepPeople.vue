@@ -1,0 +1,247 @@
+<script setup>
+import { ref, reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { useGlobalStore } from '@/stores/global.js'
+import dayjs from 'dayjs'
+import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
+import SectionTitle from '@/components/Title/SectionTitle.vue'
+import { apiQueryStepTotalPeople } from '@/api/manageAnalysis.js'
+import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
+import { FormatNumber, generateRGBColors } from '@/utils/commonUtils.js'
+import DialogStepDetail from '@/views/ManageAnalysis/components/StepTrendAnalysis/components/DialogStepDetail.vue'
+import CdpMessage from '@/components/CdpMessage.vue'
+// import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+// import 'chartjs-adapter-dayjs-3'
+
+import Chart from 'chart.js/auto'
+
+const { t } = useI18n()
+const router = useRouter()
+
+const globalStore = useGlobalStore()
+const { activeHall } = globalStore
+const { tableConfig } = storeToRefs(globalStore)
+
+const manageAnalysisStore = useManageAnalysisStore()
+const { deatilRangeDate } = storeToRefs(manageAnalysisStore)
+
+const apiSuccess = ref(false) //會員生明細api是否成功
+
+//依照不同的messageKey產生不同的message
+const messageKey = ref('loading')
+
+const refDialogStepDetail = ref(null)
+
+const refChart = ref(null)
+
+let chart
+
+//tooltips觸發後紀錄目前的資訊
+const currentTooltipEntity = reactive({
+  date: '',
+  step: null
+})
+
+const chartSetting = {
+  id: 'peopleChart',
+  type: 'line',
+  data: {
+    xLabels: [],
+    datasets: []
+  },
+  plugins: [ChartDataLabels],
+  options: {
+    maintainAspectRatio: false,
+    responsive: true,
+    scales: {
+      y: {
+        ticks: {
+          padding: 10,
+          callback: (label, index, labels) => {
+            // console.log(label, index, labels)
+            // 只顯示整數，若數字過千以k縮寫表示
+            if (Math.floor(label) === label) {
+              return Math.abs(label) >= 1000 ? label / 1000 + 'k' : label
+            }
+          }
+        }
+      }
+    },
+    onClick: (event, legendItem) => {
+      // console.log(event, legendItem, event.chart.legend.legendItems)
+      // event.chart.legend.legendItems.forEach((item) => {
+      //   // console.log(item)
+      //   item.hidden = true
+      // })
+      console.log(event, legendItem)
+      // console.log(legendItem[0].datasetIndex)
+      if (legendItem.length !== 0) {
+        chart.data.datasets.forEach((item, index) => {
+          chart.data.datasets[index].hidden = false
+          if (index !== legendItem[0].datasetIndex) {
+            chart.data.datasets[index].hidden = true
+          }
+        })
+        chart.update()
+      } else {
+        refDialogStepDetail.value.handleOpenDialog(currentTooltipEntity)
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        onClick: (event, legendItem) => {
+          console.log(event, legendItem)
+          chart.data.datasets.forEach((item, index) => {
+            if (item.label === legendItem.text) {
+              chart.data.datasets[index].hidden = !legendItem.hidden
+            }
+          })
+          chart.update()
+        }
+      },
+      datalabels: {
+        // display: 'auto',
+        // align: 'top',
+        clip: false,
+        padding: 6,
+        // anchor: 'start', //錨點，在畫完圖的後方，*註2
+        anchor: 'end',
+        align: 'top',
+        formatter: (value) => {
+          return FormatNumber(value)
+        }
+      },
+      tooltip: {
+        mode: 'nearest',
+        position: 'nearest',
+        intersect: false,
+        displayColors: true,
+        callbacks: {
+          label: (tooltipItem, data) => {
+            // console.log(tooltipItem, data)
+            let title = tooltipItem['dataset']['label'] + ' : '
+            let value = FormatNumber(tooltipItem['raw']) + t('unit.people')
+
+            currentTooltipEntity['date'] = tooltipItem['label']
+            currentTooltipEntity['step'] = parseInt(tooltipItem['datasetIndex'] + 1) // index需加1以對應至正確的階段
+
+            return title + value
+          }
+        }
+      }
+    }
+  }
+}
+
+//階段每日人數
+const query_step_total_people = async () => {
+  messageKey.value = 'loading'
+  apiSuccess.value = false
+  try {
+    const result = await apiQueryStepTotalPeople({
+      hall_name: activeHall.hall_code,
+      search_date: deatilRangeDate.value
+    })
+    const { return_code } = result.data.status
+    console.log(result, return_code)
+    if (return_code === '0000') {
+      apiSuccess.value = true
+      transform_step_total_people(result.data.result)
+      setTimeout(() => {
+        register_chart()
+      }, 1)
+    }
+  } catch (error) {
+    console.error(error)
+    apiSuccess.value = false //取得資料失敗
+    if (error.response.status === 403) {
+      messageKey.value = 'noPermission' //更改message內容
+    } else if (error.response.status === 401) {
+      // 清除所有sessionStorage與localStorage
+      sessionStorage.clear()
+      localStorage.clear()
+      sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
+      router.push({ name: 'Login' })
+    } else {
+      messageKey.value = 'chartFailed' //更改message內容
+    }
+  }
+}
+
+const transform_step_total_people = (result) => {
+  // console.log(result)
+  let chartLabels = []
+  let chartDatasetsDict = {}
+  let chartDatasets = []
+  result.forEach((item) => {
+    chartLabels.push(dayjs(item.data_date).format(t('date.format_date_rule')))
+    let stepTotalPeople = item
+    delete stepTotalPeople['data_date'] // 移除data_date欄位
+    Object.entries(stepTotalPeople).forEach((people) => {
+      // console.log(people, peopleIndex, chartDatasetsDict[people[0]])
+      if (chartDatasetsDict[people[0]] !== undefined) {
+        chartDatasetsDict[people[0]].data.push(people[1])
+      } else {
+        let step_config = RFM_NAPL_step_config[people[0]]
+        chartDatasetsDict[people[0]] = {
+          label: tableConfig.value[people[0]]['step_name'],
+          fill: false,
+          borderWidth: 3,
+          lineTension: 0,
+          spanGaps: true,
+          borderColor: generateRGBColors(step_config.step_color, 1),
+          pointRadius: 3,
+          pointHoverRadius: 7,
+          pointColor: generateRGBColors(step_config.step_color, 1),
+          backgroundColor: generateRGBColors(step_config.step_color, 1),
+          pointBackgroundColor: generateRGBColors(step_config.step_color, 1),
+          hoverBorderColor: generateRGBColors(step_config.step_color, 1),
+          hoverBorderWidth: 7,
+          data: [people[1]]
+        }
+      }
+    })
+  })
+  Object.values(chartDatasetsDict).forEach((item) => {
+    chartDatasets.push(item)
+  })
+  // console.log('chartDatasets', chartDatasets)
+  chartSetting.data.xLabels = []
+  chartSetting.data.xLabels = chartLabels
+  chartSetting.data.datasets = []
+  chartSetting.data.datasets = chartDatasets
+  // console.log('transform_step_total_people', chartLabels)
+  // console.log(chartDatasets)
+}
+
+const register_chart = () => {
+  let ctx = refChart.value.getContext('2d')
+  chart = new Chart(ctx, chartSetting)
+  console.log('Chart', chart)
+}
+
+defineExpose({ query_step_total_people })
+</script>
+<template>
+  <section class="cdp-section">
+    <SectionTitle class="mb-15" :title="t('manage_analysis.daily_life_cycle_step_people')">
+      <template #tooltip>
+        {{ $t('manage_analysis.click_chart_show_step_details') }}
+      </template>
+    </SectionTitle>
+    <DialogStepDetail ref="refDialogStepDetail" />
+    <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
+    <div class="cdp-dialog__chart" v-else>
+      <canvas
+        ref="refChart"
+        style="min-height: 500px; height: 500px; max-height: 500px; max-width: 100%"
+      ></canvas>
+    </div>
+  </section>
+</template>
+<style lang="scss" scoped></style>

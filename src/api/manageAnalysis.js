@@ -122,3 +122,38 @@ export const apiImportUploadMemberList = (params) => {
     }
   )
 }
+
+//趨勢分析
+//階段盈利總覽
+export const apiQueryStepTrendAnalysisOverview = (params) => {
+  const { hall_name, search_date } = params
+  return axiosInstance.post(
+    '/api/auth/manage/bbin/query_step_trend_analysis_overview' + sessionStorage.from_page,
+    {
+      hall_name,
+      search_date
+    }
+  )
+}
+
+//階段每日人數
+export const apiQueryStepTotalPeople = (params) => {
+  const { hall_name, search_date } = params
+  return axiosInstance.post(
+    '/api/auth/manage/bbin/query_step_total_people' + sessionStorage.from_page,
+    {
+      hall_name,
+      search_date
+    }
+  )
+}
+
+//階段每日人數 - 詳細資料(點擊chartjs popup)
+export const apiQueryStepDetail = (params) => {
+  const { hall_name, query_date, step } = params
+  return axiosInstance.post('/api/auth/manage/bbin/query_step_detail' + sessionStorage.from_page, {
+    hall_name,
+    query_date,
+    step
+  })
+}

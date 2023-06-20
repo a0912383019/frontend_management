@@ -2,11 +2,11 @@
 
 //dialog
 .cdp-dialog {
+  width: 100%;
+  max-width: 1000px;
   &.el-dialog{
-    width: 100%;
-    max-width: 1000px;
-    border-radius: 10px;
     overflow: hidden;
+    border-radius: 10px;
   }
   .el-dialog {
     &__header {
@@ -120,4 +120,9 @@
       display: none;
     }
   }
+}
+
+//datepicker
+.el-date-table td.end-date .el-date-table-cell__text, .el-date-table td.start-date .el-date-table-cell__text {
+  background-color: $purple;
 }

@@ -1,6 +1,6 @@
 import axios from 'axios'
-const baseURL = import.meta.env.VITE_LOCAL_IP
 
+const baseURL = import.meta.env.VITE_LOCAL_IP
 const axiosInstance = axios.create({
   baseURL,
   headers: {
