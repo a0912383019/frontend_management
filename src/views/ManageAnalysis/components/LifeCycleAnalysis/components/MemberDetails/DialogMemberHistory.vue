@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import { ElDialog, dayjs } from 'element-plus'
-import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
@@ -14,7 +13,6 @@ import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
 import 'chartjs-adapter-dayjs-3'
 
 const { t } = useI18n()
-const router = useRouter()
 const dialogTableVisible = ref(false) //dialog開啟狀態
 
 const globalStore = useGlobalStore()
@@ -214,11 +212,7 @@ const query_member_step_detail = async (param) => {
     if (error.response.status === 403) {
       messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
-      // 清除所有sessionStorage與localStorage
-      sessionStorage.clear()
-      localStorage.clear()
-      sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
-      router.push({ name: 'Login' })
+      globalStore.storeHandleApiError()
     } else {
       messageKey.value = 'chartFailed' //更改message內容
     }

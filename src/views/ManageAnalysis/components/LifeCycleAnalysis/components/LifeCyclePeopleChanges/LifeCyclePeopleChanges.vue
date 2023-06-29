@@ -2,22 +2,19 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
-import { useRouter } from 'vue-router'
 import { apiQueryLifeCycleAnalysisOverview } from '@/api/manageAnalysis.js'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
-import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
 import { FormatNumber } from '@/utils/commonUtils.js'
 import { date_range_picker_config_4 } from '@/utils/dateConfig.js'
-import FilterMemberName from './FilterMemberName.vue'
+import FilterMemberName from './components/FilterMemberName.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import StepConfig from '@/components/StepConfig.vue'
 
 const { t, locale: i18nLocale } = useI18n()
-const router = useRouter()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 const manageAnalysisStore = useManageAnalysisStore()
@@ -132,11 +129,7 @@ const query_life_cycle_analysis_overview_tbl = async () => {
     if (error.response.status === 403) {
       messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
-      // 清除所有sessionStorage與localStorage
-      sessionStorage.clear()
-      localStorage.clear()
-      sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
-      router.push({ name: 'Login' })
+      globalStore.storeHandleApiError()
     } else {
       messageKey.value = 'chartFailed' //更改message內容
     }

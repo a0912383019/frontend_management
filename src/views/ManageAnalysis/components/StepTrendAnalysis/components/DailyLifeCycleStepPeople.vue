@@ -1,7 +1,6 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import dayjs from 'dayjs'
@@ -19,14 +18,13 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import Chart from 'chart.js/auto'
 
 const { t } = useI18n()
-const router = useRouter()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 const { tableConfig } = storeToRefs(globalStore)
 
 const manageAnalysisStore = useManageAnalysisStore()
-const { deatilRangeDate } = storeToRefs(manageAnalysisStore)
+const { stepTrendRangeDate, filterDateStepTrendTimestamp } = storeToRefs(manageAnalysisStore)
 
 const apiSuccess = ref(false) //會員生明細api是否成功
 
@@ -60,7 +58,7 @@ const chartSetting = {
       y: {
         ticks: {
           padding: 10,
-          callback: (label, index, labels) => {
+          callback: (label) => {
             // console.log(label, index, labels)
             // 只顯示整數，若數字過千以k縮寫表示
             if (Math.floor(label) === label) {
@@ -122,7 +120,7 @@ const chartSetting = {
         intersect: false,
         displayColors: true,
         callbacks: {
-          label: (tooltipItem, data) => {
+          label: (tooltipItem) => {
             // console.log(tooltipItem, data)
             let title = tooltipItem['dataset']['label'] + ' : '
             let value = FormatNumber(tooltipItem['raw']) + t('unit.people')
@@ -145,7 +143,7 @@ const query_step_total_people = async () => {
   try {
     const result = await apiQueryStepTotalPeople({
       hall_name: activeHall.hall_code,
-      search_date: deatilRangeDate.value
+      search_date: stepTrendRangeDate.value
     })
     const { return_code } = result.data.status
     console.log(result, return_code)
@@ -162,11 +160,7 @@ const query_step_total_people = async () => {
     if (error.response.status === 403) {
       messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
-      // 清除所有sessionStorage與localStorage
-      sessionStorage.clear()
-      localStorage.clear()
-      sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
-      router.push({ name: 'Login' })
+      globalStore.storeHandleApiError()
     } else {
       messageKey.value = 'chartFailed' //更改message內容
     }
@@ -224,6 +218,14 @@ const register_chart = () => {
   chart = new Chart(ctx, chartSetting)
   console.log('Chart', chart)
 }
+
+//監聽FilterDate.vue時間戳記
+watch(
+  () => filterDateStepTrendTimestamp.value,
+  () => {
+    query_step_total_people()
+  }
+)
 
 defineExpose({ query_step_total_people })
 </script>

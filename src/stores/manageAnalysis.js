@@ -1,7 +1,12 @@
-import { ref } from 'vue'
+//單元：會員經營分析
+import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import dayjs from 'dayjs'
-import { date_range_picker_config_4, date_range_picker_config_11 } from '@/utils/dateConfig.js'
+import {
+  date_range_picker_config_4,
+  date_range_picker_config_11,
+  date_range_picker_config_13
+} from '@/utils/dateConfig.js'
 import { formatDateDuration } from '@/utils/commonUtils.js'
 
 export const useManageAnalysisStore = defineStore('manageAnalysis', () => {
@@ -15,6 +20,7 @@ export const useManageAnalysisStore = defineStore('manageAnalysis', () => {
   const stepType = ref(null) //life_cycle_analysis_step
   const detailType = ref(null) //detail_type
 
+  //會員生命週期日期區間
   const deatilRangeDate = ref(
     formatDateDuration(
       dayjs(date_range_picker_config_11['startDate']).format('YYYY-MM-DD') +
@@ -23,9 +29,33 @@ export const useManageAnalysisStore = defineStore('manageAnalysis', () => {
     )
   )
 
+  //趨勢分析日期區間
+  const stepTrendRangeDate = ref(
+    formatDateDuration(
+      dayjs(date_range_picker_config_11['startDate']).format('YYYY-MM-DD') +
+        '~' +
+        dayjs(date_range_picker_config_11['endDate']).format('YYYY-MM-DD')
+    )
+  )
+
+  //會員生命週期-會員明細Dialog日期區間
+  const dialogMemberDetailRangeDate = ref(
+    formatDateDuration(
+      dayjs(date_range_picker_config_13['startDate']).format('YYYY-MM-DD') +
+        '~' +
+        dayjs(date_range_picker_config_13['endDate']).format('YYYY-MM-DD')
+    )
+  )
+
   const filterTimestamp = ref(new Date().getTime()) //FilterMemberName.vue的時間戳，供其他組件監聽，當有變化時做相對的處理
 
   const filterDateTimestamp = ref(new Date().getTime()) //階段總覽FilterDate.vue的時間戳
+
+  const filterDateStepTrendTimestamp = ref(new Date().getTime()) //趨勢分析FilterDate.vue的時間戳
+
+  const filterDateDialogMemberDetailTimestamp = ref(new Date().getTime()) //會員生命週期-會員明細Dialog FilterDate.vue的時間戳
+
+  const memberData = reactive({}) //會員明細點擊會員名稱後，存放該會員資料
 
   return {
     searchName,
@@ -35,7 +65,12 @@ export const useManageAnalysisStore = defineStore('manageAnalysis', () => {
     stepType,
     detailType,
     deatilRangeDate,
+    stepTrendRangeDate,
+    dialogMemberDetailRangeDate,
     filterTimestamp,
-    filterDateTimestamp
+    filterDateTimestamp,
+    filterDateStepTrendTimestamp,
+    filterDateDialogMemberDetailTimestamp,
+    memberData
   }
 })

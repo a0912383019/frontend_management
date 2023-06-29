@@ -2,22 +2,15 @@
 //開啟 dialog
 import { ref, reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import { useGlobalStore } from '@/stores/global.js'
 import { apiQueryStepDetail } from '@/api/manageAnalysis.js'
-import {
-  addNumberColor,
-  FormatNumber,
-  getHallCurrencySign,
-  errorRespond
-} from '@/utils/commonUtils.js'
+import { addNumberColor, FormatNumber, getHallCurrencySign } from '@/utils/commonUtils.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import StepConfig from '@/components/StepConfig.vue'
 import dayjs from 'dayjs'
 
 const { t } = useI18n()
-const router = useRouter()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -92,11 +85,7 @@ const query_step_detail_tbl = async (param) => {
     if (error.response.status === 403) {
       messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
-      // 清除所有sessionStorage與localStorage
-      sessionStorage.clear()
-      localStorage.clear()
-      sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
-      router.push({ name: 'Login' })
+      globalStore.storeHandleApiError()
     } else {
       messageKey.value = 'chartFailed' //更改message內容
     }

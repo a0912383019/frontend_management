@@ -1,20 +1,18 @@
 <script setup>
 import { ref, reactive, watch, onMounted, defineExpose } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { apiQueryLifeCycleAnalysisAvgData } from '@/api/manageAnalysis.js'
 import { FormatNumber, getHallCurrencySign } from '@/utils/commonUtils.js'
-import FilterDate from '../../FilterDate.vue'
-import ExportReport from './ExportReport.vue'
-import AvgCard from './AvgCard.vue'
+import FilterDate from '@/views/ManageAnalysis/components/FilterDate.vue'
+import ExportReport from './components/ExportReport.vue'
+import AvgCard from './components/AvgCard.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 
 const { t } = useI18n()
-const router = useRouter()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
@@ -93,15 +91,18 @@ const query_life_cycle_analysis_avg_data = async () => {
     if (error.response.status === 403) {
       messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
-      // 清除所有sessionStorage與localStorage
-      sessionStorage.clear()
-      localStorage.clear()
-      sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
-      router.push({ name: 'Login' })
+      globalStore.storeHandleApiError()
     } else {
       messageKey.value = 'chartFailed' //更改message內容
     }
   }
+}
+
+//日期更新後執行的動作
+const updateTimestamp = (data) => {
+  //將資料寫到pinia
+  manageAnalysisStore.filterDateTimestamp = data['timestamp']
+  manageAnalysisStore.deatilRangeDate = data['rangeDate']
 }
 
 //處理Message
@@ -135,7 +136,7 @@ defineExpose({ query_life_cycle_analysis_avg_data })
       <SectionTitle class="mb-15" :title="t('manage_analysis.life_cycle_step_overview')" />
       <div class="step-top-box__right">
         <ExportReport class="mr-10" v-if="apiSuccess" />
-        <FilterDate />
+        <FilterDate @update:timestamp="updateTimestamp" />
       </div>
     </div>
     <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
@@ -152,7 +153,7 @@ defineExpose({ query_life_cycle_analysis_avg_data })
       </el-col>
       <el-col :span="8">
         <AvgCard
-          icon="fa-solid fa-piggy-bank"
+          icon="fa-solid fa-money-bill-wave"
           :title="t('data_name.daily_avg_bet_amount')"
           :price="stepData['betAmount']['data']"
           itemBgColor="#c68961"
@@ -162,7 +163,7 @@ defineExpose({ query_life_cycle_analysis_avg_data })
       </el-col>
       <el-col :span="8">
         <AvgCard
-          icon="fa-solid fa-piggy-bank"
+          icon="fa-solid fa-chart-area"
           :title="t('data_name.daily_avg_payoff')"
           :class="stepData['payoff']['className']"
           :price="stepData['payoff']['data']"

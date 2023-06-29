@@ -1,28 +1,16 @@
 <script setup>
-import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useGlobalStore } from '@/stores/global.js'
 import DotsSM from '@/components/Dots/DotsSM.vue'
-import { useI18n } from 'vue-i18n'
-import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
-const { t } = useI18n()
+
+const globalStore = useGlobalStore()
+const { tableConfig } = storeToRefs(globalStore)
 
 const props = defineProps({
   stepIndex: {
     type: Number,
     default: 1
   }
-})
-
-//階段資料config
-const tableConfig = computed(() => {
-  const config = RFM_NAPL_step_config
-  config[1]['step_name'] = t('member_life_cycles.active')
-  config[2]['step_name'] = t('member_life_cycles.newBorn')
-  config[3]['step_name'] = t('member_life_cycles.growing')
-  config[4]['step_name'] = t('member_life_cycles.churning_return')
-  config[5]['step_name'] = t('member_life_cycles.churned_return')
-  config[6]['step_name'] = t('member_life_cycles.churning')
-  config[7]['step_name'] = t('member_life_cycles.churned')
-  return config
 })
 </script>
 <template>

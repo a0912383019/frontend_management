@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
@@ -15,12 +14,11 @@ import CurrencySignText from '@/components/CurrencySignText.vue'
 import StepConfig from '@/components/StepConfig.vue'
 
 const { t, locale: i18nLocale } = useI18n()
-const router = useRouter()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const manageAnalysisStore = useManageAnalysisStore()
-const { deatilRangeDate, filterDateTimestamp } = storeToRefs(manageAnalysisStore)
+const { stepTrendRangeDate, filterDateStepTrendTimestamp } = storeToRefs(manageAnalysisStore)
 
 const apiSuccess = ref(false) //api是否成功
 
@@ -77,7 +75,7 @@ const query_step_trend_analysis_overview_tbl = async () => {
   try {
     const result = await apiQueryStepTrendAnalysisOverview({
       hall_name: activeHall.hall_code,
-      search_date: deatilRangeDate.value
+      search_date: stepTrendRangeDate.value
     })
     const { return_code } = result.data.status
     // console.log(result, return_code)
@@ -106,11 +104,7 @@ const query_step_trend_analysis_overview_tbl = async () => {
     if (error.response.status === 403) {
       messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
-      // 清除所有sessionStorage與localStorage
-      sessionStorage.clear()
-      localStorage.clear()
-      sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
-      router.push({ name: 'Login' })
+      globalStore.storeHandleApiError()
     } else {
       messageKey.value = 'chartFailed' //更改message內容
     }
@@ -142,13 +136,20 @@ const transform_step_trend_analysis_overview_tbl = (data) => {
   tableData.value = ary
 }
 
+//日期更新後執行的動作
+const updateTimestamp = (data) => {
+  //將資料寫到pinia
+  manageAnalysisStore.filterDateStepTrendTimestamp = data['timestamp']
+  manageAnalysisStore.stepTrendRangeDate = data['rangeDate']
+}
+
 watch(i18nLocale, () => {
   transform_step_trend_analysis_overview_tbl(apiTableResult.value)
 })
 
 //監聽FilterDate.vue時間戳記
 watch(
-  () => filterDateTimestamp.value,
+  () => filterDateStepTrendTimestamp.value,
   () => {
     query_step_trend_analysis_overview_tbl()
   }
@@ -158,7 +159,9 @@ defineExpose({ query_step_trend_analysis_overview_tbl })
 </script>
 <template>
   <section class="cdp-section">
-    <div class="section-top-filter"><FilterDate /></div>
+    <div class="section-top-filter">
+      <FilterDate @update:timestamp="updateTimestamp" />
+    </div>
     <div class="cdp-section__top">
       <SectionTitle
         class="mb-15"

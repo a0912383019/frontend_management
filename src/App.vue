@@ -7,7 +7,7 @@ import en from 'element-plus/es/locale/lang/en'
 import zhTw from 'element-plus/es/locale/lang/zh-tw'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { useI18n } from 'vue-i18n'
-import Loading from '@/components/Loading.vue'
+import Loading from '@/components/Loading/Loading.vue'
 
 const stores = useGlobalStore()
 const { locale } = useI18n()

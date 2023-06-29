@@ -10,7 +10,8 @@ import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
-import MemberStepDetail from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberStepDetail.vue'
+import DialogMemberHistory from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/DialogMemberHistory.vue'
+import DialogMemberDetail from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/DialogMemberDetail/DialogMemberDetail.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
 
 const { t } = useI18n()
@@ -32,7 +33,8 @@ const {
 
 const apiSuccess = ref(false) //會員生明細api是否成功
 
-const memberStepDetail = ref(null) //歷程紀錄組件ref
+const refDialogMemberDetail = ref(null) //會員明細Dialog組件ref
+const refDialogMemberHistory = ref(null) //歷程紀錄Dialog組件ref
 
 //依照不同的messageKey產生不同的message
 const messageKey = ref('loading')
@@ -294,12 +296,28 @@ const query_life_cycle_analysis_detail_tbl = async () => {
     }
   } catch (error) {
     console.log(error)
+    apiSuccess.value = false //取得資料失敗
+    if (error.response.status === 403) {
+      messageKey.value = 'noPermission' //更改message內容
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      messageKey.value = 'chartFailed' //更改message內容
+    }
   }
 }
 
-//歷程紀錄點擊
+//會員明細Dialog點擊
+const handleMemberDetailClick = (val) => {
+  //寫入store
+  manageAnalysisStore.memberData = {}
+  manageAnalysisStore.memberData = val
+  refDialogMemberDetail.value.handleOpenDialog()
+}
+
+//歷程紀錄Dialog點擊
 const handleStepClick = (val) => {
-  memberStepDetail.value.handleOpenDialog(val)
+  refDialogMemberHistory.value.handleOpenDialog(val)
 }
 
 //處理Message
@@ -334,7 +352,8 @@ defineExpose({ query_life_cycle_analysis_detail_tbl })
       <SectionTitle class="mb-15" :title="t('manage_analysis.member_details')" />
       <CurrencySignText />
     </div>
-    <MemberStepDetail ref="memberStepDetail" />
+    <DialogMemberHistory ref="refDialogMemberHistory" />
+    <DialogMemberDetail ref="refDialogMemberDetail" />
     <CustomTable
       :serverSide="true"
       :tableData="tableData"
@@ -349,7 +368,9 @@ defineExpose({ query_life_cycle_analysis_detail_tbl })
     >
       <template #user_name="scope">
         <!-- 存款 -->
-        <div class="cdp-link-click">{{ scope.row.user_name }}</div>
+        <div class="cdp-link-click" @click="handleMemberDetailClick(scope.row)">
+          {{ scope.row.user_name }}
+        </div>
       </template>
       <template #deposit_amount="scope">
         <!-- 存款 -->

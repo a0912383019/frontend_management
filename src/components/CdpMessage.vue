@@ -8,6 +8,10 @@ const props = defineProps({
   },
   height: {
     type: Number
+  },
+  cover: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -68,7 +72,7 @@ const messageData = computed(() => {
 })
 </script>
 <template>
-  <div class="message">
+  <div class="message" :class="{ cover: props.cover }">
     <div class="message__icon" :class="{ loading: props.messageKey === 'loading' }">
       <font-awesome-icon :icon="messageData['icon']" />
     </div>
@@ -99,6 +103,13 @@ const messageData = computed(() => {
         animation: rotate360 2s infinite linear;
       }
     }
+  }
+  &.cover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 </style>

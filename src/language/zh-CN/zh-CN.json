@@ -6,6 +6,7 @@
     "date_duration": "日期区间",
     "format_date_duration": "{{- date_duration, zh_date_duration}}",
     "format_datetime": "{{- date, zh_datetime}}",
+    "format_datetime_rule": "YYYY/MM/DD HH:mm:ss",
 
     "statistical_time_period": "资料统计区间：",
     "aggregated_data_statistical_time_period": "下表各栏位为会员时间区间内加总资料。",

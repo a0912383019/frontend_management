@@ -6,6 +6,7 @@
     "date_duration": "Duration",
     "format_date_duration": "{{- date_duration, en_date_duration}}",
     "format_datetime": "{{- date, en_datetime}}",
+    "format_datetime_rule": "MM/DD/YYYY HH:mm:ss",
 
     "statistical_time_period": "Interval：",
     "aggregated_data_statistical_time_period": "Each column in the below table is the aggregated data during specified time.",

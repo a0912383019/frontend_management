@@ -2,20 +2,39 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
-import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
-import { date_range_picker_config_11 } from '@/utils/dateConfig.js'
+import { date_range_picker_config_11, date_range_picker_config_13 } from '@/utils/dateConfig.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import { formatDateDuration } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
 
-const manageAnalysisStore = useManageAnalysisStore()
+const props = defineProps({
+  config: {
+    type: Number,
+    default: 11 // config_11 : 預設選取近1個月，最早可選至3年前，最晚可選至前二日
+  }
+})
+
+const emit = defineEmits(['update:timestamp'])
 
 //popover 開啟狀態
 const popoverVisible = ref(false)
 
-// config_11 : 預設選取近1個月，最早可選至3年前，最晚可選至前二日
-const dateValue = ref([date_range_picker_config_11.startDate, date_range_picker_config_11.endDate])
+const dateValueStartDate = ref('')
+const dateValueEndDate = ref('')
+//根據props config決定使用的預設日期
+switch (props.config) {
+  case 11:
+    dateValueStartDate.value = date_range_picker_config_11.startDate
+    dateValueEndDate.value = date_range_picker_config_11.endDate
+    break
+  case 13:
+    dateValueStartDate.value = date_range_picker_config_13.startDate
+    dateValueEndDate.value = date_range_picker_config_13.endDate
+    break
+}
+const dateValue = ref([dateValueStartDate.value, dateValueEndDate.value])
+
 const disabledDate = (day) => {
   return day > dayjs().startOf('day').subtract(2, 'day')
 }
@@ -65,13 +84,14 @@ const shortcuts = [
 ]
 
 const handleClick = () => {
-  //將資料寫到pinia
-  manageAnalysisStore.filterDateTimestamp = new Date().getTime()
-  manageAnalysisStore.deatilRangeDate = formatDateDuration(
-    dayjs(dateValue.value[0]).format('YYYY-MM-DD') +
-      '~' +
-      dayjs(dateValue.value[1]).format('YYYY-MM-DD')
-  )
+  emit('update:timestamp', {
+    timestamp: new Date().getTime(),
+    rangeDate: formatDateDuration(
+      dayjs(dateValue.value[0]).format('YYYY-MM-DD') +
+        '~' +
+        dayjs(dateValue.value[1]).format('YYYY-MM-DD')
+    )
+  })
   popoverVisible.value = false
 }
 </script>

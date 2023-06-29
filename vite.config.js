@@ -32,7 +32,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/travelApi/, '')
       },
       '/cdpapi': {
-        target: 'https://cdp-api.caino.club',
+        target: 'https://demo-api-cdp.caino.club',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/cdpapi/, '')
       }

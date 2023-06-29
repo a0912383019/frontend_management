@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue'
-import LifeCyclePeopleChanges from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/LifeCyclePeopleChanges.vue'
-import StepOverview from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/StepOverview.vue'
-import MemberDetails from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails.vue'
+import LifeCyclePeopleChanges from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/LifeCyclePeopleChanges/LifeCyclePeopleChanges.vue'
+import StepOverview from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/StepOverview/StepOverview.vue'
+import MemberDetails from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/MemberDetails.vue'
 
 const step = ref(null)
 const member = ref(null)

@@ -45,7 +45,7 @@ export const apiQueryLifeCycleAnalysisAvgData = (params) => {
   )
 }
 
-//會員明細
+//會員明細表格
 export const apiQueryLifeCycleAnalysisDetailTbl = (params) => {
   console.log('apiQueryLifeCycleAnalysisDetailTbl', params)
   const {
@@ -119,6 +119,69 @@ export const apiImportUploadMemberList = (params) => {
     '/api/auth/member/bbin/import_upload_member_list' + sessionStorage.from_page,
     {
       hall_name
+    }
+  )
+}
+
+//會員明細Dialog
+//會員總覽
+export const apiQueryMemberInfo = (params) => {
+  const { hall_name, member_id } = params
+  return axiosInstance.post('/api/auth/member/bbin/query_member_info' + sessionStorage.from_page, {
+    hall_name,
+    member_id
+  })
+}
+
+//更新會員標籤
+export const apiUpdateMemberTagsEnable = (params) => {
+  const { hall_name, member_id, user_name, user_tags_original, user_tags_new } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/update_member_tags_enable' + sessionStorage.from_page,
+    {
+      hall_name,
+      member_id,
+      user_name,
+      user_tags_original,
+      user_tags_new
+    }
+  )
+}
+
+//取得會員生命週期資訊
+export const apiQueryMemberLifeCycle = (params) => {
+  const { hall_name, member_id, data_date } = params
+  return axiosInstance.post(
+    '/api/auth/manage/bbin/query_member_step_detail_by_date' + sessionStorage.from_page,
+    {
+      hall_name,
+      member_id,
+      data_date
+    }
+  )
+}
+
+//取得會員健康度
+export const apiQueryMemberHealthChart = (params) => {
+  const { hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_health' + sessionStorage.from_page,
+    {
+      hall_name,
+      member_id
+    }
+  )
+}
+
+//取得會員時間區間內實際損益與出入款總金額
+export const apiQueryProfitWithdrawDepositAmount = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_profit_withdraw_deposit_amount' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id
     }
   )
 }

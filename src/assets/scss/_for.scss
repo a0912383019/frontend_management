@@ -22,3 +22,32 @@
     margin-right: #{$i}px;
   }
 }
+
+@for $i from 0 through 30 {
+  .padding-#{$i} {
+    padding: #{$i}px;
+  }
+}
+
+@for $i from 0 through 30 {
+  .pt-#{$i} {
+    padding-top: #{$i}px;
+  }
+}
+@for $i from 0 through 30 {
+  .pb-#{$i} {
+    padding-bottom: #{$i}px;
+  }
+}
+
+@for $i from 0 through 30 {
+  .pl-#{$i} {
+    padding-left: #{$i}px;
+  }
+}
+
+@for $i from 0 through 30 {
+  .pr-#{$i} {
+    padding-right: #{$i}px;
+  }
+}
