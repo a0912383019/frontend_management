@@ -9,6 +9,7 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { apiQueryStepTotalPeople } from '@/api/manageAnalysis.js'
 import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
 import { FormatNumber, generateRGBColors } from '@/utils/commonUtils.js'
+import { showDatasetsLabels } from '@/utils/pluginUtils.js'
 import DialogStepDetail from '@/views/ManageAnalysis/components/StepTrendAnalysis/components/DialogStepDetail.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 // import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
@@ -50,7 +51,13 @@ const chartSetting = {
     xLabels: [],
     datasets: []
   },
-  plugins: [ChartDataLabels],
+  plugins: [
+    {
+      afterDatasetsDraw: function (chart) {
+        showDatasetsLabels(chart, 12, 7, 30)
+      }
+    }
+  ],
   options: {
     maintainAspectRatio: false,
     responsive: true,

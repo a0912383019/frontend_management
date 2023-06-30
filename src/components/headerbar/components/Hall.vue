@@ -170,9 +170,11 @@ const doAutoLogoutCounter = () => {
         }
       }
     } else {
-      clearInterval(counter.value)
       systemStore.storeLogout()
       resetTimer()
+    }
+    if (route.name === 'Login') {
+      clearInterval(counter.value)
     }
   }, countdownInterval.value)
 }

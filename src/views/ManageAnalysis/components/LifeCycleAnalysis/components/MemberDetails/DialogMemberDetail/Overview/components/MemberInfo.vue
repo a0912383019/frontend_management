@@ -340,7 +340,7 @@ onMounted(() => {
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       append-to-body
-      custom-class="life-cycle-inner-dialog"
+      class="life-cycle-inner-dialog"
     >
       <div class="inner-dialog">
         <div class="inner-dialog__icon"><img src="@/assets/images/alert-2.png" alt="" /></div>

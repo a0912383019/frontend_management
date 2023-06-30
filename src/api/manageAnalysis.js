@@ -123,7 +123,7 @@ export const apiImportUploadMemberList = (params) => {
   )
 }
 
-//會員明細Dialog
+//會員明細Dialog開始
 //會員總覽
 export const apiQueryMemberInfo = (params) => {
   const { hall_name, member_id } = params
@@ -185,6 +185,19 @@ export const apiQueryProfitWithdrawDepositAmount = (params) => {
     }
   )
 }
+//總貨量與裝置佔比
+export const apiQueryMemberPeriodBetAmount = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_period_bet_amount' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id
+    }
+  )
+}
+//會員明細Dialog結束
 
 //趨勢分析
 //階段盈利總覽

@@ -52,7 +52,6 @@ const chartSetting = {
 const register_chart = () => {
   let ctx = refChart.value.getContext('2d')
   chart = new Chart(ctx, chartSetting)
-  console.log('Chart', chart)
 }
 
 //取得會員健康度
@@ -65,7 +64,6 @@ const queryMemberHealthChart = async () => {
       member_id: manageAnalysisStore.memberData.user_id
     })
     const { return_code } = result.data.status
-    console.log('queryMemberHealthChart', result.data.result)
     if (return_code === '0000') {
       apiSuccess.value = true
       const { action_score } = result.data.result
@@ -123,23 +121,25 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="member">
-    <CdpMessage :messageKey="messageKey" cover v-if="apiSuccess === false" />
-    <template v-else>
-      <div class="member__top">
-        <div class="member__photo"><img src="@/assets/images/user-01.png" alt="" /></div>
-        <canvas
-          ref="refChart"
-          style="min-height: 220px; height: 220px; max-height: 220px; max-width: 100%"
-          width="260"
-          height="220"
-        ></canvas>
-      </div>
-      <div class="member__text">
-        {{ $t('customer_detail_info.health_value') }}{{ memberHealthValue }}
-      </div>
-    </template>
-  </div>
+  <section class="cdp-section">
+    <div class="member">
+      <CdpMessage :messageKey="messageKey" cover v-if="apiSuccess === false" />
+      <template v-else>
+        <div class="member__top">
+          <div class="member__photo"><img src="@/assets/images/user-01.png" alt="" /></div>
+          <canvas
+            ref="refChart"
+            style="min-height: 220px; height: 220px; max-height: 220px; max-width: 100%"
+            width="260"
+            height="220"
+          ></canvas>
+        </div>
+        <div class="member__text">
+          {{ $t('customer_detail_info.health_value') }}{{ memberHealthValue }}
+        </div>
+      </template>
+    </div>
+  </section>
 </template>
 <style lang="scss" scoped>
 .member {
