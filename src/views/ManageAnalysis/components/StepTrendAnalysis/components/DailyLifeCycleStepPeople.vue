@@ -84,8 +84,9 @@ const chartSetting = {
       //   item.hidden = true
       // })
       // console.log(event, legendItem)
-      let legendItemDatasetIndex = legendItem[0].datasetIndex
+      console.log(legendItem.length)
       if (legendItem.length !== 0) {
+        let legendItemDatasetIndex = legendItem[0].datasetIndex
         chart.data.datasets.forEach((item, index) => {
           console.log(item)
           if (chartOpenToggle.value) {
