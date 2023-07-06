@@ -476,12 +476,15 @@ onMounted(() => {
     .el-select-tags-wrapper {
       &.has-prefix {
         padding-left: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
       }
     }
   }
   .el-input {
     &__inner {
-      height: 40px !important;
+      padding-top: 5px;
+      padding-bottom: 5px;
     }
   }
 }

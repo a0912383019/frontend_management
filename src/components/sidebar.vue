@@ -105,6 +105,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
   height: 100vh;
   background-color: #272d44;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
   transition: all 0.3s ease-in-out;
   &.isClose {
     width: 75px;
@@ -136,6 +137,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
   }
   &__content {
     overflow-y: auto;
+    overflow-x: hidden;
     max-height: calc(100vh - 60px);
     padding-left: 15px;
     padding-right: 15px;

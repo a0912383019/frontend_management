@@ -36,7 +36,7 @@ switch (props.config) {
 const dateValue = ref([dateValueStartDate.value, dateValueEndDate.value])
 
 const disabledDate = (day) => {
-  return day > dayjs().startOf('day').subtract(2, 'day')
+  return day > dateValueEndDate.value
 }
 const shortcuts = [
   {

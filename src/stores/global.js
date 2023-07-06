@@ -30,13 +30,22 @@ export const useGlobalStore = defineStore(
     //階段資料config
     const tableConfig = computed(() => {
       const config = RFM_NAPL_step_config
+      config[null]['step_name'] = t('member_life_cycles.unclassified')
+      config[null]['step_description'] = t('member_life_cycles.unclassified')
       config[1]['step_name'] = t('member_life_cycles.active')
+      config[1]['step_description'] = t('member_life_cycles.active_description')
       config[2]['step_name'] = t('member_life_cycles.newBorn')
+      config[2]['step_description'] = t('member_life_cycles.newBorn_description')
       config[3]['step_name'] = t('member_life_cycles.growing')
+      config[3]['step_description'] = t('member_life_cycles.growing_description')
       config[4]['step_name'] = t('member_life_cycles.churning_return')
+      config[4]['step_description'] = t('member_life_cycles.churning_return_description')
       config[5]['step_name'] = t('member_life_cycles.churned_return')
+      config[5]['step_description'] = t('member_life_cycles.churned_return_description')
       config[6]['step_name'] = t('member_life_cycles.churning')
+      config[6]['step_description'] = t('member_life_cycles.churning_description')
       config[7]['step_name'] = t('member_life_cycles.churned')
+      config[7]['step_description'] = t('member_life_cycles.churned_description')
       return config
     })
 

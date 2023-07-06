@@ -6,13 +6,15 @@ import { FormatNumber } from './commonUtils.js'
  * @param {int} datasetsShowedLimit  顯示的datasets數量上限，超過不顯示
  * @param {int} dataLength  要顯示的data數量上限，超過不顯示
  * @param {int} numberPrecision  要顯示的小數點位數
+ * @param {int} datalabelIndex  指定要顯示的datalabel，預設值為null，全部顯示(增加此參數原因為，遇到有多個chart line，點擊其中一個line會關閉其他的，但其他的datalabel不會關閉，在部分狀況下還是會看到顯示於畫面中)
  */
 export function showDatasetsLabels(
   chart,
   fontSize = 12,
   datasetsShowedLimit = 5,
   dataLength = 20,
-  numberPrecision = 0
+  numberPrecision = 0,
+  datalabelIndex = null
 ) {
   // Define a plugin to provide data labels
   let ctx = chart.ctx
@@ -30,129 +32,134 @@ export function showDatasetsLabels(
     }
     if (!meta.hidden && meta.data.length <= dataLength) {
       //  若資料少於設定的筆數才顯示label
-      meta.data.forEach(function (element, index) {
-        // Draw the text in black, with the specified font
-        ctx.fillStyle = 'rgb(0, 0, 0)'
+      if (datalabelIndex === null || meta.index === datalabelIndex) {
+        // 若有指定datalabelIndex則顯示指定的datalabel
+        // 若為null則顯示全部
+        meta.data.forEach(function (element, index) {
+          // Draw the text in black, with the specified font
+          ctx.fillStyle = 'rgb(0, 0, 0)'
 
-        // let fontStyle = 'normal'
-        // ctx.font = Chart.helpers.fontString(fontSize, fontStyle)
+          // let fontStyle = 'normal'
+          // ctx.font = Chart.helpers.fontString(fontSize, fontStyle)
 
-        // Just naively convert to string for now
-        let dataString = FormatNumber(dataset.data[index], '', numberPrecision).toString()
-        let dataString_width = ctx.measureText(dataString).width //  取得該點資料字串寬度
+          // Just naively convert to string for now
+          let dataString = FormatNumber(dataset.data[index], '', numberPrecision).toString()
+          let dataString_width = ctx.measureText(dataString).width //  取得該點資料字串寬度
 
-        // Make sure alignment settings are correct
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'bottom'
+          // Make sure alignment settings are correct
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'bottom'
 
-        let position = element.tooltipPosition()
-        let position_x = position.x
-        let position_y = position.y
-        let checkIsOverlap = function () {
-          //  判斷資料點文字是否有重疊
-          if (ctx.textBaseline !== pre_data_object.textBaseline) {
-            //  若文字baseline不同，兩點之間的高度為文字大小的兩倍距離才能確保不會重疊
-            return (
-              position_x - dataString_width / 2 <
-                pre_data_object.position_x + pre_data_object.dataString_width / 2 &&
-              Math.abs(position_y - pre_data_object.position_y) < fontSize * 2
-            )
-          } else {
-            return (
-              position_x - dataString_width / 2 <
-                pre_data_object.position_x + pre_data_object.dataString_width / 2 &&
-              Math.abs(position_y - pre_data_object.position_y) < fontSize
-            )
-          }
-        }
-        let checkIsExceedTopBorder = function () {
-          //  判斷資料點文字是否有超過圖表頂端邊界
-          return position_y - fontSize < 0
-        }
-        let checkIsOverlapTopLegend = function () {
-          //  判斷資料點文字是否有重疊到上方legend
-          return (
-            box.position === 'top' && position_y - fontSize < chart_layout_padding.top + box.height
-          )
-        }
-
-        //  依據不同種類的圖表進行處理
-        if (meta.type === 'horizontalBar') {
-          ctx.textAlign = 'left'
-          ctx.textBaseline = 'middle'
-          if (position_x + dataString_width > chart.width) {
-            //  若文字超過邊界，調整文字對齊方式
-            ctx.textAlign = 'right'
-          }
-        } else {
-          position_x =
-            position_x + dataString_width / 2 < chart.width
-              ? position_x
-              : position_x - (position_x + dataString_width / 2 - chart.width) //  若文字會超出canvas邊界，調整x軸偏移量
-          if (meta.type === 'bar') {
-            if (dataString.indexOf('-') === -1) {
-              if (checkIsOverlap()) {
-                position_y = position_y - fontSize * 2
-                if (checkIsExceedTopBorder()) {
-                  ctx.textBaseline = 'top'
-                  position_y = position_y + fontSize * 2
-                  if (checkIsOverlap()) {
-                    position_y = position_y + fontSize * 2
-                  }
-                }
-              } else {
-                if (checkIsExceedTopBorder()) {
-                  ctx.textBaseline = 'top'
-                  if (checkIsOverlap()) {
-                    position_y = position_y + fontSize * 2
-                  }
-                }
-              }
+          let position = element.tooltipPosition()
+          let position_x = position.x
+          let position_y = position.y
+          let checkIsOverlap = function () {
+            //  判斷資料點文字是否有重疊
+            if (ctx.textBaseline !== pre_data_object.textBaseline) {
+              //  若文字baseline不同，兩點之間的高度為文字大小的兩倍距離才能確保不會重疊
+              return (
+                position_x - dataString_width / 2 <
+                  pre_data_object.position_x + pre_data_object.dataString_width / 2 &&
+                Math.abs(position_y - pre_data_object.position_y) < fontSize * 2
+              )
             } else {
-              ctx.textBaseline = 'top'
-              if (checkIsOverlap()) {
-                position_y = position_y + fontSize * 2
-              }
+              return (
+                position_x - dataString_width / 2 <
+                  pre_data_object.position_x + pre_data_object.dataString_width / 2 &&
+                Math.abs(position_y - pre_data_object.position_y) < fontSize
+              )
             }
-          } else if (meta.type === 'line') {
-            position_y = position.y - fontSize / 2
-            if (checkIsOverlap()) {
-              if (position_y > pre_data_object.position_y) {
-                ctx.textBaseline = 'top'
-                position_y = position_y + fontSize
-              } else {
-                position_y = position_y - fontSize
+          }
+          let checkIsExceedTopBorder = function () {
+            //  判斷資料點文字是否有超過圖表頂端邊界
+            return position_y - fontSize < 0
+          }
+          let checkIsOverlapTopLegend = function () {
+            //  判斷資料點文字是否有重疊到上方legend
+            return (
+              box.position === 'top' &&
+              position_y - fontSize < chart_layout_padding.top + box.height
+            )
+          }
 
-                // 若legend在上方時，判斷文字是否會重疊到
-                if (checkIsOverlapTopLegend()) {
-                  ctx.textBaseline = 'top'
-                  position_y = position_y + fontSize * 2
-                  if (checkIsOverlap()) {
+          //  依據不同種類的圖表進行處理
+          if (meta.type === 'horizontalBar') {
+            ctx.textAlign = 'left'
+            ctx.textBaseline = 'middle'
+            if (position_x + dataString_width > chart.width) {
+              //  若文字超過邊界，調整文字對齊方式
+              ctx.textAlign = 'right'
+            }
+          } else {
+            position_x =
+              position_x + dataString_width / 2 < chart.width
+                ? position_x
+                : position_x - (position_x + dataString_width / 2 - chart.width) //  若文字會超出canvas邊界，調整x軸偏移量
+            if (meta.type === 'bar') {
+              if (dataString.indexOf('-') === -1) {
+                if (checkIsOverlap()) {
+                  position_y = position_y - fontSize * 2
+                  if (checkIsExceedTopBorder()) {
+                    ctx.textBaseline = 'top'
                     position_y = position_y + fontSize * 2
+                    if (checkIsOverlap()) {
+                      position_y = position_y + fontSize * 2
+                    }
+                  }
+                } else {
+                  if (checkIsExceedTopBorder()) {
+                    ctx.textBaseline = 'top'
+                    if (checkIsOverlap()) {
+                      position_y = position_y + fontSize * 2
+                    }
                   }
                 }
-              }
-            } else {
-              // 若legend在上方時，判斷文字是否會重疊到
-              if (checkIsOverlapTopLegend()) {
+              } else {
                 ctx.textBaseline = 'top'
-                position_y = position_y + fontSize
                 if (checkIsOverlap()) {
                   position_y = position_y + fontSize * 2
                 }
               }
+            } else if (meta.type === 'line') {
+              position_y = position.y - fontSize / 2
+              if (checkIsOverlap()) {
+                if (position_y > pre_data_object.position_y) {
+                  ctx.textBaseline = 'top'
+                  position_y = position_y + fontSize
+                } else {
+                  position_y = position_y - fontSize
+
+                  // 若legend在上方時，判斷文字是否會重疊到
+                  if (checkIsOverlapTopLegend()) {
+                    ctx.textBaseline = 'top'
+                    position_y = position_y + fontSize * 2
+                    if (checkIsOverlap()) {
+                      position_y = position_y + fontSize * 2
+                    }
+                  }
+                }
+              } else {
+                // 若legend在上方時，判斷文字是否會重疊到
+                if (checkIsOverlapTopLegend()) {
+                  ctx.textBaseline = 'top'
+                  position_y = position_y + fontSize
+                  if (checkIsOverlap()) {
+                    position_y = position_y + fontSize * 2
+                  }
+                }
+              }
             }
           }
-        }
-        ctx.fillText(dataString, position_x, position_y)
+          ctx.fillText(dataString, position_x, position_y)
 
-        //  紀錄當前資料座標供下個資料判斷使用
-        pre_data_object.dataString_width = dataString_width
-        pre_data_object.position_x = position_x
-        pre_data_object.position_y = position_y
-        pre_data_object.textAlign = ctx.textAlign
-        pre_data_object.textBaseline = ctx.textBaseline
-      })
+          //  紀錄當前資料座標供下個資料判斷使用
+          pre_data_object.dataString_width = dataString_width
+          pre_data_object.position_x = position_x
+          pre_data_object.position_y = position_y
+          pre_data_object.textAlign = ctx.textAlign
+          pre_data_object.textBaseline = ctx.textBaseline
+        })
+      }
     }
   }
 

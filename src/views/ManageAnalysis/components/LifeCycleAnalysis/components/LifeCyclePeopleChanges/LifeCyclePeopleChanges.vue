@@ -346,5 +346,60 @@ watch(
       padding: 0;
     }
   }
+  //遇到表尾總人數第一欄總是會不對齊，目前想不到比較好的解決方式，先將第一欄右邊線隱藏，使用after製作第一欄的右邊線
+  .el-table {
+    &__header-wrapper,
+    &__body-wrapper {
+      position: relative;
+      z-index: 1;
+      &::after {
+        content: '';
+        position: absolute;
+        left: 20%;
+        top: 0;
+        z-index: 3;
+        width: 1px;
+        height: 100%;
+        background-color: #e6eaf2;
+      }
+    }
+    &__header-wrapper {
+      .el-table {
+        &__header {
+          tr {
+            th {
+              &:nth-child(1) {
+                border-right: none;
+              }
+            }
+          }
+        }
+      }
+    }
+    &__body-wrapper {
+      .el-table {
+        &__body {
+          tr {
+            td {
+              &:nth-child(1) {
+                border-right: none;
+              }
+            }
+          }
+        }
+      }
+    }
+    &__append-wrapper {
+      table {
+        tr {
+          td {
+            &:nth-child(1) {
+              border-right: none;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 </style>

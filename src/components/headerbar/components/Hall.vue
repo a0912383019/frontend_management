@@ -30,6 +30,7 @@ const updateTime = () => {
 
 const isDropOpen = ref(false) //下拉開啟狀態
 const countdownInterval = ref(1000) // 每秒倒數
+const refHallContent = ref(null)
 
 const hallDropdownList = ref([]) //廳別下拉選單選項
 
@@ -357,13 +358,26 @@ const handleVisibilityChange = (e) => {
   }
 }
 
+//開啟下拉
+const handleDocumentClick = (e) => {
+  if (e.target.classList.contains('targetHallBox')) {
+    console.log(isDropOpen.value)
+    isDropOpen.value = !isDropOpen.value
+    console.log(isDropOpen.value)
+  } else if (!refHallContent.value.contains(e.target)) {
+    isDropOpen.value = false
+  }
+}
+
 onMounted(() => {
   initPageNext()
   document.addEventListener('visibilitychange', handleVisibilityChange)
+  document.addEventListener('click', handleDocumentClick)
 })
 
 onUnmounted(() => {
   document.removeEventListener('visibilitychange', handleVisibilityChange)
+  document.removeEventListener('click', handleDocumentClick)
 })
 
 //監聽語系切換
@@ -386,19 +400,19 @@ watch(
 </script>
 <template>
   <div class="hallbox">
-    <div class="hallbox__box" @click="isDropOpen = !isDropOpen">
-      <div class="hallbox__label">{{ $t('nav.hall') }}</div>
-      <div class="hallbox__name">
+    <div class="hallbox__box targetHallBox">
+      <div class="hallbox__label targetHallBox">{{ $t('nav.hall') }}</div>
+      <div class="hallbox__name targetHallBox">
         {{ globalStore.activeHall.hall_name }}({{ globalStore.activeHall.hall_code }})
       </div>
-      <div class="hallbox__dropbox">
-        <div class="hallbox__arrow">
+      <div class="hallbox__dropbox targetHallBox">
+        <div class="hallbox__arrow targetHallBox">
           <font-awesome-icon icon="fa-solid fa-angle-down" />
         </div>
       </div>
     </div>
     <transition name="slide-up-fade">
-      <div class="hallbox__content" v-show="isDropOpen">
+      <div class="hallbox__content" ref="refHallContent" v-show="isDropOpen">
         <div class="hallbox__counter">
           <div class="hallbox__counter__time">{{ timeoutMinText }}</div>
           <div class="hallbox__counter__text">{{ $t('unit.minute') }}</div>

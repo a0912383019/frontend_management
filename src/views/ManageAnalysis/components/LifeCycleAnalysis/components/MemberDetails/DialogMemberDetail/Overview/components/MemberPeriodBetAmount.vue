@@ -111,6 +111,10 @@ const queryBetLineChart = async () => {
       setTimeout(() => {
         register_chart()
       }, 1)
+    } else if (return_code === '0001') {
+      messageKey.value = 'noResult'
+    } else {
+      messageKey.value = 'chartFailed'
     }
   } catch (error) {
     console.error(error)
@@ -215,7 +219,7 @@ watch(
   <section class="cdp-section">
     <SectionTitle class="mb-15" :title="t('customer_detail_info.total_bet_by_device')">
     </SectionTitle>
-    <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
+    <CdpMessage :messageKey="messageKey" :height="250" v-if="apiSuccess === false" />
     <div class="cdp-dialog__chart" v-else>
       <canvas
         ref="refChart"

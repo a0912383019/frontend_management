@@ -136,6 +136,13 @@ export const apiQueryMemberInfo = (params) => {
 //更新會員標籤
 export const apiUpdateMemberTagsEnable = (params) => {
   const { hall_name, member_id, user_name, user_tags_original, user_tags_new } = params
+  console.log('apiUpdateMemberTagsEnable', {
+    hall_name,
+    member_id,
+    user_name,
+    user_tags_original,
+    user_tags_new
+  })
   return axiosInstance.post(
     '/api/auth/member/bbin/update_member_tags_enable' + sessionStorage.from_page,
     {

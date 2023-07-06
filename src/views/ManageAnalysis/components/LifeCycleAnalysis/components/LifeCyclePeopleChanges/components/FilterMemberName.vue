@@ -171,6 +171,7 @@ const handleClick = () => {
   manageAnalysisStore.searchName = searchName.value
   manageAnalysisStore.useCustomList = useCustomList.value
   manageAnalysisStore.fuzzySearch = fuzzySearch.value
+  popoverVisible.value = false
   updateFilterTimestamp()
   // }
   // emit('query:filter')

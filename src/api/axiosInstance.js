@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (request) => {
-    console.log('request', request)
+    // console.log('request', request)
     const accessToken = sessionStorage.access_token
     if (accessToken) {
       //添加Authorization
@@ -27,7 +27,7 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log(response)
+    // console.log(response)
     return Promise.resolve(response)
   },
   (error) => {

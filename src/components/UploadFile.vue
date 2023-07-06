@@ -62,7 +62,7 @@ defineExpose({ dialogClose })
     </label>
     <div class="upload__box" v-else>
       <label class="upload__filename" for="uploadFile">
-        {{ fileName }}
+        <span>{{ fileName }}</span>
       </label>
       <button class="upload__submit" @click="handleSubmit">+</button>
     </div>
@@ -130,6 +130,10 @@ defineExpose({ dialogClose })
     border: 1px solid $blue;
     border-radius: 10px;
     color: #404040;
+    span {
+      display: inline-block;
+      @include ellipsis;
+    }
   }
   &__submit {
     display: flex;

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useSystemStore } from '@/stores/system'
 
 const systemStore = useSystemStore()
@@ -10,32 +10,28 @@ const dropdownMenu = ref(null)
 const dropdownVisible = ref(false)
 
 //開啟下拉
-const handleToggleDropdown = () => {
-  dropdownVisible.value = !dropdownVisible.value
+const handleDocumentClick = (e) => {
+  if (e.target.classList.contains('targetImg') || e.target.classList.contains('targetName')) {
+    dropdownVisible.value = !dropdownVisible.value
+  } else if (!dropdownMenu.value.contains(e.target)) {
+    dropdownVisible.value = false
+  }
 }
 
-// const handleDocumentClick = (e) => {
-//   console.log(!dropdownVisible.value, e.target, !dropdownMenu.value.contains(e.target))
-//   if (!dropdownVisible.value && !dropdownMenu.value.contains(e.target)) {
-//     dropdownVisible.value = false
-//     console.log('asd')
-//   }
-// }
-
-// onMounted(() => {
-//   document.addEventListener('click', handleDocumentClick)
-// })
-// onBeforeUnmount(() => {
-//   document.removeEventListener('click', handleDocumentClick)
-// })
+onMounted(() => {
+  document.addEventListener('click', handleDocumentClick)
+})
+onUnmounted(() => {
+  document.removeEventListener('click', handleDocumentClick)
+})
 </script>
 <template>
   <div class="accountbox">
-    <div class="accountbox__img" @click="handleToggleDropdown">
-      <img :src="user_picture" alt="" />
+    <div class="accountbox__img">
+      <img :src="user_picture" alt="" class="targetImg" />
     </div>
     <div class="accountbox__rightbox">
-      <div class="accountbox__name" @click="handleToggleDropdown">
+      <div class="accountbox__name targetName">
         {{ user_name }}
         <font-awesome-icon class="accountbox__icon" icon="fa-solid fa-angle-down" />
       </div>

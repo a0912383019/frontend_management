@@ -216,7 +216,7 @@ watch(
       tagsData[oldVal] = JSON.parse(JSON.stringify(tagsDataOriginal[oldVal]))
     }
     //切換頁籤時，將表格的頁碼初始化到第一頁
-    refTable.value.page.currentPage = 1
+    refTable.value.goToFirstPage()
   }
 )
 

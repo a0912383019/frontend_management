@@ -556,6 +556,8 @@
 
 /* badge for label tag */
 .badge {
+  display: inline-flex;
+  align-items: center;
   font-size: 12px;
   font-weight: bold;
   font-stretch: normal;
@@ -564,6 +566,7 @@
   letter-spacing: normal;
   color: #fff;
   cursor: pointer;
+  min-height: 23px;
   /* button hover background color */
 }
 .badge-custom-blue {

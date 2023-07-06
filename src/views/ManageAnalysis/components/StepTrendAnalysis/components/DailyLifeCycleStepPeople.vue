@@ -44,6 +44,8 @@ const currentTooltipEntity = reactive({
   step: null
 })
 
+const chartOpenToggle = ref(true)
+
 const chartSetting = {
   id: 'peopleChart',
   type: 'line',
@@ -81,15 +83,33 @@ const chartSetting = {
       //   // console.log(item)
       //   item.hidden = true
       // })
-      console.log(event, legendItem)
-      // console.log(legendItem[0].datasetIndex)
+      // console.log(event, legendItem)
+      let legendItemDatasetIndex = legendItem[0].datasetIndex
       if (legendItem.length !== 0) {
         chart.data.datasets.forEach((item, index) => {
-          chart.data.datasets[index].hidden = false
-          if (index !== legendItem[0].datasetIndex) {
+          console.log(item)
+          if (chartOpenToggle.value) {
             chart.data.datasets[index].hidden = true
+            if (index === legendItemDatasetIndex) {
+              chart.data.datasets[index].hidden = false
+            }
+            //只顯示當前的datalabel
+            chartSetting.plugins[0] = {
+              afterDatasetsDraw: function (chart) {
+                showDatasetsLabels(chart, 12, 7, 30, 0, legendItemDatasetIndex)
+              }
+            }
+          } else {
+            chart.data.datasets[index].hidden = false
+            //顯示全部的datalabel
+            chartSetting.plugins[0] = {
+              afterDatasetsDraw: function (chart) {
+                showDatasetsLabels(chart, 12, 7, 30)
+              }
+            }
           }
         })
+        chartOpenToggle.value = !chartOpenToggle.value
         chart.update()
       } else {
         refDialogStepDetail.value.handleOpenDialog(currentTooltipEntity)
@@ -107,18 +127,6 @@ const chartSetting = {
             }
           })
           chart.update()
-        }
-      },
-      datalabels: {
-        // display: 'auto',
-        // align: 'top',
-        clip: false,
-        padding: 6,
-        // anchor: 'start', //錨點，在畫完圖的後方，*註2
-        anchor: 'end',
-        align: 'top',
-        formatter: (value) => {
-          return FormatNumber(value)
         }
       },
       tooltip: {

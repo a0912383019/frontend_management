@@ -45,6 +45,16 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  showSummary: {
+    //是否顯示表尾合記
+    type: Boolean,
+    default: false
+  },
+  sumText: {
+    //表尾合計欄位名稱
+    type: String,
+    default: ''
+  },
   spanMethod: {
     //合併儲存格規則
     type: Function
@@ -105,7 +115,11 @@ const pageTableTotla = computed(() => {
   }
 })
 
-defineExpose({ page })
+const goToFirstPage = () => {
+  page.currentPage = 1
+}
+
+defineExpose({ goToFirstPage })
 </script>
 <template>
   <div>
@@ -115,6 +129,8 @@ defineExpose({ page })
       :height="tableHeight"
       :stripe="props.stripe"
       :border="props.border"
+      :show-summary="props.showSummary"
+      :sum-text="props.sumText"
       :span-method="spanMethod"
       class="cdp-table"
       @sort-change="handleTableSort"
@@ -130,6 +146,7 @@ defineExpose({ page })
           :header-align="column.headerAlign"
           :sort-orders="['descending', 'ascending']"
           :sortable="column.sortable"
+          :resizable="false"
         >
           <template #default="scope">
             <slot :name="column.prop" :row="scope.row">

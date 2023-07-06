@@ -70,9 +70,15 @@ const messageData = computed(() => {
   }
   return result
 })
+
+const messageStyle = computed(() => {
+  return {
+    height: props.height + 'px'
+  }
+})
 </script>
 <template>
-  <div class="message" :class="{ cover: props.cover }">
+  <div class="message" :class="{ cover: props.cover }" :style="messageStyle">
     <div class="message__icon" :class="{ loading: props.messageKey === 'loading' }">
       <font-awesome-icon :icon="messageData['icon']" />
     </div>

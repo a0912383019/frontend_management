@@ -155,6 +155,8 @@ const updateCurrentPage = (data) => {
   query_life_cycle_analysis_detail_tbl()
 }
 
+const refTable = ref(null) // ref table
+
 const query_life_cycle_analysis_detail_tbl = async () => {
   messageKey.value = 'loading'
   apiSuccess.value = false
@@ -320,6 +322,11 @@ const handleStepClick = (val) => {
   refDialogMemberHistory.value.handleOpenDialog(val)
 }
 
+//表格頁碼切換到第一頁
+const tableGoToFirstPage = () => {
+  refTable.value.goToFirstPage()
+}
+
 //處理Message
 onMounted(() => {
   //顯示 點擊上方總覽表格數值顯示明細 message
@@ -332,6 +339,7 @@ watch(
   () => {
     apiSuccess.value = false
     messageKey.value = 'clickNumberAboveToShow'
+    tableGoToFirstPage() //表格頁碼切換到第一頁
   }
 )
 
@@ -340,18 +348,19 @@ watch(
   () => filterDateTimestamp.value,
   () => {
     query_life_cycle_analysis_detail_tbl()
+    tableGoToFirstPage() //表格頁碼切換到第一頁
   }
 )
 
-defineExpose({ query_life_cycle_analysis_detail_tbl })
+defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
 </script>
 <template>
-  <CdpMessage :messageKey="messageKey" v-show="apiSuccess === false" />
+  <div class="top-box">
+    <SectionTitle class="mb-15" :title="t('manage_analysis.member_details')" />
+    <CurrencySignText v-show="apiSuccess" />
+  </div>
+  <CdpMessage :messageKey="messageKey" :height="500" v-show="apiSuccess === false" />
   <div v-show="apiSuccess">
-    <div class="top-box">
-      <SectionTitle class="mb-15" :title="t('manage_analysis.member_details')" />
-      <CurrencySignText />
-    </div>
     <DialogMemberHistory ref="refDialogMemberHistory" />
     <DialogMemberDetail ref="refDialogMemberDetail" />
     <CustomTable
@@ -362,6 +371,7 @@ defineExpose({ query_life_cycle_analysis_detail_tbl })
       :tableTotal="apiRecordsTotal"
       :defaultSort="{ prop: 'deposit_amount', order: 'descending' }"
       stripe
+      ref="refTable"
       class="cdp-life-cycle-member-table"
       @sort="upadteCurrentSort"
       @update:currentPage="updateCurrentPage"
