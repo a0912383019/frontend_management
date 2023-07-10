@@ -103,7 +103,11 @@ defineExpose({ handleOpenDialog })
           </el-col>
           <el-col :span="12">
             <div class="flex justify-end">
-              <FilterDate :config="13" @update:timestamp="updateTimestamp" />
+              <FilterDate
+                :config="13"
+                :rangeDate="manageAnalysisStore.dialogMemberDetailRangeDate"
+                @update:timestamp="updateTimestamp"
+              />
             </div>
           </el-col>
         </el-row>

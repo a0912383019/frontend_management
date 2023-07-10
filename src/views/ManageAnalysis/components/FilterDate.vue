@@ -12,6 +12,10 @@ const props = defineProps({
   config: {
     type: Number,
     default: 11 // config_11 : 預設選取近1個月，最早可選至3年前，最晚可選至前二日
+  },
+  rangeDate: {
+    type: String,
+    default: ''
   }
 })
 
@@ -32,6 +36,11 @@ switch (props.config) {
     dateValueStartDate.value = date_range_picker_config_13.startDate
     dateValueEndDate.value = date_range_picker_config_13.endDate
     break
+}
+//如果props rangedate有值，優先使用
+if (props.rangeDate !== '') {
+  dateValueStartDate.value = props.rangeDate.split('~')[0]
+  dateValueEndDate.value = props.rangeDate.split('~')[1]
 }
 const dateValue = ref([dateValueStartDate.value, dateValueEndDate.value])
 
