@@ -17,7 +17,7 @@ const manageAnalysisStore = useManageAnalysisStore()
 
 const apiSuccess = ref(false) //會員生命週期階段api是否成功
 //依照不同的messageKey產生不同的message
-const messageKey = ref('loading')
+const messageKey = ref('shortLoading')
 
 const memberHealthValue = ref(null) //會員健康度
 
@@ -57,7 +57,7 @@ const register_chart = () => {
 //取得會員健康度
 const queryMemberHealthChart = async () => {
   apiSuccess.value = false
-  messageKey.value = 'loading'
+  messageKey.value = 'shortLoading'
   try {
     const result = await apiQueryMemberHealthChart({
       hall_name: activeHall.hall_code,
@@ -123,7 +123,7 @@ onMounted(() => {
 <template>
   <section class="cdp-section">
     <div class="member">
-      <CdpMessage :messageKey="messageKey" cover v-if="apiSuccess === false" />
+      <CdpMessage :messageKey="messageKey" cover bg="white" v-if="apiSuccess === false" />
       <template v-else>
         <div class="member__top">
           <div class="member__photo"><img src="@/assets/images/user-01.png" alt="" /></div>

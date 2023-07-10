@@ -73,7 +73,7 @@
     "failed": "失敗",
     "expired": "已過期",
 
-    "show_top_only": "僅列出前{{rank}}名",
+    "show_top_only": "僅列出前 {rank} 名",
 
     "check": "勾選",
 

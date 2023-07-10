@@ -203,6 +203,41 @@ export const apiQueryMemberPeriodBetAmount = (params) => {
     }
   )
 }
+//遊戲種類貨量佔比
+export const apiQueryMemberLobbyGroup = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_lobby_group' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id
+    }
+  )
+}
+//平台貨量佔比
+export const apiQueryMemberLobby = (params) => {
+  const { search_date, hall_name, member_id, locale } = params
+  return axiosInstance.post('/api/auth/member/bbin/query_member_lobby' + sessionStorage.from_page, {
+    search_date,
+    hall_name,
+    member_id,
+    locale
+  })
+}
+//遊戲貨量佔比
+export const apiQueryMemberLobbyGame = (params) => {
+  const { search_date, hall_name, member_id, locale } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_lobby_game' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+      locale
+    }
+  )
+}
 //會員明細Dialog結束
 
 //趨勢分析

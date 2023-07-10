@@ -3,6 +3,9 @@ import MemberHealth from './components/MemberHealth.vue'
 import MemberInfo from './components/MemberInfo.vue'
 import MemberAmount from './components/MemberAmount.vue'
 import MemberPeriodBetAmount from './components/MemberPeriodBetAmount.vue'
+import LobbyGroup from './components/LobbyGroup.vue'
+import Lobby from './components/Lobby.vue'
+import LobbyGame from './components/LobbyGame.vue'
 </script>
 <template>
   <div>
@@ -18,6 +21,13 @@ import MemberPeriodBetAmount from './components/MemberPeriodBetAmount.vue'
       </el-col>
       <el-col :span="24" class="mt-30">
         <MemberPeriodBetAmount />
+      </el-col>
+      <el-col :span="24" class="mt-30">
+        <el-row :gutter="20">
+          <el-col :span="8"> <LobbyGroup /> </el-col>
+          <el-col :span="8"> <Lobby /> </el-col>
+          <el-col :span="8"> <LobbyGame /> </el-col>
+        </el-row>
       </el-col>
     </el-row>
   </div>

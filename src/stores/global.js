@@ -27,6 +27,18 @@ export const useGlobalStore = defineStore(
       hall_code: ''
     })
 
+    //lobby_group
+    const lobbyGroupConfig = computed(() => {
+      const config = {}
+      config['live'] = t('lobby_group.live')
+      config['prob'] = t('lobby_group.prob')
+      config['card'] = t('lobby_group.card')
+      config['sport'] = t('lobby_group.sport')
+      config['lottery'] = t('lobby_group.lottery')
+      config['mahjong'] = t('lobby_group.mahjong')
+      return config
+    })
+
     //階段資料config
     const tableConfig = computed(() => {
       const config = RFM_NAPL_step_config
@@ -49,7 +61,7 @@ export const useGlobalStore = defineStore(
       return config
     })
 
-    return { isLoading, storeHandleApiError, activeHall, tableConfig }
+    return { isLoading, storeHandleApiError, activeHall, lobbyGroupConfig, tableConfig }
   },
   {
     persist: {
