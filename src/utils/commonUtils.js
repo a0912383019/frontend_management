@@ -199,6 +199,19 @@ export function generateRGBColors(rgb_ary, alpha) {
 }
 
 /**
+ * chart.js隨機產生背景顏色
+ * @param {number} alpha 顏色透明度
+ * @returns {string} 顏色rgb字串
+ */
+export function dynamicBackgroundColors(alpha) {
+  let r = Math.floor(Math.random() * 255)
+  let g = Math.floor(Math.random() * 255)
+  let b = Math.floor(Math.random() * 255)
+
+  return 'rgb(' + r + ',' + g + ',' + b + ',' + alpha + ')'
+}
+
+/**
  * 檢查標籤的可用狀況
  * @param hall_name 檢查的廳別
  * @param tag_code 檢查的標籤代碼

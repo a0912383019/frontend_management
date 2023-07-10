@@ -267,7 +267,6 @@ const getSystemConfig = () => {
         locale: i18nLocale.value
       })
         .then((result) => {
-          console.log(result)
           if (result.data.status.return_code === '0000') {
             sessionStorage.setItem('system_config', JSON.stringify(result.data.result))
             resolve('Get config success') //表示Promise物件執行成功，可往下繼續執行
@@ -361,9 +360,7 @@ const handleVisibilityChange = (e) => {
 //開啟下拉
 const handleDocumentClick = (e) => {
   if (e.target.classList.contains('targetHallBox')) {
-    console.log(isDropOpen.value)
     isDropOpen.value = !isDropOpen.value
-    console.log(isDropOpen.value)
   } else if (!refHallContent.value.contains(e.target)) {
     isDropOpen.value = false
   }

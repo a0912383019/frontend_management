@@ -73,7 +73,7 @@
     "failed": "Failed",
     "expired": "Expired",
 
-    "show_top_only": "Top {{rank}} only",
+    "show_top_only": "Top {rank} only",
 
     "check": "Tick",
 

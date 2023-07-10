@@ -86,7 +86,7 @@ const chartSetting = {
 }
 
 //註冊chart
-const register_chart = () => {
+const registerChart = () => {
   let ctx = refChart.value.getContext('2d')
   chart = new Chart(ctx, chartSetting)
   // console.log('Chart', chart)
@@ -109,7 +109,7 @@ const queryBetLineChart = async () => {
       transformBetAmountKnob(result_period_device_bet_amount)
       apiSuccess.value = true
       setTimeout(() => {
-        register_chart()
+        registerChart()
       }, 1)
     } else if (return_code === '0001') {
       messageKey.value = 'noResult'
@@ -171,7 +171,7 @@ const knobLists = ref([])
 // data-i18n="customer_detail_info.mobile"
 // data-i18n="customer_detail_info.app"
 const transformBetAmountKnob = (data) => {
-  console.log('transformBetAmountKnob', data)
+  // console.log('transformBetAmountKnob', data)
   let pc_total_amount = 0,
     mobile_total_amount = 0,
     app_total_amount = 0

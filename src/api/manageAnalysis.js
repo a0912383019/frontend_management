@@ -3,7 +3,6 @@ import { findRootHall } from '@/utils/commonUtils.js'
 
 //會員階段人數變化
 export const apiQueryLifeCycleAnalysisOverview = (params) => {
-  console.log('apiQueryLifeCycleAnalysisOverview', params)
   const { hall_name, query_date, search_name, fuzzy_search, use_custom_list } = params
   return axiosInstance.post(
     '/api/auth/manage/bbin/query_life_cycle_analysis_overview' + sessionStorage.from_page,
@@ -201,6 +200,41 @@ export const apiQueryMemberPeriodBetAmount = (params) => {
       search_date,
       hall_name,
       member_id
+    }
+  )
+}
+//遊戲種類貨量佔比
+export const apiQueryMemberLobbyGroup = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_lobby_group' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id
+    }
+  )
+}
+//平台貨量佔比
+export const apiQueryMemberLobby = (params) => {
+  const { search_date, hall_name, member_id, locale } = params
+  return axiosInstance.post('/api/auth/member/bbin/query_member_lobby' + sessionStorage.from_page, {
+    search_date,
+    hall_name,
+    member_id,
+    locale
+  })
+}
+//遊戲貨量佔比
+export const apiQueryMemberLobbyGame = (params) => {
+  const { search_date, hall_name, member_id, locale } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_lobby_game' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+      locale
     }
   )
 }

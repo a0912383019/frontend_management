@@ -12,6 +12,10 @@ const props = defineProps({
   cover: {
     type: Boolean,
     default: false
+  },
+  bg: {
+    type: String,
+    default: ''
   }
 })
 
@@ -42,6 +46,10 @@ const messageData = computed(() => {
     case 'loading':
       result['icon'] = getIcon('loading')
       result['title'] = t('msg.long_loading')
+      break
+    case 'shortLoading':
+      result['icon'] = getIcon('loading')
+      result['title'] = t('msg.loading')
       break
     case 'noResult':
       result['icon'] = getIcon('warning')
@@ -78,8 +86,11 @@ const messageStyle = computed(() => {
 })
 </script>
 <template>
-  <div class="message" :class="{ cover: props.cover }" :style="messageStyle">
-    <div class="message__icon" :class="{ loading: props.messageKey === 'loading' }">
+  <div class="message" :class="[{ cover: props.cover }, props.bg]" :style="messageStyle">
+    <div
+      class="message__icon"
+      :class="{ loading: props.messageKey === 'loading' || props.messageKey === 'shortLoading' }"
+    >
       <font-awesome-icon :icon="messageData['icon']" />
     </div>
     <div class="message__title">{{ messageData['title'] }}</div>
@@ -102,6 +113,9 @@ const messageStyle = computed(() => {
   color: #dc3545;
   border-radius: 5px;
   background-color: #f9fafc;
+  &.white {
+    background-color: #fff;
+  }
   &__icon {
     margin-right: 8px;
     &.loading {

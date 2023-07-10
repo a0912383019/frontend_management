@@ -99,7 +99,6 @@ const tooltipDate = computed(() => {
 const query_life_cycle_analysis_overview_tbl = async () => {
   apiSuccess.value = false
   messageKey.value = 'loading'
-  console.log('pinia searchName', searchName.value)
   try {
     const result = await apiQueryLifeCycleAnalysisOverview({
       hall_name: activeHall.hall_code,
@@ -115,7 +114,6 @@ const query_life_cycle_analysis_overview_tbl = async () => {
       apiTableResult.value = result.data.result //存放取得的api資料
       //資料處理
       transform_life_cycle_analysis_overview_tbl(result.data.result)
-      console.log(tableData.value)
     } else if (return_code === '0001') {
       apiSuccess.value = false //取得資料失敗
       messageKey.value = 'noResult' //更改message內容
