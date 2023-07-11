@@ -44,7 +44,9 @@ const currentTooltipEntity = reactive({
   step: null
 })
 
-const chartOpenToggle = ref(true)
+const chartPrevIndex = ref(null)
+
+const legendCloseCount = ref(0) //目前關閉的lengend數量
 
 const chartSetting = {
   id: 'peopleChart',
@@ -84,22 +86,25 @@ const chartSetting = {
       //   item.hidden = true
       // })
       // console.log(event, legendItem)
-      console.log(legendItem.length)
+      // console.log(legendItem.length)
       if (legendItem.length !== 0) {
         let legendItemDatasetIndex = legendItem[0].datasetIndex
         chart.data.datasets.forEach((item, index) => {
-          console.log(item)
-          if (chartOpenToggle.value) {
-            chart.data.datasets[index].hidden = true
+          // console.log(index, legendItemDatasetIndex, item)
+          if (legendItemDatasetIndex !== chartPrevIndex.value) {
             if (index === legendItemDatasetIndex) {
               chart.data.datasets[index].hidden = false
+            } else {
+              chart.data.datasets[index].hidden = true
             }
             //只顯示當前的datalabel
             chartSetting.plugins[0] = {
               afterDatasetsDraw: function (chart) {
-                showDatasetsLabels(chart, 12, 7, 30, 0, legendItemDatasetIndex)
+                showDatasetsLabels(chart, 12, 7, 30, 0, [legendItemDatasetIndex])
               }
             }
+            //只會顯示當前的一個，所以關閉的數量是，所有數量減掉顯示的一個
+            legendCloseCount.value = chart.data.datasets.length - 1
           } else {
             chart.data.datasets[index].hidden = false
             //顯示全部的datalabel
@@ -108,9 +113,14 @@ const chartSetting = {
                 showDatasetsLabels(chart, 12, 7, 30)
               }
             }
+            legendCloseCount.value = 0
           }
         })
-        chartOpenToggle.value = !chartOpenToggle.value
+        if (legendItemDatasetIndex === chartPrevIndex.value) {
+          chartPrevIndex.value = null
+        } else {
+          chartPrevIndex.value = legendItemDatasetIndex
+        }
         chart.update()
       } else {
         refDialogStepDetail.value.handleOpenDialog(currentTooltipEntity)
@@ -121,12 +131,31 @@ const chartSetting = {
         display: true,
         position: 'top',
         onClick: (event, legendItem) => {
-          console.log(event, legendItem)
+          const { text } = legendItem
+          let legendShowArrayIndex = [] //要顯示的legend的index
+
           chart.data.datasets.forEach((item, index) => {
-            if (item.label === legendItem.text) {
-              chart.data.datasets[index].hidden = !legendItem.hidden
+            if (item.label === text && legendCloseCount.value === chart.data.datasets.length - 1) {
+              //如果是目前legend顯示的最後一筆，不關閉
+              item.hidden = false
+            } else if (item.label === text) {
+              item.hidden = !item.hidden
+            }
+            if (item.hidden === false && legendShowArrayIndex.indexOf(index) === -1) {
+              //如果顯示則legendShowArrayIndex新增此legend index
+              legendShowArrayIndex.push(index)
             }
           })
+
+          //紀錄目前關閉的數量
+          legendCloseCount.value = chart.data.datasets.length - legendShowArrayIndex.length
+
+          //只顯示當前的datalabel
+          chartSetting.plugins[0] = {
+            afterDatasetsDraw: function (chart) {
+              showDatasetsLabels(chart, 12, 7, 30, 0, legendShowArrayIndex)
+            }
+          }
           chart.update()
         }
       },
@@ -201,6 +230,7 @@ const transform_step_total_people = (result) => {
         chartDatasetsDict[people[0]] = {
           label: tableConfig.value[people[0]]['step_name'],
           fill: false,
+          hidden: false,
           borderWidth: 3,
           lineTension: 0,
           spanGaps: true,
