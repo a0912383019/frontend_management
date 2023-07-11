@@ -14,7 +14,7 @@ export function showDatasetsLabels(
   datasetsShowedLimit = 5,
   dataLength = 20,
   numberPrecision = 0,
-  datalabelIndex = null
+  datalabelIndex = []
 ) {
   // Define a plugin to provide data labels
   let ctx = chart.ctx
@@ -32,7 +32,7 @@ export function showDatasetsLabels(
     }
     if (!meta.hidden && meta.data.length <= dataLength) {
       //  若資料少於設定的筆數才顯示label
-      if (datalabelIndex === null || meta.index === datalabelIndex) {
+      if (datalabelIndex.length === 0 || datalabelIndex.indexOf(meta.index) !== -1) {
         // 若有指定datalabelIndex則顯示指定的datalabel
         // 若為null則顯示全部
         meta.data.forEach(function (element, index) {
