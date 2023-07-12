@@ -267,10 +267,10 @@ defineExpose({ handleOpenDialog })
   }
 }
 </style>
-<style lang="scss">
+<!-- <style lang="scss">
 .member-step-detail-dialog {
   &.el-dialog {
-    // max-width: 720px;
+    max-width: 720px;
   }
 }
-</style>
+</style> -->

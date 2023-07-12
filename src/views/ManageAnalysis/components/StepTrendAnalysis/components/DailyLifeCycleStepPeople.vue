@@ -13,7 +13,7 @@ import { showDatasetsLabels } from '@/utils/pluginUtils.js'
 import DialogStepDetail from '@/views/ManageAnalysis/components/StepTrendAnalysis/components/DialogStepDetail.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 // import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
-import ChartDataLabels from 'chartjs-plugin-datalabels'
+// import ChartDataLabels from 'chartjs-plugin-datalabels'
 // import 'chartjs-adapter-dayjs-3'
 
 import Chart from 'chart.js/auto'
@@ -135,10 +135,13 @@ const chartSetting = {
           let legendShowArrayIndex = [] //要顯示的legend的index
 
           chart.data.datasets.forEach((item, index) => {
-            if (item.label === text && legendCloseCount.value === chart.data.datasets.length - 1) {
-              //如果是目前legend顯示的最後一筆，不關閉
-              item.hidden = false
-            } else if (item.label === text) {
+            // if (item.label === text && legendCloseCount.value === chart.data.datasets.length - 1) {
+            //   //如果是目前legend顯示的最後一筆，不關閉
+            //   item.hidden = false
+            // } else if (item.label === text) {
+            //   item.hidden = !item.hidden
+            // }
+            if (item.label === text) {
               item.hidden = !item.hidden
             }
             if (item.hidden === false && legendShowArrayIndex.indexOf(index) === -1) {
@@ -149,11 +152,19 @@ const chartSetting = {
 
           //紀錄目前關閉的數量
           legendCloseCount.value = chart.data.datasets.length - legendShowArrayIndex.length
-
-          //只顯示當前的datalabel
-          chartSetting.plugins[0] = {
-            afterDatasetsDraw: function (chart) {
-              showDatasetsLabels(chart, 12, 7, 30, 0, legendShowArrayIndex)
+          if (legendCloseCount.value < chart.data.datasets.length) {
+            //只顯示當前的datalabel
+            chartSetting.plugins[0] = {
+              afterDatasetsDraw: function (chart) {
+                showDatasetsLabels(chart, 12, 7, 30, 0, legendShowArrayIndex)
+              }
+            }
+          } else {
+            //不顯示datalabel
+            chartSetting.plugins[0] = {
+              afterDatasetsDraw: function (chart) {
+                showDatasetsLabels(chart, 12, 7, 0, 0, legendShowArrayIndex)
+              }
             }
           }
           chart.update()

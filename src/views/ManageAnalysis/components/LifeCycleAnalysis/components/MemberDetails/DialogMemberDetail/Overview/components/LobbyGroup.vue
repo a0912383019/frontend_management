@@ -56,6 +56,7 @@ const chartSetting = {
         font: {
           weight: 'bold'
         },
+        padding: 30,
         clamp: true,
         clip: true
       },
