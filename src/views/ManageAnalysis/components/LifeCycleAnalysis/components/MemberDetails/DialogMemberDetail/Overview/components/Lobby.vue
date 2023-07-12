@@ -11,6 +11,7 @@ import {
   getHallCurrencySign,
   FormatNumber
 } from '@/utils/commonUtils.js'
+import { showPolarDatasetsLabels } from '@/utils/pluginUtils.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { ElNotification } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -33,6 +34,9 @@ const apiSuccess = ref(false) //api是否成功
 const messageKey = ref('shortLoading')
 const refChart = ref(null)
 let chart
+
+const chartTotal = ref(0) //圓餅圖資料總和
+const pieSliceCount = ref(0) //圓餅圖切片傯數
 
 const chartSetting = {
   id: 'lobbyChart',
@@ -60,14 +64,21 @@ const chartSetting = {
         formatter: function (value) {
           return FormatNumber(value)
         },
-        display: 'auto',
+        // display: 'auto',
         color: '#000',
         font: {
           weight: 'bold'
         },
         padding: 30,
         clamp: true,
-        clip: true
+        clip: true,
+        display: function (context) {
+          return showPolarDatasetsLabels({
+            currentData: context.dataset.data[context.dataIndex],
+            dataTotal: chartTotal.value,
+            pieSliceCount: pieSliceCount.value
+          })
+        }
       },
       legend: {
         position: 'right'
@@ -148,6 +159,7 @@ const transformLobbyChart = (data) => {
     }
     chart_labels.push(data[i].lobby_name)
     chart_data.push(parseFloat(data[i].total_bet_amount))
+    chartTotal.value = chartTotal.value + parseFloat(data[i].total_bet_amount)
 
     let color = ''
     let borderColor = ''
@@ -166,6 +178,7 @@ const transformLobbyChart = (data) => {
     chart_data_borderColor.push(borderColor)
   }
 
+  pieSliceCount.value = chart_labels.length
   chartSetting.data.labels = []
   chartSetting.data.labels = chart_labels
   let chart_datasets = [

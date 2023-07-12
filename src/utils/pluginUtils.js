@@ -181,3 +181,50 @@ export function showDatasetsLabels(
     }
   }
 }
+
+/**
+ * chart.js新版 dataLabels 顯示邏輯與舊版呈現不一致
+ * 這邊依據當前切片區塊的數值百分比去計算
+ * percentShow 用於決定是否顯示，當percent小於percentShow則不顯示
+ * 目前想不到比較好的做法，若有其他做法歡迎提出改善
+ * @param {Number} currentData 當前切片的數值
+ * @param {Number} dataTotal 該圓餅圖所有切片數值的加總
+ * @param {Number} pieSliceCount 該圓餅圖的切片數量
+ */
+export function showPieDatasetsLabels({ currentData = 0, dataTotal = 0, pieSliceCount = 0 }) {
+  let percent = (currentData / dataTotal) * 100
+  let percentShow = 10
+  if (pieSliceCount >= 9) {
+    percentShow = 6.9
+  } else if (pieSliceCount >= 8 && pieSliceCount < 9) {
+    percentShow = 7.5
+  } else {
+    percentShow = 9.4
+  }
+  if (percent < percentShow) {
+    return false
+  }
+  return true
+}
+
+/**
+ * 同上
+ */
+export function showPolarDatasetsLabels({ currentData = 0, dataTotal = 0, pieSliceCount = 0 }) {
+  console.log('pieSliceCount', pieSliceCount)
+  console.log('A:', currentData, dataTotal)
+  let percent = (currentData / dataTotal) * 100
+  let percentShow = 10
+  if (pieSliceCount >= 9) {
+    percentShow = 40
+  } else if (pieSliceCount >= 5 && pieSliceCount < 9) {
+    percentShow = 40
+  } else {
+    percentShow = 43
+  }
+  console.log('B:', percent)
+  if (percent < percentShow) {
+    return false
+  }
+  return true
+}
