@@ -56,11 +56,13 @@ const chartSetting = {
         font: {
           weight: 'bold'
         },
+        padding: 10,
         clamp: true,
         clip: true
       },
       legend: {
-        position: 'right'
+        position: 'right',
+        maxWidth: 220
       },
       tooltip: {
         callbacks: {
@@ -125,7 +127,7 @@ const queryLobbyGameChart = async () => {
 }
 //轉換資料
 const transformLobbyGameChart = (data) => {
-  console.log('transformLobbyGameChart', data)
+  // console.log('transformLobbyGameChart', data)
   let chartLabels = []
   let chartData = []
   let chartDataBgColor = []
