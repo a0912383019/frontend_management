@@ -11,6 +11,7 @@ import {
   getHallCurrencySign,
   FormatNumber
 } from '@/utils/commonUtils.js'
+import { showPieDatasetsLabels } from '@/utils/pluginUtils.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { ElNotification } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -34,6 +35,9 @@ const messageKey = ref('shortLoading')
 const refChart = ref(null)
 let chart
 
+const chartTotal = ref(0) //圓餅圖資料總和
+const pieSliceCount = ref(0) //圓餅圖切片傯數
+
 const chartSetting = {
   id: 'lobbyGameChart',
   type: 'doughnut',
@@ -51,14 +55,21 @@ const chartSetting = {
         formatter: function (value) {
           return FormatNumber(value)
         },
-        display: 'auto',
+        // display: 'auto',
         color: '#000',
         font: {
           weight: 'bold'
         },
         padding: 10,
         clamp: true,
-        clip: true
+        clip: true,
+        display: function (context) {
+          return showPieDatasetsLabels({
+            currentData: context.dataset.data[context.dataIndex],
+            dataTotal: chartTotal.value,
+            pieSliceCount: pieSliceCount.value
+          })
+        }
       },
       legend: {
         position: 'right',
@@ -140,6 +151,7 @@ const transformLobbyGameChart = (data) => {
     let label = data[i].lobby_name + '-' + data[i].game_name
     chartLabels.push(label)
     chartData.push(parseFloat(data[i].total_bet_amount))
+    chartTotal.value = chartTotal.value + parseFloat(data[i].total_bet_amount)
 
     let color = ''
     let borderColor = ''
@@ -157,6 +169,8 @@ const transformLobbyGameChart = (data) => {
     chartDataBgColor.push(color)
     chartDataBorderColor.push(borderColor)
   }
+
+  pieSliceCount.value = chartLabels.length
   chartSetting.data.labels = []
   chartSetting.data.labels = chartLabels
 
