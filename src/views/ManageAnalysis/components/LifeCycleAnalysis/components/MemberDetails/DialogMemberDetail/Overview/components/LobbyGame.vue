@@ -64,6 +64,36 @@ const chartSetting = {
         clamp: true,
         clip: true,
         display: function (context) {
+          console.log(context)
+          // let result = true
+          // setTimeout(() => {
+          //   console.log(context)
+          //   let innerRadius = context.chart.$datalabels._labels[context.dataIndex]._el.innerRadius
+          //   let textWidth = 5
+          //   let dotWidth = 3
+          //   let data = context.dataset.data[context.dataIndex]
+          //   let textLength = data.toString().length
+          //   let dotLength = Math.ceil(textLength / 3)
+          //   let total = textLength * textWidth + dotLength * dotWidth
+          //   console.log({
+          //     innerRadius,
+          //     total,
+          //     textLength,
+          //     dotLength,
+          //     textWidth: textLength * textWidth,
+          //     dotWidth: dotLength * dotWidth
+          //   })
+          //   if (total > innerRadius) {
+          //     result = false
+          //   } else {
+          //     result = false
+          //   }
+          // }, 10)
+          // return result
+          console.log(window.innerWidth)
+          if (window.innerWidth < 1700) {
+            return false
+          }
           return showPieDatasetsLabels({
             currentData: context.dataset.data[context.dataIndex],
             dataTotal: chartTotal.value,

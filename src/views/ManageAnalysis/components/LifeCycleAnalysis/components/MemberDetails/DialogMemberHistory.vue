@@ -9,7 +9,8 @@ import { useGlobalStore } from '@/stores/global.js'
 import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
 import { generateRGBColors, errorRespond } from '@/utils/commonUtils.js'
 import CdpMessage from '@/components/CdpMessage.vue'
-import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
+import Chart from 'chart.js/auto'
+// import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
 import 'chartjs-adapter-dayjs-3'
 
 const { t } = useI18n()
@@ -25,40 +26,16 @@ const apiSuccess = ref(false) //會員生明細api是否成功
 
 //依照不同的messageKey產生不同的message
 const messageKey = ref('loading')
+const refChart = ref(null)
+let chart
 
-const vueChart = {
+const chartSetting = {
   id: 'bar',
   type: 'bar',
   data: {
     xLabels: [],
     yLabels: [''],
     datasets: []
-    // datasets: [
-    //   {
-    //     label: '活躍期',
-    //     backgroundColor: 'rgb(232,70,94,0.7)',
-    //     borderWidth: 1,
-    //     hoverBorderWidth: 3,
-    //     borderColor: 'rgb(232,70,94,1)',
-    //     data: [['2023-05-08', '2023-05-15']]
-    //   },
-    //   {
-    //     label: '活躍衰退期',
-    //     backgroundColor: 'rgb(62,150,169,0.7)',
-    //     borderWidth: 1,
-    //     hoverBorderWidth: 3,
-    //     borderColor: 'rgb(62,150,169,1)',
-    //     data: [['2023-05-15', '2023-06-05']]
-    //   },
-    //   {
-    //     label: '即將流失回頭期',
-    //     backgroundColor: 'rgb(243,109,48,0.7)',
-    //     borderWidth: 1,
-    //     hoverBorderWidth: 3,
-    //     borderColor: 'rgb(243,109,48,1)',
-    //     data: [['2023-06-05', '2023-06-06']]
-    //   }
-    // ]
   },
   options: {
     indexAxis: 'y',
@@ -104,15 +81,6 @@ const vueChart = {
       legend: {
         display: true,
         position: 'top',
-        // labels: {
-        //   filter: function (item, chart) {
-        //     // if (!step_legend_dict.hasOwnProperty(item.text)) {
-        //     //   step_legend_dict[item.text] = 1
-        //     //   return true
-        //     // }
-        //     // step_legend_dict[item.text]++
-        //   }
-        // },
         onClick: function (e) {
           e.stopPropagation()
         }
@@ -137,7 +105,12 @@ const vueChart = {
     }
   }
 }
-
+//註冊chart
+const registerChart = () => {
+  let ctx = refChart.value.getContext('2d')
+  chart = new Chart(ctx, chartSetting)
+  // console.log('Chart', chart)
+}
 const query_member_step_detail = async (param) => {
   console.log(param, activeHall.hall_code)
   try {
@@ -150,51 +123,11 @@ const query_member_step_detail = async (param) => {
     const { return_code } = res.data.status
     const { result } = res.data
     if (return_code === '0000') {
+      transform_member_step_detail({ param, data: result })
       apiSuccess.value = true
-      let chart_xLabels = []
-      let chart_datasets = []
-      for (let i = 0; i < result.length; i++) {
-        console.log('result[i].data_date', result[i])
-        let xLabel_date = dayjs(result[i].data_date).format('YYYY-MM-DD')
-        chart_xLabels.push(xLabel_date)
-
-        //  若資料為最後一筆，多加一筆在後面，以便顯示最後一筆的階段
-        if (i + 1 === result.length) {
-          let search_last_date = deatilRangeDate.value.split('~')[1].trim()
-          let xLabel_last_date = dayjs(search_last_date).format('YYYY-MM-DD')
-          xLabel_last_date = dayjs(search_last_date).add(1, 'day').format('YYYY-MM-DD')
-          chart_xLabels.push(xLabel_last_date)
-        }
-
-        let step_config = RFM_NAPL_step_config[result[i].this_day_step]
-        if (step_config !== undefined) {
-          let dataset_config = {
-            label: step_config.step_name,
-            backgroundColor: generateRGBColors(step_config.step_color, 0.7),
-            borderWidth: 1,
-            hoverBorderWidth: 3,
-            borderColor: generateRGBColors(step_config.step_color, 1),
-            data: [
-              [
-                new Date(result[i].data_date),
-                i + 1 === result.length
-                  ? chart_xLabels[chart_xLabels.length - 1]
-                  : new Date(result[i + 1].data_date)
-              ]
-            ]
-          }
-          chart_datasets.push(dataset_config)
-        }
-      }
-      // console.log(chart_xLabels, chart_datasets)
-
-      vueChart.data.xLabels = []
-      vueChart.data.xLabels = chart_xLabels
-      vueChart.data.datasets = []
-      vueChart.data.datasets = chart_datasets
-      vueChart.options.plugins.title.text = ''
-      vueChart.options.plugins.title.display = param.user_name
-      vueChart.options.plugins.title.text = param.user_name
+      setTimeout(() => {
+        registerChart()
+      }, 1)
       // let step_legend_dict = {}
     } else if (return_code === '0001') {
       apiSuccess.value = false
@@ -209,14 +142,61 @@ const query_member_step_detail = async (param) => {
   } catch (error) {
     console.log(error)
     apiSuccess.value = false //取得資料失敗
-    if (error.response.status === 403) {
-      messageKey.value = 'noPermission' //更改message內容
-    } else if (error.response.status === 401) {
-      globalStore.storeHandleApiError()
-    } else {
-      messageKey.value = 'chartFailed' //更改message內容
+    // if (error.response.status === 403) {
+    //   messageKey.value = 'noPermission' //更改message內容
+    // } else if (error.response.status === 401) {
+    //   globalStore.storeHandleApiError()
+    // } else {
+    //   messageKey.value = 'chartFailed' //更改message內容
+    // }
+  }
+}
+
+const transform_member_step_detail = ({ param, data }) => {
+  let chart_xLabels = []
+  let chart_datasets = []
+  for (let i = 0; i < data.length; i++) {
+    console.log('data[i].data_date', data[i])
+    let xLabel_date = dayjs(data[i].data_date).format('YYYY-MM-DD')
+    chart_xLabels.push(xLabel_date)
+
+    //  若資料為最後一筆，多加一筆在後面，以便顯示最後一筆的階段
+    if (i + 1 === data.length) {
+      let search_last_date = deatilRangeDate.value.split('~')[1].trim()
+      let xLabel_last_date = dayjs(search_last_date).format('YYYY-MM-DD')
+      xLabel_last_date = dayjs(search_last_date).add(1, 'day').format('YYYY-MM-DD')
+      chart_xLabels.push(xLabel_last_date)
+    }
+
+    let step_config = RFM_NAPL_step_config[data[i].this_day_step]
+    if (step_config !== undefined) {
+      let dataset_config = {
+        label: step_config.step_name,
+        backgroundColor: generateRGBColors(step_config.step_color, 0.7),
+        borderWidth: 1,
+        hoverBorderWidth: 3,
+        borderColor: generateRGBColors(step_config.step_color, 1),
+        data: [
+          [
+            new Date(data[i].data_date),
+            i + 1 === data.length
+              ? chart_xLabels[chart_xLabels.length - 1]
+              : new Date(data[i + 1].data_date)
+          ]
+        ]
+      }
+      chart_datasets.push(dataset_config)
     }
   }
+  // console.log(chart_xLabels, chart_datasets)
+
+  chartSetting.data.xLabels = []
+  chartSetting.data.xLabels = chart_xLabels
+  chartSetting.data.datasets = []
+  chartSetting.data.datasets = chart_datasets
+  chartSetting.options.plugins.title.text = ''
+  chartSetting.options.plugins.title.display = param.user_name
+  chartSetting.options.plugins.title.text = param.user_name
 }
 
 //開啟 dialog
@@ -229,9 +209,9 @@ const handleOpenDialog = (param) => {
 //關閉 dialog
 const handleCloseDialog = () => {
   apiSuccess.value = false
-  vueChart.data.xLabels = []
-  vueChart.data.datasets = []
-  vueChart.options.plugins.title.text = ''
+  chartSetting.data.xLabels = []
+  chartSetting.data.datasets = []
+  chartSetting.options.plugins.title.text = ''
 }
 
 defineExpose({ handleOpenDialog })
@@ -248,12 +228,16 @@ defineExpose({ handleOpenDialog })
       <div class="cdp-dialog__content">
         <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
         <div class="cdp-dialog__chart" v-else>
-          <vue3-chart-js
-            :id="vueChart.id"
-            :type="vueChart.type"
-            :data="vueChart.data"
-            :options="vueChart.options"
-          ></vue3-chart-js>
+          <canvas
+            ref="refChart"
+            style="
+              min-height: 300px;
+              height: 300px;
+              max-height: 300px;
+              min-width: 100%;
+              max-width: 100%;
+            "
+          ></canvas>
         </div>
       </div>
     </el-dialog>
