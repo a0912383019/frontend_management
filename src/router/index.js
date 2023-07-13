@@ -268,7 +268,11 @@ router.beforeEach((to, from, next) => {
   let isLogin = false
   if (sessionStorageUserInfo !== '') {
     const accessToken = sessionStorage.access_token
-    isLogin = accessToken === undefined ? false : true
+    if (accessToken === undefined || accessToken === '9999') {
+      isLogin = false
+    } else {
+      isLogin = true
+    }
   }
   if (isLogin || whiteList.includes(to.path)) {
     next()
