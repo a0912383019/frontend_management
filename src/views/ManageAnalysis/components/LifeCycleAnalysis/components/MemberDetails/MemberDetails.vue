@@ -11,7 +11,7 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import DialogMemberHistory from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/DialogMemberHistory.vue'
-import DialogMemberDetail from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/DialogMemberDetail/DialogMemberDetail.vue'
+import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
 
 const { t } = useI18n()
