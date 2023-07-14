@@ -53,7 +53,7 @@ const chartOptions = {
     labelFormatter: function () {
       // console.log(this)
       return `
-        <div class="flex" style="width: 170px">
+        <div class="flex" style="width: 170px;">
           <div class="shrink-0" style="
             background-color:${this.options.color};
             width: 40px;
@@ -61,7 +61,7 @@ const chartOptions = {
             margin-right: 6px;
             margin-top: 3px;
           "></div>
-          <div style="width: calc(100% - 46px); white-space: normal;">${this.name}</div>
+          <div style="width: calc(100% - 46px); white-space: normal; padding-right: 5px;">${this.name}</div>
         </div>
       `
     }
@@ -200,4 +200,8 @@ watch(
     </div>
   </section>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss">
+.highcharts-legend.highcharts-no-tooltip {
+  z-index: 0;
+}
+</style>

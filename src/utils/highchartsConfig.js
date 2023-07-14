@@ -2,7 +2,7 @@ import { getHallCurrencySign, FormatNumber } from '@/utils/commonUtils.js'
 
 //tooltip 深色設定
 export const tooltipDarkConfig = {
-  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  backgroundColor: 'rgba(0, 0, 0, 0)',
   style: {
     color: '#fff'
   }
@@ -20,7 +20,11 @@ export const tooltipFormatter = ({ data, hallCode }) => {
 
   let value = getHallCurrencySign('BBIN', hallCode) + FormatNumber(data.y)
   return `
-    <div>
+    <div style="
+      padding: 6px 10px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.8)
+    ">
       <div class="font-bold mb-3">${data.key}</div>
       <div class="flex">
         <div class="mr-4 mt-4" style="
