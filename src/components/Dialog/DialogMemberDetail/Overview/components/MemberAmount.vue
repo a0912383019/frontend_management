@@ -35,7 +35,7 @@ const queryProfitWithdrawDepositAmount = async () => {
       hall_name: activeHall.hall_code,
       member_id: manageAnalysisStore.memberData.user_id
     })
-    console.log('queryProfitWithdrawDepositAmount', result)
+    // console.log('queryProfitWithdrawDepositAmount', result)
     const { return_code } = result.data.status
     if (return_code === '0000') {
       const { total_deposit, total_profit, total_withdraw, withdraw_deposit_net_amount } =

@@ -5,19 +5,12 @@ import { apiQueryMemberLobbyGame } from '@/api/manageAnalysis.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
-import {
-  generateRGBColors,
-  dynamicBackgroundColors,
-  getHallCurrencySign,
-  FormatNumber
-} from '@/utils/commonUtils.js'
-import { showPieDatasetsLabels } from '@/utils/pluginUtils.js'
+import { generateRGBColors, dynamicBackgroundColors, FormatNumber } from '@/utils/commonUtils.js'
+import { tooltipDarkConfig, tooltipFormatter } from '@/utils/highchartsConfig'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { ElNotification } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import Chart from 'chart.js/auto'
-import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 const { t, locale: i18nLocale } = useI18n()
 
@@ -32,99 +25,90 @@ const apiSuccess = ref(false) //api是否成功
 
 //依照不同的messageKey產生不同的message
 const messageKey = ref('shortLoading')
-const refChart = ref(null)
-let chart
 
-const chartTotal = ref(0) //圓餅圖資料總和
-const pieSliceCount = ref(0) //圓餅圖切片傯數
-
-const chartSetting = {
-  id: 'lobbyGameChart',
-  type: 'doughnut',
-  plugins: [ChartDataLabels],
-  data: {
-    labels: [],
-    datasets: []
+//highcharts
+const chartOptions = {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie',
+    height: 250,
+    // margin: 0,
+    marginRight: 170,
+    marginLeft: 0,
+    spacing: [0, 0, 0, 0]
+    // marginRight: 180 // 右侧边距，根据图例文字长度进行调整
+    // marginLeft: -50 // 右侧边距，根据图例文字长度进行调整
   },
-  options: {
-    maintainAspectRatio: false,
-    responsive: true,
-    scales: {},
-    plugins: {
-      datalabels: {
-        formatter: function (value) {
-          return FormatNumber(value)
-        },
-        display: 'auto',
-        color: '#000',
-        font: {
-          weight: 'bold'
-        },
-        padding: 10,
-        clamp: true,
-        clip: true
-        // display: function (context) {
-        //   console.log(context)
-        //   // let result = true
-        //   // setTimeout(() => {
-        //   //   console.log(context)
-        //   //   let innerRadius = context.chart.$datalabels._labels[context.dataIndex]._el.innerRadius
-        //   //   let textWidth = 5
-        //   //   let dotWidth = 3
-        //   //   let data = context.dataset.data[context.dataIndex]
-        //   //   let textLength = data.toString().length
-        //   //   let dotLength = Math.ceil(textLength / 3)
-        //   //   let total = textLength * textWidth + dotLength * dotWidth
-        //   //   console.log({
-        //   //     innerRadius,
-        //   //     total,
-        //   //     textLength,
-        //   //     dotLength,
-        //   //     textWidth: textLength * textWidth,
-        //   //     dotWidth: dotLength * dotWidth
-        //   //   })
-        //   //   if (total > innerRadius) {
-        //   //     result = false
-        //   //   } else {
-        //   //     result = false
-        //   //   }
-        //   // }, 10)
-        //   // return result
-        //   console.log(window.innerWidth)
-        //   // if (window.innerWidth < 1700) {
-        //   //   return false
-        //   // }
-        //   return showPieDatasetsLabels({
-        //     currentData: context.dataset.data[context.dataIndex],
-        //     dataTotal: chartTotal.value,
-        //     pieSliceCount: pieSliceCount.value
-        //   })
-        // }
+  legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle',
+    useHTML: true,
+    width: 170,
+    symbolRadius: 0,
+    symbolWidth: 0,
+    symbolHeight: 0,
+    labelFormatter: function () {
+      // console.log(this)
+      return `
+        <div class="flex" style="width: 170px">
+          <div class="shrink-0" style="
+            background-color:${this.options.color};
+            width: 40px;
+            height: 10px;
+            margin-right: 6px;
+            margin-top: 3px;
+          "></div>
+          <div style="width: calc(100% - 46px); white-space: normal;">${this.name}</div>
+        </div>
+      `
+    }
+  },
+  tooltip: {
+    ...tooltipDarkConfig,
+    useHTML: true,
+    formatter() {
+      return tooltipFormatter({ data: this, hallCode: activeHall.hall_code })
+    }
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      borderRadius: 0,
+      borderWidth: 0,
+      innerSize: '55%',
+      showInLegend: true,
+      series: {
+        // pointWidth: 50,
+        // groupPadding: 0
       },
-      legend: {
-        position: 'right',
-        maxWidth: 220
-      },
-      tooltip: {
-        callbacks: {
-          label: (tooltipItem) => {
-            let value =
-              getHallCurrencySign('BBIN', activeHall.hall_code) + FormatNumber(tooltipItem['raw'])
-            let title = tooltipItem['label'] + ' : '
-            return title + value
-          }
+      dataLabels: {
+        enabled: true,
+        // format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+        formatter: function () {
+          // console.log(this)
+          return FormatNumber(this.y)
+        },
+        useHTML: true,
+        distance: '-20%',
+        filter: {
+          property: 'percentage',
+          operator: '>',
+          value: 6
         }
       }
     }
-  }
+  },
+  series: [
+    {
+      data: []
+    }
+  ]
 }
 
-//註冊chart
-const registerChart = () => {
-  let ctx = refChart.value.getContext('2d')
-  chart = new Chart(ctx, chartSetting)
-  // console.log('Chart', chart)
-}
 //取得資料
 const queryLobbyGameChart = async () => {
   messageKey.value = 'shortLoading'
@@ -141,9 +125,6 @@ const queryLobbyGameChart = async () => {
     if (return_code === '0000') {
       transformLobbyGameChart(result.data.result)
       apiSuccess.value = true
-      setTimeout(() => {
-        registerChart()
-      }, 1)
     } else if (return_code === '0001') {
       messageKey.value = 'noResult'
     } else {
@@ -169,52 +150,31 @@ const queryLobbyGameChart = async () => {
 //轉換資料
 const transformLobbyGameChart = (data) => {
   // console.log('transformLobbyGameChart', data)
-  let chartLabels = []
-  let chartData = []
   let chartDataBgColor = []
-  let chartDataBorderColor = []
   for (let i = 0; i < data.length; i++) {
     if (i >= 10) {
       // 只顯示貨量前10名的遊戲
       break
     }
     let label = data[i].lobby_name + '-' + data[i].game_name
-    chartLabels.push(label)
-    chartData.push(parseFloat(data[i].total_bet_amount))
-    chartTotal.value = chartTotal.value + parseFloat(data[i].total_bet_amount)
-
     let color = ''
-    let borderColor = ''
     if (i < chart_fixed_bgColor.length) {
       color = generateRGBColors(chart_fixed_bgColor[i], 0.7) // 使用定義好的顏色
-      borderColor = color.substring(0, color.lastIndexOf(',')) + ',1)'
     } else {
       color = dynamicBackgroundColors(0.7) // 隨機產生顏色
       while (chartDataBgColor.indexOf(color) > -1) {
         // 判斷該顏色是否已經存在
         color = dynamicBackgroundColors(0.7) // 若顏色已存在陣列中，則隨機產生新顏色
       }
-      borderColor = color.substring(0, color.lastIndexOf(',')) + ',1)'
     }
-    chartDataBgColor.push(color)
-    chartDataBorderColor.push(borderColor)
+
+    //highcharts
+    chartOptions.series[0].data.push({
+      name: label,
+      y: parseFloat(data[i].total_bet_amount),
+      color
+    })
   }
-
-  pieSliceCount.value = chartLabels.length
-  chartSetting.data.labels = []
-  chartSetting.data.labels = chartLabels
-
-  let chartDatasets = [
-    {
-      data: chartData,
-      backgroundColor: chartDataBgColor,
-      borderWidth: 1,
-      hoverBorderWidth: 3,
-      borderColor: chartDataBorderColor
-    }
-  ]
-  chartSetting.data.datasets = []
-  chartSetting.data.datasets = chartDatasets
 }
 
 onMounted(() => {
@@ -236,16 +196,7 @@ watch(
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" :height="250" bg="white" v-if="apiSuccess === false" />
     <div v-else>
-      <canvas
-        ref="refChart"
-        style="
-          min-height: 250px;
-          height: 250px;
-          max-height: 250px;
-          min-width: 100%;
-          max-width: 100%;
-        "
-      ></canvas>
+      <highcharts :options="chartOptions"></highcharts>
     </div>
   </section>
 </template>

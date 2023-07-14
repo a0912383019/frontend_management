@@ -211,8 +211,6 @@ export function showPieDatasetsLabels({ currentData = 0, dataTotal = 0, pieSlice
  * 同上
  */
 export function showPolarDatasetsLabels({ currentData = 0, dataTotal = 0, pieSliceCount = 0 }) {
-  console.log('pieSliceCount', pieSliceCount)
-  console.log('A:', currentData, dataTotal)
   let percent = (currentData / dataTotal) * 100
   let percentShow = 10
   if (pieSliceCount >= 9) {
@@ -222,7 +220,6 @@ export function showPolarDatasetsLabels({ currentData = 0, dataTotal = 0, pieSli
   } else {
     percentShow = 43
   }
-  console.log('B:', percent)
   if (percent < percentShow) {
     return false
   }

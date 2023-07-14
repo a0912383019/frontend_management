@@ -288,7 +288,7 @@ const query_life_cycle_analysis_detail_tbl = async () => {
         }
       ]
     })
-    console.log(result)
+    // console.log(result)
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true

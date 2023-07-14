@@ -11,6 +11,7 @@ import {
   getHallCurrencySign,
   FormatNumber
 } from '@/utils/commonUtils.js'
+import { tooltipDarkConfig, tooltipFormatter } from '@/utils/highchartsConfig'
 import { showPolarDatasetsLabels } from '@/utils/pluginUtils.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { ElNotification } from 'element-plus'
@@ -64,21 +65,22 @@ const chartSetting = {
         formatter: function (value) {
           return FormatNumber(value)
         },
-        // display: 'auto',
+        display: 'auto',
         color: '#000',
         font: {
           weight: 'bold'
         },
         padding: 30,
         clamp: true,
-        clip: true,
-        display: function (context) {
-          return showPolarDatasetsLabels({
-            currentData: context.dataset.data[context.dataIndex],
-            dataTotal: chartTotal.value,
-            pieSliceCount: pieSliceCount.value
-          })
-        }
+        clip: true
+        // display: function (context) {
+        //   console.log(chartSetting.data.datasets)
+        //   return showPolarDatasetsLabels({
+        //     currentData: context.dataset.data[context.dataIndex],
+        //     dataTotal: chartTotal.value,
+        //     pieSliceCount: pieSliceCount.value
+        //   })
+        // }
       },
       legend: {
         position: 'right'
@@ -146,11 +148,17 @@ const queryLobbyChart = async () => {
 }
 //轉換資料
 const transformLobbyChart = (data) => {
-  console.log(data)
+  // console.log(data)
   let chart_labels = []
   let chart_data = []
   let chart_data_bgColor = []
   let chart_data_borderColor = []
+
+  //highcharts
+  // chartOptions.series.push({
+  //   data: [],
+  //   pointPlacement: 'between'
+  // })
 
   for (let i = 0; i < data.length; i++) {
     if (i >= 10) {
@@ -176,6 +184,21 @@ const transformLobbyChart = (data) => {
     }
     chart_data_bgColor.push(color)
     chart_data_borderColor.push(borderColor)
+
+    //highcharts
+    // 1
+    // chartOptions.series[0].data.push({
+    //   name: data[i].lobby_name,
+    //   y: parseFloat(data[i].total_bet_amount),
+    //   color
+    // })
+    // 2
+    // chartOptions.series.push({
+    //   name: data[i].lobby_name,
+    //   data: [parseFloat(data[i].total_bet_amount)],
+    //   color,
+    //   pointPlacement: 'between'
+    // })
   }
 
   pieSliceCount.value = chart_labels.length
@@ -193,6 +216,79 @@ const transformLobbyChart = (data) => {
   chartSetting.data.datasets = []
   chartSetting.data.datasets = chart_datasets
 }
+
+// const chartOptions = {
+//   chart: {
+//     type: 'column',
+//     polar: true
+//   },
+
+//   // pane: {
+//   //   startAngle: 0,
+//   //   endAngle: 360
+//   // },
+
+//   xAxis: {
+//     lineColor: '#e8e8e8',
+//     // tickInterval: 45,
+//     min: 0,
+//     max: 360,
+//     labels: {
+//       format: ' '
+//     }
+//   },
+
+//   yAxis: {
+//     gridLineColor: '#e8e8e8',
+//     // tickInterval: 45,
+//     min: 0,
+//     max: 360,
+//     labels: {
+//       formatter() {
+//         // return this.value
+//         return Math.abs(this.value) >= 1000 ? this.value / 1000 + 'k' : this.value
+//       }
+//     }
+//   },
+
+//   plotOptions: {
+//     column: {
+//       pointPadding: 0,
+//       groupPadding: 0,
+//       // showInLegend: true,
+//       dataLabels: {
+//         enabled: true,
+//         // format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+//         formatter: function () {
+//           // console.log(this)
+//           return FormatNumber(this.y)
+//         },
+//         useHTML: true
+//       }
+//     }
+//   },
+
+//   legend: {
+//     layout: 'vertical',
+//     align: 'right',
+//     verticalAlign: 'middle',
+//     useHTML: true,
+//     symbolRadius: 0,
+//     symbolWidth: 0,
+//     symbolHeight: 0
+//   },
+
+//   tooltip: {
+//     ...tooltipDarkConfig,
+//     useHTML: true,
+//     formatter(eve) {
+//       console.log(this, eve)
+//       return tooltipFormatter({ data: this, hallCode: activeHall.hall_code })
+//     }
+//   },
+
+//   series: []
+// }
 
 onMounted(() => {
   queryLobbyChart()
@@ -213,6 +309,7 @@ watch(
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" :height="250" bg="white" v-if="apiSuccess === false" />
     <div v-else>
+      <!-- <highcharts :options="chartOptions"></highcharts> -->
       <canvas
         ref="refChart"
         style="
