@@ -52,7 +52,7 @@ const chartOptions = {
           <div style="
             background-color:${this.options.color};
             width: 40px;
-            height: 10px;
+            height: 12px;
             margin-right: 6px;
             margin-top: 3px;
           "></div>
