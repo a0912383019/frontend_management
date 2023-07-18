@@ -37,7 +37,8 @@ import {
   faSliders,
   faDownload,
   faMoneyBillWave,
-  faChartArea
+  faChartArea,
+  faGear
 } from '@fortawesome/free-solid-svg-icons'
 import { faVimeoV } from '@fortawesome/free-brands-svg-icons'
 library.add(
@@ -79,5 +80,6 @@ library.add(
   faSliders,
   faDownload,
   faMoneyBillWave,
-  faChartArea
+  faChartArea,
+  faGear
 )

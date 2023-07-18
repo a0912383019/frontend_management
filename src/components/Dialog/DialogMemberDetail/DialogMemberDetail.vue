@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
-import FilterDate from '@/views/ManageAnalysis/components/FilterDate.vue'
+import FilterDate from '@/components/Filter/FilterDate.vue'
 import Tab from '@/components/Tab.vue'
 import Overview from './Overview/Overview.vue'
 import Profit from './Profit/Profit.vue'
@@ -15,7 +15,7 @@ const dialogVisible = ref(false)
 const manageAnalysisStore = useManageAnalysisStore()
 
 //當前顯示的tab
-const currentTabs = ref('Overview')
+const currentTabs = ref('Profit')
 
 //tabs列表
 const tabData = computed(() => {
@@ -107,6 +107,7 @@ defineExpose({ handleOpenDialog })
                 :config="13"
                 :rangeDate="manageAnalysisStore.dialogMemberDetailRangeDate"
                 @update:timestamp="updateTimestamp"
+                :rangeEndDate="1"
               />
             </div>
           </el-col>

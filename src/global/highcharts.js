@@ -15,6 +15,12 @@ Highcharts.setOptions({
   accessibility: {
     enabled: false
   },
+  tooltip: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    style: {
+      color: '#fff'
+    }
+  },
   legend: {
     navigation: {
       activeColor: '#3c8dbc',

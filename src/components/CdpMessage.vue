@@ -30,6 +30,9 @@ const getIcon = (key) => {
     case 'info':
       result = 'fa-solid fa-circle-info'
       break
+    case 'gear':
+      result = 'fa-solid fa-gear'
+      break
     default:
       result = 'fa-solid fa-triangle-exclamation'
       break
@@ -75,6 +78,10 @@ const messageData = computed(() => {
       result['icon'] = getIcon('info')
       result['title'] = t('manage_analysis.click_number_above_to_show')
       break
+    case 'working':
+      result['icon'] = getIcon('gear')
+      result['title'] = '開發中'
+      break
   }
   return result
 })
@@ -89,7 +96,10 @@ const messageStyle = computed(() => {
   <div class="message" :class="[{ cover: props.cover }, props.bg]" :style="messageStyle">
     <div
       class="message__icon"
-      :class="{ loading: props.messageKey === 'loading' || props.messageKey === 'shortLoading' }"
+      :class="{
+        loading: props.messageKey === 'loading' || props.messageKey === 'shortLoading',
+        gear: props.messageKey === 'working'
+      }"
     >
       <font-awesome-icon :icon="messageData['icon']" />
     </div>
@@ -121,6 +131,11 @@ const messageStyle = computed(() => {
     &.loading {
       svg {
         animation: rotate360 2s infinite linear;
+      }
+    }
+    &.gear {
+      svg {
+        animation: rotate360 01s infinite linear;
       }
     }
   }

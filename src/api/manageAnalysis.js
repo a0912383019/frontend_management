@@ -238,6 +238,21 @@ export const apiQueryMemberLobbyGame = (params) => {
     }
   )
 }
+
+//獲利分析
+//會員損益/廳主實際損益
+export const apiQueryMemberPeriodPayoffProfitAmount = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_period_payoff_profit_amount' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id
+    }
+  )
+}
+
 //會員明細Dialog結束
 
 //趨勢分析
