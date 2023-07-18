@@ -9,7 +9,8 @@ import {
   generateRGBColors,
   dynamicBackgroundColors,
   getHallCurrencySign,
-  FormatNumber
+  FormatNumber,
+  formatNumberWithK
 } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipFormatter } from '@/utils/highchartsConfig'
 import { showPolarDatasetsLabels } from '@/utils/pluginUtils.js'
@@ -55,7 +56,7 @@ const chartSetting = {
         ticks: {
           callback(label) {
             // return Math.abs(label) >= 1000 ? label / 1000 + 'k' : label
-            return Math.abs(label) >= 1000 ? label / 1000 + 'k' : label
+            return formatNumberWithK(label)
           }
         }
       }

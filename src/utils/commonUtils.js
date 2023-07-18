@@ -250,3 +250,11 @@ export function generateTagMultiSelect({
   })
   return tag_sort_dict
 }
+
+/**
+ * 單位格式化，輸入2500, 輸出2.5k
+ * @param {Number} label //要格式化的數值
+ */
+export function formatNumberWithK(label) {
+  return Math.abs(label) >= 1000 ? label / 1000 + 'k' : label
+}

@@ -16,6 +16,10 @@ const props = defineProps({
   rangeDate: {
     type: String,
     default: ''
+  },
+  rangeEndDate: {
+    type: Number,
+    default: 2 //日期區間-結束日期回推的天數，預設兩天
   }
 })
 
@@ -51,43 +55,64 @@ const shortcuts = [
   {
     text: t('date_range_picker.last_week'),
     value: () => {
-      return [dayjs().subtract(7, 'day'), dayjs().startOf('day').subtract(2, 'day')]
+      return [
+        dayjs().subtract(7, 'day'),
+        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
+      ]
     }
   },
   {
     text: t('date_range_picker.last_two_weeks'),
     value: () => {
-      return [dayjs().subtract(14, 'day'), dayjs().startOf('day').subtract(2, 'day')]
+      return [
+        dayjs().subtract(14, 'day'),
+        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
+      ]
     }
   },
   {
     text: t('date_range_picker.last_month'),
     value: () => {
-      return [dayjs().add(1, 'day').subtract(1, 'month'), dayjs().startOf('day').subtract(2, 'day')]
+      return [
+        dayjs().add(1, 'day').subtract(1, 'month'),
+        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
+      ]
     }
   },
   {
     text: t('date_range_picker.last_two_months'),
     value: () => {
-      return [dayjs().add(1, 'day').subtract(2, 'month'), dayjs().startOf('day').subtract(2, 'day')]
+      return [
+        dayjs().add(1, 'day').subtract(2, 'month'),
+        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
+      ]
     }
   },
   {
     text: t('date_range_picker.last_three_months'),
     value: () => {
-      return [dayjs().add(1, 'day').subtract(3, 'month'), dayjs().startOf('day').subtract(2, 'day')]
+      return [
+        dayjs().add(1, 'day').subtract(3, 'month'),
+        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
+      ]
     }
   },
   {
     text: t('date_range_picker.last_six_months'),
     value: () => {
-      return [dayjs().add(1, 'day').subtract(6, 'month'), dayjs().startOf('day').subtract(2, 'day')]
+      return [
+        dayjs().add(1, 'day').subtract(6, 'month'),
+        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
+      ]
     }
   },
   {
     text: t('date_range_picker.last_year'),
     value: () => {
-      return [dayjs().add(1, 'day').subtract(1, 'year'), dayjs().startOf('day').subtract(2, 'day')]
+      return [
+        dayjs().add(1, 'day').subtract(1, 'year'),
+        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
+      ]
     }
   }
 ]

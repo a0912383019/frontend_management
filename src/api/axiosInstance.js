@@ -15,6 +15,8 @@ axiosInstance.interceptors.request.use(
     if (accessToken) {
       //添加Authorization
       request.headers['Authorization'] = accessToken
+      //添加目前語系，等待後端確認是否要把語系參數放到header
+      // request.headers['Locale'] = sessionStorage.languageType ?? 'zh-TW'
     }
     return request
   },
