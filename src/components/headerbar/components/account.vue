@@ -11,7 +11,7 @@ const dropdownVisible = ref(false)
 
 //開啟下拉
 const handleDocumentClick = (e) => {
-  if (e.target.classList.contains('targetImg') || e.target.classList.contains('targetName')) {
+  if (e.target.closest('.targetDropDown')) {
     dropdownVisible.value = !dropdownVisible.value
   } else if (!dropdownMenu.value.contains(e.target)) {
     dropdownVisible.value = false
@@ -27,11 +27,11 @@ onUnmounted(() => {
 </script>
 <template>
   <div class="accountbox">
-    <div class="accountbox__img">
-      <img :src="user_picture" alt="" class="targetImg" />
+    <div class="accountbox__img targetDropDown">
+      <img :src="user_picture" alt="" />
     </div>
     <div class="accountbox__rightbox">
-      <div class="accountbox__name targetName">
+      <div class="accountbox__name targetDropDown">
         {{ user_name }}
         <font-awesome-icon class="accountbox__icon" icon="fa-solid fa-angle-down" />
       </div>

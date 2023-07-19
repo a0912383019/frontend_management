@@ -359,7 +359,7 @@ const handleVisibilityChange = (e) => {
 
 //開啟下拉
 const handleDocumentClick = (e) => {
-  if (e.target.classList.contains('targetHallBox')) {
+  if (e.target.closest('.targetHallBox')) {
     isDropOpen.value = !isDropOpen.value
   } else if (!refHallContent.value.contains(e.target)) {
     isDropOpen.value = false
@@ -398,12 +398,12 @@ watch(
 <template>
   <div class="hallbox">
     <div class="hallbox__box targetHallBox">
-      <div class="hallbox__label targetHallBox">{{ $t('nav.hall') }}</div>
-      <div class="hallbox__name targetHallBox">
+      <div class="hallbox__label">{{ $t('nav.hall') }}</div>
+      <div class="hallbox__name">
         {{ globalStore.activeHall.hall_name }}({{ globalStore.activeHall.hall_code }})
       </div>
-      <div class="hallbox__dropbox targetHallBox">
-        <div class="hallbox__arrow targetHallBox">
+      <div class="hallbox__dropbox">
+        <div class="hallbox__arrow">
           <font-awesome-icon icon="fa-solid fa-angle-down" />
         </div>
       </div>
