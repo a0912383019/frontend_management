@@ -18,7 +18,6 @@ export const apiQueryLifeCycleAnalysisOverview = (params) => {
 
 //階段總覽
 export const apiQueryLifeCycleAnalysisAvgData = (params) => {
-  console.log('apiQueryLifeCycleAnalysisAvgData', params)
   const {
     hall_name,
     query_date,
@@ -46,7 +45,6 @@ export const apiQueryLifeCycleAnalysisAvgData = (params) => {
 
 //會員明細表格
 export const apiQueryLifeCycleAnalysisDetailTbl = (params) => {
-  console.log('apiQueryLifeCycleAnalysisDetailTbl', params)
   const {
     hall_name,
     query_date,
@@ -249,6 +247,33 @@ export const apiQueryMemberPeriodPayoffProfitAmount = (params) => {
       search_date,
       hall_name,
       member_id
+    }
+  )
+}
+//各平台總貨量
+export const apiQueryMemberPeriodPlatformBetAmount = (params) => {
+  const { search_date, hall_name, member_id, locale } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_period_platform_bet_amount' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+      locale
+    }
+  )
+}
+
+//各平台總損益
+export const apiQueryMemberPeriodPlatformPayoff = (params) => {
+  const { search_date, hall_name, member_id, locale } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_period_platform_payoff' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+      locale
     }
   )
 }

@@ -202,7 +202,6 @@ const query_step_total_people = async () => {
       search_date: stepTrendRangeDate.value
     })
     const { return_code } = result.data.status
-    console.log(result, return_code)
     if (return_code === '0000') {
       apiSuccess.value = true
       transform_step_total_people(result.data.result)
@@ -273,7 +272,6 @@ const transform_step_total_people = (result) => {
 const register_chart = () => {
   let ctx = refChart.value.getContext('2d')
   chart = new Chart(ctx, chartSetting)
-  console.log('Chart', chart)
 }
 
 //監聽FilterDate.vue時間戳記

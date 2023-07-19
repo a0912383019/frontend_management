@@ -6,7 +6,7 @@ import { apiQueryLifeCycleAnalysisOverview } from '@/api/manageAnalysis.js'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
-import { FormatNumber } from '@/utils/commonUtils.js'
+import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 import { date_range_picker_config_4 } from '@/utils/dateConfig.js'
 import FilterMemberName from './components/FilterMemberName.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -117,9 +117,13 @@ const query_life_cycle_analysis_overview_tbl = async () => {
     } else if (return_code === '0001') {
       apiSuccess.value = false //取得資料失敗
       messageKey.value = 'noResult' //更改message內容
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     } else if (return_code === '9999') {
       apiSuccess.value = false //取得資料失敗
       messageKey.value = 'queryFailed' //更改message內容
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     }
   } catch (error) {
     console.error(error)
@@ -203,7 +207,7 @@ onMounted(() => {
 const selectRow = ref(null)
 
 const handleClick = (data) => {
-  console.log('handleClick', data)
+  // console.log('handleClick', data)
   selectRow.value = data.id
   manageAnalysisStore.stepType = data.step
   manageAnalysisStore.detailType = data.detail

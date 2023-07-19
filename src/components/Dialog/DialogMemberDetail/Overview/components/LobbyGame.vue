@@ -1,11 +1,16 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberLobbyGame } from '@/api/manageAnalysis.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
-import { generateRGBColors, dynamicBackgroundColors, FormatNumber } from '@/utils/commonUtils.js'
+import {
+  generateRGBColors,
+  errorRespond,
+  dynamicBackgroundColors,
+  FormatNumber
+} from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipFormatter } from '@/utils/highchartsConfig'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { ElNotification } from 'element-plus'
@@ -27,7 +32,7 @@ const apiSuccess = ref(false) //api是否成功
 const messageKey = ref('shortLoading')
 
 //highcharts
-const chartOptions = {
+const chartOptions = reactive({
   chart: {
     plotBackgroundColor: null,
     plotBorderWidth: null,
@@ -107,7 +112,7 @@ const chartOptions = {
       data: []
     }
   ]
-}
+})
 
 //取得資料
 const queryLobbyGameChart = async () => {
@@ -127,8 +132,12 @@ const queryLobbyGameChart = async () => {
       apiSuccess.value = true
     } else if (return_code === '0001') {
       messageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     } else {
       messageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     }
   } catch (error) {
     console.error(error)
@@ -150,6 +159,7 @@ const queryLobbyGameChart = async () => {
 //轉換資料
 const transformLobbyGameChart = (data) => {
   // console.log('transformLobbyGameChart', data)
+  clearChart()
   let chartDataBgColor = []
   for (let i = 0; i < data.length; i++) {
     if (i >= 10) {
@@ -175,6 +185,11 @@ const transformLobbyGameChart = (data) => {
       color
     })
   }
+}
+
+//清空chart資料
+const clearChart = () => {
+  chartOptions.series[0].data = []
 }
 
 onMounted(() => {

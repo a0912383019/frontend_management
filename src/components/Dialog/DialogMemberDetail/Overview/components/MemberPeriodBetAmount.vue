@@ -6,7 +6,7 @@ import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import { dayjs, ElNotification } from 'element-plus'
-import { FormatNumber, getHallCurrencySign } from '@/utils/commonUtils.js'
+import { FormatNumber, errorRespond, getHallCurrencySign } from '@/utils/commonUtils.js'
 import { showDatasetsLabels } from '@/utils/pluginUtils.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -113,8 +113,12 @@ const queryBetLineChart = async () => {
       }, 1)
     } else if (return_code === '0001') {
       messageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     } else {
       messageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     }
   } catch (error) {
     console.error(error)

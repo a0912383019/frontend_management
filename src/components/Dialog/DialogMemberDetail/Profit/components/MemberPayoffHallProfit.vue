@@ -5,7 +5,7 @@ import { apiQueryMemberPeriodPayoffProfitAmount } from '@/api/manageAnalysis.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
-import { FormatNumber, formatNumberWithK } from '@/utils/commonUtils.js'
+import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipShared } from '@/utils/highchartsConfig.js'
 import { ElNotification, dayjs } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -24,6 +24,51 @@ const apiSuccess = ref(false) //會員生命週期階段api是否成功
 //依照不同的messageKey產生不同的message
 const messageKey = ref('shortLoading')
 
+const chartOptions = reactive({
+  chart: {
+    type: 'spline',
+    height: 300
+  },
+  legend: {
+    verticalAlign: 'top'
+  },
+  xAxis: {
+    gridLineColor: '#e8e8e8',
+    gridLineWidth: 1,
+    lineColor: '#e8e8e8',
+    tickmarkPlacement: 'on',
+    tickColor: '#e8e8e8',
+    tickWidth: 1,
+    categories: []
+  },
+  yAxis: {
+    gridLineColor: '#e8e8e8'
+    // showFirstLabel: false,
+  },
+  tooltip: {
+    ...tooltipDarkConfig,
+    crosshairs: true,
+    shared: true,
+    useHTML: true,
+    formatter: function () {
+      // console.log(this)
+      return tooltipShared({ data: this.points, date: this.x, hallCode: activeHall.hall_code })
+    }
+  },
+  plotOptions: {
+    series: {
+      dataLabels: {
+        enabled: false,
+        formatter: function () {
+          return FormatNumber(this.y)
+        }
+      }
+    }
+  },
+  series: []
+})
+
+//取得資料
 const queryMemberPeriodPayoffProfitAmount = async () => {
   messageKey.value = 'shortLoading'
   apiSuccess.value = false
@@ -33,15 +78,19 @@ const queryMemberPeriodPayoffProfitAmount = async () => {
       hall_name: activeHall.hall_code,
       member_id: manageAnalysisStore.memberData.user_id
     })
-    console.log('queryMemberPeriodPayoffProfitAmount', result)
+    // console.log('queryMemberPeriodPayoffProfitAmount', result)
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true
       transformMemberPeriodPayoffProfitAmount(result.data.result)
     } else if (return_code === '0001') {
       messageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     } else {
       messageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     }
   } catch (error) {
     console.error(error)
@@ -61,6 +110,7 @@ const queryMemberPeriodPayoffProfitAmount = async () => {
   }
 }
 
+//轉換資料
 const transformMemberPeriodPayoffProfitAmount = (data) => {
   clearChart()
   let chartData = {
@@ -94,7 +144,7 @@ const transformMemberPeriodPayoffProfitAmount = (data) => {
     chartOptions.plotOptions.series.dataLabels.enabled = true
     chartOptions.xAxis.tickmarkPlacement = 'on'
   }
-  console.log(data.length, chartOptions.plotOptions.series.dataLabels.enabled)
+  // console.log(data.length, chartOptions.plotOptions.series.dataLabels.enabled)
   data.forEach((item) => {
     chartData['accumulate_profit']['data'].push(parseFloat(item.accumulate_profit))
     chartData['payoff']['data'].push(parseFloat(item.payoff))
@@ -110,58 +160,6 @@ const clearChart = () => {
   chartOptions['xAxis']['categories'] = []
   chartOptions['series'] = []
 }
-
-const chartOptions = reactive({
-  chart: {
-    type: 'spline',
-    height: 300
-  },
-  legend: {
-    verticalAlign: 'top'
-  },
-  xAxis: {
-    gridLineColor: '#e8e8e8',
-    gridLineWidth: 1,
-    lineColor: '#e8e8e8',
-    tickmarkPlacement: 'on',
-    tickColor: '#e8e8e8',
-    tickWidth: 1,
-    categories: []
-  },
-  yAxis: {
-    gridLineColor: '#e8e8e8',
-    labels: {
-      formatter: function () {
-        return formatNumberWithK(this.value)
-      }
-    },
-    // showFirstLabel: false,
-    title: {
-      text: ''
-    }
-  },
-  tooltip: {
-    ...tooltipDarkConfig,
-    crosshairs: true,
-    shared: true,
-    useHTML: true,
-    formatter: function () {
-      // console.log(this)
-      return tooltipShared({ data: this.points, date: this.x, hallCode: activeHall.hall_code })
-    }
-  },
-  plotOptions: {
-    series: {
-      dataLabels: {
-        enabled: false,
-        formatter: function () {
-          return FormatNumber(this.y)
-        }
-      }
-    }
-  },
-  series: []
-})
 
 onMounted(() => {
   queryMemberPeriodPayoffProfitAmount()
@@ -179,7 +177,9 @@ watch(
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>
-      <highcharts :options="chartOptions"></highcharts>
+      <div class="cursor-pointer">
+        <highcharts :options="chartOptions"></highcharts>
+      </div>
     </template>
   </section>
 </template>

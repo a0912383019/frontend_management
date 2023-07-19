@@ -26,7 +26,6 @@ export const tooltipFormatter = ({ data, hallCode }) => {
       border-radius: 5px;
       background-color: rgba(0, 0, 0, 0.8)
     ">
-      <div class="font-bold mb-3">${data.key}</div>
       <div class="flex">
         <div class="mr-4 mt-4" style="
           width: 10px;

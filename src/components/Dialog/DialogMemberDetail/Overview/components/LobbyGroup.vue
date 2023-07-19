@@ -5,7 +5,12 @@ import { apiQueryMemberLobbyGroup } from '@/api/manageAnalysis.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
-import { generateRGBColors, dynamicBackgroundColors, FormatNumber } from '@/utils/commonUtils.js'
+import {
+  generateRGBColors,
+  dynamicBackgroundColors,
+  FormatNumber,
+  errorRespond
+} from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipFormatter } from '@/utils/highchartsConfig'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { ElNotification } from 'element-plus'
@@ -121,8 +126,12 @@ const queryLobbyGroupChart = async () => {
       apiSuccess.value = true
     } else if (return_code === '0001') {
       messageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     } else {
       messageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     }
   } catch (error) {
     console.error(error)
@@ -143,6 +152,7 @@ const queryLobbyGroupChart = async () => {
 }
 //轉換資料
 const transformLobbyGroupChart = (data) => {
+  clearChart()
   // console.log('transformLobbyGroupChart', data)
   let chartDataBgColor = []
 
@@ -166,6 +176,11 @@ const transformLobbyGroupChart = (data) => {
       color
     })
   }
+}
+
+//清空chart資料
+const clearChart = () => {
+  chartOptions.series[0].data = []
 }
 
 onMounted(() => {

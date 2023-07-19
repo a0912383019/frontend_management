@@ -1,7 +1,7 @@
 import Highcharts from 'highcharts'
 import HighchartsVue from 'highcharts-vue'
 import highchartsMore from 'highcharts/highcharts-more'
-
+import { formatNumberWithK } from '@/utils/commonUtils.js'
 highchartsMore(Highcharts)
 
 // Highcharts全域設定
@@ -11,6 +11,16 @@ Highcharts.setOptions({
   },
   title: {
     text: ''
+  },
+  yAxis: {
+    title: {
+      text: ''
+    },
+    labels: {
+      formatter: function () {
+        return formatNumberWithK(this.value)
+      }
+    }
   },
   accessibility: {
     enabled: false

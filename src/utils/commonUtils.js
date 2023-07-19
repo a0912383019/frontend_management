@@ -1,4 +1,4 @@
-import { hall_config_dict } from '@/../public/js/system_config.js'
+import { hall_config_dict, chart_fixed_bgColor } from '@/../public/js/system_config.js'
 
 /**
  * 取得儲存在sessionStorage中的JSON物件
@@ -209,6 +209,36 @@ export function dynamicBackgroundColors(alpha) {
   let b = Math.floor(Math.random() * 255)
 
   return 'rgb(' + r + ',' + g + ',' + b + ',' + alpha + ')'
+}
+
+/**
+ * 依照參數，產生對應數量的顏色
+ * @param {number} count 產生顏色的數量
+ * @returns {Object} 回傳有背景色和編框色的物件
+ */
+export function generateMultipleColors(count) {
+  let colorObj = {
+    bg: [],
+    border: []
+  }
+  for (let i = 0; i < count; i++) {
+    let bgColor = ''
+    let borderColor = ''
+    if (i < chart_fixed_bgColor.length) {
+      bgColor = generateRGBColors(chart_fixed_bgColor[i], 0.7) // 使用定義好的顏色
+      borderColor = bgColor.substring(0, bgColor.lastIndexOf(',')) + ',1)'
+    } else {
+      bgColor = dynamicBackgroundColors(0.7) // 隨機產生顏色
+      while (colorObj.bg.indexOf(bgColor) > -1) {
+        // 判斷該顏色是否已經存在
+        bgColor = dynamicBackgroundColors(0.7) // 若顏色已存在陣列中，則隨機產生新顏色
+      }
+      borderColor = bgColor.substring(0, bgColor.lastIndexOf(',')) + ',1)'
+    }
+    colorObj['bg'].push(bgColor)
+    colorObj['border'].push(borderColor)
+  }
+  return colorObj
 }
 
 /**

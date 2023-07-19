@@ -10,7 +10,8 @@ import {
   dynamicBackgroundColors,
   getHallCurrencySign,
   FormatNumber,
-  formatNumberWithK
+  formatNumberWithK,
+  errorRespond
 } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipFormatter } from '@/utils/highchartsConfig'
 import { showPolarDatasetsLabels } from '@/utils/pluginUtils.js'
@@ -127,8 +128,12 @@ const queryLobbyChart = async () => {
       }, 1)
     } else if (return_code === '0001') {
       messageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     } else {
       messageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     }
   } catch (error) {
     console.error(error)

@@ -63,7 +63,6 @@ const query_life_cycle_analysis_avg_data = async () => {
     })
     const { return_code } = result.data.status
     const { avg_bet_amount, avg_deposit_amount, avg_payoff } = result.data.result
-    console.log(avg_bet_amount, avg_deposit_amount, avg_payoff)
     if (return_code === '0000') {
       apiSuccess.value = true //取得資料成功
       //日均存款
