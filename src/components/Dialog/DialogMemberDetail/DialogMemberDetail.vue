@@ -15,7 +15,7 @@ const dialogVisible = ref(false)
 const manageAnalysisStore = useManageAnalysisStore()
 
 //當前顯示的tab
-const currentTabs = ref('Profit')
+const currentTabs = ref('Overview')
 
 //tabs列表
 const tabData = computed(() => {
