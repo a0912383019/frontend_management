@@ -5,10 +5,10 @@ import {
   apiQueryMemberInfo,
   apiQueryMemberLifeCycle,
   apiUpdateMemberTagsEnable
-} from '@/api/manageAnalysis.js'
+} from '@/api/dialogMemberDetail.js'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
-import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
+import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import {
   getSessionStorageEntity,
   checkTagUsage,
@@ -25,7 +25,7 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 const { tableConfig } = storeToRefs(globalStore)
 
-const manageAnalysisStore = useManageAnalysisStore()
+const dialogMemberDetailStore = useDialogMemberDetailStore()
 
 const apiMemberData = reactive({}) //存放api資料
 
@@ -39,7 +39,7 @@ const queryMemberInfo = async () => {
   try {
     const result = await apiQueryMemberInfo({
       hall_name: activeHall.hall_code,
-      member_id: manageAnalysisStore.memberData.user_id
+      member_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -101,7 +101,7 @@ const transformMemberInfoTagStr = (data) => {
 }
 
 const handleTagIsEdit = (status) => {
-  console.log(status)
+  // console.log(status)
   if (status) {
     //true 進入編輯內容
     tagIsEdit.value = status
@@ -114,13 +114,13 @@ const handleTagIsEdit = (status) => {
 
 const tagInnerDialogVisible = ref(false) //inner dialog開啟狀態
 const handleInnerTagIsEdit = (status) => {
-  console.log('submit api data', {
-    hall_name: activeHall.hall_code,
-    member_id: manageAnalysisStore.memberData.user_id,
-    user_name: apiMemberData.user_name,
-    user_tags_original: includeTags.value,
-    user_tags_new: tagSelectValue.value.join(',')
-  })
+  // console.log('submit api data', {
+  //   hall_name: activeHall.hall_code,
+  //   member_id: dialogMemberDetailStore.memberData.user_id,
+  //   user_name: apiMemberData.user_name,
+  //   user_tags_original: includeTags.value,
+  //   user_tags_new: tagSelectValue.value.join(',')
+  // })
   tagInnerDialogVisible.value = false
   switch (status) {
     case 'confirm':
@@ -131,7 +131,7 @@ const handleInnerTagIsEdit = (status) => {
 
 //取得修改後標籤的文字
 const transformConfirmTagsText = () => {
-  console.log('tagSelectValue', tagSelectValue.value)
+  // console.log('tagSelectValue', tagSelectValue.value)
   let lastIndex = tagSelectValue.value.length - 1
   confirmTagsText.value = []
   tagSelectValue.value.forEach((item, index) => {
@@ -146,12 +146,12 @@ const updateMemberTagsEnable = async () => {
   try {
     const result = await apiUpdateMemberTagsEnable({
       hall_name: activeHall.hall_code,
-      member_id: manageAnalysisStore.memberData.user_id,
+      member_id: dialogMemberDetailStore.memberData.user_id,
       user_name: apiMemberData.user_name,
       user_tags_original: includeTags.value,
       user_tags_new: tagSelectValue.value.join(',')
     })
-    console.log('updateMemberTagsEnable', result)
+    // console.log('updateMemberTagsEnable', result)
     const { return_code } = result.data.status
     if (return_code === '0000') {
       pageInit()
@@ -215,7 +215,7 @@ const queryMemberLifeCycle = async () => {
   try {
     const result = await apiQueryMemberLifeCycle({
       hall_name: activeHall.hall_code,
-      member_id: manageAnalysisStore.memberData.user_id,
+      member_id: dialogMemberDetailStore.memberData.user_id,
       data_date: dayjs().subtract(2, 'day').format('YYYY-MM-DD') // 預設取當下日期前兩天為條件
     })
     const { return_code } = result.data.status

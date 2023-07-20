@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryMemberLobby } from '@/api/manageAnalysis.js'
-import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
+import { apiQueryMemberLobby } from '@/api/dialogMemberDetail.js'
+import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import {
@@ -13,8 +13,6 @@ import {
   formatNumberWithK,
   errorRespond
 } from '@/utils/commonUtils.js'
-import { tooltipDarkConfig, tooltipFormatter } from '@/utils/highchartsConfig'
-import { showPolarDatasetsLabels } from '@/utils/pluginUtils.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { ElNotification } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -27,9 +25,8 @@ const { t, locale: i18nLocale } = useI18n()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const manageAnalysisStore = useManageAnalysisStore()
-const { dialogMemberDetailRangeDate, filterDateDialogMemberDetailTimestamp } =
-  storeToRefs(manageAnalysisStore)
+const dialogMemberDetailStore = useDialogMemberDetailStore()
+const { dialogMemberDetailRangeDate } = storeToRefs(dialogMemberDetailStore)
 
 const apiSuccess = ref(false) //api是否成功
 
@@ -115,7 +112,7 @@ const queryLobbyChart = async () => {
     const result = await apiQueryMemberLobby({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: manageAnalysisStore.memberData.user_id,
+      member_id: dialogMemberDetailStore.memberData.user_id,
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
@@ -223,84 +220,11 @@ const transformLobbyChart = (data) => {
   chartSetting.data.datasets = chart_datasets
 }
 
-// const chartOptions = {
-//   chart: {
-//     type: 'column',
-//     polar: true
-//   },
-
-//   // pane: {
-//   //   startAngle: 0,
-//   //   endAngle: 360
-//   // },
-
-//   xAxis: {
-//     lineColor: '#e8e8e8',
-//     // tickInterval: 45,
-//     min: 0,
-//     max: 360,
-//     labels: {
-//       format: ' '
-//     }
-//   },
-
-//   yAxis: {
-//     gridLineColor: '#e8e8e8',
-//     // tickInterval: 45,
-//     min: 0,
-//     max: 360,
-//     labels: {
-//       formatter() {
-//         // return this.value
-//         return Math.abs(this.value) >= 1000 ? this.value / 1000 + 'k' : this.value
-//       }
-//     }
-//   },
-
-//   plotOptions: {
-//     column: {
-//       pointPadding: 0,
-//       groupPadding: 0,
-//       // showInLegend: true,
-//       dataLabels: {
-//         enabled: true,
-//         // format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-//         formatter: function () {
-//           // console.log(this)
-//           return FormatNumber(this.y)
-//         },
-//         useHTML: true
-//       }
-//     }
-//   },
-
-//   legend: {
-//     layout: 'vertical',
-//     align: 'right',
-//     verticalAlign: 'middle',
-//     useHTML: true,
-//     symbolRadius: 0,
-//     symbolWidth: 0,
-//     symbolHeight: 0
-//   },
-
-//   tooltip: {
-//     ...tooltipDarkConfig,
-//     useHTML: true,
-//     formatter(eve) {
-//       console.log(this, eve)
-//       return tooltipFormatter({ data: this, hallCode: activeHall.hall_code })
-//     }
-//   },
-
-//   series: []
-// }
-
 onMounted(() => {
   queryLobbyChart()
 })
 watch(
-  () => filterDateDialogMemberDetailTimestamp.value,
+  () => dialogMemberDetailRangeDate.value,
   () => {
     queryLobbyChart()
   }
@@ -315,7 +239,6 @@ watch(
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" :height="250" bg="white" v-if="apiSuccess === false" />
     <div v-else>
-      <!-- <highcharts :options="chartOptions"></highcharts> -->
       <canvas
         ref="refChart"
         style="

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
+import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import FilterDate from '@/components/Filter/FilterDate.vue'
 import Tab from '@/components/Tab.vue'
 import Overview from './Overview/Overview.vue'
@@ -12,7 +12,7 @@ import Analysis from './Analysis/Analysis.vue'
 const { t } = useI18n()
 const dialogVisible = ref(false)
 
-const manageAnalysisStore = useManageAnalysisStore()
+const dialogMemberDetailStore = useDialogMemberDetailStore()
 
 //當前顯示的tab
 const currentTabs = ref('Overview')
@@ -70,14 +70,13 @@ const headerTitle = computed(() => {
 const handleOpenDialog = () => {
   dialogVisible.value = true
   headerMemberName.value = ''
-  headerMemberName.value = manageAnalysisStore.memberData.user_name
+  headerMemberName.value = dialogMemberDetailStore.memberData.user_name
 }
 
 //日期更新後執行的動作
 const updateTimestamp = (data) => {
   //將資料寫到pinia
-  manageAnalysisStore.filterDateDialogMemberDetailTimestamp = data['timestamp']
-  manageAnalysisStore.dialogMemberDetailRangeDate = data['rangeDate']
+  dialogMemberDetailStore.dialogMemberDetailRangeDate = data['rangeDate']
 }
 
 defineExpose({ handleOpenDialog })
@@ -105,7 +104,7 @@ defineExpose({ handleOpenDialog })
             <div class="flex justify-end">
               <FilterDate
                 :config="13"
-                :rangeDate="manageAnalysisStore.dialogMemberDetailRangeDate"
+                :rangeDate="dialogMemberDetailStore.dialogMemberDetailRangeDate"
                 @update:timestamp="updateTimestamp"
                 :rangeEndDate="1"
               />

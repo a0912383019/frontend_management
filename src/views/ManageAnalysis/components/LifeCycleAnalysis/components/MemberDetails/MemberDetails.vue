@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
+import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { apiQueryLifeCycleAnalysisDetailTbl } from '@/api/manageAnalysis.js'
 import { FormatNumber, addNumberColor } from '@/utils/commonUtils.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -17,6 +18,8 @@ import CurrencySignText from '@/components/CurrencySignText.vue'
 const { t } = useI18n()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+
+const dialogMemberDetailStore = useDialogMemberDetailStore()
 
 const manageAnalysisStore = useManageAnalysisStore()
 const { queryDate } = manageAnalysisStore
@@ -312,8 +315,8 @@ const query_life_cycle_analysis_detail_tbl = async () => {
 //會員明細Dialog點擊
 const handleMemberDetailClick = (val) => {
   //寫入store
-  manageAnalysisStore.memberData = {}
-  manageAnalysisStore.memberData = val
+  dialogMemberDetailStore.memberData = {}
+  dialogMemberDetailStore.memberData = val
   refDialogMemberDetail.value.handleOpenDialog()
 }
 
