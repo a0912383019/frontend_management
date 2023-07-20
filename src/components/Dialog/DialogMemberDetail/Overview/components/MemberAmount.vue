@@ -1,8 +1,8 @@
 <script setup>
 import { ref, reactive, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryProfitWithdrawDepositAmount } from '@/api/manageAnalysis.js'
-import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
+import { apiQueryProfitWithdrawDepositAmount } from '@/api/dialogMemberDetail.js'
+import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import { getHallCurrencySign, FormatNumber } from '@/utils/commonUtils.js'
@@ -13,9 +13,8 @@ const { t } = useI18n()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const manageAnalysisStore = useManageAnalysisStore()
-const { dialogMemberDetailRangeDate, filterDateDialogMemberDetailTimestamp } =
-  storeToRefs(manageAnalysisStore)
+const dialogMemberDetailStore = useDialogMemberDetailStore()
+const { dialogMemberDetailRangeDate } = storeToRefs(dialogMemberDetailStore)
 
 const amountData = reactive({
   total_profit: '', //廳主實際總損益
@@ -33,7 +32,7 @@ const queryProfitWithdrawDepositAmount = async () => {
     const result = await apiQueryProfitWithdrawDepositAmount({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: manageAnalysisStore.memberData.user_id
+      member_id: dialogMemberDetailStore.memberData.user_id
     })
     // console.log('queryProfitWithdrawDepositAmount', result)
     const { return_code } = result.data.status
@@ -65,7 +64,7 @@ onMounted(() => {
 })
 
 watch(
-  () => filterDateDialogMemberDetailTimestamp.value,
+  () => dialogMemberDetailRangeDate.value,
   () => {
     queryProfitWithdrawDepositAmount()
   }

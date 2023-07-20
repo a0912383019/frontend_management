@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryMemberHealthChart } from '@/api/manageAnalysis.js'
+import { apiQueryMemberHealthChart } from '@/api/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
-import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
+import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import Chart from 'chart.js/auto'
 import { generateRGBColors, errorRespond } from '@/utils/commonUtils.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
@@ -13,7 +13,7 @@ const { t } = useI18n()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const manageAnalysisStore = useManageAnalysisStore()
+const dialogMemberDetailStore = useDialogMemberDetailStore()
 
 const apiSuccess = ref(false) //會員生命週期階段api是否成功
 //依照不同的messageKey產生不同的message
@@ -61,7 +61,7 @@ const queryMemberHealthChart = async () => {
   try {
     const result = await apiQueryMemberHealthChart({
       hall_name: activeHall.hall_code,
-      member_id: manageAnalysisStore.memberData.user_id
+      member_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {

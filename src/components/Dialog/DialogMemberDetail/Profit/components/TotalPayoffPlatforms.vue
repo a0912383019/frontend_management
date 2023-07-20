@@ -1,8 +1,8 @@
 <script setup>
 import { ref, reactive, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryMemberPeriodPlatformPayoff } from '@/api/manageAnalysis.js'
-import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
+import { apiQueryMemberPeriodPlatformPayoff } from '@/api/dialogMemberDetail.js'
+import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
@@ -17,9 +17,8 @@ const { t, locale: i18nLocale } = useI18n()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const manageAnalysisStore = useManageAnalysisStore()
-const { dialogMemberDetailRangeDate, filterDateDialogMemberDetailTimestamp } =
-  storeToRefs(manageAnalysisStore)
+const dialogMemberDetailStore = useDialogMemberDetailStore()
+const { dialogMemberDetailRangeDate } = storeToRefs(dialogMemberDetailStore)
 
 const apiSuccess = ref(false) //會員生命週期階段api是否成功
 //依照不同的messageKey產生不同的message
@@ -76,7 +75,7 @@ const queryMemberPeriodPlatformPayoff = async () => {
     const result = await apiQueryMemberPeriodPlatformPayoff({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: manageAnalysisStore.memberData.user_id,
+      member_id: dialogMemberDetailStore.memberData.user_id,
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
@@ -137,7 +136,7 @@ onMounted(() => {
   queryMemberPeriodPlatformPayoff()
 })
 watch(
-  () => filterDateDialogMemberDetailTimestamp.value,
+  () => dialogMemberDetailRangeDate.value,
   () => {
     queryMemberPeriodPlatformPayoff()
   }

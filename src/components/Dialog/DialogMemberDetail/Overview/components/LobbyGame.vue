@@ -1,8 +1,8 @@
 <script setup>
 import { ref, reactive, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryMemberLobbyGame } from '@/api/manageAnalysis.js'
-import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
+import { apiQueryMemberLobbyGame } from '@/api/dialogMemberDetail.js'
+import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import {
@@ -22,9 +22,8 @@ const { t, locale: i18nLocale } = useI18n()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const manageAnalysisStore = useManageAnalysisStore()
-const { dialogMemberDetailRangeDate, filterDateDialogMemberDetailTimestamp } =
-  storeToRefs(manageAnalysisStore)
+const dialogMemberDetailStore = useDialogMemberDetailStore()
+const { dialogMemberDetailRangeDate } = storeToRefs(dialogMemberDetailStore)
 
 const apiSuccess = ref(false) //api是否成功
 
@@ -122,7 +121,7 @@ const queryLobbyGameChart = async () => {
     const result = await apiQueryMemberLobbyGame({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: manageAnalysisStore.memberData.user_id,
+      member_id: dialogMemberDetailStore.memberData.user_id,
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
@@ -196,7 +195,7 @@ onMounted(() => {
   queryLobbyGameChart()
 })
 watch(
-  () => filterDateDialogMemberDetailTimestamp.value,
+  () => dialogMemberDetailRangeDate.value,
   () => {
     queryLobbyGameChart()
   }
