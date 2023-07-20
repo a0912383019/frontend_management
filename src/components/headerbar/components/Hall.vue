@@ -30,6 +30,9 @@ const updateTime = () => {
 
 const isDropOpen = ref(false) //下拉開啟狀態
 const countdownInterval = ref(1000) // 每秒倒數
+const idleNotificationDuration = ref(
+  logout_counter_min * 60 * countdownInterval.value + logout_counter_sec * countdownInterval.value
+) // 閒置時間Notification的持續時間
 const refHallContent = ref(null)
 
 const hallDropdownList = ref([]) //廳別下拉選單選項
@@ -150,7 +153,7 @@ const doAutoLogoutCounter = () => {
           })
         ]),
         type: 'warning',
-        duration: 0
+        duration: idleNotificationDuration.value
       })
     }
     if (timeoutMin.value >= 0) {

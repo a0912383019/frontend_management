@@ -30,15 +30,18 @@ const popoverVisible = ref(false)
 
 const dateValueStartDate = ref('')
 const dateValueEndDate = ref('')
+const dateMinDate = ref('')
 //根據props config決定使用的預設日期
 switch (props.config) {
   case 11:
     dateValueStartDate.value = date_range_picker_config_11.startDate
     dateValueEndDate.value = date_range_picker_config_11.endDate
+    dateMinDate.value = date_range_picker_config_11.minDate
     break
   case 13:
     dateValueStartDate.value = date_range_picker_config_13.startDate
     dateValueEndDate.value = date_range_picker_config_13.endDate
+    dateMinDate.value = date_range_picker_config_13.minDate
     break
 }
 //如果props rangedate有值，優先使用
@@ -49,7 +52,7 @@ if (props.rangeDate !== '') {
 const dateValue = ref([dateValueStartDate.value, dateValueEndDate.value])
 
 const disabledDate = (day) => {
-  return day > dateValueEndDate.value
+  return day < dateMinDate.value || day > dateValueEndDate.value
 }
 const shortcuts = [
   {
@@ -152,7 +155,7 @@ const handleClick = () => {
           <el-date-picker
             v-model="dateValue"
             type="daterange"
-            unlink-panels
+            :unlink-panels="true"
             range-separator="~"
             start-placeholder="Start date"
             end-placeholder="End date"
