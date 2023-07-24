@@ -123,6 +123,20 @@ export const apiQueryMemberPeriodPayoffProfitAmount = (params) => {
     }
   )
 }
+
+//出入款金額
+export const apiQueryMemberPeriodDepositWithdrawAmount = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_period_deposit_withdraw_amount' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id
+    }
+  )
+}
+
 //各平台總貨量
 export const apiQueryMemberPeriodPlatformBetAmount = (params) => {
   const { search_date, hall_name, member_id, locale } = params
