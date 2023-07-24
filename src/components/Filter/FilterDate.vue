@@ -155,7 +155,9 @@ const handleClick = () => {
           <el-date-picker
             v-model="dateValue"
             type="daterange"
-            :unlink-panels="true"
+            :unlink-panels="false"
+            :clearable="false"
+            popper-class="cdp-datepicker-range"
             range-separator="~"
             start-placeholder="Start date"
             end-placeholder="End date"

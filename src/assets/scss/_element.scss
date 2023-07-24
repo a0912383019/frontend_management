@@ -160,3 +160,91 @@
 .el-date-table td.end-date .el-date-table-cell__text, .el-date-table td.start-date .el-date-table-cell__text {
   background-color: $purple;
 }
+
+.el-range-editor {
+  &.is-active {
+    box-shadow: 0 0 0 1px #6a53ba inset !important;
+    &:hover {
+      box-shadow: 0 0 0 1px #6a53ba inset !important;
+    }
+  }
+}
+
+.cdp-datepicker-range {
+  &.el-picker__popper.el-popper {
+    padding-right: 4px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+  }
+  .el-picker-panel {
+    &__sidebar {
+      padding: 20px 10px;
+      border-right: none;
+    }
+    &__shortcut {
+      padding: 7px 10px;
+      color: #374050;
+      line-height: 1.1;
+      transition: all .4s;
+      &:hover {
+          color: #fff;
+          background-color: #6a53ba;
+          border-radius: 2px;
+      }
+    }
+    &__icon-btn {
+      &:hover {
+        color: #6a53ba;
+      }
+    }
+  }
+  .el-date-table td.end-date .el-date-table-cell__text, .el-date-table td.start-date .el-date-table-cell__text {
+    background-color: #6a53ba;
+  }
+  .el-date-table td.in-range .el-date-table-cell {
+    background-color: rgba(106, 83, 186, 0.08);
+  }
+  .el-date-table td.today .el-date-table-cell__text {
+    color: #6a53ba;
+  }
+  .el-date-table td {
+    &.available {
+      color: #374050;
+      &:hover {
+        .el-date-table-cell__text {
+          color: #fff;
+          background-color: #6a53ba;
+        }
+      }
+    }
+  }
+  .el-date-table td.next-month, .el-date-table td.prev-month {
+    color: #c3c5ca;
+  }
+  .el-date-range-picker__content {
+    position: relative;
+    padding: 25px;
+    &.is-left {
+      &::before {
+        left: 10px;
+      }
+    }
+    &.is-right {
+      &::before {
+        right: 10px;
+      }
+    }
+    &::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        width: calc(100% - 20px);
+        height: calc(100% - 30px);
+        border: solid 1px #ccc5e1;
+        pointer-events: none;
+        border-radius: 5px;
+    }
+    &.is-left {
+      border-right: none;
+    }
+  }
+}

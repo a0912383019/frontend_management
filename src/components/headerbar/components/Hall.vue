@@ -10,7 +10,7 @@ import { ElNotification } from 'element-plus'
 import { useSystemStore } from '@/stores/system.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { useSidebarStore } from '@/stores/sidebar.js'
-import { apiRefresh, apiGetSystemConfig } from '@/api/system.js'
+import { apiRefresh, apiGoRefresh, apiGetSystemConfig } from '@/api/system.js'
 import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -208,36 +208,73 @@ const refresh = (is_need_close_loading = true) => {
   if (typeof counter.value !== 'undefined') {
     isDisabledResetBtn.value = true //將重新計時按鈕disabled
     globalStore.isLoading = true // 顯示Loading視窗
-    const refreshToken = () => {
-      return new Promise((resolve, reject) => {
-        apiRefresh()
-          .then((result) => {
-            if (result.data.status.return_code === '0000') {
-              let user_info_entity = getSessionStorageEntity('user_info')
-              user_info_entity.user_type = result.data.user_type // 更新使用者身份權限
-              user_info_entity.access_hall = result.data.access_hall // 更新使用者可存取廳別
-              sessionStorage.setItem('user_info', JSON.stringify(user_info_entity))
-              sessionStorage.access_token = result.data.token_type + ' ' + result.data.access_token // 將新取得的access_token更新至sessionStorage
-
-              resolve('Refresh success') //表示Promise物件執行成功，可往下繼續執行
-            } else {
-              reject(result.data.status) //表示Promise物件執行失敗，拒絕後續的程式執行
-            }
-          })
-          .catch((error) => {
-            console.error(error)
-            if (error.response.status === 401) {
-              // 若api回應401 http error code，導至登入頁
-              sessionStorage.clear()
-              localStorage.clear()
-              sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
-              router.push({ name: 'Login' })
-              let failMsg = `${error.response.status} : ${error.response.data.message}`
-              reject(failMsg) //表示Promise物件執行失敗，拒絕後續的程式執行
-            }
-          })
-      })
+    const refreshToken = async () => {
+      try {
+        const [phpResponse, goResponse] = await Promise.all([apiRefresh(), apiGoRefresh()])
+        const { return_code: phpReturnCode } = phpResponse.data.status
+        const { return_code: goReturnCode } = goResponse.data.status
+        const { access_token: phpAccessToken } = phpResponse.data
+        const {
+          user_type,
+          access_hall,
+          token_type,
+          access_token: goAccessToken
+        } = goResponse.data.result
+        if (phpReturnCode === '0000' && goReturnCode === '0000') {
+          let user_info_entity = getSessionStorageEntity('user_info')
+          user_info_entity.user_type = user_type // 更新使用者身份權限
+          user_info_entity.access_hall = access_hall // 更新使用者可存取廳別
+          sessionStorage.setItem('user_info', JSON.stringify(user_info_entity))
+          sessionStorage.access_token = token_type + ' ' + phpAccessToken // 將新取得的access_token更新至sessionStorage
+          sessionStorage.access_token_go = token_type + ' ' + goAccessToken // 將新取得的access_token更新至sessionStorage
+          return Promise.resolve('Refresh success') //表示Promise物件執行成功，可往下繼續執行
+        } else {
+          return Promise.reject(goResponse.data.status) //表示Promise物件執行失敗，拒絕後續的程式執行
+        }
+      } catch (error) {
+        console.error(error)
+        if (error.response.status === 401) {
+          // 若api回應401 http error code，導至登入頁
+          sessionStorage.clear()
+          localStorage.clear()
+          sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
+          router.push({ name: 'Login' })
+          let failMsg = `${error.response.status} : ${error.response.data.message}`
+          return Promise.reject(failMsg) //表示Promise物件執行失敗，拒絕後續的程式執行
+        }
+        return Promise.reject(error)
+      }
     }
+    // const refreshToken = () => {
+    //   return new Promise((resolve, reject) => {
+    //     apiRefresh()
+    //       .then((result) => {
+    //         if (result.data.status.return_code === '0000') {
+    //           let user_info_entity = getSessionStorageEntity('user_info')
+    //           user_info_entity.user_type = result.data.user_type // 更新使用者身份權限
+    //           user_info_entity.access_hall = result.data.access_hall // 更新使用者可存取廳別
+    //           sessionStorage.setItem('user_info', JSON.stringify(user_info_entity))
+    //           sessionStorage.access_token = result.data.token_type + ' ' + result.data.access_token // 將新取得的access_token更新至sessionStorage
+
+    //           resolve('Refresh success') //表示Promise物件執行成功，可往下繼續執行
+    //         } else {
+    //           reject(result.data.status) //表示Promise物件執行失敗，拒絕後續的程式執行
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         console.error(error)
+    //         if (error.response.status === 401) {
+    //           // 若api回應401 http error code，導至登入頁
+    //           sessionStorage.clear()
+    //           localStorage.clear()
+    //           sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
+    //           router.push({ name: 'Login' })
+    //           let failMsg = `${error.response.status} : ${error.response.data.message}`
+    //           reject(failMsg) //表示Promise物件執行失敗，拒絕後續的程式執行
+    //         }
+    //       })
+    //   })
+    // }
     //  refresh成功取得api access_token後才重新倒數
     return refreshToken()
       .then(() => {
