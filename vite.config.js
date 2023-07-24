@@ -26,15 +26,15 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/travelApi': {
-        target: 'https://www.travel.taipei/open-api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/travelApi/, '')
-      },
-      '/cdpapi': {
+      '/php-api': {
         target: 'https://demo-api-cdp.caino.club',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/cdpapi/, '')
+        rewrite: (path) => path.replace(/^\/php-api/, '')
+      },
+      '/go-api': {
+        target: 'https://demo-cdp-v-api.caino.club',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/go-api/, '')
       }
     }
   }
