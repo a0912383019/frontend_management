@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { apiLogin } from '@/api/system.js'
+import { apiLogin, apiGoLogin } from '@/api/system.js'
 import ErrorText from '@/components/ErrorText.vue'
 import { ElNotification } from 'element-plus'
 import { useGlobalStore } from '@/stores/global.js'
@@ -10,7 +10,7 @@ const globalStore = useGlobalStore()
 
 const router = useRouter()
 
-const test = import.meta.env.VITE_LOCAL_IP
+const test = import.meta.env.VITE_ENV
 console.log('目前環境：', test)
 
 //震動
@@ -75,29 +75,44 @@ const googleLoginCallback = (response) => {
 }
 
 const handleLogin = async ({ credential }) => {
-  // console.log('credential', credential)
   hideErrorMsg()
   globalStore.isLoading = true
   try {
-    const result = await apiLogin({
-      id_token: credential
-    })
+    const [phpResponse, goResponse] = await Promise.all([
+      apiLogin({
+        id_token: credential
+      }),
+      apiGoLogin({
+        id_token: credential
+      })
+    ])
+    const { return_code: phpReturnCode } = phpResponse.data.status
+    const { return_code: goReturnCode } = goResponse.data.status
     if (Storage !== undefined) {
       //判斷瀏覽器是否有支援web storage
-      if (result.data.status.return_code === '0000') {
+      if (phpReturnCode === '0000' && goReturnCode === '0000') {
+        const { token_type: phpTokenType, access_token: phpAccessToken } = phpResponse.data
+        const {
+          user_id,
+          user_name,
+          user_type,
+          access_hall,
+          user_picture,
+          token_type: goTokenType,
+          access_token: goAccessToken
+        } = goResponse.data.result
         let user_info_entity = {
-          user_id: result.data.user_id,
-          user_name: result.data.user_name,
-          user_type: result.data.user_type,
-          access_hall: result.data.access_hall,
-          user_picture: result.data.picture
+          user_id,
+          user_name,
+          user_type,
+          access_hall,
+          user_picture
         }
-        // console.log('user_info_entity', user_info_entity)
         sessionStorage.user_info = JSON.stringify(user_info_entity)
-
         // 將取得的access_token存入sessionStorage
-        sessionStorage.access_token = result.data.token_type + ' ' + result.data.access_token
-        return result
+        sessionStorage.access_token = phpTokenType + ' ' + phpAccessToken
+        sessionStorage.access_token_go = goTokenType + ' ' + goAccessToken
+        return true
       } else {
         //若為其他錯誤，顯示系統繁忙中
         failMsg['msg2']['isShow'] = true
@@ -125,6 +140,58 @@ const handleLogin = async ({ credential }) => {
     throw error
   }
 }
+
+// const handleLogin = async ({ credential }) => {
+//   // console.log('credential', credential)
+//   hideErrorMsg()
+//   globalStore.isLoading = true
+//   try {
+//     const result = await apiLogin({
+//       id_token: credential
+//     })
+//     if (Storage !== undefined) {
+//       //判斷瀏覽器是否有支援web storage
+//       if (result.data.status.return_code === '0000') {
+//         let user_info_entity = {
+//           user_id: result.data.user_id,
+//           user_name: result.data.user_name,
+//           user_type: result.data.user_type,
+//           access_hall: result.data.access_hall,
+//           user_picture: result.data.picture
+//         }
+//         // console.log('user_info_entity', user_info_entity)
+//         sessionStorage.user_info = JSON.stringify(user_info_entity)
+
+//         // 將取得的access_token存入sessionStorage
+//         sessionStorage.access_token = result.data.token_type + ' ' + result.data.access_token
+//         return result
+//       } else {
+//         //若為其他錯誤，顯示系統繁忙中
+//         failMsg['msg2']['isShow'] = true
+//         throw new Error()
+//       }
+//     } else {
+//       failMsg['msg3']['isShow'] = true
+//       throw new Error()
+//     }
+//   } catch (error) {
+//     console.log('error', error)
+//     const { status, statusText } = error.response
+//     if (status === 401) {
+//       if (statusText === 'Unauthorized') {
+//         failMsg['msg1']['isShow'] = true //若回傳的錯誤訊息為Unauthorized，顯示登入失敗錯誤訊息
+//       } else if (statusText === 'Suspended') {
+//         failMsg['msg4']['isShow'] = true //若回傳的錯誤訊息為Suspended，顯示帳戶未啟用錯誤訊息
+//       } else {
+//         failMsg['msg1']['isShow'] = true
+//       }
+//     } else {
+//       failMsg['msg2']['isShow'] = true //若為其他錯誤，顯示系統繁忙中
+//     }
+//     console.error(error)
+//     throw error
+//   }
+// }
 </script>
 <template>
   <section class="login__box">

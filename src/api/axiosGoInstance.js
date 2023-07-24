@@ -1,17 +1,17 @@
 import axios from 'axios'
 
-const baseURL = import.meta.env.VITE_API_PHP_BASE_URL
-const axiosInstance = axios.create({
+const baseURL = import.meta.env.VITE_API_GO_BASE_URL
+const axiosGoInstance = axios.create({
   baseURL,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
 })
 
-axiosInstance.interceptors.request.use(
+axiosGoInstance.interceptors.request.use(
   (request) => {
     // console.log('request', request)
-    const accessToken = sessionStorage.access_token
+    const accessToken = sessionStorage.access_token_go
     if (accessToken) {
       //添加Authorization
       request.headers['Authorization'] = accessToken
@@ -27,7 +27,7 @@ axiosInstance.interceptors.request.use(
   }
 )
 
-axiosInstance.interceptors.response.use(
+axiosGoInstance.interceptors.response.use(
   (response) => {
     // console.log(response)
     return Promise.resolve(response)
@@ -38,4 +38,4 @@ axiosInstance.interceptors.response.use(
   }
 )
 
-export default axiosInstance
+export default axiosGoInstance
