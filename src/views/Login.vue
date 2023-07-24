@@ -97,16 +97,17 @@ const handleLogin = async ({ credential }) => {
           user_name,
           user_type,
           access_hall,
-          user_picture,
+          picture,
           token_type: goTokenType,
           access_token: goAccessToken
         } = goResponse.data.result
+        console.log('picture', goResponse.data.result)
         let user_info_entity = {
           user_id,
           user_name,
           user_type,
           access_hall,
-          user_picture
+          picture
         }
         sessionStorage.user_info = JSON.stringify(user_info_entity)
         // 將取得的access_token存入sessionStorage

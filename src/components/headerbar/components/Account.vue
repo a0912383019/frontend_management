@@ -4,7 +4,7 @@ import { useSystemStore } from '@/stores/system'
 
 const systemStore = useSystemStore()
 
-const { user_name, user_picture } = JSON.parse(sessionStorage.user_info)
+const { user_name, picture } = JSON.parse(sessionStorage.user_info)
 
 const dropdownMenu = ref(null)
 const dropdownVisible = ref(false)
@@ -28,7 +28,7 @@ onUnmounted(() => {
 <template>
   <div class="accountbox">
     <div class="accountbox__img targetDropDown">
-      <img :src="user_picture" alt="" />
+      <img :src="picture" alt="" />
     </div>
     <div class="accountbox__rightbox">
       <div class="accountbox__name targetDropDown">
