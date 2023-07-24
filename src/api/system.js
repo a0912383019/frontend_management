@@ -33,5 +33,10 @@ export const apiGoRefresh = () => {
 export const apiGetSystemConfig = (params) => {
   // console.log('apiGetSystemConfig', params)
   const { hall_name, locale } = params
-  return axiosInstance.post('/api/auth/systemConfig/get_system_config', { hall_name, locale })
+  return axiosGoInstance.get('/api/auth/system_config', {
+    params: {
+      hall_name,
+      locale
+    }
+  })
 }
