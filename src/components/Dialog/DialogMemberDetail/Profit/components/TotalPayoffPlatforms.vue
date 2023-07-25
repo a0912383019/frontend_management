@@ -6,7 +6,7 @@ import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
-import { tooltipDarkConfig, tooltipFormatter } from '@/utils/highchartsConfig.js'
+import { tooltipDarkConfig, tooltipSingleShared } from '@/utils/highchartsConfig.js'
 import { ElNotification } from 'element-plus'
 import { generateMultipleColors } from '@/utils/commonUtils.js'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -45,9 +45,10 @@ const chartOptions = reactive({
   },
   tooltip: {
     ...tooltipDarkConfig,
+    shared: true,
     useHTML: true,
     formatter() {
-      return tooltipFormatter({ data: this, hallCode: activeHall.hall_code })
+      return tooltipSingleShared({ data: this.points, hallCode: activeHall.hall_code })
     }
   },
   plotOptions: {

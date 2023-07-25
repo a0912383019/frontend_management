@@ -40,7 +40,13 @@ export const tooltipFormatter = ({ data, hallCode }) => {
   `
 }
 
-export const tooltipShared = ({ data, date, hallCode }) => {
+/**
+ * tooltipShared formatter排版
+ * @param data 帶入tooltip的this.points
+ * @param date 帶入tooltip的this.x
+ * @param hallCode 可拿pinia globalStore 的 activeHall.hall_code帶入
+ */
+export const tooltipShared = ({ data, date = '', hallCode }) => {
   let result = `
     <div style="
       padding: 6px 10px;
@@ -60,6 +66,40 @@ export const tooltipShared = ({ data, date, hallCode }) => {
       "></div>
       <div>
         ${data[i]['point']['series']['name']}：
+        ${getHallCurrencySign('BBIN', hallCode)}
+        ${FormatNumber(data[i]['y'])}
+      </div>
+    </div>
+    `
+  }
+  result += `</div></div>`
+  return result
+}
+
+/**
+ * tooltipSingleShared formatter排版
+ * @param data 帶入tooltip的this.points
+ * @param hallCode 可拿pinia globalStore 的 activeHall.hall_code帶入
+ */
+export const tooltipSingleShared = ({ data, hallCode }) => {
+  let result = `
+    <div style="
+      padding: 6px 10px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.8)
+    ">
+    <div class="flex flex-col">
+  `
+  for (let i = 0; i < data.length; i++) {
+    result += `
+    <div class="flex">
+      <div class="mr-4 mt-4" style="
+        width: 10px;
+        height: 10px;
+        background-color: ${data[i].color};
+      "></div>
+      <div>
+        ${data[i]['x']}：
         ${getHallCurrencySign('BBIN', hallCode)}
         ${FormatNumber(data[i]['y'])}
       </div>
