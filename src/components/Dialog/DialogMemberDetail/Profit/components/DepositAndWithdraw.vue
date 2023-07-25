@@ -115,21 +115,27 @@ const transformMemberPeriodDepositWithdrawAmount = (data) => {
   let chartData = {
     deposit_amount: {
       name: t('data_name.deposit'),
-      dashStyle: 'Dash',
+      marker: {
+        symbol: 'circle'
+      },
       lineWidth: 2,
       color: 'rgba(245,105,84,1)',
       data: []
     },
     withdraw_amount: {
       name: t('data_name.withdraw'),
-      dashStyle: 'LongDash',
+      marker: {
+        symbol: 'diamond'
+      },
       lineWidth: 2,
       color: 'rgba(60,141,188,1)',
       data: []
     },
     accumulate_profit: {
       name: t('customer_detail_info.accumulate_net_amount'),
-      dashStyle: 'ShortDash',
+      marker: {
+        symbol: 'square'
+      },
       lineWidth: 2,
       color: 'rgba(0,166,90,1)',
       data: [],
