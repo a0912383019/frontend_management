@@ -271,27 +271,43 @@ onMounted(() => {
     <el-row :gutter="20">
       <el-col :span="8" class="mb-10">
         <div class="cdp-text-blue mb-5">{{ $t('data_name.ag_name') }}</div>
-        <el-input v-model="apiMemberData.ag_name" class="cdp-input" readonly />
+        <el-input v-model="apiMemberData.ag_name" class="cdp-input cdp-input-disabled" readonly>
+          <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+        </el-input>
       </el-col>
       <el-col :span="8" class="mb-10">
         <div class="cdp-text-blue mb-5">{{ $t('data_name.user_level') }}</div>
-        <el-input v-model="apiMemberData.user_level" class="cdp-input" readonly />
+        <el-input v-model="apiMemberData.user_level" class="cdp-input cdp-input-disabled" readonly>
+          <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+        </el-input>
       </el-col>
       <el-col :span="8" class="mb-10">
         <div class="cdp-text-blue mb-5">{{ $t('data_name.register_date') }}</div>
-        <el-input v-model="apiMemberData.register_date" class="cdp-input" readonly />
+        <el-input
+          v-model="apiMemberData.register_date"
+          class="cdp-input cdp-input-disabled"
+          readonly
+        >
+          <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+        </el-input>
       </el-col>
       <el-col :span="8" class="mb-10">
         <div class="cdp-text-blue mb-5">{{ $t('data_name.life_cycle') }}</div>
-        <el-input v-model="apiMemberData.life_cycle" class="cdp-input" readonly />
+        <el-input v-model="apiMemberData.life_cycle" class="cdp-input cdp-input-disabled" readonly>
+          <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+        </el-input>
       </el-col>
       <el-col :span="8" class="mb-10" v-if="userType === system_admin">
         <div class="cdp-text-blue mb-5">{{ $t('data_name.phone_number') }}</div>
-        <el-input v-model="apiMemberData.user_phone" class="cdp-input" readonly />
+        <el-input v-model="apiMemberData.user_phone" class="cdp-input cdp-input-disabled" readonly>
+          <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+        </el-input>
       </el-col>
       <el-col :span="8" class="mb-10" v-if="userType === system_admin">
         <div class="cdp-text-blue mb-5">{{ $t('data_name.email') }}</div>
-        <el-input v-model="apiMemberData.user_mail" class="cdp-input" readonly />
+        <el-input v-model="apiMemberData.user_mail" class="cdp-input cdp-input-disabled" readonly>
+          <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+        </el-input>
       </el-col>
       <el-col :span="24" class="mb-10">
         <div class="cdp-text-blue mb-5">{{ $t('tags.tags') }}</div>

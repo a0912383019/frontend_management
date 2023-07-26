@@ -79,8 +79,9 @@ watch(
           <transition>
             <BoxLoading v-show="boxIsLoading" />
           </transition>
-          <el-input v-model="amountData.total_profit" class="cdp-input" readonly>
+          <el-input v-model="amountData.total_profit" class="cdp-input cdp-input-disabled" readonly>
             <template #prepend>{{ currencySignText }}</template>
+            <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
           </el-input>
         </div>
       </el-col>
@@ -101,11 +102,12 @@ watch(
           </transition>
           <el-input
             v-model="amountData.withdraw_deposit_net_amount"
-            class="cdp-input"
+            class="cdp-input cdp-input-disabled"
             readonly
             v-show="!boxIsLoading"
           >
             <template #prepend>{{ currencySignText }}</template>
+            <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
           </el-input>
         </div>
       </el-col>
@@ -117,11 +119,12 @@ watch(
           </transition>
           <el-input
             v-model="amountData.total_deposit"
-            class="cdp-input"
+            class="cdp-input cdp-input-disabled"
             readonly
             v-show="!boxIsLoading"
           >
             <template #prepend>{{ currencySignText }}</template>
+            <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
           </el-input>
         </div>
       </el-col>
@@ -133,11 +136,12 @@ watch(
           </transition>
           <el-input
             v-model="amountData.total_withdraw"
-            class="cdp-input"
+            class="cdp-input cdp-input-disabled"
             readonly
             v-show="!boxIsLoading"
           >
             <template #prepend>{{ currencySignText }}</template>
+            <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
           </el-input>
         </div>
       </el-col>

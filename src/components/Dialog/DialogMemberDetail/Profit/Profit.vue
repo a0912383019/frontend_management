@@ -50,15 +50,15 @@ const dragOptions = computed(() => {
       @end="drag = false"
       item-key="order"
     >
-      <template #item="{ element, index }">
+      <template #item="{ element }">
         <div>
-          <div class="drag__area" v-if="element.area === 'first'">
+          <div class="drag__area" v-show="element.area === 'first'">
             <MemberPayoffHallProfit />
           </div>
-          <div class="drag__area" v-if="element.area === 'second'">
+          <div class="drag__area" v-show="element.area === 'second'">
             <DepositAndWithdraw />
           </div>
-          <div class="drag__area" v-if="element.area === 'third'">
+          <div class="drag__area" v-show="element.area === 'third'">
             <el-row :gutter="20">
               <el-col :span="12">
                 <TotalBetPlatforms />
