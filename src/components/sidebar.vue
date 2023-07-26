@@ -118,6 +118,9 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
           display: none;
         }
       }
+      &__menu {
+        width: 40px;
+      }
     }
   }
   &__logo {
@@ -200,17 +203,35 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
   &__item {
     width: 100%;
     a {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
+      min-width: 40px;
       min-height: 40px;
-      padding-left: 10px;
+      padding-left: 8px;
       padding-right: 8px;
       color: #c2c7d0;
       border-radius: 5px;
       transition: all 0.3s ease;
-      &:hover {
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
         background-color: rgba(#fff, 0.1);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      &:hover {
         color: #fff;
+        &::after {
+          opacity: 1;
+        }
       }
     }
   }
@@ -253,8 +274,11 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
     }
     &.is-active {
       a {
-        background-color: #4f84cf;
         color: #fff;
+        &::after {
+          background-color: #4f84cf;
+          opacity: 1;
+        }
       }
     }
   }

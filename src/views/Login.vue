@@ -64,7 +64,7 @@ const googleLoginCallback = (response) => {
         message: `Hello, ${user_name}`,
         type: 'success'
       })
-      console.log('success>>', res)
+      // console.log('success>>', res)
     })
     .catch((err) => {
       console.log('error>>', err)
@@ -101,7 +101,6 @@ const handleLogin = async ({ credential }) => {
           token_type: goTokenType,
           access_token: goAccessToken
         } = goResponse.data.result
-        console.log('picture', goResponse.data.result)
         let user_info_entity = {
           user_id,
           user_name,
