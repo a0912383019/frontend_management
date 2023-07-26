@@ -1,4 +1,4 @@
-# CDP\*vue_frontend_test
+# CDP_vue_frontend
 
 This template should help get you started developing with Vue 3 in Vite.
 
