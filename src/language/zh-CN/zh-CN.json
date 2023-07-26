@@ -6,16 +6,17 @@
     "date_duration": "日期区间",
     "format_date_duration": "{{- date_duration, zh_date_duration}}",
     "format_datetime": "{{- date, zh_datetime}}",
+    "format_datetime_rule": "YYYY/MM/DD HH:mm:ss",
 
     "statistical_time_period": "资料统计区间：",
     "aggregated_data_statistical_time_period": "下表各栏位为会员时间区间内加总资料。",
     "click_icon_display_last_days_data": "点击表情显示选定日期近{{days}}日资料",
-    "last_week": "上周{{append}}",
-    "this_week": "本周{{append}}",
+    "last_week": "上周",
+    "this_week": "本周",
     "tags_time_based_ET": "标签时间为美东时间",
     "statistic_time_based_ET": "统计时间为美东时间",
-    "yesterday": "前日{{append}}",
-    "today": "本日{{append}}",
+    "yesterday": "前日",
+    "today": "本日",
 
     "year": "年份",
     "month": "月份",
@@ -72,7 +73,7 @@
     "failed": "失败",
     "expired": "已过期",
 
-    "show_top_only": "仅列出前{{rank}}名",
+    "show_top_only": "仅列出前 {rank} 名",
 
     "check": "勾选",
 
@@ -161,6 +162,7 @@
     "activity_analysis_list": "活动成效分析",
     "target_group_analysis_list": "目标族群分析",
     "custom_tags_setting": "自订标签设置",
+    "tag_synchronization": "标签同步管理",
     "user_export_report": "汇出报表清单",
     "user_detail_info": "帐户资讯",
     "admin_user_list": "使用者帐户管理",
@@ -182,7 +184,6 @@
     "xbb_offer_analysis_list": "优惠成效分析",
     "xbb_rank_analysis": "数据排名分析",
     "xbb_bad_customer_analysis": "坏坏客分析",
-    "xbb_tag_synchronization": "标签同步管理",
     "xbb_member_realtime_observation": "會員即時觀測"
   },
 
@@ -203,7 +204,20 @@
     "next_two_months": "未来2个月",
     "custom": "自订日期区间",
     "daysOfWeek": ["日", "ㄧ", "二", "三", "四", "五", "六"],
-    "monthNames": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+    "monthNames": [
+      "1月",
+      "2月",
+      "3月",
+      "4月",
+      "5月",
+      "6月",
+      "7月",
+      "8月",
+      "9月",
+      "10月",
+      "11月",
+      "12月"
+    ]
   },
 
   "introJs": {
@@ -843,7 +857,8 @@
     "blank_active_level_error_msg": "请至少勾选一种VIP活跃度",
 
     "cdp_people_num": "CDP人数",
-    "backstage_people_num": "管端人数",
+    "namelist_people_num": "名單人数",
+    "download": "下载",
     "A_B_test_people_num": "A/B测试集人数",
     "last_sync_time": "最后同步时间",
 
@@ -924,5 +939,13 @@
     "user_id": "ID",
     "demo": "模拟画面",
     "demo_failed": "模拟画面失败，请重新操作"
+  },
+
+  "table": {
+    "sZeroRecords": "查无资料",
+    "sInfo": "{START} - {END} / 共 {TOTAL} 笔",
+    "sInfoEmpty": "0 - 0 / 共 0 笔",
+    "sInfoFiltered": "(由 _MAX_ 笔中进行筛选)",
+    "sProcessing": "资料载入中..."
   }
 }

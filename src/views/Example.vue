@@ -1,9 +1,7 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
-import { tarvelAllData } from '@/api/travel.js'
 import draggable from 'vuedraggable'
 import { useI18n } from 'vue-i18n'
-import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
 
 import { GChart } from 'vue-google-charts'
 
@@ -13,16 +11,6 @@ watch(locale, (val, oldVal) => {
   window.localStorage.setItem('languageType', val)
 })
 
-//測試Travel api 開始
-const getData = async () => {
-  const res = await tarvelAllData({
-    categoryIds: 15,
-    page: 2
-  })
-  console.log(res)
-}
-getData()
-//測試Travel api 結束
 const tableData = ref([
   {
     date: '2016-05-03',
@@ -70,21 +58,6 @@ const callback = (response) => {
   // This callback will be triggered when the user selects or login to
   // his Google account from the popup
   console.log('Handle the response', response)
-}
-
-//chart.js
-const doughnutChart = {
-  id: 'doughnut',
-  type: 'doughnut',
-  data: {
-    labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
-    datasets: [
-      {
-        backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-        data: [40, 20, 80, 10]
-      }
-    ]
-  }
 }
 
 //highcharts
@@ -180,15 +153,6 @@ const googleChartOptions = {
   <section class="sectionBox">
     <h2>Google Login</h2>
     <GoogleLogin :callback="callback" />
-  </section>
-  <section class="sectionBox">
-    <h2>Chart.js Vue3</h2>
-    <vue3-chart-js
-      :id="doughnutChart.id"
-      :type="doughnutChart.type"
-      :data="doughnutChart.data"
-    ></vue3-chart-js>
-    <!-- @before-render="beforeRenderLogic" -->
   </section>
   <section class="sectionBox">
     <h2>Highcharts</h2>

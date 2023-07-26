@@ -1,11 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap');
 $font-default: 'Source Sans Pro', sans-serif;
+@import "_for.scss";
+@import "_element.scss";
+@import "_custom.scss";
+@import "_pages.scss";
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
-  position: relative;
   font-weight: normal;
 }
 
@@ -19,6 +22,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+table {
+  border-collapse: collapse;
+}
+
 input, textarea, select {
   font-family: $font-default;
   &:focus {
@@ -30,9 +37,21 @@ a {
   text-decoration: none;
 }
 
-.ulReset {
+.ul-reset {
   list-style-type: none;
   padding: 0;
+}
+
+button.btn-reset {
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+} 
+button {
+  &:disabled {
+    cursor: not-allowed
+  }
 }
 
 //vue transition
@@ -46,23 +65,46 @@ a {
   opacity: 0;
 }
 
-//捲軸底色
-::-webkit-scrollbar-track {
-  border-radius: 4px;
-  background-color: #dcdfe6;
-}
-//捲軸寬度
-::-webkit-scrollbar {
-  width: 5px;
-  border-radius: 4px;
-  background-color: #dcdfe6;
-}
-//捲軸本體顏色
-::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-  background-color: #c1c5cc;
+.slide-up-fade-enter-active {
+  transition: all 0.3s ease-out;
 }
 
+.slide-up-fade-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-up-fade-enter-from,
+.slide-up-fade-leave-to {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+
+// //捲軸底色
+// ::-webkit-scrollbar-track {
+//   border-radius: 4px;
+//   background-color: #dcdfe6;
+// }
+// //捲軸寬度
+// ::-webkit-scrollbar {
+//   width: 5px;
+//   border-radius: 4px;
+//   background-color: #dcdfe6;
+// }
+// //捲軸本體顏色
+// ::-webkit-scrollbar-thumb {
+//   border-radius: 4px;
+//   background-color: #c1c5cc;
+// }
+
+.cdp-section {
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.14);
+  border-radius: 5px;
+}
+
+.flex {display: flex;}
 .flex-row	{flex-direction: row;}
 .flex-row-reverse	{flex-direction: row-reverse;}
 .flex-col	{flex-direction: column;}
@@ -115,3 +157,17 @@ a {
 .text-end	{text-align: end;}
 .cursor-default {cursor: default;}
 .cursor-pointer {	cursor: pointer;}
+.static {position: static;}
+.fixed {position: fixed;}
+.absolute	{position: absolute;}
+.relative	{position: relative;}
+.sticky	{position: sticky;}
+.font-thin {font-weight: 100;}
+.font-extralight {font-weight: 200;}
+.font-light {font-weight: 300;}
+.font-normal {font-weight: 400;}
+.font-medium {font-weight: 500;}
+.font-semibold {font-weight: 600;}
+.font-bold {font-weight: 700;}
+.font-extrabold {font-weight: 800;}
+.font-black {font-weight: 900;}

@@ -1,0 +1,250 @@
+//element plus 自訂樣式
+
+//dialog
+.cdp-dialog {
+  width: 100%;
+  max-width: 1000px;
+  &.el-dialog{
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  .el-dialog {
+    &__header {
+      display: flex;
+      align-items: center;
+      height: 60px;
+      padding: 13px 20px;
+      background-color: #171d32;
+      margin-right: 0;
+    }
+    &__title {
+      // line-height: 2;
+      color: #fff;
+    }
+    &__close {
+      font-size: 24px;
+      color: #fff;
+    }
+    &__body {
+      padding: 20px;
+      background-color: #f4f6f9;
+    }
+  }
+}
+
+.cdp-tabs {
+  .el-tabs {
+    &__active-bar {
+      display: none;
+    }
+    &__nav {
+      display: flex;
+      width: 100%;
+      float: none;
+      box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.16);
+      border: solid 1px #eef1f9;
+      background-color: #fff;
+      border-radius: 5px;
+      &-wrap {
+        &::after {
+            display: none;
+        }
+      }
+    }
+    &__item {
+      position: relative;
+      flex: 1;
+      min-height: 44px;
+      transition: all .3s ease-in-out;
+      &:hover {
+          color: $blue;
+      }
+      &:not(:last-child) {
+          &::after {
+              content: '';
+              position: absolute;
+              right: 0;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 1px;
+              height: 16px;
+              background-color: rgba(79, 132, 207, 0.6);
+          }
+      }
+      &.is-active {
+        color: #fff;
+        &::before {
+          content: "";
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          position: absolute;
+          box-sizing: border-box;
+          border-radius: 5px;
+          box-shadow: 1px 1px 6px 0 rgba(0, 0, 0, 0.3);
+          background-color: #4f84cf;
+          color: #ffffff;
+          z-index: -1;
+        }
+      }
+      &.is-top {
+        &:nth-of-type(2) {
+          padding-left: 20px;
+        }
+        &:last-child {
+          padding-right: 20px;
+        }
+      }
+    }
+  }
+}
+
+.cdp-select {
+  .el-input {
+    &__inner {
+      height: 36px;
+      color: #444;
+      font-size: 16px;
+    }
+  }
+}
+
+.cdp-popover {
+  &.el-popover.el-popper {
+    padding: 20px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+  }
+  .el-popper {
+    &__arrow {
+      display: none;
+    }
+  }
+}
+
+.cdp-input {
+  .el-input {
+    &__wrapper {
+      padding: 0;
+    }
+    &__inner {
+      height: 38px;
+      padding: 0.375rem 0.75rem;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      box-shadow: inset 0 0 0 transparent;
+      color: #495057;
+      &:disabled,
+      &[readonly] {
+        background-color: #e9ecef;
+    opacity: 1;
+      }
+      &:focus {
+        border-color: #80bdff;
+      }
+    }
+  }
+  .el-input-group {
+    &__prepend {
+      color: #495057;
+      & + .el-input__wrapper {
+        .el-input__inner {
+          border-radius: 0 0.25rem 0.25rem 0;
+        }
+      }
+    }
+  }
+}
+
+//datepicker
+.el-date-table td.end-date .el-date-table-cell__text, .el-date-table td.start-date .el-date-table-cell__text {
+  background-color: $purple;
+}
+
+.el-range-editor {
+  &.is-active {
+    box-shadow: 0 0 0 1px #6a53ba inset !important;
+    &:hover {
+      box-shadow: 0 0 0 1px #6a53ba inset !important;
+    }
+  }
+}
+
+.cdp-datepicker-range {
+  &.el-picker__popper.el-popper {
+    padding-right: 4px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+  }
+  .el-picker-panel {
+    &__sidebar {
+      padding: 20px 10px;
+      border-right: none;
+    }
+    &__shortcut {
+      padding: 7px 10px;
+      color: #374050;
+      line-height: 1.1;
+      transition: all .4s;
+      &:hover {
+          color: #fff;
+          background-color: #6a53ba;
+          border-radius: 2px;
+      }
+    }
+    &__icon-btn {
+      &:hover {
+        color: #6a53ba;
+      }
+    }
+  }
+  .el-date-table td.end-date .el-date-table-cell__text, .el-date-table td.start-date .el-date-table-cell__text {
+    background-color: #6a53ba;
+  }
+  .el-date-table td.in-range .el-date-table-cell {
+    background-color: rgba(106, 83, 186, 0.08);
+  }
+  .el-date-table td.today .el-date-table-cell__text {
+    color: #6a53ba;
+  }
+  .el-date-table td {
+    &.available {
+      color: #374050;
+      &:hover {
+        .el-date-table-cell__text {
+          color: #fff;
+          background-color: #6a53ba;
+        }
+      }
+    }
+  }
+  .el-date-table td.next-month, .el-date-table td.prev-month {
+    color: #c3c5ca;
+  }
+  .el-date-range-picker__content {
+    position: relative;
+    padding: 25px;
+    &.is-left {
+      &::before {
+        left: 10px;
+      }
+    }
+    &.is-right {
+      &::before {
+        right: 10px;
+      }
+    }
+    &::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        width: calc(100% - 20px);
+        height: calc(100% - 30px);
+        border: solid 1px #ccc5e1;
+        pointer-events: none;
+        border-radius: 5px;
+    }
+    &.is-left {
+      border-right: none;
+    }
+  }
+}

@@ -1,0 +1,589 @@
+//cdp 一些自定義樣式
+
+.cdp-link-click {
+  display: inline-block;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* background color */
+.cdp-bg-blue {
+  background-color: #4f7dc5 !important;
+}
+
+.cdp-bg-purple {
+  background-color: #6a53ba !important;
+}
+
+.cdp-bg-transparent {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.cdp-bg-paradisepink {
+  background-color: #e8465e !important;
+}
+
+.cdp-bg-cultured {
+  background-color: #f9fafc !important;
+}
+
+.cdp-bg-lapislazuli {
+  background-color: #135b86 !important;
+}
+
+.cdp-bg-selectiveyellow {
+  background-color: #f9b40c !important;
+}
+
+.cdp-bg-orangered {
+  background-color: #f36d30 !important;
+}
+
+.cdp-bg-redviolet {
+  background-color: #922943 !important;
+}
+
+.cdp-bg-bluemunsell {
+  background-color: #3e96a9 !important;
+}
+
+.cdp-bg-opal {
+  background-color: #94c3c7 !important;
+}
+
+.cdp-bg-dark {
+  background-color: #171d32 !important;
+}
+
+.cdp-bg-light__blue {
+  background-color: #f4f6f9 !important;
+}
+
+.cdp-bg-maximum__blue {
+  background-color: #61a7b6 !important;
+}
+
+.cdp-bg-forest__green__crayola {
+  background-color: #6eaa78 !important;
+}
+
+.cdp-bg-indian__yellow {
+  background-color: #dba042 !important;
+}
+
+.cdp-bg-candy__pink {
+  background-color: #e06672 !important;
+}
+
+.cdp-bg-pewter__blue {
+  background-color: #98b9c1 !important;
+}
+
+.cdp-bg-sage {
+  background-color: #b9be88 !important;
+}
+
+.cdp-bg-alice__blue {
+  background-color: #e8eff8 !important;
+}
+
+.cdp-bg-pale__cerulean {
+  background-color: #92bee3 !important;
+}
+
+.cdp-bg-alice__blue-dark {
+  background-color: #DBE3F0 !important;
+}
+
+.cdp-bg-dark__blue {
+  background-color: #4f84cf !important;
+}
+
+.cdp-bg-medium__sea__green-8 {
+  background-color: rgba(74, 186, 108, 0.8) !important;
+}
+
+.cdp-bg-cadmium__orange-1 {
+  background-color: rgba(238, 149, 70, 0.1) !important;
+}
+
+.cdp-bg-glaucous-1 {
+  background-color: rgba(79, 132, 207, 0.1) !important;
+}
+
+.cdp-bg-forest__green__crayola-1 {
+  background-color: rgba(112, 175, 123, 0.1) !important;
+}
+
+.cdp-bg-indian__red-1 {
+  background-color: rgba(208, 89, 100, 0.1) !important;
+}
+
+.cdp-bg-amethyst-1 {
+  background-color: rgba(136, 98, 206, 0.1) !important;
+}
+
+.cdp-bg-light__slate__gray-1 {
+  background-color: rgba(129, 145, 161, 0.1) !important;
+}
+
+.cdp-bg-black {
+  background-color: black !important;
+}
+
+.cdp-bg-black-light-1 {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.cdp-bg-black-light-2 {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.cdp-bg-black-light-3 {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.cdp-bg-black-light-4 {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.cdp-bg-black-light-5 {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.cdp-bg-black-light-6 {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.cdp-bg-black-light-7 {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.cdp-bg-black-light-8 {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.cdp-bg-black-light-9 {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.cdp-bg-white {
+  background-color: white !important;
+}
+
+.cdp-bg-disable {
+  background-color: rgba(207, 216, 230, 0.2) !important;
+}
+
+.cdp-bg-disabled {
+  background-color: rgba(207, 216, 230, 0.2) !important;
+}
+
+.cdp-bg-disabled-4 {
+  background-color: rgba(207, 216, 230, 0.4) !important;
+}
+
+/* text color */
+.cdp-text-onyx {
+  color: #404040 !important;
+}
+
+.cdp-text-red {
+  color: #e06672 !important;
+}
+
+.cdp-text-candypink {
+  color: #f16565 !important;
+}
+
+.cdp-text-blue {
+  color: #4f7dc5 !important;
+}
+
+.cdp-text-light-blue {
+  color: #669bdf !important;
+}
+
+.cdp-text-celticblue {
+  color: #2c6ecb !important;
+}
+
+.cdp-text-lightgreen {
+  color: #0bb000 !important;
+}
+
+.cdp-text-greenryb {
+  color: #6bad0f !important;
+}
+
+.cdp-text-spacecadet {
+  color: #272d44 !important;
+}
+
+.cdp-text-spacecadet-8 {
+  color: rgba(39, 45, 68, 0.8) !important;
+}
+
+.cdp-text-languidlavender {
+  color: #ccc5e1 !important;
+}
+
+.cdp-text-glaucous {
+  color: #4f84cf !important;
+}
+
+.cdp-text-harvestgold {
+  color: #d08f28 !important;
+}
+
+.cdp-text-shamrockgreen {
+  color: #209b57 !important;
+}
+
+.cdp-text-purple {
+  color: #6a53ba !important;
+}
+
+.cdp-text-cadmium__orange {
+  color: #ee9546 !important;
+}
+
+.cdp-text-forest__green__crayola {
+  color: #70af7b !important;
+}
+
+.cdp-text-indian__red {
+  color: #d05964 !important;
+}
+
+.cdp-text-amethyst {
+  color: #8862ce !important;
+}
+
+.cdp-text-light__slate__gray {
+  color: #8191a1 !important;
+}
+
+.cdp-text-battleship__grey {
+  color: #8d8d8d !important;
+}
+
+.cdp-text-white-8 {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.cdp-text-black {
+  color: #000000 !important;
+}
+
+.cdp-text-white {
+  color: #ffffff !important;
+}
+
+/* text hover color */
+.cdp-text-yaleblue-hover:hover {
+  color: #214c89 !important;
+}
+
+.cdp-text-white-hover:hover {
+  color: #ffffff !important;
+}
+
+.cdp-bg-disable input:read-only,
+.cdp-bg__disable input:read-only,
+.cdp-bg-disabled input:read-only,
+.cdp-bg__disabled input:read-only {
+  background-color: rgba(207, 216, 230, 0) !important;
+}
+
+.cdp-w {
+  &__720 {
+    width: 100%;
+    max-width: 720px;
+  }
+}
+
+.text-danger {
+  color: #dc3545!important;
+}
+
+.cdp-shadow-light-sm {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.14);
+}
+
+.cdp-shadow-dark-sm {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* button background color */
+.custom-bg-blue {
+  color: white;
+  background-color: #5eb7c8;
+}
+.custom-bg-blue:disabled {
+  color: #8d8d8d;
+  background-color: rgba(207, 216, 230, 0.2);
+}
+
+.custom-bg-purple {
+  color: white;
+  background-color: #6a53ba;
+}
+.custom-bg-purple:disabled {
+  color: #8d8d8d;
+  background-color: rgba(207, 216, 230, 0.2);
+}
+
+.custom-bg-red {
+  color: white;
+  background-color: #e06672;
+}
+.custom-bg-red:disabled {
+  color: #8d8d8d;
+  background-color: rgba(207, 216, 230, 0.2);
+}
+
+.custom-bg-dark__blue {
+  color: white;
+  background-color: #4f84cf;
+}
+.custom-bg-dark__blue:disabled {
+  color: #8d8d8d;
+  background-color: rgba(207, 216, 230, 0.2);
+}
+
+.custom-bg-grey {
+  color: white;
+  background-color: #7882a7;
+}
+.custom-bg-grey:disabled {
+  color: #8d8d8d;
+  background-color: rgba(207, 216, 230, 0.2);
+}
+
+.custom-bg-disable {
+  color: #8d8d8d;
+  background-color: #f4f4f4;
+}
+
+.custom-bg-cultured {
+  color: white;
+  background-color: rgba(241, 241, 241, 0.8);
+}
+.custom-bg-cultured:disabled {
+  color: #8d8d8d;
+  background-color: rgba(207, 216, 230, 0.2);
+}
+
+/* button hover background color */
+.custom-bg-blue:hover {
+  color: white;
+  background-color: #4aa5b6;
+}
+.custom-bg-blue:hover:disabled {
+  color: #8d8d8d;
+  background-color: #dfdfdf;
+  cursor: not-allowed;
+}
+
+.custom-bg-purple:hover {
+  color: white;
+  background-color: #56419f;
+}
+.custom-bg-purple:hover:disabled {
+  color: #8d8d8d;
+  background-color: #dfdfdf;
+  cursor: not-allowed;
+}
+
+.custom-bg-red:hover {
+  color: white;
+  background-color: #c75660;
+}
+.custom-bg-red:hover:disabled {
+  color: #8d8d8d;
+  background-color: #dfdfdf;
+  cursor: not-allowed;
+}
+
+.custom-bg-dark__blue:hover {
+  color: white;
+  background-color: #3a6db5;
+}
+.custom-bg-dark__blue:hover:disabled {
+  color: #8d8d8d;
+  background-color: #dfdfdf;
+  cursor: not-allowed;
+}
+
+.custom-bg-grey:hover {
+  color: white;
+  background-color: #646c8b;
+}
+.custom-bg-grey:hover:disabled {
+  color: #8d8d8d;
+  background-color: #dfdfdf;
+  cursor: not-allowed;
+}
+
+.custom-bg-disable:hover {
+  color: #8d8d8d;
+  background-color: #dfdfdf;
+  cursor: not-allowed;
+}
+
+.custom-bg-cultured:hover {
+  color: white;
+  background-color: #dfdfdf;
+}
+.custom-bg-cultured:hover:disabled {
+  color: #8d8d8d;
+  background-color: #dfdfdf;
+  cursor: not-allowed;
+}
+
+/* Dialog Button BEGIN */
+.cdp__modal-btn__submit {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  min-width: 135px;
+  background-color: #4f84cf;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  /* Admin say there using disabled attribute to control button disabled status */
+}
+.cdp__modal-btn__submit:hover {
+  background-color: #3a6db5;
+}
+.cdp__modal-btn__submit.disabled {
+  background-color: rgba(207, 216, 230, 0.2);
+  color: #c0ccdf;
+}
+.cdp__modal-btn__submit:disabled {
+  background-color: rgba(207, 216, 230, 0.2);
+  color: #c0ccdf;
+}
+.cdp__modal-btn__submit .cdp__modal-btn__submit-text {
+  font-size: inherit;
+  font-weight: inherit;
+  font-stretch: inherit;
+  font-style: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  color: inherit;
+}
+
+.cdp__modal-btn__cancel {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(50% - 15px);
+  min-width: 135px;
+  padding: 8px;
+  background-color: rgba(241, 241, 241, 0.8);
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #8d8d8d;
+  cursor: pointer;
+}
+.cdp__modal-btn__cancel:hover {
+  background-color: #dfdfdf;
+}
+.cdp__modal-btn__cancel .cdp__modal-btn__cancel-text {
+  font-size: inherit;
+  font-weight: inherit;
+  font-stretch: inherit;
+  font-style: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  color: inherit;
+}
+
+.cdp__modal-btn__delete {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(50% - 15px);
+  min-width: 135px;
+  padding: 8px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  cursor: pointer;
+}
+.cdp__modal-btn__delete .cdp__modal-btn__delete-text {
+  font-size: inherit;
+  font-weight: inherit;
+  font-stretch: inherit;
+  font-style: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  color: inherit;
+}
+
+/* Dialog Button END */
+
+/* badge for label tag */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #fff;
+  cursor: pointer;
+  min-height: 23px;
+  /* button hover background color */
+}
+.badge-custom-blue {
+  box-sizing: border-box;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background-color: #4f84cf;
+}
+.badge-custom-yellow {
+  box-sizing: border-box;
+  padding: 1px 8px 2px;
+  border-radius: 10px;
+  background-color: #f39c10;
+}
+.badge-custom-danger {
+  box-sizing: border-box;
+  padding: 1px 8px 2px;
+  border-radius: 10px;
+  background-color: #de6850;
+}
