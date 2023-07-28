@@ -34,7 +34,7 @@ const { activeHall } = globalStore
 const apiSuccess = ref(false) //會員生明細api是否成功
 
 //依照不同的messageKey產生不同的message
-const messageKey = ref('loading')
+const messageKey = ref('shortLoading')
 const refChart = ref(null)
 const legendLists = ref([]) // 自定義legend
 const chartTitle = ref(props.userName) // chart的標題
@@ -204,7 +204,6 @@ const transformMemberStepDetail = (data) => {
       }
     }
   }
-  console.log(chartXLabels, chartDatasets)
 
   chartSetting.data.xLabels = []
   chartSetting.data.xLabels = chartXLabels
@@ -219,11 +218,14 @@ const clearChart = () => {
   chartSetting.data.xLabels = []
   chartSetting.data.datasets = []
   chartSetting.options.plugins.title.text = ''
+  legendLists.value = []
+  chartTitle.value = ''
 }
 
 // 查詢api
 const queryChartApi = () => {
   queryMemberStepDetail()
+  chartTitle.value = props.userName
 }
 
 onMounted(() => {
@@ -279,6 +281,7 @@ defineExpose({ queryChartApi, clearChart })
     align-items: center;
     list-style-type: none;
     margin-right: 8px;
+    margin-bottom: 8px;
   }
   &__box {
     width: 42px;

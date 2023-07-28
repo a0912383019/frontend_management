@@ -1,4 +1,5 @@
 <script setup>
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { storeToRefs } from 'pinia'
@@ -9,6 +10,16 @@ const { t } = useI18n()
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
 const { dialogMemberDetailRangeDate } = storeToRefs(dialogMemberDetailStore)
+
+const refLifeCycleHistory = ref(null)
+
+watch(
+  () => dialogMemberDetailRangeDate.value,
+  () => {
+    refLifeCycleHistory.value.clearChart()
+    refLifeCycleHistory.value.queryChartApi()
+  }
+)
 </script>
 <template>
   <section class="cdp-section">
@@ -17,6 +28,7 @@ const { dialogMemberDetailRangeDate } = storeToRefs(dialogMemberDetailStore)
     <LifeCycleHistory
       :memberId="dialogMemberDetailStore.memberData.user_id"
       :detailDate="dialogMemberDetailRangeDate"
+      ref="refLifeCycleHistory"
     />
   </section>
 </template>
