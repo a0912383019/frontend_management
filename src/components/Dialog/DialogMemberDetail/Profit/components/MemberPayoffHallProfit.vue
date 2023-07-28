@@ -79,15 +79,22 @@ const queryMemberPeriodPayoffProfitAmount = async () => {
     })
     // console.log('queryMemberPeriodPayoffProfitAmount', result)
     const { return_code } = result.data.status
-    if (return_code === '0000') {
-      apiSuccess.value = true
-      transformMemberPeriodPayoffProfitAmount(result.data.result)
-    } else if (return_code === '0001') {
-      messageKey.value = 'noResult'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+
+    if (return_code !== '0001') {
+      if (return_code === '0000') {
+        apiSuccess.value = true
+        if (result.data.result.length !== 0) {
+          transformMemberPeriodPayoffProfitAmount(result.data.result)
+        } else {
+          messageKey.value = 'noResult'
+        }
+      } else {
+        messageKey.value = 'chartFailed'
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     } else {
-      messageKey.value = 'chartFailed'
+      messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }

@@ -1,4 +1,5 @@
 import { hall_config_dict, chart_fixed_bgColor } from '@/../public/js/system_config.js'
+import { dayjs } from 'element-plus'
 
 /**
  * 取得儲存在sessionStorage中的JSON物件
@@ -287,4 +288,21 @@ export function generateTagMultiSelect({
  */
 export function formatNumberWithK(label) {
   return Math.abs(label) >= 1000 ? label / 1000 + 'k' : label
+}
+
+/**
+ * 輸入起始日和結束日，取得陣列，內容是這區間內的每一天
+ * @param {String} startDate //起始日
+ * @param {String} endDate //結束日
+ * @param {Function} t //需在setup組件內 import { useI18n } from 'vue-i18n'
+ * 並將const { t } = useI18n()中的t傳遞給function使用
+ */
+export function getRangeEveryDay(startDate, endDate, t) {
+  const result = []
+  let currentDate = startDate
+  while (dayjs(currentDate) <= dayjs(endDate)) {
+    result.push(dayjs(currentDate).format(t('date.format_date_rule')))
+    currentDate = dayjs(currentDate).add(1, 'day').format(t('date.format_date_rule'))
+  }
+  return result
 }
