@@ -276,6 +276,7 @@ defineExpose({ queryChartApi, clearChart })
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  pointer-events: none;
   li {
     display: flex;
     align-items: center;
