@@ -181,4 +181,17 @@ export const apiQueryMemberJourneyDetail = (params) => {
   )
 }
 
+//行為分析
+//GA統計資料
+export const apiQueryQARelatedData = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_ga_related_data' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+    }
+  )
+}
 //會員明細Dialog結束

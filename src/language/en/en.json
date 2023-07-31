@@ -167,6 +167,8 @@
     "user_detail_info": "Profile",
     "admin_user_list": "Account Management",
 
+    "risk_controll_analysis": "风险控管分析",
+
     "bbin_customer_tag_list": "Gambler Tags",
     "bbin_manage_analysis": "Gambler Life Cycles",
     "bbin_registered_no_deposit_analysis": "Deposit Prediction",

@@ -178,6 +178,22 @@ const router = createRouter({
       ]
     },
     {
+      path: '/risk-controll-analysis',
+      name: 'risk_controll_analysis',
+      component: MainLayout,
+      meta: {
+        pageName: '風險控管分析',
+        fromPage: 'risk_controll_analysis'
+      },
+      children: [
+        {
+          path: '/risk_controll_analysis',
+          name: 'risk_controll_analysis'
+          // component: () => import('../views/Home/Home.vue')
+        }
+      ]
+    },
+    {
       path: '/custom-tags-setting',
       name: 'custom-tags-setting',
       component: MainLayout,
