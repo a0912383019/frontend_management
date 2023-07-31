@@ -346,6 +346,28 @@ defineExpose({ goToFirstPage })
     background-color: #eef2f6;
   }
 }
+.customTable2 {
+  .el-table {
+    th {
+      &.el-table {
+        &__cell {
+          &.is-leaf {
+            background-color: #e9eef6;
+            border-bottom: none;
+          }
+        }
+      }
+    }
+    td {
+      &.el-table {
+        &__cell {
+          color: #404040;
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
 .paginationBox {
   position: relative;
   display: flex;

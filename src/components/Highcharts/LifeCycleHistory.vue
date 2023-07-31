@@ -235,8 +235,8 @@ onMounted(() => {
 defineExpose({ queryChartApi, clearChart })
 </script>
 <template>
-  <div>
-    <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
+  <div class="relative" style="min-height: 300px">
+    <CdpMessage :messageKey="messageKey" :cover="true" bg="white" v-if="apiSuccess === false" />
     <template v-else>
       <div class="chartTitle" v-if="chartTitle">{{ chartTitle }}</div>
       <ul class="legend">

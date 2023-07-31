@@ -43,4 +43,8 @@ watch(
     />
   </section>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.cdp-section {
+  min-height: 410px;
+}
+</style>
