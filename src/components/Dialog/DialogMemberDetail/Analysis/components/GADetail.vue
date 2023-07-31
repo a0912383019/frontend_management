@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryQARelatedData } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -7,14 +7,8 @@ import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import {
-  generateRGBColors,
-  dynamicBackgroundColors,
-  getHallCurrencySign,
-  FormatNumber,
-  formatNumberWithK,
-  errorRespond
-} from '@/utils/commonUtils.js'
+import CustomTable from '@/components/CustomTable/CustomTable.vue'
+import { getHallCurrencySign, FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
 
@@ -29,6 +23,23 @@ const apiSuccess = ref(false) //api是否成功
 const messageKey = ref('shortLoading')
 
 const tableData = ref([])
+//定義欄位
+const tableColumns = computed(() => {
+  return [
+    {
+      label: t('customer_detail_info.ga_statistic_value'),
+      prop: 'name',
+      width: 160,
+      align: 'center'
+    },
+    {
+      label: t('customer_detail_info.ga_value'),
+      prop: 'value',
+      align: 'center'
+    }
+  ]
+})
+
 //取得資料
 const queryQARelatedData = async () => {
   messageKey.value = 'shortLoading'
@@ -43,57 +54,11 @@ const queryQARelatedData = async () => {
 
     if (return_code !== '0001') {
       if (return_code === '0000') {
-        apiSuccess.value = true
         if (result.data.result.length !== 0) {
-            const ary = [] //存放轉換後的資料
-            // let nameArr = Object.keys(result.data.result)
-            // console.log(nameArr)
-            // for (let i = 0; i < nameArr.length; i++) {
-            //     ary.push({
-            //         name: t('customer_detail_info.' + nameArr[i]),
-            //         value: result.data.result[nameArr[i]]
-            //     })
-            // }
-            tableData.value = [
-                {
-                    name: t('customer_detail_info.page_views'),
-                    value: result.data.result.page_views
-                },
-                {
-                    name: t('customer_detail_info.promotion_clicks'),
-                    value: result.data.result.promotion_clicks
-                },
-                {
-                    name: t('customer_detail_info.service_contact_clicks'),
-                    value: result.data.result.service_contact
-                },
-                {
-                    name: t('customer_detail_info.visit_duration'),
-                    value: (Math.floor(result.data.result.time_on_site / 86400) !== 0 ? 
-                        Math.floor(result.data.result.time_on_site / 86400) + t('unit.day') + ' ' : '') +
-                        (Math.floor(result.data.result.time_on_site % 86400 / 3600) !== 0 ? 
-                        Math.floor(result.data.result.time_on_site % 86400 / 3600) + t('unit.hour') + ' ' : '') +
-                        (Math.floor(result.data.result.time_on_site % 86400 % 3600 / 60) !== 0 ? 
-                        Math.floor(result.data.result.time_on_site % 86400 % 3600 / 60) + t('unit.minute') + ' ' : '') +
-                        Math.floor(result.data.result.time_on_site % 86400 % 3600 % 60) + t('unit.second')
-                },
-                {
-                    name: t('customer_detail_info.total_bounces'),
-                    value: result.data.result.total_bounces
-                },
-                {
-                    name: t('customer_detail_info.total_sessions'),
-                    value: result.data.result.total_sessions
-                },
-                {
-                    name: t('customer_detail_info.bet_per_session'),
-                    value: getHallCurrencySign('BBIN', activeHall.hall_code) + 
-                        FormatNumber(result.data.result.per_session_bet_amount)
-                }
-            ]
-            // tableData.value = ary
+          apiSuccess.value = true
+          //整理table對應的資料
+          transformTableData(result.data.result)
         } else {
-          apiSuccess.value = false
           messageKey.value = 'noResult'
         }
       } else {
@@ -124,9 +89,63 @@ const queryQARelatedData = async () => {
   }
 }
 
+// 轉換資料
+const transformTableData = (data) => {
+  tableData.value = [
+    {
+      name: t('customer_detail_info.page_views'),
+      value: data.page_views
+    },
+    {
+      name: t('customer_detail_info.promotion_clicks'),
+      value: data.promotion_clicks
+    },
+    {
+      name: t('customer_detail_info.service_contact_clicks'),
+      value: data.service_contact
+    },
+    {
+      name: t('customer_detail_info.visit_duration'),
+      value:
+        (Math.floor(data.time_on_site / 86400) !== 0
+          ? Math.floor(data.time_on_site / 86400) + t('unit.day') + ' '
+          : '') +
+        (Math.floor((data.time_on_site % 86400) / 3600) !== 0
+          ? Math.floor((data.time_on_site % 86400) / 3600) + t('unit.hour') + ' '
+          : '') +
+        (Math.floor(((data.time_on_site % 86400) % 3600) / 60) !== 0
+          ? Math.floor(((data.time_on_site % 86400) % 3600) / 60) + t('unit.minute') + ' '
+          : '') +
+        Math.floor(((data.time_on_site % 86400) % 3600) % 60) +
+        t('unit.second')
+    },
+    {
+      name: t('customer_detail_info.total_bounces'),
+      value: data.total_bounces
+    },
+    {
+      name: t('customer_detail_info.total_sessions'),
+      value: data.total_sessions
+    },
+    {
+      name: t('customer_detail_info.bet_per_session'),
+      value:
+        getHallCurrencySign('BBIN', activeHall.hall_code) +
+        FormatNumber(data.per_session_bet_amount)
+    }
+  ]
+}
+
 onMounted(() => {
   queryQARelatedData()
 })
+
+watch(
+  () => dialogMemberDetailRangeDate.value,
+  () => {
+    queryQARelatedData()
+  }
+)
 </script>
 <template>
   <section class="cdp-section">
@@ -134,20 +153,17 @@ onMounted(() => {
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>
-      <el-table :data="tableData" style="width: 100%" height="384" border size="large">
-        <el-table-column
-          fixed
-          prop="name"
-          :label="t('customer_detail_info.ga_statistic_value')"
-          width="160"
-        />
-        <el-table-column prop="value" :label="t('customer_detail_info.ga_value')" />
-      </el-table>
+      <CustomTable
+        :stripe="false"
+        :tableData="tableData"
+        :tableColumns="tableColumns"
+        :hasPagination="false"
+        tableHeight="320"
+        class="cdp-table"
+        border="border"
+      >
+      </CustomTable>
     </template>
   </section>
 </template>
-<style lang="scss" scoped>
-.el-table--large {
-  font-size: 15px !important;
-}
-</style>
+<style lang="scss" scoped></style>
