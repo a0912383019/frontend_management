@@ -82,8 +82,8 @@ const queryMemberPeriodPayoffProfitAmount = async () => {
 
     if (return_code !== '0001') {
       if (return_code === '0000') {
-        apiSuccess.value = true
         if (result.data.result.length !== 0) {
+          apiSuccess.value = true
           transformMemberPeriodPayoffProfitAmount(result.data.result)
         } else {
           messageKey.value = 'noResult'

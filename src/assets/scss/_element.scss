@@ -110,6 +110,45 @@
   }
 }
 
+.cdp-checkbox {
+  .el-checkbox {
+    &__input {
+      &.is-checked {
+        &+.el-checkbox {
+          &__label {
+            color: #000;
+          }
+        }
+        .el-checkbox {
+          &__inner {
+            background-color: $purple;
+            border-color: $purple;
+          }
+        }
+      }
+    }
+    &__label {
+      color: #000;
+    }
+    &__inner {
+      width: 20px;
+      height: 20px;
+      box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      border-radius: 3px;
+      &:hover {
+          border-color: $purple;
+      }
+      &::after {
+        left: 6px;
+        top: 2px;
+        width: 5px;
+        height: 9px;
+      }
+    }
+  }
+}
+
 .cdp-popover {
   &.el-popover.el-popper {
     padding: 20px;
