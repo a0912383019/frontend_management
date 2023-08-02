@@ -194,4 +194,17 @@ export const apiQueryQARelatedData = (params) => {
     }
   )
 }
+
+//登入次數/GA瀏覽次數
+export const apiQueryMemberPeriodLoginGACount = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_period_login_ga_count' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+    }
+  )
+}
 //會員明細Dialog結束
