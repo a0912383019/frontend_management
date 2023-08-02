@@ -1,5 +1,6 @@
 <script setup>
 import GADetail from './components/GADetail.vue'
+import GALoginCount from './components/GALoginCount.vue'
 </script>
 <template>
   <div>
@@ -8,6 +9,7 @@ import GADetail from './components/GADetail.vue'
         <GADetail />
       </el-col>
       <el-col :span="16">
+        <GALoginCount />
       </el-col>
     </el-row>
   </div>
