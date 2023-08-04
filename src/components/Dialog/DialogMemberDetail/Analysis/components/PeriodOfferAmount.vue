@@ -172,7 +172,11 @@ watch(
 </script>
 <template>
   <section class="cdp-section">
-    <SectionTitle class="mb-15" :title="t('customer_detail_info.total_bonuses')"> </SectionTitle>
+    <SectionTitle class="mb-15" :title="t('customer_detail_info.total_bonuses')">
+      <template #tooltip>
+        {{ $t('common.show_top_only', { rank: 5 }) }}
+      </template>
+    </SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>
       <canvas
