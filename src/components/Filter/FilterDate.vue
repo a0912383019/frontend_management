@@ -146,6 +146,7 @@ const handleClick = () => {
         <ButtonIcon
           icon="sliders"
           size="large"
+          color="purple"
           :name="t('common.advanced_filter')"
           @click="popoverVisible = !popoverVisible"
         />
@@ -170,6 +171,7 @@ const handleClick = () => {
           <ButtonIcon
             icon="search"
             size="large large-120"
+            color="purple"
             @click="handleClick"
             :name="t('common.filter')"
           />

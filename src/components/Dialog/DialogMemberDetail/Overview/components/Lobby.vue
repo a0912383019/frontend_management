@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberLobby } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -120,9 +120,9 @@ const queryLobbyChart = async () => {
     if (return_code === '0000') {
       transformLobbyChart(result.data.result)
       apiSuccess.value = true
-      setTimeout(() => {
+      nextTick(() => {
         registerChart()
-      }, 1)
+      })
     } else if (return_code === '0001') {
       messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)

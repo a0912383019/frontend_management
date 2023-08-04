@@ -32,6 +32,64 @@
   }
 }
 
+.cdp-confirm-dialog {
+  &.el-dialog {
+    border-radius: 15px;
+  }
+  .el-dialog {
+    &__header {
+      display: none;
+    }
+    &__body {
+      padding: 30px 15px 10px;
+    }
+  }
+  .inner-dialog {
+    position: relative;
+    color: #404040;
+    &__icon {
+      position: absolute;
+      left: -45px;
+      top: -55px;
+      width: 70px;
+      height: 70px;
+      img {
+        display: block;
+        width: 100%;
+      }
+    }
+    &__title {
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 500;
+      text-align: center;
+    }
+    &__list {
+      margin-bottom: 20px;
+      li {
+        display: flex;
+        width: 100%;
+        margin-bottom: 5px;
+      }
+      &__title {
+        width: 35%;
+        text-align: right;
+      }
+      &__text {
+        width: 65%;
+      }
+    }
+    &__button {
+      display: flex;
+      justify-content: space-between;
+      button {
+        width: calc(50% - 5px);
+        min-width: auto;
+      }
+    }
+  }
+}
+
 .cdp-tabs {
   .el-tabs {
     &__active-bar {
@@ -218,6 +276,24 @@
   }
 }
 
+.cdp-textarea {
+  border: solid 1px #cfd8e6;
+  border-radius: 5px;
+  .el-textarea {
+    &__inner {
+      box-shadow: none;
+      height: 120px;
+      resize: none;
+      &:hover {
+          box-shadow: none;
+      }
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+}
+
 //datepicker
 .el-date-table td.end-date .el-date-table-cell__text, .el-date-table td.start-date .el-date-table-cell__text {
   background-color: $purple;
@@ -228,6 +304,78 @@
     box-shadow: 0 0 0 1px #6a53ba inset !important;
     &:hover {
       box-shadow: 0 0 0 1px #6a53ba inset !important;
+    }
+  }
+}
+
+.cdp-datepicker-single {
+  .el-date-table {
+    td {
+      &.current {
+        &:not(.disabled) {
+          .el-date-table-cell__text {
+            background-color: #6a53ba;
+          }
+        }
+      }
+      &.available {
+        &:hover {
+            color: #6a53ba;
+        }
+      }
+      &.disabled {
+        .el-date-table-cell {
+          background-color: transparent;
+          color: #c3c5ca;
+        }
+      }
+      &.next-month, &.prev-month {
+        color: #c3c5ca;
+      }
+      
+    }
+  }
+  .el-date-picker__header-label {
+    &:hover {
+      color: #6a53ba;
+    }
+  }
+  .el-picker-panel__icon-btn {
+    &:hover {
+      color: #6a53ba;
+    }
+  }
+  .el-month-table {
+    td{
+      &.current{
+        &:not(.disabled) {
+          .cell {
+            color: #6a53ba;
+          }
+        }
+      }
+      .cell {
+        &:hover {
+          color: #6a53ba;
+        }
+      }
+    }
+  }
+
+  &-input {
+    &.full {
+      width: 100% !important;
+    }
+    .el-input {
+      &__wrapper {
+        height: 38px;
+        &.is-focus {
+          box-shadow: 0 0 0 1px #6a53ba inset;
+        }
+      }
+      &__inner {
+        height: 38px;
+      }
     }
   }
 }
