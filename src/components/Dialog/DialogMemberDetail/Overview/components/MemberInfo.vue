@@ -356,7 +356,7 @@ onMounted(() => {
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       append-to-body
-      class="life-cycle-inner-dialog"
+      class="cdp-confirm-dialog"
     >
       <div class="inner-dialog">
         <div class="inner-dialog__icon"><img src="@/assets/images/alert-2.png" alt="" /></div>
@@ -432,50 +432,6 @@ onMounted(() => {
     flex-shrink: 0;
   }
 }
-.inner-dialog {
-  position: relative;
-  color: #404040;
-  &__icon {
-    position: absolute;
-    left: -45px;
-    top: -55px;
-    width: 70px;
-    height: 70px;
-    img {
-      display: block;
-      width: 100%;
-    }
-  }
-  &__title {
-    margin-bottom: 20px;
-    font-size: 18px;
-    font-weight: 500;
-    text-align: center;
-  }
-  &__list {
-    margin-bottom: 20px;
-    li {
-      display: flex;
-      width: 100%;
-      margin-bottom: 5px;
-    }
-    &__title {
-      width: 35%;
-      text-align: right;
-    }
-    &__text {
-      width: 65%;
-    }
-  }
-  &__button {
-    display: flex;
-    justify-content: space-between;
-    button {
-      width: calc(50% - 5px);
-      min-width: auto;
-    }
-  }
-}
 </style>
 <style lang="scss">
 .cdp-tag-select {
@@ -501,17 +457,6 @@ onMounted(() => {
     &__inner {
       padding-top: 5px;
       padding-bottom: 5px;
-    }
-  }
-}
-.life-cycle-inner-dialog {
-  border-radius: 15px;
-  .el-dialog {
-    &__header {
-      display: none;
-    }
-    &__body {
-      padding: 30px 15px 10px;
     }
   }
 }

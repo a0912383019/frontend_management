@@ -41,6 +41,7 @@ const handleTabChange = (data) => {
   border-radius: 5px;
   padding: 0;
   margin: 0;
+  font-size: 16px;
   li {
     position: relative;
     list-style-type: none;
@@ -87,7 +88,7 @@ const handleTabChange = (data) => {
     position: relative;
     z-index: 99;
     width: 100%;
-    padding: 10px 20px;
+    padding: 9px 20px;
     border-radius: 5px;
     min-height: 44px;
     text-align: center;

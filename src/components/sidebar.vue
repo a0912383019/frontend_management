@@ -77,6 +77,12 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
 </template>
 <style lang="scss">
 .cdp-menu {
+  .el-menu-item {
+    font-size: 16px;
+  }
+  &__icon {
+    font-size: 13px;
+  }
   .el-sub-menu {
     &__title {
       padding: 0 !important;
