@@ -166,6 +166,30 @@ export const apiQueryMemberPeriodPlatformPayoff = (params) => {
 }
 
 //會員旅程
+//自訂旗標
+export const apiQueryMemberJourney = (params) => {
+  const { search_date, hall_name, member_id, locale } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_journey' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+      locale
+    }
+  )
+}
+//新增自訂旗標
+export const apiUpdateCustomFlag = (params) => {
+  const { hall_name, member_id, flag_date, flag_title, flag_content } = params
+  return axiosInstance.post('/api/auth/member/bbin/update_custom_flag' + sessionStorage.from_page, {
+    hall_name,
+    member_id,
+    flag_date,
+    flag_title,
+    flag_content
+  })
+}
 //詳細事項
 export const apiQueryMemberJourneyDetail = (params) => {
   const { search_date, hall_name, member_id, source, locale } = params

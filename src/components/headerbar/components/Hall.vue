@@ -460,6 +460,7 @@ watch(
             :name="$t('nav.reset')"
             icon="history"
             size="small"
+            color="green"
             class="hallbox__counter__button"
             :disabled="isDisabledResetBtn"
             @click="resetCounter"

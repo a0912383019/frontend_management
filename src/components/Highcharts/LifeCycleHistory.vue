@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberStepDetail } from '@/api/global.js'
 import { useGlobalStore } from '@/stores/global.js'
@@ -137,9 +137,9 @@ const queryMemberStepDetail = async () => {
     if (return_code === '0000') {
       transformMemberStepDetail(result.data.result)
       apiSuccess.value = true
-      setTimeout(() => {
+      nextTick(() => {
         registerChart()
-      }, 1)
+      })
       // let step_legend_dict = {}
     } else if (return_code === '0001') {
       apiSuccess.value = false

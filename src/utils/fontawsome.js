@@ -40,7 +40,8 @@ import {
   faChartArea,
   faGear,
   faLock,
-  faShieldAlt
+  faShieldAlt,
+  faPlus
 } from '@fortawesome/free-solid-svg-icons'
 import { faVimeoV } from '@fortawesome/free-brands-svg-icons'
 library.add(
@@ -85,5 +86,6 @@ library.add(
   faChartArea,
   faGear,
   faLock,
-  faShieldAlt
+  faShieldAlt,
+  faPlus
 )
