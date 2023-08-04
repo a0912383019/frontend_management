@@ -125,7 +125,6 @@ const handleSubmit = (type) => {
   if (form.title !== '' && form.content !== '') {
     updateCustomFlag(type)
       .then(() => {
-        // console.log('is okkk', res)
         clearForm()
         dialogVisible.value = false
         submitCheckVisible.value = false
@@ -188,13 +187,6 @@ const dialogOpen = ({ type, data }) => {
 
 const handleDialogClose = () => {
   submitBtnDisabled.value = true
-  // if (dialogType.value === 'add' && (form.title !== '' || form.content !== '')) {
-  //   notSaveVisible.value = true
-  // }
-
-  // if (dialogType.value === 'edit' && (form.title === '' || form.content === '')) {
-  //   notSaveVisible.value = true
-  // }
   formTemp.date = form.date
   formTemp.title = form.title
   formTemp.content = form.content

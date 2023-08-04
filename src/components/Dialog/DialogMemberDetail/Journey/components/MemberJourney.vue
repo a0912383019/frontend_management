@@ -76,7 +76,6 @@ const chartOptions = reactive({
       labels: {
         enabled: true,
         formatter: function () {
-          // console.log('0', this)
           if (Math.floor(this.value) === this.value) {
             return Math.abs(this.value) >= 1000 ? this.value / 1000 + 'k' : this.value
           }
@@ -116,7 +115,6 @@ const queryMemberJourney = async () => {
     if (return_code !== '0001') {
       if (return_code === '0000') {
         apiSuccess.value = true
-        // console.log(result)
         transformMemberJourney(result.data.result)
       } else {
         messageKey.value = 'chartFailed'
@@ -148,7 +146,6 @@ const queryMemberJourney = async () => {
 
 // 轉換資料
 const transformMemberJourney = (data) => {
-  console.log(data)
   let chart_data_this_day_step = []
   let chart_data_accumulate_bet_amount = []
   let chart_data_accumulate_bet_amount_level_flag = []
@@ -474,7 +471,6 @@ const handleFlagUpdated = () => {
 
 // 旗標編輯
 const handleFlagEdited = (item) => {
-  console.log(item)
   refMemberJourneyDialog.value.dialogOpen({
     type: 'edit',
     data: {
