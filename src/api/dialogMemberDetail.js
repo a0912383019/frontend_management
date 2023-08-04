@@ -205,4 +205,43 @@ export const apiQueryMemberJourneyDetail = (params) => {
   )
 }
 
+//行為分析
+//GA統計資料
+export const apiQueryQARelatedData = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_ga_related_data' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+    }
+  )
+}
+
+//登入次數/GA瀏覽次數
+export const apiQueryMemberPeriodLoginGACount = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_period_login_ga_count' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+    }
+  )
+}
+
+//領取優惠總額
+export const apiQueryMemberPeriodOfferAmount = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_period_offer_amount' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+    }
+  )
+}
 //會員明細Dialog結束
