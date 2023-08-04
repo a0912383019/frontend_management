@@ -207,4 +207,17 @@ export const apiQueryMemberPeriodLoginGACount = (params) => {
     }
   )
 }
+
+//領取優惠總額
+export const apiQueryMemberPeriodOfferAmount = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_period_offer_amount' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+    }
+  )
+}
 //會員明細Dialog結束
