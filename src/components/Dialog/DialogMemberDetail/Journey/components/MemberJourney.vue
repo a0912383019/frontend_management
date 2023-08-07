@@ -54,6 +54,7 @@ const chartOptions = reactive({
     shared: true,
     split: true,
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    borderWidth: 1,
     style: {
       width: '500px',
       fontSize: 13,
