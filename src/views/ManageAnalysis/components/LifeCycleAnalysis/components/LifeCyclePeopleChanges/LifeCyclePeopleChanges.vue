@@ -18,14 +18,11 @@ const { t, locale: i18nLocale } = useI18n()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 const manageAnalysisStore = useManageAnalysisStore()
-const { searchName, fuzzySearch, useCustomList, filterTimestamp } = storeToRefs(manageAnalysisStore)
+const { searchName, fuzzySearch, useCustomList, filterTimestamp, filterCustomUserList } =
+  storeToRefs(manageAnalysisStore)
 const { queryDate } = manageAnalysisStore
 
 const emit = defineEmits(['queryStepTrendAnalysis'])
-
-const query_life_cycle_analysis = () => {
-  query_life_cycle_analysis_overview_tbl() // 產生會員生命週期階段表格
-}
 
 const apiTableResult = ref([]) //會員生命週期階段api資料
 const tableData = ref([]) //會員生命週期階段表格
@@ -84,6 +81,8 @@ const tableColumns = computed(() => {
 //依照不同的messageKey產生不同的message
 const messageKey = ref('loading')
 
+const activeFile = ref('')
+
 //tooltip顯示對應日期
 const tooltipDate = computed(() => {
   return {
@@ -96,7 +95,7 @@ const tooltipDate = computed(() => {
 })
 
 //取得會員階段人數變化api
-const query_life_cycle_analysis_overview_tbl = async () => {
+const queryLifeCycleAnalysisOverviewTbl = async (customUserList) => {
   apiSuccess.value = false
   messageKey.value = 'loading'
   try {
@@ -105,7 +104,8 @@ const query_life_cycle_analysis_overview_tbl = async () => {
       query_date: queryDate,
       search_name: searchName.value,
       fuzzy_search: fuzzySearch.value,
-      use_custom_list: useCustomList.value
+      // use_custom_list: useCustomList.value
+      custom_user_list: customUserList
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -113,7 +113,7 @@ const query_life_cycle_analysis_overview_tbl = async () => {
       apiTableResult.value = []
       apiTableResult.value = result.data.result //存放取得的api資料
       //資料處理
-      transform_life_cycle_analysis_overview_tbl(result.data.result)
+      transformLifeCycleAnalysisOverviewTbl(result.data.result)
     } else if (return_code === '0001') {
       apiSuccess.value = false //取得資料失敗
       messageKey.value = 'noResult' //更改message內容
@@ -139,7 +139,7 @@ const query_life_cycle_analysis_overview_tbl = async () => {
 }
 
 //轉換會員階段人數變化資料
-const transform_life_cycle_analysis_overview_tbl = (data) => {
+const transformLifeCycleAnalysisOverviewTbl = (data) => {
   const result = data.step_data
   const ary = [] //存放轉換後的資料
   // 階段0不處理，從階段1開始
@@ -189,18 +189,17 @@ const transform_life_cycle_analysis_overview_tbl = (data) => {
 watch(
   () => activeHall.hall_code,
   () => {
-    console.log('activeHall.hall_code')
-    query_life_cycle_analysis()
+    queryLifeCycleAnalysisOverviewTbl()
   }
 )
 
 watch(i18nLocale, () => {
-  transform_life_cycle_analysis_overview_tbl(apiTableResult.value)
+  transformLifeCycleAnalysisOverviewTbl(apiTableResult.value)
 })
 
 onMounted(() => {
   if (activeHall.hall_code !== '' && activeHall.hall_code !== undefined) {
-    query_life_cycle_analysis()
+    queryLifeCycleAnalysisOverviewTbl()
   }
 })
 
@@ -219,18 +218,35 @@ const handleClick = (data) => {
 //   query_life_cycle_analysis()
 //   selectRow.value = null
 // }
+
+watch(
+  () => activeFile.value,
+  () => {
+    console.log('Changeeee')
+    /*-- 
+      備註：
+      目前FilterMemberName.vue有更新updateFilterTimestamp
+      使階段總覽及會員明細更動狀態，所以監聽檔名異動後去搜尋資料，會發生資料被覆蓋
+    --*/
+    filterCustomUserList.value = activeFile.value
+  }
+)
+
 watch(
   () => filterTimestamp.value,
   () => {
-    console.log('filterTimestamp', filterTimestamp)
-    query_life_cycle_analysis()
+    let customUserList = []
+    if (activeFile.value !== '') {
+      customUserList = activeFile.value
+    }
+    queryLifeCycleAnalysisOverviewTbl(customUserList)
     selectRow.value = null
   }
 )
 </script>
 <template>
   <section class="cdp-section">
-    <div class="section-top-filter"><FilterMemberName /></div>
+    <div class="section-top-filter"><FilterMemberName v-model="activeFile" /></div>
     <SectionTitle class="mb-15" :title="t('manage_analysis.life_cycle_people_changes')">
       <template #tooltip>
         <div class="tooltip-date">

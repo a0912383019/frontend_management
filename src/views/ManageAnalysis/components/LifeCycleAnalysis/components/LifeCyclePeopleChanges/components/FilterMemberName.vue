@@ -2,22 +2,21 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
-import { apiUploadMemberTagList, apiImportUploadMemberList } from '@/api/manageAnalysis.js'
+import { apiUploadCsvList } from '@/api/global.js'
 import { useGlobalStore } from '@/stores/global.js'
-import { errorRespond } from '@/utils/commonUtils.js'
-import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { ElNotification } from 'element-plus'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import UploadFile from '@/components/UploadFile.vue'
 
 const { t } = useI18n()
 
-const router = useRouter()
 // const emit = defineEmits(['query:filter'])
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const manageAnalysisStore = useManageAnalysisStore()
+const { filterCustomUserList } = storeToRefs(manageAnalysisStore)
 const searchName = ref('') //搜尋的名稱
 const useCustomList = ref(manageAnalysisStore.useCustomList) //手動匯入名單
 const fuzzySearch = ref(manageAnalysisStore.fuzzySearch) //模糊搜尋
@@ -34,121 +33,61 @@ const popoverVisible = ref(false)
 //檔案路徑
 const filePath = ref(null)
 
-//透過emit取得檔案路徑
-const handleGetFileName = (data) => {
-  filePath.value = data
-  upload_and_import_file()
+const emit = defineEmits(['update:modelValue'])
+
+// const activeTabName = ref(props.activeName)
+const handleFileUpload = (data) => {
+  console.log('handleFileUpload', data)
+  emit('update:modelValue', data)
 }
 
-const upload_and_import_file = async () => {
+//透過emit取得檔案路徑
+const handleGetFileName = (data) => {
+  console.log(data)
+  filePath.value = data
+  // upload_and_import_file()
+  uploadCsvFile()
+}
+
+const uploadCsvFile = async () => {
   globalStore.isLoading = true // 開啟loading
-  doUpload()
-    .then(() => {
-      return doImport()
-        .then((successMessage) => {
-          return Promise.resolve(successMessage)
-        })
-        .catch(function (failMessage) {
-          return Promise.reject(failMessage)
-        })
+  try {
+    const result = await apiUploadCsvList({
+      hall_name: activeHall.hall_code,
+      csv_type: 1,
+      csv_file: filePath.value
     })
-    .then(function (successMessage) {
-      if (successMessage === 'upload file success') {
-        ElNotification({
-          title: '',
-          message: t('msg.upload_success'),
-          type: 'success'
-        })
-      } else if (successMessage === 'import list success') {
-        ElNotification({
-          title: '',
-          message: t('msg.import_success'),
-          type: 'success'
-        })
-      }
+    console.log(result)
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      ElNotification({
+        title: t('msg.import_success'),
+        type: 'success'
+      })
+      handleBeforeSubmit()
+      handleFileUpload(result.data.result)
       updateFilterTimestamp() //更新timestamp已更新資料
       dialogVisible.value = false // 成功後關閉dialog
       popoverVisible.value = false // 成功後關閉popover
       globalStore.isLoading = false // 關閉loading
-    })
-    .catch(function (failMessage) {
-      globalStore.isLoading = false // 關閉loading
-      if (failMessage === 'upload file failed') {
-        ElNotification({
-          title: '',
-          message: t('msg.upload_failed'),
-          type: 'Error'
-        })
-      } else if (failMessage === 'import list failed') {
-        ElNotification({
-          title: '',
-          message: t('msg.import_failed'),
-          type: 'Error'
-        })
-      }
-      // fail_callback();
-    })
-}
-
-const doUpload = () => {
-  return new Promise((resolve, reject) => {
-    apiUploadMemberTagList({
-      hall_name: activeHall.hall_code,
-      upload_file: filePath.value
-    })
-      .then((result) => {
-        const { return_code } = result.data.status
-        if (return_code === '0000') {
-          resolve('upload file success') //表示Promise物件執行成功，可往下繼續執行
-        } else {
-          let failMsg = errorRespond(result.data.status)
-          console.error(failMsg)
-          reject('upload file failed') //表示Promise物件執行失敗，拒絕後續的程式執行
-        }
+    }
+  } catch (error) {
+    console.error(error)
+    globalStore.isLoading = false // 關閉loading
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
       })
-      .catch((error) => {
-        console.error(error)
-        if (error.response.status === 401) {
-          // 若api回應401 http error code，導至登入頁
-          sessionStorage.clear()
-          localStorage.clear()
-          sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
-          router.push({ name: 'Login' })
-          let failMsg = `${error.response.status} : ${error.response.data.message}`
-          reject(failMsg) //表示Promise物件執行失敗，拒絕後續的程式執行
-        }
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.import_failed'),
+        type: 'Error'
       })
-  })
-}
-
-const doImport = () => {
-  return new Promise((resolve, reject) => {
-    apiImportUploadMemberList({
-      hall_name: activeHall.hall_code
-    })
-      .then((result) => {
-        const { return_code } = result.data.status
-        if (return_code === '0000') {
-          resolve('import list success') //表示Promise物件執行成功，可往下繼續執行
-        } else {
-          let failMsg = errorRespond(result.data.status)
-          console.error(failMsg)
-          reject('import list failed') //表示Promise物件執行失敗，拒絕後續的程式執行
-        }
-      })
-      .catch((error) => {
-        console.error(error)
-        if (error.response.status === 401) {
-          // 若api回應401 http error code，導至登入頁
-          sessionStorage.clear()
-          localStorage.clear()
-          sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
-          router.push({ name: 'Login' })
-          let failMsg = `${error.response.status} : ${error.response.data.message}`
-          reject(failMsg) //表示Promise物件執行失敗，拒絕後續的程式執行
-        }
-      })
-  })
+    }
+  }
 }
 
 const updateFilterTimestamp = () => {
@@ -161,20 +100,30 @@ const handleUseCustomSwitchChange = (type) => {
   dialogVisible.value = type
 }
 
+// 資料送出前的欄位檢查
+const handleBeforeSubmit = () => {
+  /*
+    api的search_name欄位權重會比custom_user_list大
+  */
+  if (useCustomList.value) {
+    //如果useCustomList為true，須將search_name清空，不然會影響到搜尋結果，會以search_name得值去拿資料
+    searchName.value = ''
+    manageAnalysisStore.searchName = ''
+  } else {
+    //如果useCustomList為false，清空上傳csv檔後回傳的名單資料
+    filterCustomUserList.value = []
+  }
+}
+
 //確認篩選
 const handleClick = () => {
-  // if (useCustomList.value) {
-  //   manageAnalysisStore.useCustomList = useCustomList.value
-  //   upload_and_import_file()
-  // } else {
   //將資料寫到pinia
+  handleBeforeSubmit()
   manageAnalysisStore.searchName = searchName.value
   manageAnalysisStore.useCustomList = useCustomList.value
   manageAnalysisStore.fuzzySearch = fuzzySearch.value
   popoverVisible.value = false
   updateFilterTimestamp()
-  // }
-  // emit('query:filter')
 }
 
 //dialog close callback

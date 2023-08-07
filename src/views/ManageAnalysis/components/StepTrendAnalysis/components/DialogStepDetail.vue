@@ -105,7 +105,6 @@ const transform_step_detail_tbl = (data) => {
 
 //開啟dialog
 const handleOpenDialog = (param) => {
-  console.log('handleOpenDialog', param)
   dialogVisible.value = true
   currentTooltipEntity['date'] = dayjs(param.date).format('YYYY-MM-DD')
   currentTooltipEntity['step'] = param.step

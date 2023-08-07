@@ -130,7 +130,7 @@ const queryMemberStepDetail = async () => {
   try {
     const result = await apiQueryMemberStepDetail({
       hall_name: activeHall.hall_code,
-      member_id: props.memberId,
+      user_id: props.memberId,
       member_step_detail_date: props.detailDate
     })
     const { return_code } = result.data.status

@@ -15,7 +15,6 @@ const fileData = ref(null)
 //判斷檔案副檔名
 const submitType = ref(true)
 const checkFile = (data) => {
-  console.log(data)
   let name = data.split('.').pop()
   if (!/^(csv)$/.test(name)) {
     //如果不是csv，submitType改為false
@@ -26,7 +25,6 @@ const checkFile = (data) => {
 }
 //使用手動匯入名單
 const handleFileChange = (element) => {
-  console.log(element.target.files[0])
   if (element.target.files[0] !== undefined) {
     fileData.value = element.target.files[0]
     fileName.value = element.target.files[0]['name']

@@ -26,12 +26,12 @@ const { queryDate } = manageAnalysisStore
 const {
   searchName,
   fuzzySearch,
-  useCustomList,
   stepType,
   detailType,
   filterTimestamp,
   deatilRangeDate,
-  filterDateTimestamp
+  filterDateTimestamp,
+  filterCustomUserList
 } = storeToRefs(manageAnalysisStore)
 
 const apiSuccess = ref(false) //會員生明細api是否成功
@@ -151,7 +151,6 @@ const upadteCurrentSort = (data) => {
 
 //頁碼切換執行的內容
 const updateCurrentPage = (data) => {
-  console.log(data)
   apiDraw.value = data
   apiStart.value = apiDraw.value * apiLength.value - apiLength.value
 
@@ -166,138 +165,25 @@ const query_life_cycle_analysis_detail_tbl = async () => {
   try {
     const result = await apiQueryLifeCycleAnalysisDetailTbl({
       hall_name: activeHall.hall_code,
+      query_date: queryDate,
       life_cycle_analysis_detail_date: deatilRangeDate.value,
       life_cycle_analysis_step: stepType.value,
       detail_type: detailType.value,
-      query_date: queryDate,
       search_name: searchName.value,
       fuzzy_search: fuzzySearch.value,
-      use_custom_list: useCustomList.value,
-      draw: apiDraw.value,
       start: apiStart.value,
       length: apiLength.value,
       order: [querySortRule], //預設排序欄位
-      columns: [
-        //列表表頭欄位
-        {
-          data: {
-            hall_id: 'hall_id',
-            domain_id: 'domain_id',
-            user_id: 'user_id',
-            user_name: 'user_name'
-          },
-          name: '',
-          searchable: true,
-          orderable: false,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'ag_name',
-          name: '',
-          searchable: true,
-          orderable: false,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'deposit_amount',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'bet_amount',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'payoff',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'activity_day',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'deposit_amount_avg',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'bet_amount_avg',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'payoff_avg',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: {
-            hall_id: 'hall_id',
-            domain_id: 'domain_id',
-            user_id: 'user_id',
-            user_name: 'user_name'
-          },
-          name: '',
-          searchable: true,
-          orderable: false,
-          search: {
-            value: '',
-            regex: false
-          }
-        }
-      ]
+      custom_user_list: filterCustomUserList.value
     })
     // console.log(result)
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true
+      console.log(result.data.result.data, result.data.result)
       tableData.value = []
-      tableData.value = result.data.data
-      apiRecordsTotal.value = result.data.recordsTotal
+      tableData.value = result.data.result.data
+      apiRecordsTotal.value = result.data.result.records_total
     }
   } catch (error) {
     console.log(error)
@@ -362,6 +248,8 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
     <SectionTitle class="mb-15" :title="t('manage_analysis.member_details')" />
     <CurrencySignText v-show="apiSuccess" />
   </div>
+  API:{{ filterCustomUserList }}<br />
+  SearchName: {{ searchName }}<br /><br />
   <CdpMessage :messageKey="messageKey" :height="500" v-show="apiSuccess === false" />
   <div v-show="apiSuccess">
     <DialogMemberHistory ref="refDialogMemberHistory" />

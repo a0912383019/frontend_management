@@ -21,12 +21,12 @@ const { queryDate } = manageAnalysisStore
 const {
   searchName,
   fuzzySearch,
-  useCustomList,
   stepType,
   detailType,
   filterTimestamp,
   deatilRangeDate,
-  filterDateTimestamp
+  filterDateTimestamp,
+  filterCustomUserList
 } = storeToRefs(manageAnalysisStore)
 const apiSuccess = ref(false) //階段總覽api是否成功
 
@@ -59,7 +59,7 @@ const query_life_cycle_analysis_avg_data = async () => {
       query_date: queryDate,
       search_name: searchName.value,
       fuzzy_search: fuzzySearch.value,
-      use_custom_list: useCustomList.value
+      custom_user_list: filterCustomUserList.value
     })
     const { return_code } = result.data.status
     const { avg_bet_amount, avg_deposit_amount, avg_payoff } = result.data.result
@@ -138,6 +138,8 @@ defineExpose({ query_life_cycle_analysis_avg_data })
         <FilterDate @update:timestamp="updateTimestamp" />
       </div>
     </div>
+    API:{{ filterCustomUserList }}<br />
+    SearchName: {{ searchName }}<br /><br />
     <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
     <el-row :gutter="20" v-else>
       <el-col :span="8">

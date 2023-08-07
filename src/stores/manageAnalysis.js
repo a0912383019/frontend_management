@@ -40,6 +40,8 @@ export const useManageAnalysisStore = defineStore('manageAnalysis', () => {
 
   const filterDateStepTrendTimestamp = ref(new Date().getTime()) //趨勢分析FilterDate.vue的時間戳
 
+  const filterCustomUserList = ref([])
+
   return {
     searchName,
     queryDate,
@@ -52,6 +54,8 @@ export const useManageAnalysisStore = defineStore('manageAnalysis', () => {
 
     filterTimestamp,
     filterDateTimestamp,
-    filterDateStepTrendTimestamp
+    filterDateStepTrendTimestamp,
+
+    filterCustomUserList
   }
 })
