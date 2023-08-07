@@ -200,7 +200,8 @@ watch(
         :tableData="tableData"
         :tableColumns="tableColumns"
         :hasPagination="false"
-        tableHeight="310"
+        :hasTotalPagination="true"
+        tableHeight="290"
         class="customTable2"
         ref="refTable"
       >

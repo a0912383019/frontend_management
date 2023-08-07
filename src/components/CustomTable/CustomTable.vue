@@ -30,6 +30,10 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
+  hasTotalPagination: {
+    type: Boolean,
+    default: false
+  },
   pageSize: {
     //一頁幾筆
     type: Number,
@@ -158,6 +162,9 @@ defineExpose({ goToFirstPage })
 
       <!-- append插槽：插入至表格最后一行之后的内容 -->
       <template #append><slot name="append"></slot></template>
+      <template #empty>
+        <div>{{ $t('table.sZeroRecords') }}</div>
+      </template>
     </el-table>
     <div class="paginationBox" v-if="hasPagination">
       <CustomPagination
@@ -172,6 +179,13 @@ defineExpose({ goToFirstPage })
       <TotalPagination
         :page="page.currentPage"
         :pageSize="props.pageSize"
+        :total="pageTableTotla"
+      />
+    </div>
+    <div class="paginationBox" v-if="hasPagination === false && hasTotalPagination === true">
+      <TotalPagination
+        :page="page.currentPage"
+        :pageSize="pageTableTotla"
         :total="pageTableTotla"
       />
     </div>
