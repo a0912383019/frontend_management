@@ -299,6 +299,10 @@
   background-color: $purple;
 }
 
+.cdp-datepicker-single .el-date-table td.today .el-date-table-cell__text {
+  color: inherit;
+}
+
 .el-range-editor {
   &.is-active {
     box-shadow: 0 0 0 1px #6a53ba inset !important;

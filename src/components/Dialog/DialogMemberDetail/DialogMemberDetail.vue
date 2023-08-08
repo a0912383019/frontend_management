@@ -70,6 +70,10 @@ const handleOpenDialog = () => {
   headerMemberName.value = dialogMemberDetailStore.memberData.user_name
 }
 
+const handleDialogClosed = () => {
+  currentTabs.value = 'Overview'
+}
+
 //日期更新後執行的動作
 const updateTimestamp = (data) => {
   //將資料寫到pinia
@@ -86,6 +90,7 @@ defineExpose({ handleOpenDialog })
       :append-to-body="true"
       :title="headerTitle"
       :destroy-on-close="true"
+      @closed="handleDialogClosed"
     >
       <template #header>
         <div class="cdp-dialog__header">
