@@ -9,6 +9,8 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
 import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
+import { ElNotification, dayjs } from 'element-plus'
+
 
 const { t } = useI18n()
 
@@ -38,20 +40,17 @@ const chartOptions = reactive({
     tickmarkPlacement: 'on',
     tickColor: '#e8e8e8',
     tickWidth: 1,
-    categories: []
+    categories: [],
+    labels: {
+      style: {
+        fontSize: '14px'
+      }
+    }
   },
   yAxis: [
     {
       title: {
-        text: t('data_name.login_num'),
-        style: {
-          color: 'rgba(245,105,84,1)'
-        }
-      },
-      labels: {
-        style: {
-          color: 'rgba(245,105,84,1)'
-        }
+        text: t('data_name.login_num')
       },
       minorTicks: true,
       minorTickColor: '#e8e8e8',
@@ -63,15 +62,7 @@ const chartOptions = reactive({
     },
     {
       title: {
-        text: t('data_name.ga_num'),
-        style: {
-          color: 'rgba(60,141,188,1)'
-        }
-      },
-      labels: {
-        style: {
-          color: 'rgba(60,141,188,1)'
-        }
+        text: t('data_name.ga_num')
       },
       minorTicks: true,
       minorTickColor: '#e8e8e8',
@@ -157,7 +148,9 @@ const queryMemberPeriodLoginGACount = async () => {
 // 轉換資料
 const transformLoginData = (data) => {
   clearChart()
-  chartOptions.xAxis.categories = data.map((ele) => ele.data_date)
+  chartOptions.xAxis.categories = data.map((ele) =>
+    dayjs(ele.data_date).format(t('date.format_date_rule'))
+  )
   const series = [
     {
       name: t('data_name.login_num'),
@@ -165,7 +158,6 @@ const transformLoginData = (data) => {
       data: data.map((ele) => Number(ele.login_count)),
       color: 'rgba(245,105,84,1)',
       lineWidth: 2,
-      dashStyle: 'ShortDashDot',
       yAxis: 0
     },
     {
@@ -174,15 +166,16 @@ const transformLoginData = (data) => {
       data: data.map((ele) => Number(ele.ga_count)),
       color: 'rgba(60,141,188,1)',
       lineWidth: 2,
-      dashStyle: 'LongDash',
       yAxis: 1
     }
   ]
   //當資料量超過兩個月時，關閉dataLabels
-  if (data.length > 62) {
+  if (data.length > 40) {
     chartOptions.plotOptions.series.dataLabels.enabled = false
+    chartOptions.xAxis.labels.style.fontSize = '12px'
   } else {
     chartOptions.plotOptions.series.dataLabels.enabled = true
+    chartOptions.xAxis.labels.style.fontSize = '12.8px'
   }
   chartOptions.series = series
 }

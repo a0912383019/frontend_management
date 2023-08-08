@@ -244,4 +244,17 @@ export const apiQueryMemberPeriodOfferAmount = (params) => {
     }
   )
 }
+
+//領取優惠總每日今額
+export const apiQueryMemberPeriodDayOffer = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_member_period_day_offer' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+    }
+  )
+}
 //會員明細Dialog結束
