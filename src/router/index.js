@@ -18,6 +18,11 @@ const router = createRouter({
       component: () => import('../views/Login.vue')
     },
     {
+      path: '/member-details-popup',
+      name: 'member-details-popup',
+      component: () => import('../views/MemberDetailsPopup/MemberDetailsPopup.vue')
+    },
+    {
       path: '/home',
       name: 'Home',
       component: MainLayout,
