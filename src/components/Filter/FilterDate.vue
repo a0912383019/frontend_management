@@ -51,9 +51,14 @@ if (props.rangeDate !== '') {
 }
 const dateValue = ref([dateValueStartDate.value, dateValueEndDate.value])
 
+const selectDate = ref(dateValueStartDate.value) // 目前選擇的起始日，用來判斷disabledDate
+
+// 日曆禁用日期
 const disabledDate = (day) => {
-  return day < dateMinDate.value || day > dateValueEndDate.value
+  const diff = selectDate.value.diff(day, 'month') // 選擇的起始日往前往後大於三個月的日期disabled
+  return diff >= 3 || diff <= -3 || day < dateMinDate.value || day > dateValueEndDate.value
 }
+
 const shortcuts = [
   {
     text: t('date_range_picker.last_week'),
@@ -99,25 +104,25 @@ const shortcuts = [
         dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
       ]
     }
-  },
-  {
-    text: t('date_range_picker.last_six_months'),
-    value: () => {
-      return [
-        dayjs().add(1, 'day').subtract(6, 'month'),
-        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
-      ]
-    }
-  },
-  {
-    text: t('date_range_picker.last_year'),
-    value: () => {
-      return [
-        dayjs().add(1, 'day').subtract(1, 'year'),
-        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
-      ]
-    }
   }
+  // {
+  //   text: t('date_range_picker.last_six_months'),
+  //   value: () => {
+  //     return [
+  //       dayjs().add(1, 'day').subtract(6, 'month'),
+  //       dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
+  //     ]
+  //   }
+  // },
+  // {
+  //   text: t('date_range_picker.last_year'),
+  //   value: () => {
+  //     return [
+  //       dayjs().add(1, 'day').subtract(1, 'year'),
+  //       dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
+  //     ]
+  //   }
+  // }
 ]
 
 const handleClick = () => {
@@ -130,6 +135,11 @@ const handleClick = () => {
     )
   })
   popoverVisible.value = false
+}
+
+// 選擇日期後將日期放入
+const handleCalendarChange = (val) => {
+  selectDate.value = dayjs(val[0])
 }
 </script>
 <template>
@@ -165,6 +175,7 @@ const handleClick = () => {
             :shortcuts="shortcuts"
             :teleported="false"
             :disabled-date="disabledDate"
+            @calendar-change="handleCalendarChange"
           />
         </div>
         <div class="drop__footer">

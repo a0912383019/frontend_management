@@ -418,7 +418,8 @@
     background-color: rgba(106, 83, 186, 0.08);
   }
   .el-date-table td.today .el-date-table-cell__text {
-    color: #6a53ba;
+    color: inherit;
+    font-weight: 400;
   }
   .el-date-table td {
     &.available {
