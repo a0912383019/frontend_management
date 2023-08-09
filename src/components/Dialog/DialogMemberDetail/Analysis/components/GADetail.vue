@@ -9,6 +9,7 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import { getHallCurrencySign, FormatNumber, errorRespond } from '@/utils/commonUtils.js'
+import { ElNotification } from 'element-plus'
 
 const { t } = useI18n()
 

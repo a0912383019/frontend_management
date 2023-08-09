@@ -17,6 +17,7 @@ import {
 } from '@/utils/commonUtils.js'
 import Chart from 'chart.js/auto'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { ElNotification } from 'element-plus'
 
 const { t } = useI18n()
 
