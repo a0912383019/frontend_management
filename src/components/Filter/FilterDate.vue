@@ -55,7 +55,7 @@ const selectDate = ref(dateValueStartDate.value) // 目前選擇的起始日，�
 
 // 日曆禁用日期
 const disabledDate = (day) => {
-  const diff = selectDate.value.diff(day, 'month') // 選擇的起始日往前往後大於三個月的日期disabled
+  const diff = dayjs(selectDate.value).diff(day, 'month') // 選擇的起始日往前往後大於三個月的日期disabled
   return diff >= 3 || diff <= -3 || day < dateMinDate.value || day > dateValueEndDate.value
 }
 
@@ -139,7 +139,7 @@ const handleClick = () => {
 
 // 選擇日期後將日期放入
 const handleCalendarChange = (val) => {
-  selectDate.value = dayjs(val[0])
+  selectDate.value = val[0]
 }
 </script>
 <template>
