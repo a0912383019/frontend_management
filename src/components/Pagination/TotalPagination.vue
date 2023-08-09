@@ -18,6 +18,9 @@ const props = defineProps({
 })
 
 const pageStart = computed(() => {
+  if (props.total === 0) {
+    return 0
+  }
   return props.page * props.pageSize - props.pageSize + 1
 })
 const pageEnd = computed(() => {

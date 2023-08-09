@@ -2,6 +2,8 @@
 import GADetail from './components/GADetail.vue'
 import GALoginCount from './components/GALoginCount.vue'
 import PeriodOfferAmount from './components/PeriodOfferAmount.vue'
+import PeriodDayOffer from './components/PeriodDayOffer.vue'
+
 </script>
 <template>
   <div>
@@ -18,6 +20,7 @@ import PeriodOfferAmount from './components/PeriodOfferAmount.vue'
         <PeriodOfferAmount />
       </el-col>
       <el-col :span="16">
+        <PeriodDayOffer />
       </el-col>
     </el-row>
   </div>

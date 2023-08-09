@@ -40,8 +40,10 @@ import {
   faChartArea,
   faGear,
   faLock,
-  faShieldAlt
+  faShieldAlt,
+  faPlus
 } from '@fortawesome/free-solid-svg-icons'
+import { faWindowRestore } from '@fortawesome/free-regular-svg-icons'
 import { faVimeoV } from '@fortawesome/free-brands-svg-icons'
 library.add(
   faExclamationTriangle,
@@ -85,5 +87,7 @@ library.add(
   faChartArea,
   faGear,
   faLock,
-  faShieldAlt
+  faShieldAlt,
+  faPlus,
+  faWindowRestore
 )

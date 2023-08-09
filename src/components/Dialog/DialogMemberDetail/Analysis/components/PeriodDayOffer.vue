@@ -1,11 +1,12 @@
 <script setup>
 import { ref, reactive, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryMemberPeriodDepositWithdrawAmount } from '@/api/dialogMemberDetail.js'
+import { apiQueryMemberPeriodDayOffer } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
-import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
+import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
+import { FormatNumber, errorRespond, generateRGBColors } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipShared } from '@/utils/highchartsConfig.js'
 import { ElNotification, dayjs } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -35,10 +36,15 @@ const chartOptions = reactive({
     gridLineColor: '#e8e8e8',
     gridLineWidth: 1,
     lineColor: '#e8e8e8',
-    tickmarkPlacement: 'on',
     tickColor: '#e8e8e8',
     tickWidth: 1,
-    categories: []
+    tickInterval: 1,
+    categories: [],
+    labels: {
+      style: {
+        fontSize: '14px'
+      }
+    }
   },
   yAxis: {
     gridLineColor: '#e8e8e8'
@@ -53,9 +59,6 @@ const chartOptions = reactive({
     }
   },
   plotOptions: {
-    area: {
-      fillOpacity: 0.5
-    },
     series: {
       dataLabels: {
         enabled: false,
@@ -69,20 +72,19 @@ const chartOptions = reactive({
 })
 
 //取得資料
-const queryMemberPeriodDepositWithdrawAmount = async () => {
+const queryMemberPeriodDayOffer = async () => {
   messageKey.value = 'shortLoading'
   apiSuccess.value = false
   try {
-    const result = await apiQueryMemberPeriodDepositWithdrawAmount({
+    const result = await apiQueryMemberPeriodDayOffer({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
       member_id: dialogMemberDetailStore.memberData.user_id
     })
-
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true
-      transformMemberPeriodDepositWithdrawAmount(result.data.result)
+      transformMemberPeriodDayOffer(result.data.result)
     } else if (return_code === '0001') {
       messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
@@ -111,56 +113,42 @@ const queryMemberPeriodDepositWithdrawAmount = async () => {
 }
 
 //轉換資料
-const transformMemberPeriodDepositWithdrawAmount = (data) => {
+const transformMemberPeriodDayOffer = (data) => {
   clearChart()
-  let chartData = {
-    deposit_amount: {
-      name: t('data_name.deposit'),
+  //複製第一筆資料
+  let dataClone = { ...data[0] }
+  delete dataClone.data_date
+  let dataKey = Object.keys(dataClone)
+
+  let dateArr = data.map((ele) => dayjs(ele.data_date).format(t('date.format_date_rule'))) //x軸日期
+  let dataSet = {}
+  dataKey.map((ele, idx) => {
+    dataSet[ele] = {
+      name: dataClone[ele].opcode_name,
       marker: {
         symbol: 'circle'
       },
       lineWidth: 2,
-      color: 'rgba(245,105,84,1)',
-      data: []
-    },
-    withdraw_amount: {
-      name: t('data_name.withdraw'),
-      marker: {
-        symbol: 'diamond'
-      },
-      lineWidth: 2,
-      color: 'rgba(60,141,188,1)',
-      data: []
-    },
-    accumulate_profit: {
-      name: t('customer_detail_info.accumulate_net_amount'),
-      marker: {
-        symbol: 'square'
-      },
-      lineWidth: 2,
-      color: 'rgba(0,166,90,1)',
-      data: [],
-      zIndex: -1
+      fillColor: generateRGBColors(chart_fixed_bgColor[idx], 0.3),
+      color: generateRGBColors(chart_fixed_bgColor[idx], 1),
+      data: data.map((item) => {
+        return parseFloat(item[ele].premium_amount)
+      })
     }
-  }
+  })
+
   //當資料量太大時，關閉dataLabels
   if (data.length > 40) {
     chartOptions.plotOptions.series.dataLabels.enabled = false
-    chartOptions.xAxis.tickmarkPlacement = 'between'
+    chartOptions.xAxis.labels.style.fontSize = '12px'
   } else {
     chartOptions.plotOptions.series.dataLabels.enabled = true
-    chartOptions.xAxis.tickmarkPlacement = 'on'
+    chartOptions.xAxis.labels.style.fontSize = '12.8px'
   }
 
-  data.forEach((item) => {
-    chartData['deposit_amount']['data'].push(parseFloat(item.deposit_amount))
-    chartData['withdraw_amount']['data'].push(parseFloat(item.withdraw_amount))
-    chartData['accumulate_profit']['data'].push(parseFloat(item.accumulate_profit))
-    chartOptions.xAxis.categories.push(dayjs(item.data_date).format(t('date.format_date_rule')))
-  })
-
-  Object.keys(chartData).forEach((item) => {
-    chartOptions.series.push(chartData[item])
+  chartOptions.xAxis.categories = dateArr
+  Object.keys(dataSet).forEach((item) => {
+    chartOptions.series.push(dataSet[item])
   })
 }
 
@@ -170,18 +158,21 @@ const clearChart = () => {
 }
 
 onMounted(() => {
-  queryMemberPeriodDepositWithdrawAmount()
+  queryMemberPeriodDayOffer()
 })
 watch(
   () => dialogMemberDetailRangeDate.value,
   () => {
-    queryMemberPeriodDepositWithdrawAmount()
+    queryMemberPeriodDayOffer()
   }
 )
 </script>
 <template>
   <section class="cdp-section">
-    <SectionTitle class="mb-15" :title="t('customer_detail_info.deposit_and_withdraw')">
+    <SectionTitle class="mb-15" :title="t('customer_detail_info.daily_bonuses')">
+      <template #tooltip>
+        {{ $t('common.show_top_only', { rank: 5 }) }}
+      </template>
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>

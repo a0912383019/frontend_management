@@ -155,6 +155,7 @@ watch(
           <ButtonIcon
             icon="sliders"
             size="large"
+            color="purple"
             :name="t('common.advanced_filter')"
             @click="popoverVisible = !popoverVisible"
           />
@@ -182,6 +183,7 @@ watch(
           <div class="drop__footer">
             <ButtonIcon
               icon="search"
+              color="purple"
               size="large large-120"
               :name="t('common.filter')"
               @click="handleClick"
@@ -198,7 +200,8 @@ watch(
         :tableData="tableData"
         :tableColumns="tableColumns"
         :hasPagination="false"
-        tableHeight="310"
+        :hasTotalPagination="true"
+        tableHeight="290"
         class="customTable2"
         ref="refTable"
       >

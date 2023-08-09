@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberPeriodBetAmount } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -107,9 +107,9 @@ const queryBetLineChart = async () => {
       transformBetAmountChart(result_period_bet_amount)
       transformBetAmountKnob(result_period_device_bet_amount)
       apiSuccess.value = true
-      setTimeout(() => {
+      nextTick(() => {
         registerChart()
-      }, 1)
+      })
     } else if (return_code === '0001') {
       messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)

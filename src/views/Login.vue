@@ -53,10 +53,10 @@ const googleLoginCallback = (response) => {
   // This callback will be triggered when the user selects or login to
   // his Google account from the popup
   handleLogin({ credential: response.credential })
-    .then((res) => {
+    .then(() => {
       globalStore.isLoading = false
       //  登入成功取得api access_token後才導至首頁
-      router.push({ name: 'Home' })
+      router.push({ path: '/home' })
 
       let { user_name } = JSON.parse(sessionStorage.user_info)
       ElNotification({
