@@ -32,10 +32,5 @@ const sidebarStore = useSidebarStore()
       width: calc(100% - 75px);
     }
   }
-  &__container {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 0.25rem;
-  }
 }
 </style>

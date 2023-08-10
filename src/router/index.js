@@ -49,8 +49,8 @@ const router = createRouter({
       children: [
         {
           path: '/customer-tag-list',
-          name: 'customer-tag-list'
-          // component: () => import('../views/Home/Home.vue')
+          name: 'customer-tag-list',
+          component: () => import('../views/CustomerTagList/CustomerTagList.vue')
         }
       ]
     },
