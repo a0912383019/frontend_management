@@ -306,3 +306,25 @@ export function getRangeEveryDay(startDate, endDate, t) {
   }
   return result
 }
+
+/**
+ * 返回value值对应的key(找出對應的廳別名稱)
+ * @param {string[]} root_hall_ary 要尋找的根廳別
+ * @param {object} value 尋找的廳別物件
+ * @param compare
+ */
+export function findHallIdMappingKey(
+  root_hall_ary,
+  value,
+  compare = (a, b) => a.hall_id === b.hall_id && a.domain_id === b.domain_id
+) {
+  let key = undefined
+  let index = 0
+  while (key === undefined && index < root_hall_ary.length) {
+    key = Object.keys(hall_config_dict[root_hall_ary[index]]).find((k) =>
+      compare(hall_config_dict[root_hall_ary[index]][k], value)
+    )
+    index++
+  }
+  return key
+}

@@ -45,6 +45,7 @@ if (get_tag_code !== undefined) {
     effect="dark"
     :content="tag_description_dict[tag_code].tag_description"
     placement="top"
+    :hide-after="0"
   >
     <div :class="badge_class">
       {{ tag_description_dict[tag_code].tag_name }}
