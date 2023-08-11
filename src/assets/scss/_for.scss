@@ -67,3 +67,9 @@
     padding-right: #{$i}px;
   }
 }
+
+@for $i from 0 through 30 {
+  .font-size-#{$i} {
+    font-size: #{$i}px;
+  }
+}

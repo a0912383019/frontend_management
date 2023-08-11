@@ -1,74 +1,73 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQuerySmallBoxData } from '@/api/home.js'
 import { useGlobalStore } from '@/stores/global.js'
-import { storeToRefs } from 'pinia'
-import CdpMessage from '@/components/CdpMessage.vue'
 import { ElNotification } from 'element-plus'
-import { formatDateDuration } from '@/utils/commonUtils.js'
+import {
+  formatDateDuration,
+  getHallCurrencySign,
+  FormatNumber,
+  errorRespond
+} from '@/utils/commonUtils.js'
 import dayjs from 'dayjs'
+import PercentWithIcon from '@/components/PercentWithIcon.vue'
 
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const monthDuration = formatDateDuration(
+const monthDuration =
   dayjs().subtract(31, 'day').startOf('day').format(t('date.format_date_rule')) +
-    '~' +
-    dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
-)
+  '~' +
+  dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
 
-const weekDuration = formatDateDuration(
+const weekDuration =
   dayjs().subtract(8, 'day').startOf('day').format(t('date.format_date_rule')) +
-    '~' +
-    dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
+  '~' +
+  dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
+
+const iconTitleColor = [
+  {
+    icon: 'fas fa-money-bill-wave',
+    title: t('data_name.bet_amount'),
+    colorClass: 'cdp-bg-maximum__blue'
+  },
+  {
+    icon: 'fas fa-chart-area',
+    title: t('data_name.payoff'),
+    colorClass: 'cdp-bg-forest__green__crayola'
+  },
+  {
+    icon: 'fas fa-gift',
+    title: t('data_name.bonus'),
+    colorClass: 'cdp-bg-indian__yellow'
+  },
+  {
+    icon: 'fas fa-users',
+    title: t('data_name.active_member'),
+    colorClass: 'cdp-bg-candy__pink'
+  }
+]
+
+const topCard = ref(
+  iconTitleColor.map((item) => ({
+    title: item.title,
+    icon: item.icon,
+    colorClass: item.colorClass,
+    monthAvg: '0',
+    weekAvg: '0',
+    growth: '0'
+  }))
 )
 
-const topCard = computed(() => {
-  const iconTitleColor = [
-    {
-      icon: 'fas fa-money-bill-wave',
-      title: t('data_name.bet_amount'),
-      colorClass: 'cdp-bg-maximum__blue'
-    },
-    {
-      icon: 'fas fa-chart-area',
-      title: t('data_name.payoff'),
-      colorClass: 'cdp-bg-forest__green__crayola'
-    },
-    {
-      icon: 'fas fa-gift',
-      title: t('data_name.bonus'),
-      colorClass: 'cdp-bg-indian__yellow'
-    },
-    {
-      icon: 'fas fa-users',
-      title: t('data_name.active_member'),
-      colorClass: 'cdp-bg-candy__pink'
-    }
-  ]
-
-  let topCardData = []
-  for (let i = 0; i < iconTitleColor.length; i++) {
-    topCardData.push({
-      title: iconTitleColor[i].title,
-      icon: iconTitleColor[i].icon,
-      colorClass: iconTitleColor[i].colorClass,
-      monthAvg: '-',
-      weekAvg: '-',
-      growth: '-'
-    })
-  }
-  return topCardData
-})
 //取得資料
 const querySmallBoxData = async () => {
   try {
     const result = await apiQuerySmallBoxData({
       hall_name: activeHall.hall_code,
-      search_date: '2023-08-02 ~ 2023-08-08'
+      search_date: formatDateDuration(weekDuration)
     })
     const { return_code } = result.data.status
 
@@ -106,7 +105,24 @@ const querySmallBoxData = async () => {
 
 // 轉換資料
 const transformSmallBoxData = (data) => {
-  console.log(data)
+  const currentSign = getHallCurrencySign('BBIN', activeHall.hall_code)
+  const keyArr = ['bet_amount', 'payoff', 'premium_amount', 'active_people']
+
+  keyArr.forEach((ele, idx) => {
+    if (ele === 'payoff') {
+      topCard.value[idx].monthAvg = FormatNumber(0 - data[ele].month_avg, currentSign)
+      topCard.value[idx].weekAvg = FormatNumber(0 - data[ele].week_avg, currentSign)
+      topCard.value[idx].growth = (0 - data[ele].growth).toString()
+    } else if (ele === 'premium_amount') {
+      topCard.value[idx].monthAvg = FormatNumber(0 - data[ele].month_avg, currentSign)
+      topCard.value[idx].weekAvg = FormatNumber(0 - data[ele].week_avg, currentSign)
+      topCard.value[idx].growth = data[ele].growth.toString()
+    } else {
+      topCard.value[idx].monthAvg = FormatNumber(data[ele].month_avg, currentSign)
+      topCard.value[idx].weekAvg = FormatNumber(data[ele].week_avg, currentSign)
+      topCard.value[idx].growth = data[ele].growth.toString()
+    }
+  })
 }
 
 onMounted(() => {
@@ -114,7 +130,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <el-row :gutter="20" class="mb-20">
+  <el-row :gutter="20" class="">
     <el-col :span="6" v-for="(item, key) in topCard" :key="key">
       <div class="cdp-shadow-light-sm border-radius-5">
         <div
@@ -130,15 +146,15 @@ onMounted(() => {
             <span class="font-size-12">({{ monthDuration }})</span>
           </div>
           <div class="cdp-money-place py-7 px-20 mb-18">
-            <span class="font-black">$271,212,982,776</span>
+            <span class="font-black">{{ item.monthAvg }}</span>
           </div>
           <div class="flex justify-between mb-4">
             <span class="font-size-14">{{ t('home.7-day_moving_average') }}</span>
             <span class="font-size-12">( {{ weekDuration }})</span>
           </div>
           <div class="cdp-money-place py-7 px-20 mb-18 font-black flex justify-between">
-            <span class="font-black">$271,212,982,776</span>
-            <span class="font-black">^3%</span>
+            <span class="font-black">{{ item.weekAvg }}</span>
+            <PercentWithIcon :percentData="item.growth"></PercentWithIcon>
           </div>
         </div>
       </div>
