@@ -3,6 +3,7 @@ import GADetail from './components/GADetail.vue'
 import GALoginCount from './components/GALoginCount.vue'
 import PeriodOfferAmount from './components/PeriodOfferAmount.vue'
 import PeriodDayOffer from './components/PeriodDayOffer.vue'
+import GADataPage from './components/GADataPage.vue'
 
 </script>
 <template>
@@ -24,5 +25,10 @@ import PeriodDayOffer from './components/PeriodDayOffer.vue'
       </el-col>
     </el-row>
   </div>
+  <el-row :gutter="20">
+      <el-col :span="24">
+        <GADataPage />
+      </el-col>
+    </el-row>
 </template>
 <style lang="scss" scoped></style>

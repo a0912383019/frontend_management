@@ -36,6 +36,7 @@ const chartOptions = reactive({
     gridLineColor: '#e8e8e8',
     gridLineWidth: 1,
     lineColor: '#e8e8e8',
+    tickmarkPlacement: 'on',
     tickColor: '#e8e8e8',
     tickWidth: 1,
     tickInterval: 1,
