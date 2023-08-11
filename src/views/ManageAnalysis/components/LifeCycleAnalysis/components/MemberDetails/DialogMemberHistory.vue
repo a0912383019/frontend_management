@@ -4,7 +4,7 @@ import { ElDialog } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
-import LifeCycleHistory from '@/components/Highcharts/LifeCycleHistory.vue'
+import LifeCycleHistory from '@/components/Chart/LifeCycleHistory.vue'
 const { t } = useI18n()
 
 const manageAnalysisStore = useManageAnalysisStore()

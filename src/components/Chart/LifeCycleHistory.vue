@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 import { apiQueryMemberStepDetail } from '@/api/global.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
@@ -30,6 +31,7 @@ const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+const { tableConfig } = storeToRefs(globalStore)
 
 const apiSuccess = ref(false) //會員生明細api是否成功
 
@@ -183,7 +185,7 @@ const transformMemberStepDetail = (data) => {
     let stepConfig = RFM_NAPL_step_config[data[i].this_day_step]
     if (stepConfig !== undefined) {
       let datasetConfig = {
-        label: stepConfig.step_name,
+        label: tableConfig.value[data[i].this_day_step]['step_name'],
         backgroundColor: generateRGBColors(stepConfig.step_color, 0.7),
         borderWidth: 1,
         hoverBorderWidth: 3,
