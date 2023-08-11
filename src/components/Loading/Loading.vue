@@ -10,7 +10,6 @@ const props = defineProps({
 <template>
   <transition>
     <div class="loading" v-show="props.isLoading">
-      <!-- <div class="loading__box"><span></span><span></span><span></span><span></span></div> -->
       <LoadingAnimation />
     </div>
   </transition>

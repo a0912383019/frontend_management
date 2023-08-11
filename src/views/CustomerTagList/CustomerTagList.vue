@@ -200,8 +200,6 @@ const handleTagButtonClick = (item) => {
   const newData = [...tableData.value]
   newData[item.index]['tag_show'] = !newData[item.index]['tag_show']
   tableData.value = newData
-
-  // tableData.value[item.index]['tag_show'] = true
 }
 
 onMounted(() => {
