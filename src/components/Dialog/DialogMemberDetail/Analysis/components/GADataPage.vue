@@ -69,6 +69,7 @@ const sourceDataTableColumns = computed(() => {
     {
       label: t('date.date'),
       prop: 'date',
+      minWidth: '90',
       align: 'center'
     },
     {
