@@ -257,4 +257,31 @@ export const apiQueryMemberPeriodDayOffer = (params) => {
     }
   )
 }
+
+//GA頁面資料
+//頁面點擊排名
+export const apiQueryGAPagePathRank = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_ga_page_path_rank' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+    }
+  )
+}
+
+//GA來源資料
+export const apiQueryGADataSource = (params) => {
+  const { search_date, hall_name, member_id } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_ga_data_source' + sessionStorage.from_page,
+    {
+      search_date,
+      hall_name,
+      member_id,
+    }
+  )
+}
 //會員明細Dialog結束
