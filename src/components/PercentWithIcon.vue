@@ -25,9 +25,9 @@ const fontSizeClass = 'font-size-' + props.fontSize
 const color = computed(() => {
   if (!props.hasColor || props.percentData === '0') {
     return 'cdp-text-light__slate__gray'
-  } else if (props.hasColor && (props.percentData.indexOf('-') !== -1)) {
+  } else if (props.hasColor && props.percentData.indexOf('-') !== -1) {
     return 'text-danger'
-  } else{
+  } else {
     return 'text-success'
   }
 })
