@@ -107,12 +107,12 @@ const queryMemberPeriodOfferAmount = async () => {
         //整理及地圖對應的資料
         transformPeriodOfferAmount(result.data.result)
       } else {
-        messageKey.value = 'chartFailed'
+        messageKey.value = 'noResult'
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
       }
     } else {
-      messageKey.value = 'noResult'
+      messageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }

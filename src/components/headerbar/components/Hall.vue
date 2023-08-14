@@ -107,7 +107,7 @@ const changeHeaderHall = (element) => {
   sidebarStore.generateSidebarMenu()
 
   //導回首頁
-  router.push({ name: 'Home' })
+  router.push({ path: '/home' })
 }
 
 // 倒數計時
@@ -185,7 +185,6 @@ const doAutoLogoutCounter = () => {
 
 const resetCounter = (is_need_close_loading = true) => {
   return refresh(is_need_close_loading).then((reset_success) => {
-    // console.log('isRefresh', reset_success)
     if (reset_success) {
       let redirect_home = generateHeaderHallDropdown() // 更新header廳別下拉選單
       return getSystemConfig().then(function (get_success) {
@@ -333,7 +332,6 @@ const initPageNext = () => {
 
 // 監聽瀏覽器頁籤是否被切換
 const handleVisibilityChange = (e) => {
-  console.log(e, document.visibilityState)
   if (document.visibilityState === 'visible') {
     //當畫面切回當前頁籤，則取得時間計算相差時間
     const startTime = JSON.parse(sessionStorage.start_timer) //倒數計時器開始後設定的時間

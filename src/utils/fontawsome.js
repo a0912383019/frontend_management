@@ -41,7 +41,11 @@ import {
   faGear,
   faLock,
   faShieldAlt,
-  faPlus
+  faPlus,
+  faUsers,
+  faCaretLeft,
+  faCaretDown,
+  faCaretUp
 } from '@fortawesome/free-solid-svg-icons'
 import { faWindowRestore } from '@fortawesome/free-regular-svg-icons'
 import { faVimeoV } from '@fortawesome/free-brands-svg-icons'
@@ -89,5 +93,9 @@ library.add(
   faLock,
   faShieldAlt,
   faPlus,
-  faWindowRestore
+  faWindowRestore,
+  faUsers,
+  faCaretLeft,
+  faCaretDown,
+  faCaretUp
 )
