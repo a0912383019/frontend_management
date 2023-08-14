@@ -5,11 +5,11 @@ import { useGlobalStore } from '@/stores/global.js'
 import TopCard from './components/TopCard.vue'
 
 const globalStore = useGlobalStore()
-const key = ref(0)
+const key = ref('')
 watch(
   () => globalStore.activeHall.hall_code,
   () => {
-    key.value ++
+    key.value = globalStore.activeHall.hall_code
   }
 )
 </script>
