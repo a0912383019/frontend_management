@@ -8,7 +8,8 @@ import {
   formatDateDuration,
   getHallCurrencySign,
   FormatNumber,
-  errorRespond
+  errorRespond,
+  addNumberColor
 } from '@/utils/commonUtils.js'
 import dayjs from 'dayjs'
 import PercentWithIcon from '@/components/PercentWithIcon.vue'
@@ -56,9 +57,9 @@ const topCard = ref(
     title: item.title,
     icon: item.icon,
     colorClass: item.colorClass,
-    monthAvg: '0',
-    weekAvg: '0',
-    growth: '0'
+    monthAvg: '-',
+    weekAvg: '-',
+    growth: '-'
   }))
 )
 
@@ -110,12 +111,12 @@ const transformSmallBoxData = (data) => {
 
   keyArr.forEach((ele, idx) => {
     if (ele === 'payoff') {
-      topCard.value[idx].monthAvg = FormatNumber(0 - data[ele].month_avg, currentSign)
-      topCard.value[idx].weekAvg = FormatNumber(0 - data[ele].week_avg, currentSign)
+      topCard.value[idx].monthAvg = addNumberColor(FormatNumber(0 - data[ele].month_avg, currentSign), 'text-danger font-black')
+      topCard.value[idx].weekAvg = addNumberColor(FormatNumber(0 - data[ele].week_avg, currentSign), 'text-danger font-black')
       topCard.value[idx].growth = (0 - data[ele].growth).toString()
     } else if (ele === 'premium_amount') {
-      topCard.value[idx].monthAvg = FormatNumber(0 - data[ele].month_avg, currentSign)
-      topCard.value[idx].weekAvg = FormatNumber(0 - data[ele].week_avg, currentSign)
+      topCard.value[idx].monthAvg = addNumberColor(FormatNumber(0 - data[ele].month_avg, currentSign), 'text-danger font-black')
+      topCard.value[idx].weekAvg = addNumberColor(FormatNumber(0 - data[ele].week_avg, currentSign), 'text-danger font-black')
       topCard.value[idx].growth = data[ele].growth.toString()
     } else {
       topCard.value[idx].monthAvg = FormatNumber(data[ele].month_avg, currentSign)
@@ -145,15 +146,15 @@ onMounted(() => {
             <span class="font-size-14">{{ t('home.30-day_moving_average') }}</span>
             <span class="font-size-12">({{ monthDuration }})</span>
           </div>
-          <div class="cdp-money-place py-7 px-20 mb-18">
-            <span class="font-black">{{ item.monthAvg }}</span>
+          <div class="cdp-money-place py-7 px-20 mb-18 font-black">
+            <span v-html="item.monthAvg"></span>
           </div>
           <div class="flex justify-between mb-4">
             <span class="font-size-14">{{ t('home.7-day_moving_average') }}</span>
             <span class="font-size-12">( {{ weekDuration }})</span>
           </div>
           <div class="cdp-money-place py-7 px-20 mb-18 font-black flex justify-between">
-            <span class="font-black">{{ item.weekAvg }}</span>
+            <span v-html="item.weekAvg"></span>
             <PercentWithIcon :percentData="item.growth"></PercentWithIcon>
           </div>
         </div>
@@ -187,5 +188,9 @@ onMounted(() => {
   border-radius: 5px;
   border: solid 1px #e6eaf2;
   background-color: #fff;
+}
+
+.font-black span {
+  font-weight: 900;
 }
 </style>

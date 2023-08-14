@@ -107,7 +107,7 @@ const changeHeaderHall = (element) => {
   sidebarStore.generateSidebarMenu()
 
   //導回首頁
-  router.push({ name: 'Home' })
+  router.push({ path: '/home' })
 }
 
 // 倒數計時
@@ -192,11 +192,14 @@ const resetCounter = (is_need_close_loading = true) => {
         if (get_success) {
           sidebarStore.generateSidebarMenu() // 更新sidebar item
           ElNotification.closeAll() //關閉所有ElNotification
+          console.log('inin')
           if (redirect_home) {
+            console.log('homegood')
             globalStore.isLoading = false // 關閉loading視窗
             // router.push({ name: 'Home' }) // 導回至首頁
             updateTime()
           }
+          console.log('tototot')
           return redirect_home
         }
       })

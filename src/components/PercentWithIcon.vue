@@ -4,7 +4,7 @@ import { computed } from 'vue'
 const props = defineProps({
   percentData: {
     type: String,
-    default: '0'
+    default: '-'
   },
   hasColor: {
     type: Boolean,
@@ -43,7 +43,10 @@ const icon = computed(() => {
 })
 </script>
 <template>
-  <span :class="color">
+  <span :class="color" v-if="percentData === '-'">
+    <span class="font-black" :class="fontSizeClass">{{ percentData }}</span>
+  </span>
+  <span :class="color" v-else>
     <font-awesome-icon class="mr-3" :class="iconSizeClass" :icon="icon" />
     <span class="font-black" :class="fontSizeClass">{{ percentData.replace('-', '') + '%' }}</span>
   </span>
