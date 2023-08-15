@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
@@ -67,6 +67,7 @@ const chartSetting = {
     responsive: true,
     scales: {
       y: {
+        beginAtZero: true,
         ticks: {
           padding: 10,
           callback: (label) => {
@@ -195,9 +196,9 @@ const query_step_total_people = async () => {
     if (return_code === '0000') {
       apiSuccess.value = true
       transform_step_total_people(result.data.result)
-      setTimeout(() => {
+      nextTick(() => {
         register_chart()
-      }, 1)
+      })
     }
   } catch (error) {
     console.error(error)
