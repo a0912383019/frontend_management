@@ -180,6 +180,9 @@ const query_life_cycle_analysis_detail_tbl = async () => {
       tableData.value = []
       tableData.value = result.data.result.data
       apiRecordsTotal.value = result.data.result.records_total
+    } else if (return_code === '0001') {
+      apiSuccess.value = true
+      tableData.value = []
     }
   } catch (error) {
     console.log(error)
