@@ -245,36 +245,6 @@ const refresh = (is_need_close_loading = true) => {
         return Promise.reject(error)
       }
     }
-    // const refreshToken = () => {
-    //   return new Promise((resolve, reject) => {
-    //     apiRefresh()
-    //       .then((result) => {
-    //         if (result.data.status.return_code === '0000') {
-    //           let user_info_entity = getSessionStorageEntity('user_info')
-    //           user_info_entity.user_type = result.data.user_type // 更新使用者身份權限
-    //           user_info_entity.access_hall = result.data.access_hall // 更新使用者可存取廳別
-    //           sessionStorage.setItem('user_info', JSON.stringify(user_info_entity))
-    //           sessionStorage.access_token = result.data.token_type + ' ' + result.data.access_token // 將新取得的access_token更新至sessionStorage
-
-    //           resolve('Refresh success') //表示Promise物件執行成功，可往下繼續執行
-    //         } else {
-    //           reject(result.data.status) //表示Promise物件執行失敗，拒絕後續的程式執行
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         console.error(error)
-    //         if (error.response.status === 401) {
-    //           // 若api回應401 http error code，導至登入頁
-    //           sessionStorage.clear()
-    //           localStorage.clear()
-    //           sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
-    //           router.push({ name: 'Login' })
-    //           let failMsg = `${error.response.status} : ${error.response.data.message}`
-    //           reject(failMsg) //表示Promise物件執行失敗，拒絕後續的程式執行
-    //         }
-    //       })
-    //   })
-    // }
     //  refresh成功取得api access_token後才重新倒數
     return refreshToken()
       .then(() => {
@@ -352,19 +322,6 @@ const initPageNext = () => {
   if (typeof getSessionStorageEntity('user_info').user_name !== 'undefined') {
     // doAutoLogoutCounter() // 開始系統自動登出倒數
     resetCounter()
-    // let redirect_home = generateHeaderHallDropdown() // 產生廳別下拉選單
-    // console.log('redirect_home', redirect_home)
-    // getSystemConfig().then((get_success) => {
-    //   if (get_success) {
-    //     sidebarStore.generateSidebarMenu() // 動態產生sidebar menu
-    //     if (redirect_home) {
-    //       globalStore.isLoading = false // 關閉loading視窗
-    //       // gotoHomePage();  // 導回至首頁
-    //       router.push({ name: 'Home' })
-    //       updateTime()
-    //     }
-    //   }
-    // })
   } else {
     // 清除所有sessionStorage與localStorage
     sessionStorage.clear()
@@ -392,8 +349,6 @@ const handleVisibilityChange = (e) => {
     timeoutSecText.value = 59 - seconds
     timeoutMin.value = 59 - minutes
     timeoutSec.value = 59 - seconds
-
-    // console.log(`相差 ${minutes} 分 ${seconds} 秒`)
   }
 }
 
@@ -421,7 +376,6 @@ onUnmounted(() => {
 watch(
   () => i18nLocale.value,
   () => {
-    console.log('i18nLocale', i18nLocale.value)
     initPageNext()
   }
 )
@@ -430,7 +384,14 @@ watch(
 watch(
   () => route.path,
   () => {
-    console.log(route.path)
+    initPageNext()
+  }
+)
+
+//監聽廳主切換
+watch(
+  () => globalStore.activeHall.hall_code,
+  () => {
     initPageNext()
   }
 )
@@ -517,17 +478,6 @@ watch(
     background-color: #343a40;
     font-size: 12px;
     cursor: pointer;
-    // &:hover {
-    //   .hallbox {
-    //     &__arrow {
-    //       transform: rotate(180deg);
-    //     }
-    //     &__content {
-    //       opacity: 1;
-    //       pointer-events: auto;
-    //     }
-    //   }
-    // }
   }
   &__content {
     position: absolute;

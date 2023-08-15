@@ -1,5 +1,6 @@
 <script setup>
-import { computed, reactive } from 'vue'
+import { ref, computed, reactive } from 'vue'
+import LoadingAnimation from '@/components/Loading/LoadingAnimation.vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
 import TotalPagination from '@/components/Pagination/TotalPagination.vue'
 const props = defineProps({
@@ -123,10 +124,12 @@ const goToFirstPage = () => {
   page.currentPage = 1
 }
 
-defineExpose({ goToFirstPage })
+const showTableLoading = ref(false) // loading是否顯示
+
+defineExpose({ goToFirstPage, showTableLoading })
 </script>
 <template>
-  <div>
+  <div class="relative">
     <el-table
       :data="pageTableData"
       :default-sort="defaultSort"
@@ -152,6 +155,12 @@ defineExpose({ goToFirstPage })
           :sortable="column.sortable"
           :resizable="false"
         >
+          <template #header>
+            {{ column.label }}
+            <slot :name="column.headerSlot" v-if="column.headerSlot">
+              <span v-html="column.headerSlot"></span>
+            </slot>
+          </template>
           <template #default="scope">
             <slot :name="column.prop" :row="scope.row">
               <div>{{ scope.row[column.prop] }}</div>
@@ -189,6 +198,11 @@ defineExpose({ goToFirstPage })
         :total="pageTableTotla"
       />
     </div>
+    <transition>
+      <div class="table-loading" v-show="showTableLoading">
+        <LoadingAnimation color="blue" />
+      </div>
+    </transition>
   </div>
 </template>
 <style lang="scss">
@@ -394,5 +408,17 @@ defineExpose({ goToFirstPage })
     right: 0;
     top: 0;
   }
+}
+.table-loading {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(#fff, 0.8);
 }
 </style>
