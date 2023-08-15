@@ -70,7 +70,6 @@ const chartSetting = {
         ticks: {
           padding: 10,
           callback: (label) => {
-            // console.log(label, index, labels)
             // 只顯示整數，若數字過千以k縮寫表示
             if (Math.floor(label) === label) {
               return Math.abs(label) >= 1000 ? label / 1000 + 'k' : label
@@ -80,17 +79,9 @@ const chartSetting = {
       }
     },
     onClick: (event, legendItem) => {
-      // console.log(event, legendItem, event.chart.legend.legendItems)
-      // event.chart.legend.legendItems.forEach((item) => {
-      //   // console.log(item)
-      //   item.hidden = true
-      // })
-      // console.log(event, legendItem)
-      // console.log(legendItem.length)
       if (legendItem.length !== 0) {
         let legendItemDatasetIndex = legendItem[0].datasetIndex
         chart.data.datasets.forEach((item, index) => {
-          // console.log(index, legendItemDatasetIndex, item)
           if (legendItemDatasetIndex !== chartPrevIndex.value) {
             if (index === legendItemDatasetIndex) {
               chart.data.datasets[index].hidden = false
@@ -177,7 +168,6 @@ const chartSetting = {
         displayColors: true,
         callbacks: {
           label: (tooltipItem) => {
-            // console.log(tooltipItem, data)
             let title = tooltipItem['dataset']['label'] + ' : '
             let value = FormatNumber(tooltipItem['raw']) + t('unit.people')
 
@@ -223,7 +213,6 @@ const query_step_total_people = async () => {
 }
 
 const transform_step_total_people = (result) => {
-  // console.log(result)
   let chartLabels = []
   let chartDatasetsDict = {}
   let chartDatasets = []
@@ -232,7 +221,6 @@ const transform_step_total_people = (result) => {
     let stepTotalPeople = item
     delete stepTotalPeople['data_date'] // 移除data_date欄位
     Object.entries(stepTotalPeople).forEach((people) => {
-      // console.log(people, peopleIndex, chartDatasetsDict[people[0]])
       if (chartDatasetsDict[people[0]] !== undefined) {
         chartDatasetsDict[people[0]].data.push(people[1])
       } else {
@@ -260,13 +248,10 @@ const transform_step_total_people = (result) => {
   Object.values(chartDatasetsDict).forEach((item) => {
     chartDatasets.push(item)
   })
-  // console.log('chartDatasets', chartDatasets)
   chartSetting.data.xLabels = []
   chartSetting.data.xLabels = chartLabels
   chartSetting.data.datasets = []
   chartSetting.data.datasets = chartDatasets
-  // console.log('transform_step_total_people', chartLabels)
-  // console.log(chartDatasets)
 }
 
 const register_chart = () => {

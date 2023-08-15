@@ -21,12 +21,12 @@ const { queryDate } = manageAnalysisStore
 const {
   searchName,
   fuzzySearch,
-  useCustomList,
   stepType,
   detailType,
   filterTimestamp,
   deatilRangeDate,
-  filterDateTimestamp
+  filterDateTimestamp,
+  filterCustomUserList
 } = storeToRefs(manageAnalysisStore)
 const apiSuccess = ref(false) //階段總覽api是否成功
 
@@ -52,18 +52,18 @@ const query_life_cycle_analysis_avg_data = async () => {
   apiSuccess.value = false
   try {
     const result = await apiQueryLifeCycleAnalysisAvgData({
+      custom_user_list: filterCustomUserList.value,
       hall_name: activeHall.hall_code,
+      query_date: queryDate,
       life_cycle_analysis_detail_date: deatilRangeDate.value,
       life_cycle_analysis_step: stepType.value,
       detail_type: detailType.value,
-      query_date: queryDate,
       search_name: searchName.value,
-      fuzzy_search: fuzzySearch.value,
-      use_custom_list: useCustomList.value
+      fuzzy_search: fuzzySearch.value
     })
     const { return_code } = result.data.status
-    const { avg_bet_amount, avg_deposit_amount, avg_payoff } = result.data.result
     if (return_code === '0000') {
+      const { avg_bet_amount, avg_deposit_amount, avg_payoff } = result.data.result
       apiSuccess.value = true //取得資料成功
       //日均存款
       stepData['deposit']['data'] = FormatNumber(

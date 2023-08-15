@@ -61,7 +61,13 @@ export const useGlobalStore = defineStore(
       return config
     })
 
-    return { isLoading, storeHandleApiError, activeHall, lobbyGroupConfig, tableConfig }
+    return {
+      isLoading,
+      storeHandleApiError,
+      activeHall,
+      lobbyGroupConfig,
+      tableConfig
+    }
   },
   {
     persist: {

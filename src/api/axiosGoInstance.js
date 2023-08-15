@@ -10,7 +10,6 @@ const axiosGoInstance = axios.create({
 
 axiosGoInstance.interceptors.request.use(
   (request) => {
-    // console.log('request', request)
     const accessToken = sessionStorage.access_token_go
     if (accessToken) {
       //添加Authorization
@@ -18,6 +17,17 @@ axiosGoInstance.interceptors.request.use(
       //添加目前語系，等待後端確認是否要把語系參數放到header
       // request.headers['Locale'] = sessionStorage.languageType ?? 'zh-TW'
     }
+
+    if (request.method === 'post' || request.method === 'put' || request.method === 'delete') {
+      request.data = request.data || {}
+      request.data.platform = 'bbin' // 預設platform為bbin
+    }
+
+    if (request.method === 'get') {
+      request.params = request.params || {}
+      request.params.platform = 'bbin' // 預設platform為bbin
+    }
+
     return request
   },
   (error) => {

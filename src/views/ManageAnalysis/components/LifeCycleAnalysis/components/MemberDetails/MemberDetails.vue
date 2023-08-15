@@ -26,12 +26,12 @@ const { queryDate } = manageAnalysisStore
 const {
   searchName,
   fuzzySearch,
-  useCustomList,
   stepType,
   detailType,
   filterTimestamp,
   deatilRangeDate,
-  filterDateTimestamp
+  filterDateTimestamp,
+  filterCustomUserList
 } = storeToRefs(manageAnalysisStore)
 
 const apiSuccess = ref(false) //會員生明細api是否成功
@@ -134,24 +134,20 @@ const apiRecordsTotal = ref(0) //資料總數
 
 //會員明細表格排序規則
 const querySortRule = reactive({
-  column: 2,
-  dir: 'desc'
+  sort: 'deposit_amount',
+  order: 'DESC'
 })
 
 //自定義排序執行的內容
 const upadteCurrentSort = (data) => {
-  let column = tableColumns.value.findIndex((item) => {
-    return item.prop === data.prop
-  })
-  let dir = data['order'] == 'descending' ? 'desc' : 'asc'
-  querySortRule['column'] = column
-  querySortRule['dir'] = dir
+  let order = data['order'] == 'descending' ? 'DESC' : 'ASC'
+  querySortRule['sort'] = data['prop']
+  querySortRule['order'] = order
   query_life_cycle_analysis_detail_tbl()
 }
 
 //頁碼切換執行的內容
 const updateCurrentPage = (data) => {
-  console.log(data)
   apiDraw.value = data
   apiStart.value = apiDraw.value * apiLength.value - apiLength.value
 
@@ -165,139 +161,25 @@ const query_life_cycle_analysis_detail_tbl = async () => {
   apiSuccess.value = false
   try {
     const result = await apiQueryLifeCycleAnalysisDetailTbl({
+      custom_user_list: filterCustomUserList.value,
+      detail_type: detailType.value,
+      fuzzy_search: fuzzySearch.value,
       hall_name: activeHall.hall_code,
+      length: apiLength.value,
       life_cycle_analysis_detail_date: deatilRangeDate.value,
       life_cycle_analysis_step: stepType.value,
-      detail_type: detailType.value,
+      order: querySortRule['order'],
       query_date: queryDate,
       search_name: searchName.value,
-      fuzzy_search: fuzzySearch.value,
-      use_custom_list: useCustomList.value,
-      draw: apiDraw.value,
-      start: apiStart.value,
-      length: apiLength.value,
-      order: [querySortRule], //預設排序欄位
-      columns: [
-        //列表表頭欄位
-        {
-          data: {
-            hall_id: 'hall_id',
-            domain_id: 'domain_id',
-            user_id: 'user_id',
-            user_name: 'user_name'
-          },
-          name: '',
-          searchable: true,
-          orderable: false,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'ag_name',
-          name: '',
-          searchable: true,
-          orderable: false,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'deposit_amount',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'bet_amount',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'payoff',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'activity_day',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'deposit_amount_avg',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'bet_amount_avg',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: 'payoff_avg',
-          name: '',
-          searchable: true,
-          orderable: true,
-          search: {
-            value: '',
-            regex: false
-          }
-        },
-        {
-          data: {
-            hall_id: 'hall_id',
-            domain_id: 'domain_id',
-            user_id: 'user_id',
-            user_name: 'user_name'
-          },
-          name: '',
-          searchable: true,
-          orderable: false,
-          search: {
-            value: '',
-            regex: false
-          }
-        }
-      ]
+      sort: querySortRule['sort'],
+      start: apiStart.value
     })
-    // console.log(result)
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true
       tableData.value = []
-      tableData.value = result.data.data
-      apiRecordsTotal.value = result.data.recordsTotal
+      tableData.value = result.data.result.data
+      apiRecordsTotal.value = result.data.result.records_total
     }
   } catch (error) {
     console.log(error)
