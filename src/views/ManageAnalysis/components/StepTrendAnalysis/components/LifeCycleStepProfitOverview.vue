@@ -78,7 +78,6 @@ const query_step_trend_analysis_overview_tbl = async () => {
       search_date: stepTrendRangeDate.value
     })
     const { return_code } = result.data.status
-    // console.log(result, return_code)
     if (return_code === '0000') {
       apiSuccess.value = true //取得資料成功
       apiTableResult.value = []
@@ -113,7 +112,6 @@ const query_step_trend_analysis_overview_tbl = async () => {
 
 //轉換趨勢分析總覽表格資料
 const transform_step_trend_analysis_overview_tbl = (data) => {
-  // console.log(data)
   const ary = [] //存放轉換後的資料
   // 階段0不處理，從階段1開始
   for (let i = 0; i < data.length; i++) {

@@ -74,10 +74,9 @@ const query_step_detail_tbl = async (param) => {
       step: param.step
     })
     const { return_code } = result.data.status
-    console.log(result)
     if (return_code === '0000') {
       apiSuccess.value = true //取得資料成功
-      transform_step_detail_tbl(result.data.result) //資料處理
+      transform_step_detail_tbl(result.data.result[0]) //資料處理
     }
   } catch (error) {
     console.error(error)

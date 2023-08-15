@@ -37,13 +37,11 @@ const emit = defineEmits(['update:modelValue'])
 
 // const activeTabName = ref(props.activeName)
 const handleFileUpload = (data) => {
-  console.log('handleFileUpload', data)
   emit('update:modelValue', data)
 }
 
 //透過emit取得檔案路徑
 const handleGetFileName = (data) => {
-  console.log(data)
   filePath.value = data
   // upload_and_import_file()
   uploadCsvFile()
@@ -57,7 +55,6 @@ const uploadCsvFile = async () => {
       csv_type: 1,
       csv_file: filePath.value
     })
-    console.log(result)
     const { return_code } = result.data.status
     if (return_code === '0000') {
       ElNotification({

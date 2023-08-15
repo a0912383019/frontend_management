@@ -1,4 +1,3 @@
-import axiosInstance from './axiosInstance.js'
 import axiosGoInstance from './axiosGoInstance.js'
 
 //會員階段人數變化
@@ -22,95 +21,70 @@ export const apiQueryLifeCycleAnalysisOverview = (params) => {
 //階段總覽
 export const apiQueryLifeCycleAnalysisAvgData = (params) => {
   const {
+    custom_user_list,
     hall_name,
     query_date,
     life_cycle_analysis_detail_date,
     life_cycle_analysis_step,
     detail_type,
     search_name,
-    fuzzy_search,
-    custom_user_list
+    fuzzy_search
   } = params
-  return axiosGoInstance.get('/api/auth/manage/life_cycle_analysis_avg_data', {
-    params: {
+  return axiosGoInstance.post(
+    '/api/auth/manage/life_cycle_analysis_avg_data',
+    {
+      custom_user_list,
       hall_name,
       query_date,
       life_cycle_analysis_detail_date,
       life_cycle_analysis_step,
       detail_type,
       search_name,
-      fuzzy_search,
-      custom_user_list
+      fuzzy_search
+    },
+    {
+      headers: { 'Content-Type': 'application/json' }
     }
-  })
+  )
 }
 
 //會員明細表格
 export const apiQueryLifeCycleAnalysisDetailTbl = (params) => {
   const {
+    custom_user_list,
+    detail_type,
+    fuzzy_search,
     hall_name,
-    query_date,
+    length,
     life_cycle_analysis_detail_date,
     life_cycle_analysis_step,
-    detail_type,
+    order,
+    query_date,
     search_name,
-    fuzzy_search,
-    custom_user_list,
-    start,
-    length,
-    order
+    sort,
+    start
   } = params
-  return axiosGoInstance.get('/api/auth/manage/life_cycle_analysis_detail', {
-    params: {
+  return axiosGoInstance.post(
+    '/api/auth/manage/life_cycle_analysis_detail',
+    {
+      custom_user_list,
+      detail_type,
+      fuzzy_search,
       hall_name,
-      query_date,
+      length,
       life_cycle_analysis_detail_date,
       life_cycle_analysis_step,
-      detail_type,
+      order,
+      query_date,
       search_name,
-      fuzzy_search,
-      custom_user_list,
-      start,
-      length,
-      order
+      sort,
+      start
+    },
+    {
+      headers: { 'Content-Type': 'application/json' }
     }
-  })
+  )
 }
-// export const apiQueryLifeCycleAnalysisDetailTbl = (params) => {
-//   const {
-//     hall_name,
-//     query_date,
-//     life_cycle_analysis_detail_date,
-//     life_cycle_analysis_step,
-//     detail_type,
-//     search_name,
-//     fuzzy_search,
-//     use_custom_list,
-//     draw,
-//     start,
-//     length,
-//     order,
-//     columns
-//   } = params
-//   return axiosInstance.post(
-//     '/api/auth/manage/bbin/query_life_cycle_analysis_detail' + sessionStorage.from_page,
-//     {
-//       hall_name,
-//       query_date,
-//       life_cycle_analysis_detail_date,
-//       life_cycle_analysis_step,
-//       detail_type,
-//       search_name,
-//       fuzzy_search,
-//       use_custom_list,
-//       draw,
-//       start,
-//       length,
-//       order,
-//       columns
-//     }
-//   )
-// }
 
 //趨勢分析
 //階段盈利總覽
@@ -138,9 +112,11 @@ export const apiQueryStepTotalPeople = (params) => {
 //階段每日人數 - 詳細資料(點擊chartjs popup)
 export const apiQueryStepDetail = (params) => {
   const { hall_name, query_date, step } = params
-  return axiosInstance.post('/api/auth/manage/bbin/query_step_detail' + sessionStorage.from_page, {
-    hall_name,
-    query_date,
-    step
+  return axiosGoInstance.get('/api/auth/manage/step_detail', {
+    params: {
+      hall_name,
+      query_date,
+      step
+    }
   })
 }

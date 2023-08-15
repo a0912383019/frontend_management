@@ -134,18 +134,15 @@ const apiRecordsTotal = ref(0) //資料總數
 
 //會員明細表格排序規則
 const querySortRule = reactive({
-  column: 2,
-  dir: 'desc'
+  sort: 'deposit_amount',
+  order: 'DESC'
 })
 
 //自定義排序執行的內容
 const upadteCurrentSort = (data) => {
-  let column = tableColumns.value.findIndex((item) => {
-    return item.prop === data.prop
-  })
-  let dir = data['order'] == 'descending' ? 'desc' : 'asc'
-  querySortRule['column'] = column
-  querySortRule['dir'] = dir
+  let order = data['order'] == 'descending' ? 'DESC' : 'ASC'
+  querySortRule['sort'] = data['prop']
+  querySortRule['order'] = order
   query_life_cycle_analysis_detail_tbl()
 }
 
@@ -164,23 +161,22 @@ const query_life_cycle_analysis_detail_tbl = async () => {
   apiSuccess.value = false
   try {
     const result = await apiQueryLifeCycleAnalysisDetailTbl({
+      custom_user_list: filterCustomUserList.value,
+      detail_type: detailType.value,
+      fuzzy_search: fuzzySearch.value,
       hall_name: activeHall.hall_code,
-      query_date: queryDate,
+      length: apiLength.value,
       life_cycle_analysis_detail_date: deatilRangeDate.value,
       life_cycle_analysis_step: stepType.value,
-      detail_type: detailType.value,
+      order: querySortRule['order'],
+      query_date: queryDate,
       search_name: searchName.value,
-      fuzzy_search: fuzzySearch.value,
-      start: apiStart.value,
-      length: apiLength.value,
-      order: [querySortRule], //預設排序欄位
-      custom_user_list: filterCustomUserList.value
+      sort: querySortRule['sort'],
+      start: apiStart.value
     })
-    // console.log(result)
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true
-      console.log(result.data.result.data, result.data.result)
       tableData.value = []
       tableData.value = result.data.result.data
       apiRecordsTotal.value = result.data.result.records_total
@@ -250,8 +246,6 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
     <SectionTitle class="mb-15" :title="t('manage_analysis.member_details')" />
     <CurrencySignText v-show="apiSuccess" />
   </div>
-  API:{{ filterCustomUserList }}<br />
-  SearchName: {{ searchName }}<br /><br />
   <CdpMessage :messageKey="messageKey" :height="500" v-show="apiSuccess === false" />
   <div v-show="apiSuccess">
     <DialogMemberHistory ref="refDialogMemberHistory" />

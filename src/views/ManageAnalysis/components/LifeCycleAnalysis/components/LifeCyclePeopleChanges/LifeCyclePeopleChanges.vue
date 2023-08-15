@@ -104,7 +104,6 @@ const queryLifeCycleAnalysisOverviewTbl = async (customUserList) => {
       query_date: queryDate,
       search_name: searchName.value,
       fuzzy_search: fuzzySearch.value,
-      // use_custom_list: useCustomList.value
       custom_user_list: customUserList
     })
     const { return_code } = result.data.status
@@ -206,7 +205,6 @@ onMounted(() => {
 const selectRow = ref(null)
 
 const handleClick = (data) => {
-  // console.log('handleClick', data)
   selectRow.value = data.id
   manageAnalysisStore.stepType = data.step
   manageAnalysisStore.detailType = data.detail
@@ -222,7 +220,6 @@ const handleClick = (data) => {
 watch(
   () => activeFile.value,
   () => {
-    console.log('Changeeee')
     /*-- 
       備註：
       目前FilterMemberName.vue有更新updateFilterTimestamp
@@ -236,7 +233,7 @@ watch(
   () => filterTimestamp.value,
   () => {
     let customUserList = []
-    if (activeFile.value !== '') {
+    if (activeFile.value !== '' && useCustomList.value === true) {
       customUserList = activeFile.value
     }
     queryLifeCycleAnalysisOverviewTbl(customUserList)
