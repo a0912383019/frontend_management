@@ -187,6 +187,7 @@ const updateCurrentPage = (data) => {
 
 //會員明細Dialog點擊
 const handleMemberDetailClick = (val) => {
+  console.log(val)
   //寫入store
   dialogMemberDetailStore.memberData = {}
   dialogMemberDetailStore.memberData = val

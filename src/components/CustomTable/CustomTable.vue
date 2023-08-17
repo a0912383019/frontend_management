@@ -3,6 +3,10 @@ import { ref, computed, reactive } from 'vue'
 import LoadingAnimation from '@/components/Loading/LoadingAnimation.vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
 import TotalPagination from '@/components/Pagination/TotalPagination.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
 const props = defineProps({
   tableData: {
     //表格資料
@@ -73,8 +77,20 @@ const props = defineProps({
     //是否啟用後端服務器模式(每頁單獨發api)，啟用後pageTableData會有差異
     type: Boolean,
     default: false
+  },
+  search: {
+    //是否啟用搜尋，只有serverSide = false與hasPagination = true會觸發
+    type: Boolean,
+    default: true
+  },
+  searchCol: {
+    //要搜尋的欄位
+    type: Array,
+    default: []
   }
 })
+
+const search = ref('')
 
 //排序相關
 const emit = defineEmits(['sort', 'update:currentPage'])
@@ -98,11 +114,37 @@ const updatePageSize = (val) => {
   page.pageSize = val
 }
 
+const searchTableData = ref(props.tableData)
+
 //表格資料
 const pageTableData = computed(() => {
   let data
+
+  //能搜尋的欄位陣列
+  let searchArr = []
   if (props.hasPagination && props.serverSide === false) {
-    data = props.tableData.slice(
+    searchArr = props.searchCol
+
+    //空陣列的話，全部欄位都可搜尋
+    if (searchArr.length === 0) {
+      searchArr = props.tableColumns.map((ele, key) => key)
+    }
+
+    //模糊搜尋
+    let filterTableData = props.tableData.filter((item) => {
+      let itemColFilter = false
+      for (let i = 0; i < searchArr.length; i++) {
+        if (typeof item[props.tableColumns[searchArr[i]].prop] === 'undefined') continue
+        itemColFilter =
+          itemColFilter ||
+          item[props.tableColumns[searchArr[i]].prop]
+            .toLowerCase()
+            .includes(search.value.toLowerCase())
+      }
+      return !search.value || itemColFilter
+    })
+    searchTableData.value = filterTableData
+    data = filterTableData.slice(
       (page.currentPage - 1) * page.pageSize,
       page.pageSize * page.currentPage
     )
@@ -112,9 +154,9 @@ const pageTableData = computed(() => {
   return data
 })
 
-const pageTableTotla = computed(() => {
+const pageTableTotal = computed(() => {
   if (props.tableTotal === 0) {
-    return props.tableData.length
+    return searchTableData.value.length
   } else {
     return props.tableTotal
   }
@@ -130,6 +172,15 @@ defineExpose({ goToFirstPage, showTableLoading })
 </script>
 <template>
   <div class="relative">
+    <div class="mb-10 text-right">
+      <font-awesome-icon class="mr-8 font-size-17 cdp-text-grey relative t-1" icon="fas fa-search" />
+      <el-input
+        v-show="props.search && !props.serverSide"
+        v-model="search"
+        size="default"
+        style="width: 180px"
+      />
+    </div>
     <el-table
       :data="pageTableData"
       :default-sort="defaultSort"
@@ -141,7 +192,7 @@ defineExpose({ goToFirstPage, showTableLoading })
       :span-method="spanMethod"
       class="cdp-table"
       @sort-change="handleTableSort"
-      style="width: 100%"
+      style="width: 100%; color: black"
     >
       <template v-for="column in tableColumns" :key="column.prop">
         <el-table-column
@@ -179,7 +230,7 @@ defineExpose({ goToFirstPage, showTableLoading })
       <CustomPagination
         :page="page.currentPage"
         :pageSize="page.pageSize"
-        :total="pageTableTotla"
+        :total="pageTableTotal"
         :layout="paginationLayout"
         class="customPagination"
         @update:currentPage="updateCurrentPage"
@@ -188,14 +239,14 @@ defineExpose({ goToFirstPage, showTableLoading })
       <TotalPagination
         :page="page.currentPage"
         :pageSize="props.pageSize"
-        :total="pageTableTotla"
+        :total="pageTableTotal"
       />
     </div>
     <div class="paginationBox" v-if="hasPagination === false && hasTotalPagination === true">
       <TotalPagination
         :page="page.currentPage"
-        :pageSize="pageTableTotla"
-        :total="pageTableTotla"
+        :pageSize="pageTableTotal"
+        :total="pageTableTotal"
       />
     </div>
     <transition>
@@ -206,10 +257,12 @@ defineExpose({ goToFirstPage, showTableLoading })
   </div>
 </template>
 <style lang="scss">
+.t-1 {
+  top: 1px;
+}
 .cdp-table {
   border-radius: 5px;
   overflow: hidden;
-  // border: 1px solid #e6eaf2;
   .cdp-link-click {
     color: #4f84cf;
   }
@@ -279,9 +332,7 @@ defineExpose({ goToFirstPage, showTableLoading })
   }
 }
 .customTable {
-  // border-radius: 15px;
   box-shadow: 3px 3px 5px 0 rgba(162, 162, 162, 0.2);
-  // border: solid 0.5px #d0d0d0;
   background-color: #e9eef6;
   tr {
     background-color: #e9eef6;
