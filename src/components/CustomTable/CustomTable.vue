@@ -81,7 +81,7 @@ const props = defineProps({
   search: {
     //是否啟用搜尋，只有serverSide = false與hasPagination = true會觸發
     type: Boolean,
-    default: true
+    default: false
   },
   searchCol: {
     //要搜尋的欄位
