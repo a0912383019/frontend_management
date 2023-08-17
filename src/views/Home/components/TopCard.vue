@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQuerySmallBoxData } from '@/api/home.js'
 import { useGlobalStore } from '@/stores/global.js'
@@ -29,42 +29,56 @@ const weekDuration =
   '~' +
   dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
 
-const iconTitleColor = [
+const topCardTitle = computed(() => {
+  return [
+    {
+      title: t('data_name.bet_amount')
+    },
+    {
+      title: t('data_name.payoff')
+    },
+    {
+      title: t('data_name.bonus')
+    },
+    {
+      title: t('data_name.active_member')
+    }
+  ]
+})
+
+const topCardData = ref([
   {
     icon: 'fas fa-money-bill-wave',
-    title: t('data_name.bet_amount'),
-    colorClass: 'cdp-bg-maximum__blue'
-  },
-  {
-    icon: 'fas fa-chart-area',
-    title: t('data_name.payoff'),
-    colorClass: 'cdp-bg-forest__green__crayola'
-  },
-  {
-    icon: 'fas fa-gift',
-    title: t('data_name.bonus'),
-    colorClass: 'cdp-bg-indian__yellow'
-  },
-  {
-    icon: 'fas fa-users',
-    title: t('data_name.active_member'),
-    colorClass: 'cdp-bg-candy__pink'
-  }
-]
-
-const topCard = ref(
-  iconTitleColor.map((item) => ({
-    title: item.title,
-    icon: item.icon,
-    colorClass: item.colorClass,
+    colorClass: 'cdp-bg-maximum__blue',
     monthAvg: '-',
     weekAvg: '-',
     growth: '-'
-  }))
-)
-
+  },
+  {
+    icon: 'fas fa-chart-area',
+    colorClass: 'cdp-bg-forest__green__crayola',
+    monthAvg: '-',
+    weekAvg: '-',
+    growth: '-'
+  },
+  {
+    icon: 'fas fa-gift',
+    colorClass: 'cdp-bg-indian__yellow',
+    monthAvg: '-',
+    weekAvg: '-',
+    growth: '-'
+  },
+  {
+    icon: 'fas fa-users',
+    colorClass: 'cdp-bg-candy__pink',
+    monthAvg: '-',
+    weekAvg: '-',
+    growth: '-'
+  }
+])
 //取得資料
 const querySmallBoxData = async () => {
+  if (activeHall.hall_code === '') return
   try {
     const result = await apiQuerySmallBoxData({
       hall_name: activeHall.hall_code,
@@ -111,17 +125,29 @@ const transformSmallBoxData = (data) => {
 
   keyArr.forEach((ele, idx) => {
     if (ele === 'payoff') {
-      topCard.value[idx].monthAvg = addNumberColor(FormatNumber(0 - data[ele].month_avg, currentSign), 'text-danger font-black')
-      topCard.value[idx].weekAvg = addNumberColor(FormatNumber(0 - data[ele].week_avg, currentSign), 'text-danger font-black')
-      topCard.value[idx].growth = (0 - data[ele].growth).toString()
+      topCardData.value[idx].monthAvg = addNumberColor(
+        FormatNumber(0 - data[ele].month_avg, currentSign),
+        'text-danger font-black'
+      )
+      topCardData.value[idx].weekAvg = addNumberColor(
+        FormatNumber(0 - data[ele].week_avg, currentSign),
+        'text-danger font-black'
+      )
+      topCardData.value[idx].growth = (0 - data[ele].growth).toString()
     } else if (ele === 'premium_amount') {
-      topCard.value[idx].monthAvg = addNumberColor(FormatNumber(0 - data[ele].month_avg, currentSign), 'text-danger font-black')
-      topCard.value[idx].weekAvg = addNumberColor(FormatNumber(0 - data[ele].week_avg, currentSign), 'text-danger font-black')
-      topCard.value[idx].growth = data[ele].growth.toString()
+      topCardData.value[idx].monthAvg = addNumberColor(
+        FormatNumber(0 - data[ele].month_avg, currentSign),
+        'text-danger font-black'
+      )
+      topCardData.value[idx].weekAvg = addNumberColor(
+        FormatNumber(0 - data[ele].week_avg, currentSign),
+        'text-danger font-black'
+      )
+      topCardData.value[idx].growth = data[ele].growth.toString()
     } else {
-      topCard.value[idx].monthAvg = FormatNumber(data[ele].month_avg, currentSign)
-      topCard.value[idx].weekAvg = FormatNumber(data[ele].week_avg, currentSign)
-      topCard.value[idx].growth = data[ele].growth.toString()
+      topCardData.value[idx].monthAvg = FormatNumber(data[ele].month_avg, currentSign)
+      topCardData.value[idx].weekAvg = FormatNumber(data[ele].week_avg, currentSign)
+      topCardData.value[idx].growth = data[ele].growth.toString()
     }
   })
 }
@@ -132,14 +158,14 @@ onMounted(() => {
 </script>
 <template>
   <el-row :gutter="20" class="">
-    <el-col :span="6" v-for="(item, key) in topCard" :key="key">
+    <el-col :span="6" v-for="(item, idx) in topCardData" :key="idx">
       <div class="cdp-shadow-light-sm border-radius-5">
         <div
           class="padding-9 text-center cdp-text-white border-top-radius-5"
           :class="item.colorClass"
         >
           <font-awesome-icon class="mr-5" :icon="item.icon" />
-          <span class="font-medium">{{ item.title }}</span>
+          <span class="font-medium">{{ topCardTitle[idx].title }}</span>
         </div>
         <div class="padding-10">
           <div class="flex justify-between mb-4">
@@ -151,7 +177,7 @@ onMounted(() => {
           </div>
           <div class="flex justify-between mb-4">
             <span class="font-size-14">{{ t('home.7-day_moving_average') }}</span>
-            <span class="font-size-12">( {{ weekDuration }})</span>
+            <span class="font-size-12">({{ weekDuration }})</span>
           </div>
           <div class="cdp-money-place py-7 px-20 mb-18 font-black flex justify-between">
             <span v-html="item.weekAvg"></span>

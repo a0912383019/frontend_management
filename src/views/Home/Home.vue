@@ -3,7 +3,7 @@ import { watch, ref } from 'vue'
 import { useGlobalStore } from '@/stores/global.js'
 
 import TopCard from './components/TopCard.vue'
-
+import NotificationTables from './components/NotificationTables.vue'
 const globalStore = useGlobalStore()
 const key = ref('')
 watch(
@@ -17,6 +17,11 @@ watch(
   <section class="cdp-section">
     <TopCard :key="key"></TopCard>
   </section>
+  <el-row :gutter="20" class="mb-20">
+    <el-col :span="15">
+      <NotificationTables :key="key"></NotificationTables>
+    </el-col>
+  </el-row>
 </template>
 <style lang="scss" scoped>
 .mainArea__container {
