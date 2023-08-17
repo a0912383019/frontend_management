@@ -252,6 +252,7 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
           :hasPagination="true"
           :serverSide="false"
           :pageSize="5"
+          :search="true"
           class="customTable2"
         >
           <template #content="scope">

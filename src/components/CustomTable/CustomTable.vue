@@ -172,10 +172,9 @@ defineExpose({ goToFirstPage, showTableLoading })
 </script>
 <template>
   <div class="relative">
-    <div class="mb-10 text-right">
+    <div v-show="props.search && !props.serverSide" class="mb-10 text-right">
       <font-awesome-icon class="mr-8 font-size-17 cdp-text-grey relative t-1" icon="fas fa-search" />
       <el-input
-        v-show="props.search && !props.serverSide"
         v-model="search"
         size="default"
         style="width: 180px"
