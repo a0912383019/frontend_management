@@ -166,6 +166,53 @@
       font-size: 16px;
     }
   }
+  &.el-select {
+    .el-input {
+      &.is-focus >{
+        .el-input {
+          &__wrapper {
+            box-shadow: 0 0 0 1px $purple inset!important;
+          }
+        }
+      }
+      .el-input {
+        &__wrapper {
+          &.is-focus {
+            box-shadow: 0 0 0 1px $purple inset!important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.cdp-select-popper {
+  .el-select-dropdown {
+    &__item {
+      &.selected {
+        color: $purple;
+      }
+    }
+  }
+  &.el-select-dropdown {
+    &__item {
+      &.selected {
+        color: $purple;
+      }
+    }
+    &.is-multiple {
+      .el-select-dropdown {
+        &__item {
+          &.selected {
+            color: $purple;
+            &::after {
+                background-color: $purple;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 .cdp-checkbox {
@@ -239,7 +286,7 @@
     }
     &__inner {
       height: 38px;
-      padding: 0.375rem 0.75rem;
+      padding: 6px 12px;
       color: #404040;
       border: none;
       background: none;

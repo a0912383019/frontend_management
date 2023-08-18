@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import { useI18n } from 'vue-i18n'
 
 // Date range picker 固定設定
 const date_ranges_quick_select_config_1 = {}
@@ -181,4 +182,196 @@ export const date_range_picker_config_13 = {
   locale: date_locale_config,
   showDropdowns: true,
   linkedCalendars: false
+}
+
+// 近1週、近2週、近1個月、近2個月、近3個月
+export const shortcutsConfig1 = ({ rangeEndDate }) => {
+  const { t } = useI18n()
+  return [
+    {
+      text: t('date_range_picker.last_week'),
+      value: () => {
+        return [dayjs().subtract(7, 'day'), dayjs().startOf('day').subtract(rangeEndDate, 'day')]
+      }
+    },
+    {
+      text: t('date_range_picker.last_two_weeks'),
+      value: () => {
+        return [dayjs().subtract(14, 'day'), dayjs().startOf('day').subtract(rangeEndDate, 'day')]
+      }
+    },
+    {
+      text: t('date_range_picker.last_month'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(1, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_two_months'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(2, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_three_months'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(3, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    }
+  ]
+}
+
+// 近1週、近2週、近1個月、近1年、近3年、近5年、近20年
+export const shortcutsConfig2 = ({ rangeEndDate }) => {
+  const { t } = useI18n()
+  return [
+    {
+      text: t('date_range_picker.last_week'),
+      value: () => {
+        return [dayjs().subtract(7, 'day'), dayjs().startOf('day').subtract(rangeEndDate, 'day')]
+      }
+    },
+    {
+      text: t('date_range_picker.last_two_weeks'),
+      value: () => {
+        return [dayjs().subtract(14, 'day'), dayjs().startOf('day').subtract(rangeEndDate, 'day')]
+      }
+    },
+    {
+      text: t('date_range_picker.last_month'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(1, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_year'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(1, 'year'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_three_years'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(3, 'year'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_five_years'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(5, 'year'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_twenty_years'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(20, 'year'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    }
+  ]
+}
+
+// 近1週、近2週、近1個月、近2個月、近3個月、近半年、近1年、近2年、近3年
+export const shortcutsConfig3 = ({ rangeEndDate }) => {
+  const { t } = useI18n()
+  return [
+    {
+      text: t('date_range_picker.last_week'),
+      value: () => {
+        return [dayjs().subtract(7, 'day'), dayjs().startOf('day').subtract(rangeEndDate, 'day')]
+      }
+    },
+    {
+      text: t('date_range_picker.last_two_weeks'),
+      value: () => {
+        return [dayjs().subtract(14, 'day'), dayjs().startOf('day').subtract(rangeEndDate, 'day')]
+      }
+    },
+    {
+      text: t('date_range_picker.last_month'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(1, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_two_months'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(2, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_three_months'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(3, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_six_months'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(6, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_year'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(1, 'year'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_two_years'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(2, 'year'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_three_years'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(3, 'year'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    }
+  ]
 }
