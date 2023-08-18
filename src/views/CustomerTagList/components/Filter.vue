@@ -63,7 +63,6 @@ const queryAgNameUserLevel = async () => {
     const result = await apiQueryAgNameUserLevel({
       hall_name: activeHall.hall_code
     })
-    console.log(result)
     const { return_code } = result.data.status
     if (return_code === '0000') {
       transformAgNameUserLevel(result.data.result)

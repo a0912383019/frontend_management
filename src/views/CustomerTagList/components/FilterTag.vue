@@ -96,10 +96,8 @@ const selectTagLists = ref([])
 
 // 選擇標籤種類 change
 const changeGenerateTagLists = () => {
-  // selectTagValue.value = ''
   selectTagLists.value = []
   let tags_config = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
-  // let tagOptions = [] // 存放排序好的標籤字典
   Object.entries(tags_config).forEach((item) => {
     if (checkTagUsage(activeHall.hall_code, item[0])) {
       let tempObj = {
