@@ -1,8 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
-import { date_range_picker_config_11, date_range_picker_config_13 } from '@/utils/dateConfig.js'
+import {
+  date_range_picker_config_11,
+  date_range_picker_config_13,
+  shortcutsConfig1
+} from '@/utils/dateConfig.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import { formatDateDuration } from '@/utils/commonUtils.js'
 
@@ -59,71 +63,9 @@ const disabledDate = (day) => {
   return diff >= 3 || diff <= -3 || day < dateMinDate.value || day > dateValueEndDate.value
 }
 
-const shortcuts = [
-  {
-    text: t('date_range_picker.last_week'),
-    value: () => {
-      return [
-        dayjs().subtract(7, 'day'),
-        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
-      ]
-    }
-  },
-  {
-    text: t('date_range_picker.last_two_weeks'),
-    value: () => {
-      return [
-        dayjs().subtract(14, 'day'),
-        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
-      ]
-    }
-  },
-  {
-    text: t('date_range_picker.last_month'),
-    value: () => {
-      return [
-        dayjs().add(1, 'day').subtract(1, 'month'),
-        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
-      ]
-    }
-  },
-  {
-    text: t('date_range_picker.last_two_months'),
-    value: () => {
-      return [
-        dayjs().add(1, 'day').subtract(2, 'month'),
-        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
-      ]
-    }
-  },
-  {
-    text: t('date_range_picker.last_three_months'),
-    value: () => {
-      return [
-        dayjs().add(1, 'day').subtract(3, 'month'),
-        dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
-      ]
-    }
-  }
-  // {
-  //   text: t('date_range_picker.last_six_months'),
-  //   value: () => {
-  //     return [
-  //       dayjs().add(1, 'day').subtract(6, 'month'),
-  //       dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
-  //     ]
-  //   }
-  // },
-  // {
-  //   text: t('date_range_picker.last_year'),
-  //   value: () => {
-  //     return [
-  //       dayjs().add(1, 'day').subtract(1, 'year'),
-  //       dayjs().startOf('day').subtract(props.rangeEndDate, 'day')
-  //     ]
-  //   }
-  // }
-]
+const shortcuts = computed(() => {
+  return shortcutsConfig1({ rangeEndDate: props.rangeEndDate })
+})
 
 const handleClick = () => {
   emit('update:timestamp', {

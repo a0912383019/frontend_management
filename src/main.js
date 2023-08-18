@@ -14,7 +14,6 @@ import { globalRegister } from '@/global'
 const app = createApp(App)
 globalRegister(app)
 
-app.use(createPinia())
 app.use(router)
 
 const pinia = createPinia()

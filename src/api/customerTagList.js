@@ -1,6 +1,6 @@
 import axiosInstance from './axiosInstance.js'
 
-//會員總覽
+//會員標籤列表
 export const apiListMemberTags = (params) => {
   const {
     hall_name,
@@ -36,4 +36,15 @@ export const apiListMemberTags = (params) => {
     start,
     length
   })
+}
+
+// 進階篩選內的代理帳號及會員層級
+export const apiQueryAgNameUserLevel = (params) => {
+  const { hall_name } = params
+  return axiosInstance.post(
+    '/api/auth/member/bbin/query_ag_name_user_level' + sessionStorage.from_page,
+    {
+      hall_name
+    }
+  )
 }

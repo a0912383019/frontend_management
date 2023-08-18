@@ -111,12 +111,24 @@ const transformSmallBoxData = (data) => {
 
   keyArr.forEach((ele, idx) => {
     if (ele === 'payoff') {
-      topCard.value[idx].monthAvg = addNumberColor(FormatNumber(0 - data[ele].month_avg, currentSign), 'text-danger font-black')
-      topCard.value[idx].weekAvg = addNumberColor(FormatNumber(0 - data[ele].week_avg, currentSign), 'text-danger font-black')
+      topCard.value[idx].monthAvg = addNumberColor(
+        FormatNumber(0 - data[ele].month_avg, currentSign),
+        'text-danger font-black'
+      )
+      topCard.value[idx].weekAvg = addNumberColor(
+        FormatNumber(0 - data[ele].week_avg, currentSign),
+        'text-danger font-black'
+      )
       topCard.value[idx].growth = (0 - data[ele].growth).toString()
     } else if (ele === 'premium_amount') {
-      topCard.value[idx].monthAvg = addNumberColor(FormatNumber(0 - data[ele].month_avg, currentSign), 'text-danger font-black')
-      topCard.value[idx].weekAvg = addNumberColor(FormatNumber(0 - data[ele].week_avg, currentSign), 'text-danger font-black')
+      topCard.value[idx].monthAvg = addNumberColor(
+        FormatNumber(0 - data[ele].month_avg, currentSign),
+        'text-danger font-black'
+      )
+      topCard.value[idx].weekAvg = addNumberColor(
+        FormatNumber(0 - data[ele].week_avg, currentSign),
+        'text-danger font-black'
+      )
       topCard.value[idx].growth = data[ele].growth.toString()
     } else {
       topCard.value[idx].monthAvg = FormatNumber(data[ele].month_avg, currentSign)

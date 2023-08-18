@@ -390,7 +390,9 @@ watch(
 watch(
   () => globalStore.activeHall.hall_code,
   () => {
-    initPageNext()
+    if (route.path === '/home') {
+      initPageNext()
+    }
   }
 )
 </script>
