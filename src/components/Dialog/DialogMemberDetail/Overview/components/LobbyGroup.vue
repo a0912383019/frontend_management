@@ -50,7 +50,6 @@ const chartOptions = {
     symbolWidth: 0,
     symbolHeight: 0,
     labelFormatter: function () {
-      // console.log(this)
       return `
         <div class="flex">
           <div style="
@@ -78,17 +77,10 @@ const chartOptions = {
       cursor: 'pointer',
       borderRadius: 0,
       borderWidth: 0,
-      // innerSize: '50%',
       showInLegend: true,
-      series: {
-        // pointWidth: 50,
-        // groupPadding: 0
-      },
       dataLabels: {
         enabled: true,
-        // format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
         formatter: function () {
-          // console.log(this)
           return FormatNumber(this.y)
         },
         useHTML: true,
@@ -119,7 +111,6 @@ const queryLobbyGroupChart = async () => {
       member_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
-    // console.log('apiQueryMemberLobbyGroup', result)
     if (return_code === '0000') {
       transformLobbyGroupChart(result.data.result)
       apiSuccess.value = true
@@ -152,7 +143,6 @@ const queryLobbyGroupChart = async () => {
 //轉換資料
 const transformLobbyGroupChart = (data) => {
   clearChart()
-  // console.log('transformLobbyGroupChart', data)
   let chartDataBgColor = []
 
   for (let i = 0; i < data.length; i++) {
@@ -193,13 +183,17 @@ watch(
 )
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section margin-bottom-0">
     <SectionTitle class="mb-15" :title="t('customer_detail_info.total_bet_by_game_type')">
     </SectionTitle>
-    <CdpMessage :messageKey="messageKey" :height="250" bg="white" v-if="apiSuccess === false" />
+    <CdpMessage :messageKey="messageKey" :height="221" bg="white" v-if="apiSuccess === false" />
     <div v-else>
       <highcharts :options="chartOptions"></highcharts>
     </div>
   </section>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.margin-bottom-0 {
+  margin-bottom: 0;
+}
+</style>

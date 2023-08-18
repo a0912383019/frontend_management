@@ -88,7 +88,6 @@ const chartSetting = {
 const registerChart = () => {
   let ctx = refChart.value.getContext('2d')
   chart = new Chart(ctx, chartSetting)
-  // console.log('Chart', chart)
 }
 
 const queryBetLineChart = async () => {
@@ -101,7 +100,6 @@ const queryBetLineChart = async () => {
       member_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
-    // console.log('apiQueryMemberPeriodBetAmount', result)
     if (return_code === '0000') {
       const { result_period_bet_amount, result_period_device_bet_amount } = result.data.result
       transformBetAmountChart(result_period_bet_amount)
@@ -139,14 +137,12 @@ const queryBetLineChart = async () => {
 
 // chart
 const transformBetAmountChart = (data) => {
-  // console.log(data)
   let chart_labels = []
   let chart_data = []
   data.forEach((item) => {
     chart_labels.push(dayjs(item.data_date).format(t('date.format_date_rule')))
     chart_data.push(parseFloat(item.total_bet_amount))
   })
-  // console.log(chart_labels)
   chartSetting.data.xLabels = []
   chartSetting.data.xLabels = chart_labels
   let chart_datasets = [
@@ -170,9 +166,6 @@ const transformBetAmountChart = (data) => {
 
 // 各裝置貨量佔比knob圖
 const knobLists = ref([])
-// data-i18n="customer_detail_info.pc"
-// data-i18n="customer_detail_info.mobile"
-// data-i18n="customer_detail_info.app"
 const transformBetAmountKnob = (data) => {
   // console.log('transformBetAmountKnob', data)
   let pc_total_amount = 0,
