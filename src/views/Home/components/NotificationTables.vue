@@ -145,7 +145,6 @@ const readSmartMesNote = async (msgId, kind) => {
         title: t('msg.updated_successfully'),
         type: 'success'
       })
-      querySmallMesNote(kind)
     } else {
       ElNotification({
         title: t('msg.update_failed'),
@@ -168,6 +167,7 @@ const readSmartMesNote = async (msgId, kind) => {
       })
     }
   }
+  querySmallMesNote(kind)
 }
 
 const transformQuerySmallMesNote = (data) => {
@@ -303,6 +303,9 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
 
 :deep(.remove-style) {
   text-decoration: line-through;
-  color: #b0b0b0;
+  color: #959595;
+  td.el-table__cell {
+    color: #afafaf;
+  }
 }
 </style>
