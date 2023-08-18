@@ -3,6 +3,8 @@ import { ref, reactive, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryAgNameUserLevel } from '@/api/customerTagList.js'
 import { useGlobalStore } from '@/stores/global.js'
+import { ElNotification } from 'element-plus'
+import { errorRespond } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import FuzzySwitchWithTooltip from '@/components/Switch/FuzzySwitchWithTooltip.vue'
@@ -66,6 +68,13 @@ const queryAgNameUserLevel = async () => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       transformAgNameUserLevel(result.data.result)
+    } else {
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+      ElNotification({
+        title: t('msg.query_failed'),
+        type: 'success'
+      })
     }
   } catch (error) {
     console.error(error)
