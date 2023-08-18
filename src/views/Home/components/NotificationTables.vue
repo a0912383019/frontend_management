@@ -9,6 +9,8 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { ElNotification } from 'element-plus'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import Tab from '@/components/Tab.vue'
+import dayjs from 'dayjs'
+import { formatDateDuration, errorRespond } from '@/utils/commonUtils.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
 
@@ -62,18 +64,19 @@ const allTableColumns = computed(() => {
     {
       label: t('home.category'),
       prop: 'category',
+      minWidth: 100,
       align: 'center'
     },
     {
       label: t('home.content'),
       prop: 'content',
-      width: 390,
+      minWidth: 350,
       align: 'center'
     },
     {
       label: t('date.date'),
       prop: 'date',
-      width: 120,
+      minWidth: 115,
       align: 'center'
     },
     {
@@ -84,6 +87,11 @@ const allTableColumns = computed(() => {
   ]
 })
 
+const search_date =
+  dayjs().subtract(8, 'day').startOf('day').format(t('date.format_date_rule')) +
+  '~' +
+  dayjs().subtract(1, 'day').startOf('day').format(t('date.format_date_rule'))
+
 //取得資料
 const querySmallMesNote = async (kind = '0') => {
   allMessageKey.value = 'shortLoading'
@@ -93,7 +101,7 @@ const querySmallMesNote = async (kind = '0') => {
     const result = await apiQuerySmallMesNote({
       hall_name: activeHall.hall_code,
       kind: kind,
-      search_date: '2023-08-07 ~ 2023-08-14',
+      search_date: formatDateDuration(search_date),
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
