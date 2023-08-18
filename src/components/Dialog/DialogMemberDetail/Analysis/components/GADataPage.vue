@@ -123,12 +123,12 @@ const queryGAPagePathRank = async () => {
         //整理及地圖對應的資料
         transformGAPagePathRank(result.data.result)
       } else {
-        clickRankMessageKey.value = 'chartFailed'
+        clickRankMessageKey.value = 'noResult'
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
       }
     } else {
-      clickRankMessageKey.value = 'noResult'
+      clickRankMessageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }

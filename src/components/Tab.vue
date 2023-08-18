@@ -42,6 +42,7 @@ const handleTabChange = (data) => {
   padding: 0;
   margin: 0;
   font-size: 16px;
+  color: #6c757d;
   li {
     position: relative;
     list-style-type: none;

@@ -53,7 +53,6 @@ const chartSetting = {
       r: {
         ticks: {
           callback(label) {
-            // return Math.abs(label) >= 1000 ? label / 1000 + 'k' : label
             return formatNumberWithK(label)
           }
         }
@@ -72,14 +71,6 @@ const chartSetting = {
         padding: 30,
         clamp: true,
         clip: true
-        // display: function (context) {
-        //   console.log(chartSetting.data.datasets)
-        //   return showPolarDatasetsLabels({
-        //     currentData: context.dataset.data[context.dataIndex],
-        //     dataTotal: chartTotal.value,
-        //     pieSliceCount: pieSliceCount.value
-        //   })
-        // }
       },
       legend: {
         position: 'right'
@@ -102,7 +93,6 @@ const chartSetting = {
 const registerChart = () => {
   let ctx = refChart.value.getContext('2d')
   chart = new Chart(ctx, chartSetting)
-  // console.log('Chart', chart)
 }
 //取得資料
 const queryLobbyChart = async () => {
@@ -116,7 +106,6 @@ const queryLobbyChart = async () => {
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
-    // console.log(result)
     if (return_code === '0000') {
       transformLobbyChart(result.data.result)
       apiSuccess.value = true
@@ -151,17 +140,10 @@ const queryLobbyChart = async () => {
 }
 //轉換資料
 const transformLobbyChart = (data) => {
-  // console.log(data)
   let chart_labels = []
   let chart_data = []
   let chart_data_bgColor = []
   let chart_data_borderColor = []
-
-  //highcharts
-  // chartOptions.series.push({
-  //   data: [],
-  //   pointPlacement: 'between'
-  // })
 
   for (let i = 0; i < data.length; i++) {
     if (i >= 10) {
@@ -187,21 +169,6 @@ const transformLobbyChart = (data) => {
     }
     chart_data_bgColor.push(color)
     chart_data_borderColor.push(borderColor)
-
-    //highcharts
-    // 1
-    // chartOptions.series[0].data.push({
-    //   name: data[i].lobby_name,
-    //   y: parseFloat(data[i].total_bet_amount),
-    //   color
-    // })
-    // 2
-    // chartOptions.series.push({
-    //   name: data[i].lobby_name,
-    //   data: [parseFloat(data[i].total_bet_amount)],
-    //   color,
-    //   pointPlacement: 'between'
-    // })
   }
 
   pieSliceCount.value = chart_labels.length
@@ -231,13 +198,13 @@ watch(
 )
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section margin-bottom-0">
     <SectionTitle class="mb-15" :title="t('customer_detail_info.total_bet_by_platform')">
       <template #tooltip>
         {{ $t('common.show_top_only', { rank: 10 }) }}
       </template>
     </SectionTitle>
-    <CdpMessage :messageKey="messageKey" :height="250" bg="white" v-if="apiSuccess === false" />
+    <CdpMessage :messageKey="messageKey" :height="221" bg="white" v-if="apiSuccess === false" />
     <div v-else>
       <canvas
         ref="refChart"
@@ -252,4 +219,8 @@ watch(
     </div>
   </section>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.margin-bottom-0 {
+  margin-bottom: 0;
+}
+</style>

@@ -164,6 +164,7 @@ defineExpose({ handleOpenDialog })
 </style>
 <style lang="scss">
 .cdp-member-detail-dialog {
+  margin-top: 55px;
   &.cdp-dialog {
     width: 100%;
     max-width: 90%;
