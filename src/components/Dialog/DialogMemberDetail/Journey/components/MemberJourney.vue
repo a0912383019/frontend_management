@@ -63,7 +63,6 @@ const chartOptions = reactive({
   },
   yAxis: [
     {
-      // allowDecimals: false,
       labels: {
         enabled: true
       },

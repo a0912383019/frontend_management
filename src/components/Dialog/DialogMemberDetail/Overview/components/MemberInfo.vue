@@ -101,7 +101,6 @@ const transformMemberInfoTagStr = (data) => {
 }
 
 const handleTagIsEdit = (status) => {
-  // console.log(status)
   if (status) {
     //true 進入編輯內容
     tagIsEdit.value = status
@@ -114,13 +113,6 @@ const handleTagIsEdit = (status) => {
 
 const tagInnerDialogVisible = ref(false) //inner dialog開啟狀態
 const handleInnerTagIsEdit = (status) => {
-  // console.log('submit api data', {
-  //   hall_name: activeHall.hall_code,
-  //   member_id: dialogMemberDetailStore.memberData.user_id,
-  //   user_name: apiMemberData.user_name,
-  //   user_tags_original: includeTags.value,
-  //   user_tags_new: tagSelectValue.value.join(',')
-  // })
   tagInnerDialogVisible.value = false
   switch (status) {
     case 'confirm':
@@ -131,7 +123,6 @@ const handleInnerTagIsEdit = (status) => {
 
 //取得修改後標籤的文字
 const transformConfirmTagsText = () => {
-  // console.log('tagSelectValue', tagSelectValue.value)
   let lastIndex = tagSelectValue.value.length - 1
   confirmTagsText.value = []
   tagSelectValue.value.forEach((item, index) => {
@@ -151,7 +142,6 @@ const updateMemberTagsEnable = async () => {
       user_tags_original: includeTags.value,
       user_tags_new: tagSelectValue.value.join(',')
     })
-    // console.log('updateMemberTagsEnable', result)
     const { return_code } = result.data.status
     if (return_code === '0000') {
       pageInit()

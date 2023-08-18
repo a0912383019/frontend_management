@@ -9,7 +9,7 @@ import LobbyGame from './components/LobbyGame.vue'
 </script>
 <template>
   <div>
-    <el-row :gutter="15" class="mb-20">
+    <el-row :gutter="15">
       <el-col :xs="24" :sm="24" :lg="5">
         <MemberHealth />
       </el-col>
@@ -19,10 +19,10 @@ import LobbyGame from './components/LobbyGame.vue'
           <MemberAmount />
         </section>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="24" class="mt-30">
+      <el-col :xs="24" :sm="24" :lg="24" >
         <MemberPeriodBetAmount />
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="24" class="mt-30">
+      <el-col :xs="24" :sm="24" :lg="24" >
         <el-row :gutter="20">
           <el-col :xs="24" :sm="24" :lg="8"> <LobbyGroup /> </el-col>
           <el-col :xs="24" :sm="24" :lg="8"> <Lobby /> </el-col>

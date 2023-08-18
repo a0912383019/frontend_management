@@ -38,12 +38,9 @@ const chartOptions = reactive({
     plotShadow: false,
     type: 'pie',
     height: 250,
-    // margin: 0,
     marginRight: 170,
     marginLeft: 0,
     spacing: [0, 0, 0, 0]
-    // marginRight: 180 // 右侧边距，根据图例文字长度进行调整
-    // marginLeft: -50 // 右侧边距，根据图例文字长度进行调整
   },
   legend: {
     layout: 'vertical',
@@ -55,7 +52,6 @@ const chartOptions = reactive({
     symbolWidth: 0,
     symbolHeight: 0,
     labelFormatter: function () {
-      // console.log(this)
       return `
         <div class="flex" style="width: 170px;">
           <div class="shrink-0" style="
@@ -85,15 +81,9 @@ const chartOptions = reactive({
       borderWidth: 0,
       innerSize: '55%',
       showInLegend: true,
-      series: {
-        // pointWidth: 50,
-        // groupPadding: 0
-      },
       dataLabels: {
         enabled: true,
-        // format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
         formatter: function () {
-          // console.log(this)
           return FormatNumber(this.y)
         },
         useHTML: true,
@@ -125,7 +115,6 @@ const queryLobbyGameChart = async () => {
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
-    // console.log('apiQueryMemberLobbyGame', result)
     if (return_code === '0000') {
       transformLobbyGameChart(result.data.result)
       apiSuccess.value = true
@@ -157,7 +146,6 @@ const queryLobbyGameChart = async () => {
 }
 //轉換資料
 const transformLobbyGameChart = (data) => {
-  // console.log('transformLobbyGameChart', data)
   clearChart()
   let chartDataBgColor = []
   for (let i = 0; i < data.length; i++) {
@@ -202,13 +190,13 @@ watch(
 )
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section margin-bottom-0">
     <SectionTitle class="mb-15" :title="t('customer_detail_info.total_bet_by_game')">
       <template #tooltip>
         {{ $t('common.show_top_only', { rank: 10 }) }}
       </template>
     </SectionTitle>
-    <CdpMessage :messageKey="messageKey" :height="250" bg="white" v-if="apiSuccess === false" />
+    <CdpMessage :messageKey="messageKey" :height="221" bg="white" v-if="apiSuccess === false" />
     <div v-else>
       <highcharts :options="chartOptions"></highcharts>
     </div>
@@ -217,5 +205,9 @@ watch(
 <style lang="scss">
 .highcharts-legend.highcharts-no-tooltip {
   z-index: 0;
+}
+
+.margin-bottom-0 {
+  margin-bottom: 0;
 }
 </style>

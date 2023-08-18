@@ -18,6 +18,9 @@ app.use(router)
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-app.use(pinia)
 
+globalRegister(app)
+
+app.use(pinia)
+app.use(router)
 app.mount('#app')

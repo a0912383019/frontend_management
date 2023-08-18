@@ -42,7 +42,6 @@ const chartOptions = reactive({
   },
   yAxis: {
     gridLineColor: '#e8e8e8'
-    // showFirstLabel: false,
   },
   tooltip: {
     ...tooltipDarkConfig,
@@ -50,7 +49,6 @@ const chartOptions = reactive({
     shared: true,
     useHTML: true,
     formatter: function () {
-      // console.log(this)
       return tooltipShared({ data: this.points, date: this.x, hallCode: activeHall.hall_code })
     }
   },
@@ -77,7 +75,6 @@ const queryMemberPeriodPayoffProfitAmount = async () => {
       hall_name: activeHall.hall_code,
       member_id: dialogMemberDetailStore.memberData.user_id
     })
-    // console.log('queryMemberPeriodPayoffProfitAmount', result)
     const { return_code } = result.data.status
 
     if (return_code !== '0001') {
@@ -150,7 +147,6 @@ const transformMemberPeriodPayoffProfitAmount = (data) => {
     chartOptions.plotOptions.series.dataLabels.enabled = true
     chartOptions.xAxis.tickmarkPlacement = 'on'
   }
-  // console.log(data.length, chartOptions.plotOptions.series.dataLabels.enabled)
   data.forEach((item) => {
     chartData['accumulate_profit']['data'].push(parseFloat(item.accumulate_profit))
     chartData['payoff']['data'].push(parseFloat(item.payoff))

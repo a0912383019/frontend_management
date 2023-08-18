@@ -1,8 +1,6 @@
 <script setup>
 import { computed } from 'vue'
 
-// const pageSize = ref(10);
-
 const props = defineProps({
   background: {
     type: Boolean,
@@ -47,7 +45,6 @@ const currentPage = computed({
   },
   set(newVal) {
     emit('update:currentPage', newVal)
-    console.log('computed', newVal)
   }
 })
 
@@ -65,32 +62,25 @@ const currentPageSize = computed({
 const pageSizesArray = computed(() => {
   let result = []
   let total = props.total
-  // console.log(total);
   switch (true) {
     case total <= 10:
-      // console.log(1);
       result = [10]
       break
     case total <= 25:
-      console.log(2)
       result = [10, 25]
       break
     case total <= 50:
-      // console.log(2);
       result = [10, 25, 50]
       break
     case total <= 100:
-      // console.log(2);
       result = [10, 25, 50, 100]
       break
     case total <= 250:
-      // console.log(2);
       result = [10, 25, 50, 100, 250, 500]
       break
     default:
       result = [10, 25, 50, 100, 250, 500]
   }
-  // console.log(result);
   return result
 })
 </script>
@@ -111,7 +101,6 @@ const pageSizesArray = computed(() => {
 .el-pagination {
   .el-select {
     .el-input {
-      // width: auto;
       width: 90px;
       &__wrapper {
         padding-left: 0;

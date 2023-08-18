@@ -26,8 +26,6 @@ watch(
     setTimeout(() => {
       chartIsShow.value = true
     }, 10)
-    // refLifeCycleHistory.value.clearChart()
-    // refLifeCycleHistory.value.queryChartApi()
   }
 )
 </script>
