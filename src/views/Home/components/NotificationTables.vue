@@ -246,10 +246,10 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
       </el-col>
     </el-row>
     <CdpMessage
-      :height="407"
       :messageKey="allMessageKey"
       bg="white"
       v-if="allApiSuccess === false"
+      class="mt-25"
     />
     <el-row v-else :gutter="20" class="mb-20">
       <el-col :span="24">
@@ -315,5 +315,9 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
   td.el-table__cell {
     color: #afafaf;
   }
+}
+
+:deep(td.el-table__cell) {
+    padding: 2px 0;
 }
 </style>
