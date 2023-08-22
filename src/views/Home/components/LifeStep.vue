@@ -98,6 +98,7 @@ const chartOptions = reactive({
 const queryLatestLifeCycleSummary = async () => {
   messageKey.value = 'shortLoading'
   apiSuccess.value = false
+  if (activeHall.hall_code === '') return
   try {
     const result = await apiQueryLatestLifeCycleSummary({
       hall_name: activeHall.hall_code,
