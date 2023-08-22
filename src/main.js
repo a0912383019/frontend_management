@@ -12,11 +12,12 @@ import router from './router'
 import { globalRegister } from '@/global'
 
 const app = createApp(App)
+globalRegister(app)
+
+app.use(router)
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-
-globalRegister(app)
 
 app.use(pinia)
 app.use(router)

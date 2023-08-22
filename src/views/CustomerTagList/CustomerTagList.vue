@@ -1,17 +1,21 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiListMemberTags } from '@/api/customerTagList.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { dayjs } from 'element-plus'
-import { findHallIdMappingKey, checkTagUsage } from '@/utils/commonUtils.js'
+import { findHallIdMappingKey, checkTagUsage, formatDateDuration } from '@/utils/commonUtils.js'
+import { date_range_picker_config_2, date_range_picker_config_10 } from '@/utils/dateConfig.js'
+import { ElNotification } from 'element-plus'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
+import ExportReport from '@/components/ExportReport.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
 import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
+import Filter from './components/Filter.vue'
 
 const { t } = useI18n()
 
@@ -88,9 +92,28 @@ const tableColumns = computed(() => {
   ]
 })
 
+const formData = reactive({
+  member: '', //會員名稱
+  selectAcount: '', //代理帳號
+  selectLevel: '', //會員層級
+  activatedDate: formatDateDuration(
+    dayjs(date_range_picker_config_10.startDate).format(t('date.format_date_rule')) +
+      '~' +
+      dayjs(date_range_picker_config_10.endDate).format(t('date.format_date_rule'))
+  ), //實動日期
+  registerDate: formatDateDuration(
+    dayjs(date_range_picker_config_2.startDate).format(t('date.format_date_rule')) +
+      '~' +
+      dayjs(date_range_picker_config_2.endDate).format(t('date.format_date_rule'))
+  ), //註冊日期
+  searchTag: '', //包含標籤
+  excludeTag: '', //排除標籤
+  fuzzySearch: false //模糊搜尋
+})
+
 // 取得資料
-const queryListMemberTags = async (type) => {
-  if (type !== 'page') {
+const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
+  if (searchType !== 'page') {
     apiSuccess.value = false
     messageKey.value = 'loading'
   } else {
@@ -99,14 +122,14 @@ const queryListMemberTags = async (type) => {
   try {
     const result = await apiListMemberTags({
       hall_name: activeHall.hall_code,
-      activated_date_hide: '2023-07-11 ~ 2023-08-10',
-      search_date_hide: '2003-08-11 ~ 2023-08-10',
-      ag_name: '',
-      user_level_id: '',
-      search_name: '',
-      fuzzy_search: false,
-      search_tag_hide: '',
-      exclude_tag_hide: '',
+      activated_date_hide: formData['activatedDate'], //實動日期
+      search_date_hide: formData['registerDate'], //註冊日期
+      ag_name: formData['selectAcount'], //代理帳號
+      user_level_id: formData['selectLevel'], //會員層級
+      search_name: formData['member'], //會員名稱
+      fuzzy_search: formData['fuzzySearch'], //模糊搜尋
+      search_tag_hide: formData['searchTag'], //包含標籤
+      exclude_tag_hide: formData['excludeTag'], //排除標籤
       use_custom_list: false,
       recordsTotal_hide: '',
       refresh_recordsTotal_hide: true,
@@ -114,13 +137,18 @@ const queryListMemberTags = async (type) => {
       start: apiStart.value,
       length: 10
     })
-    console.log(result)
     const { return_code } = result.data.status
     if (return_code === '0000') {
-      if (type !== 'page') {
+      if (searchType !== 'page') {
         apiSuccess.value = true
       } else {
         refCustomTable.value.showTableLoading = false
+      }
+      if (filterType) {
+        ElNotification({
+          title: t('msg.query_successful'),
+          type: 'success'
+        })
       }
       tableData.value = []
       tableData.value = transformListMemberTags(result.data.data)
@@ -182,7 +210,7 @@ const transformListMemberTags = (data) => {
 const updateCurrentPage = (data) => {
   apiDraw.value = data
   apiStart.value = apiDraw.value * apiLength.value - apiLength.value
-  queryListMemberTags('page')
+  queryListMemberTags({ searchType: 'page' })
 }
 
 //會員明細Dialog點擊
@@ -203,13 +231,33 @@ const handleTagButtonClick = (item) => {
   tableData.value = newData
 }
 
+const handleFilterSubmit = (data) => {
+  console.log('filter', data)
+  formData['member'] = data['member']
+  formData['selectAcount'] = data['selectAcount']
+  formData['selectLevel'] = data['selectLevel']
+  formData['activatedDate'] = data['isActivedDateCheck'] === true ? data['activatedDate'] : ''
+  formData['registerDate'] = data['registerDate']
+  formData['searchTag'] = data['searchTag']
+  formData['excludeTag'] = data['excludeTag']
+  formData['fuzzySearch'] = data['fuzzySearch']
+  queryListMemberTags({ filterType: true })
+}
+
 onMounted(() => {
-  queryListMemberTags()
+  queryListMemberTags({ searchType: '' })
 })
 </script>
 <template>
   <section class="cdp-section">
-    <PageTitle class="mb-20" icon="fas fa-tags" :title="t('sidebar.bbin_customer_tag_list')" />
+    <div class="flex items-center justify-between mb-20">
+      <!-- justify-between -->
+      <PageTitle icon="fas fa-tags" :title="t('sidebar.bbin_customer_tag_list')" />
+      <div class="flex">
+        <ExportReport class="mr-10" />
+        <Filter @update:filter-submit="handleFilterSubmit" />
+      </div>
+    </div>
     <CdpMessage :messageKey="messageKey" v-show="apiSuccess === false" />
     <div v-show="apiSuccess === true">
       <DialogMemberDetail ref="refDialogMemberDetail" />
@@ -222,7 +270,7 @@ onMounted(() => {
         :tableTotal="apiRecordsTotal"
         :stripe="true"
         ref="refCustomTable"
-        class="customTable2"
+        class="customTable2 customTagListTable"
         @update:currentPage="updateCurrentPage"
       >
         <template #user_name="scope">
@@ -323,6 +371,11 @@ onMounted(() => {
         background-color: #f9b40c;
       }
     }
+  }
+}
+
+.customTagListTable {
+  .el-table .cell {
   }
 }
 </style>
