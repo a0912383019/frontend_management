@@ -14,8 +14,9 @@ export const tooltipDarkConfig = {
  * @param data 帶入tooltip的this
  * @param hallCode 可拿pinia globalStore 的 activeHall.hall_code帶入
  * @param unit 單位
+ * @param tooltipIconBorder icon的border
  */
-export const tooltipFormatter = ({ data, hallCode = '', unit = '' }) => {
+export const tooltipFormatter = ({ data, hallCode = '', unit = '', tooltipIconBorder = false }) => {
   let color = data.color.split(',') //將顏色用逗號切割
   color[3] = `${0.9})` // 把rgba的透明度調成1
   color = color.join(',') // -> EX: rgb(255, 255, 255, 0.9)
@@ -32,6 +33,7 @@ export const tooltipFormatter = ({ data, hallCode = '', unit = '' }) => {
           width: 10px;
           height: 10px;
           background-color: ${color};
+          border: ${Number(tooltipIconBorder)}px solid #FFF;
         "></div>
         <div>
           ${data.key}：${moneySign + FormatNumber(data.y) + unit}

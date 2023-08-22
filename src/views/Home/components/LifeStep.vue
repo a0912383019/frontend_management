@@ -66,7 +66,7 @@ const chartOptions = reactive({
     ...tooltipDarkConfig,
     useHTML: true,
     formatter() {
-      return tooltipFormatter({ data: this, unit: t('unit.people') })
+      return tooltipFormatter({ data: this, unit: t('unit.people'), tooltipIconBorder: true })
     }
   },
   plotOptions: {
@@ -79,7 +79,7 @@ const chartOptions = reactive({
       dataLabels: {
         enabled: true,
         formatter: function () {
-          return FormatNumber(this.y)
+          return '<span style="font-size:14px;">' + FormatNumber(this.y) + '</span>'
         },
         useHTML: true,
         distance: '-40%',
