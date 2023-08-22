@@ -24,7 +24,7 @@ const { dialogMemberDetailRangeDate } = storeToRefs(dialogMemberDetailStore)
 const apiSuccess = ref(false) //api是否成功
 
 //依照不同的messageKey產生不同的message
-const messageKey = ref('loading')
+const messageKey = ref('shortLoading')
 const refChart = ref(null)
 let chart
 
@@ -91,7 +91,7 @@ const registerChart = () => {
 }
 
 const queryBetLineChart = async () => {
-  messageKey.value = 'loading'
+  messageKey.value = 'shortLoading'
   apiSuccess.value = false
   try {
     const result = await apiQueryMemberPeriodBetAmount({
@@ -215,7 +215,13 @@ watch(
   <section class="cdp-section">
     <SectionTitle class="mb-15" :title="t('customer_detail_info.total_bet_by_device')">
     </SectionTitle>
-    <CdpMessage :messageKey="messageKey" :height="250" v-if="apiSuccess === false" />
+    <CdpMessage
+      :messageKey="messageKey"
+      bg="white"
+      :height="250"
+      class="font-size-16"
+      v-if="apiSuccess === false"
+    />
     <div class="cdp-dialog__chart" v-else>
       <canvas
         ref="refChart"
