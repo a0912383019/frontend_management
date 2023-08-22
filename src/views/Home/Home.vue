@@ -1,9 +1,10 @@
 <script setup>
 import { watch, ref } from 'vue'
 import { useGlobalStore } from '@/stores/global.js'
-
 import TopCard from './components/TopCard.vue'
 import NotificationTables from './components/NotificationTables.vue'
+import LifeStep from './components/LifeStep.vue'
+
 const globalStore = useGlobalStore()
 const key = ref('')
 watch(
@@ -20,6 +21,9 @@ watch(
   <el-row :gutter="20" class="mb-20">
     <el-col :span="15">
       <NotificationTables :key="key"></NotificationTables>
+    </el-col>
+    <el-col :span="9">
+      <LifeStep :key="key"></LifeStep>
     </el-col>
   </el-row>
 </template>

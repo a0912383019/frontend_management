@@ -19,15 +19,21 @@ const { t } = useI18n()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const monthDuration =
-  dayjs().subtract(31, 'day').startOf('day').format(t('date.format_date_rule')) +
-  '~' +
-  dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
+const monthDuration = computed(() => {
+  return (
+    dayjs().subtract(31, 'day').startOf('day').format(t('date.format_date_rule')) +
+    '~' +
+    dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
+  )
+})
 
-const weekDuration =
-  dayjs().subtract(8, 'day').startOf('day').format(t('date.format_date_rule')) +
-  '~' +
-  dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
+const weekDuration = computed(() => {
+  return (
+    dayjs().subtract(8, 'day').startOf('day').format(t('date.format_date_rule')) +
+    '~' +
+    dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
+  )
+})
 
 const topCardTitle = computed(() => {
   return [
@@ -82,7 +88,7 @@ const querySmallBoxData = async () => {
   try {
     const result = await apiQuerySmallBoxData({
       hall_name: activeHall.hall_code,
-      search_date: formatDateDuration(weekDuration)
+      search_date: formatDateDuration(weekDuration.value)
     })
     const { return_code } = result.data.status
 
@@ -168,14 +174,14 @@ onMounted(() => {
           <span class="font-medium">{{ topCardTitle[idx].title }}</span>
         </div>
         <div class="padding-10">
-          <div class="flex justify-between mb-4">
+          <div class="flex flex-wrap justify-between mb-4">
             <span class="font-size-14">{{ t('home.30-day_moving_average') }}</span>
             <span class="font-size-12">({{ monthDuration }})</span>
           </div>
           <div class="cdp-money-place py-7 px-20 mb-18 font-black">
             <span v-html="item.monthAvg"></span>
           </div>
-          <div class="flex justify-between mb-4">
+          <div class="flex flex-wrap justify-between mb-4">
             <span class="font-size-14">{{ t('home.7-day_moving_average') }}</span>
             <span class="font-size-12">({{ weekDuration }})</span>
           </div>

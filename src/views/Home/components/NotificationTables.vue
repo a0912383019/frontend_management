@@ -196,7 +196,7 @@ const transformQuerySmallMesNote = (data) => {
     return {
       category: tabList.value[ele.kind].label,
       content: displayContent,
-      date: ele.created_time,
+      date: dayjs(ele.created_time).format(t('date.format_date_rule')),
       msgId: ele.message_id,
       contentCut: contentCut
     }

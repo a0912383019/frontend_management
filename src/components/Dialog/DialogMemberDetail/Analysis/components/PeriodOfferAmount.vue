@@ -33,9 +33,7 @@ const messageKey = ref('shortLoading')
 
 const refChart = ref(null)
 
-let chart
 const chartSetting = {
-  id: 'lobbyChart',
   type: 'polarArea',
   plugins: [ChartDataLabels],
   data: {

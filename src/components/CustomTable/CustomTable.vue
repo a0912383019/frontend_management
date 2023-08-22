@@ -102,7 +102,9 @@ const handleTableSort = ({ prop, order }) => {
 //頁碼相關
 const page = reactive({
   currentPage: 1,
-  pageSize: props.pageSize
+  pageSize: props.pageSize,
+  filtered: false,
+  totalDataCount: props.tableData.length
 })
 
 const updateCurrentPage = (val) => {
@@ -148,6 +150,12 @@ const pageTableData = computed(() => {
       (page.currentPage - 1) * page.pageSize,
       page.pageSize * page.currentPage
     )
+
+    if(search.value) {
+      page.filtered = true
+    } else {
+      page.filtered = false
+    }
   } else {
     data = props.tableData
   }
@@ -239,6 +247,8 @@ defineExpose({ goToFirstPage, showTableLoading })
         :page="page.currentPage"
         :pageSize="props.pageSize"
         :total="pageTableTotal"
+        :filtered="page.filtered"
+        :totalDataCount="page.totalDataCount"
       />
     </div>
     <div class="paginationBox" v-if="hasPagination === false && hasTotalPagination === true">
