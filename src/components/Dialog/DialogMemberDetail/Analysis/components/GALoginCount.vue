@@ -11,7 +11,6 @@ import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
 import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 import { ElNotification, dayjs } from 'element-plus'
 
-
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()

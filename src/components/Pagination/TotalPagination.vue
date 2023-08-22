@@ -14,6 +14,14 @@ const props = defineProps({
   total: {
     type: Number,
     default: 0
+  },
+  filtered: {
+    type: Boolean,
+    default: false
+  },
+  totalDataCount: {
+    type: Number,
+    default: 0
   }
 })
 
@@ -40,6 +48,13 @@ const pageEnd = computed(() => {
         TOTAL: FormatNumber(props.total)
       })
     }}
+    <span v-show="filtered">
+      {{
+        $t('table.sInfoFiltered', {
+          MAX: FormatNumber(props.totalDataCount)
+        })
+      }}
+    </span>
     <!-- {{ FormatNumber(pageStart) }} - {{ FormatNumber(pageEnd) }} / 共
     {{ FormatNumber(props.total) }} 筆 -->
   </div>

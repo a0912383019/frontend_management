@@ -29,3 +29,12 @@ export const apiReadSmartMesNote = (params) => {
     message_id
   })
 }
+
+//訊息通知已讀
+export const apiQueryLatestLifeCycleSummary = (params) => {
+  const { hall_name, search_date } = params
+  return axiosInstance.post('/api/auth/home/query_latest_life_cycle_summary' + sessionStorage.from_page, {
+    hall_name,
+    search_date
+  })
+}

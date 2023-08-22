@@ -947,7 +947,7 @@
     "sZeroRecords": "查无资料",
     "sInfo": "{START} - {END} / 共 {TOTAL} 笔",
     "sInfoEmpty": "0 - 0 / 共 0 笔",
-    "sInfoFiltered": "(由 _MAX_ 笔中进行筛选)",
+    "sInfoFiltered": "(由 {MAX} 笔中进行筛选)",
     "sProcessing": "资料载入中..."
   }
 }
