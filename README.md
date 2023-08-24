@@ -1,6 +1,29 @@
-# CDP vue frontend
+# Frontend_Vue
 
-This template should help get you started developing with Vue 3 in Vite.
+## 語言版本號
+
+<table>
+    <tr>
+      <td>項目</td>
+      <td>版本號</td>
+    </tr>
+    <tr>
+      <td>node</td>
+      <td>18.13.0</td>
+    </tr>
+    <tr>
+      <td>vue</td>
+      <td>3.2.47</td>
+    </tr>
+    <tr>
+      <td>vite</td>
+      <td>4.3.4</td>
+    </tr>
+</table>
+
+## 專案內容
+
+CDP 網站語言改版
 
 ## Recommended IDE Setup
 
