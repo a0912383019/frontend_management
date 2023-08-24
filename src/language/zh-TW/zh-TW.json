@@ -110,6 +110,7 @@
   },
 
   "data_name": {
+    "item_number": "項次",
     "member_id": "會員ID",
     "member_name": "會員名稱",
     "ag_name": "代理帳號",

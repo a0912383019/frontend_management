@@ -10,6 +10,7 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import FuzzySwitchWithTooltip from '@/components/Switch/FuzzySwitchWithTooltip.vue'
 import FilterTag from './FilterTag.vue'
 import DatepickerRange from './DatepickerRange.vue'
+import ImportCSV from '@/components/Filter/ImportCSV.vue'
 
 const { t } = useI18n()
 
@@ -39,6 +40,9 @@ const selectLevelOptions = ref([
   }
 ])
 
+// 使用手動匯入名單開啟狀態
+const useCustomList = ref(false)
+
 // 會員名稱有資料時，其他欄位需要Disabled
 const formDisabled = ref(false)
 
@@ -51,7 +55,8 @@ const form = reactive({
   registerDate: '', //註冊日期
   searchTag: '', //包含標籤
   excludeTag: '', //排除標籤
-  fuzzySearch: false //模糊搜尋
+  fuzzySearch: false, //模糊搜尋
+  custom_user_list: [] //golang api 會用到的 CSV username
 })
 
 const handleSubmitClick = () => {
@@ -102,6 +107,13 @@ const transformAgNameUserLevel = (data) => {
       label: item['user_level_name']
     })
   })
+}
+
+// csv 上傳成功
+const handleCsvSuccess = (result) => {
+  form['custom_user_list'] = []
+  form['custom_user_list'] = result
+  handleSubmitClick()
 }
 
 onMounted(() => {
@@ -231,6 +243,12 @@ watch(
       </el-row>
       <div class="drop">
         <div class="drop__item">
+          <ImportCSV
+            v-model="useCustomList"
+            class="mr-20"
+            :csvType="1"
+            @update:success="handleCsvSuccess"
+          />
           <FuzzySwitchWithTooltip v-model="form.fuzzySearch" />
         </div>
         <div class="drop__item">
@@ -253,6 +271,7 @@ watch(
   justify-content: flex-end;
   width: 100%;
   &__item {
+    display: flex;
     margin-left: 30px;
   }
 }

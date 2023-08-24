@@ -110,6 +110,7 @@
   },
 
   "data_name": {
+    "item_number": "Item Number",
     "member_name": "Username",
     "ag_name": "Agent",
     "user_level": "Tier",

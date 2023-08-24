@@ -110,6 +110,7 @@
   },
 
   "data_name": {
+    "item_number": "项次",
     "member_name": "会员名称",
     "ag_name": "代理帐号",
     "user_level": "会员层级",
