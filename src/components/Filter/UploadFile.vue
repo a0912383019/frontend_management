@@ -63,7 +63,7 @@ const parseFile = (file) => {
         checkAccount(results.data)
       } else {
         isParseFile.value = false
-        errorText.value = '表頭需為user_name'
+        errorText.value = t('import_export_file.header_needs_to_be_user_name')
       }
       checkCSVFile(fileName.value)
       if (isParseFile.value && isCSVFile.value) {
@@ -93,6 +93,7 @@ const checkAccount = (data) => {
 
 // 檢查帳號的正規表達式
 const regex = (val) => {
+  // 合法帳號為小寫英文字母＋數字
   const validate = /^[a-z0-9]*$/
   return validate.test(val)
 }

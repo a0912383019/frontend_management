@@ -106,7 +106,8 @@
     "example_reminder": "<span class='text-warning text-decoration font-italic'>$t(import_export_file.example)</span><br>$t(import_export_file.example_img, {\"context\": \"{{img_type}}\"})",
     "select_import_file": "选择文档",
     "only_csv_file": "仅接受上传.csv文档",
-    "not_select_file_error_msg": "请选择文档"
+    "not_select_file_error_msg": "请选择文档",
+    "header_needs_to_be_user_name": "表头需为user_name"
   },
 
   "data_name": {

@@ -106,7 +106,8 @@
     "example_reminder": "<span class='text-warning text-decoration font-italic'>$t(import_export_file.example)</span><br>$t(import_export_file.example_img, {\"context\": \"{{img_type}}\"})",
     "select_import_file": "Select a .csv file",
     "only_csv_file": "File format: .csv only",
-    "not_select_file_error_msg": "Please select a file."
+    "not_select_file_error_msg": "Please select a file.",
+    "header_needs_to_be_user_name": "The header needs to be user_name"
   },
 
   "data_name": {
