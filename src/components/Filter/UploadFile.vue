@@ -88,6 +88,7 @@ const checkAccount = (data) => {
       })
     }
   })
+  if (isAllOk === false) errorText.value = t('import_export_file.user_name_is_invalid')
   isParseFile.value = isAllOk
 }
 
@@ -137,13 +138,13 @@ defineExpose({ dialogClose })
       accept=".csv"
     />
     <div class="upload__text">{{ $t('import_export_file.only_csv_file') }}</div>
-    <el-table :data="notOkAccountData" style="width: 100%" v-if="notOkAccountData.length > 0">
-      <el-table-column prop="no" :label="t('data_name.item_number')" width="180" />
-      <el-table-column prop="name" :label="t('data_name.member_name')" width="180" />
-    </el-table>
     <div class="upload__error-text">
       {{ errorText }}
     </div>
+    <el-table :data="notOkAccountData" style="width: 100%" v-if="notOkAccountData.length > 0">
+      <el-table-column prop="no" :label="t('data_name.item_number')" width="100" />
+      <el-table-column prop="name" :label="t('data_name.member_name')" />
+    </el-table>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -225,6 +226,7 @@ defineExpose({ dialogClose })
     }
   }
   &__error-text {
+    margin-bottom: 10px;
     color: $red;
   }
   &.error {

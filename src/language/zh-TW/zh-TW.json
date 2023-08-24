@@ -107,7 +107,8 @@
     "select_import_file": "選擇檔案",
     "only_csv_file": "僅接受上傳.csv檔案",
     "not_select_file_error_msg": "請選擇檔案",
-    "header_needs_to_be_user_name": "表頭需為user_name"
+    "header_needs_to_be_user_name": "表頭需為user_name",
+    "user_name_is_invalid": "以下會員名稱不合規定，需為(小寫英文或數字)"
   },
 
   "data_name": {
