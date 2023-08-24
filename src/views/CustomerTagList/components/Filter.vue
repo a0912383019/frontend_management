@@ -191,9 +191,13 @@ watch(
         </el-col>
         <el-col :span="12" class="mb-15">
           <div class="flex items-start mb-8">
-            <el-checkbox v-model="form.isActivedDateCheck" class="cdp-checkbox" />
-            <SectionTitle class="cdp-text-purple ml-10" :title="t('data_name.active_date')">
-            </SectionTitle>
+            <el-checkbox
+              v-model="form.isActivedDateCheck"
+              :label="t('data_name.active_date')"
+              class="cdp-checkbox checkbox-label"
+            />
+            <!-- <SectionTitle class="cdp-text-purple ml-10" :title="t('data_name.active_date')">
+            </SectionTitle> -->
           </div>
           <DatepickerRange
             v-model="form.activatedDate"
@@ -201,7 +205,7 @@ watch(
             :shortcutsConfig="3"
             :enabledThreeMonth="false"
             :rangeEndDate="0"
-            :disabled="formDisabled"
+            :disabled="formDisabled || !form.isActivedDateCheck"
             class="w-full filter-datepicker"
           />
         </el-col>
@@ -280,6 +284,24 @@ watch(
 }
 </style>
 <style lang="scss">
+.checkbox-label {
+  .el-checkbox {
+    &__label {
+      font-size: 16px;
+      font-weight: 500;
+      color: $purple;
+    }
+    &__input {
+      &.is-checked {
+        & + .el-checkbox {
+          &__label {
+            color: $purple;
+          }
+        }
+      }
+    }
+  }
+}
 .filter-datepicker {
   .el-date-editor {
     width: 100%;
