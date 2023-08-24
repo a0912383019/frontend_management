@@ -29,7 +29,7 @@ export const date_range_picker_config_2 = {
   autoApply: true, //點選後是否自動應用日期
   startDate: dayjs().add(1, 'day').subtract(20, 'year'), //預設起始時間
   endDate: dayjs(), //預設結束時間
-  minDate: dayjs().add(1, 'day').subtract(20, 'year'), //限制最小可選日期
+  minDate: dayjs().subtract(20, 'year'), //限制最小可選日期
   maxDate: dayjs(), //限制最大可選日期
   ranges: date_ranges_quick_select_config_3,
   locale: date_locale_config,

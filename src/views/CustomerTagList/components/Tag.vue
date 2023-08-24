@@ -18,7 +18,7 @@ const colors = computed(() => {
 <template>
   <div class="tag" :class="colors">
     {{ props.title }}
-    <el-icon><Close /></el-icon>
+    <slot name="icon"></slot>
   </div>
 </template>
 <style lang="scss" scoped>

@@ -149,7 +149,12 @@ const tagContentClass = computed(() => {
 // 開啟下拉 & 點擊其他區域關閉下拉
 const handleDocumentClick = (e) => {
   if (props.disabled === false) {
-    if (refDropContent.value && e.target.closest(`.${tagContentClass.value}`)) {
+    if (
+      refDropContent.value &&
+      e.target.closest(`.${tagContentClass.value}`) &&
+      !e.target.classList.contains('tag-input__tag') &&
+      !e.target.closest('.el-icon')
+    ) {
       isDropdownVisible.value = !isDropdownVisible.value
     } else if (!refDropContent.value.contains(e.target)) {
       isDropdownVisible.value = false
@@ -167,17 +172,19 @@ onUnmounted(() => {
 </script>
 <template>
   <div class="relative" :class="{ disabled: props.disabled }">
-    <div class="tag-input">
+    <div class="tag-input" :class="tagContentClass">
       <div class="tag-input__list">
         <template v-for="(item, index) in tagLists" :key="index">
-          <Tag class="tag-input__tag" :title="item" @click="deleteTag(item)" />
+          <Tag class="tag-input__tag" :title="item">
+            <template #icon>
+              <el-icon class="cursor-pointer" @click="deleteTag(item)"><Close /></el-icon>
+            </template>
+          </Tag>
         </template>
       </div>
-      <div class="tag-input__text" v-if="tagLists.length === 0">{{ $t('tags.filter') }}</div>
-      <div
-        class="tag-input__arrow"
-        :class="({ 'tag-input__arrow--active': isDropdownVisible }, tagContentClass)"
-      >
+      <!-- v-if="tagLists.length === 0" -->
+      <div class="tag-input__text">{{ $t('tags.filter') }}</div>
+      <div class="tag-input__arrow" :class="{ 'tag-input__arrow--active': isDropdownVisible }">
         <el-icon><ArrowDown /></el-icon>
       </div>
     </div>
@@ -232,7 +239,7 @@ onUnmounted(() => {
               filterable
               multiple
               collapse-tags
-              :max-collapse-tags="2"
+              :max-collapse-tags="1"
               :disabled="selectDisabled"
               :placeholder="t('tags.select_tag')"
               @change="changeTagLists"
@@ -279,6 +286,9 @@ onUnmounted(() => {
   &__list {
     display: flex;
     flex-wrap: wrap;
+  }
+  &__text {
+    flex-grow: 1;
   }
   &__tag {
     margin-right: 10px;
