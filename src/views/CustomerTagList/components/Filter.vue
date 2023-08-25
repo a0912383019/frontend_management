@@ -133,12 +133,13 @@ watch(
 )
 </script>
 <template>
-  <div>
+  <div class="cdp-popover-container">
     <el-popover
       placement="bottom-end"
       :visible="popoverVisible"
       :width="990"
       trigger="click"
+      :teleported="false"
       popper-class="cdp-popover"
     >
       <template #reference>

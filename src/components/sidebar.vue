@@ -106,7 +106,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 20000;
+  z-index: 500;
   width: 250px;
   height: 100vh;
   background-color: #272d44;

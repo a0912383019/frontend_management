@@ -1,5 +1,4 @@
 //element plus 自訂樣式
-
 //dialog
 .cdp-dialog {
   width: 100%;
@@ -252,6 +251,11 @@
       }
     }
   }
+}
+
+.cdp-popover-container {
+  position: relative;
+  z-index: 99;
 }
 
 .cdp-popover {

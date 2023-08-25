@@ -82,7 +82,7 @@ const checkAccount = (data) => {
     let isOk = regex(item['user_name'])
     if (isOk === false) {
       let tempObj = {
-        no: index,
+        no: index + 2,
         name: item['user_name'],
         note: ''
       }
@@ -209,6 +209,7 @@ defineExpose({ dialogClose })
     display: flex;
     align-items: center;
     margin-bottom: 12px;
+    padding-left: 44px;
   }
   &__filename {
     display: inline-flex;

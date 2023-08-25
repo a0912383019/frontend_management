@@ -32,7 +32,7 @@ header {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 15000;
+  z-index: 400;
   display: flex;
   align-items: center;
   width: 100%;

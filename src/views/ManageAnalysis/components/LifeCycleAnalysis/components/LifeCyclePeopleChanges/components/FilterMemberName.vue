@@ -67,13 +67,14 @@ const handleClick = () => {
 }
 </script>
 <template>
-  <div>
+  <div class="cdp-popover-container">
     <el-popover
       placement="bottom-end"
       :visible="popoverVisible"
       :title="t('data_name.member_name')"
       :width="320"
       trigger="click"
+      :teleported="false"
       popper-class="cdp-popover"
     >
       <template #reference>
