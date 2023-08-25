@@ -150,8 +150,8 @@ defineExpose({ dialogClose })
       id="uploadFile"
       class="upload__input"
       v-on:change="handleFileChange"
+      accept=".csv"
     />
-    <!-- accept=".csv" -->
     <div class="upload__text">{{ $t('import_export_file.only_csv_file') }}</div>
     <div class="upload__error-text">
       {{ errorText }}
