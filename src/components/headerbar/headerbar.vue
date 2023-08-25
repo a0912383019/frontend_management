@@ -39,7 +39,6 @@ header {
   height: 60px;
   padding-left: 250px;
   background-color: #171d32;
-  border-bottom: 1px solid #dee2e6;
   color: #fff;
   transition: all 0.3s ease-in-out;
   &.isClose {
