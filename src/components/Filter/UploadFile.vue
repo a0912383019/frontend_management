@@ -81,11 +81,18 @@ const checkAccount = (data) => {
   data.forEach((item, index) => {
     let isOk = regex(item['user_name'])
     if (isOk === false) {
-      isAllOk = false
-      notOkAccountData.value.push({
+      let tempObj = {
         no: index,
-        name: item['user_name']
-      })
+        name: item['user_name'],
+        note: ''
+      }
+      isAllOk = false
+
+      if (regexSpace(item['user_name'])) {
+        // 檢查帳號是否有包含空白
+        tempObj['note'] = t('import_export_file.user_name_contains_spaces')
+      }
+      notOkAccountData.value.push(tempObj)
     }
   })
   if (isAllOk === false) errorText.value = t('import_export_file.user_name_is_invalid')
@@ -99,12 +106,19 @@ const regex = (val) => {
   return validate.test(val)
 }
 
+// 檢查帳號是否有包含空白
+const regexSpace = (val) => {
+  const validate = /\s/
+  return validate.test(val)
+}
+
 // dialog close
 const dialogClose = () => {
   //dialod 關閉 清空檔案
   fileName.value = ''
   fileData.value = ''
   notOkAccountData.value = []
+  errorText.value = ''
   //清空 input file value
   refInputFile.value.value = ''
 }
@@ -142,8 +156,12 @@ defineExpose({ dialogClose })
       {{ errorText }}
     </div>
     <el-table :data="notOkAccountData" style="width: 100%" v-if="notOkAccountData.length > 0">
-      <el-table-column prop="no" :label="t('data_name.item_number')" width="100" />
-      <el-table-column prop="name" :label="t('data_name.member_name')" />
+      <el-table-column prop="no" :label="t('data_name.item_number')" width="80" align="center" />
+      <el-table-column prop="name" :label="t('data_name.member_name')">
+        <template #default="scope">
+          {{ scope.row.name }} <span class="cdp-text-red-dark">{{ scope.row.note }}</span>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>

@@ -108,11 +108,12 @@
     "only_csv_file": "File format: .csv only",
     "not_select_file_error_msg": "Please select a file.",
     "header_needs_to_be_user_name": "The header needs to be user_name",
-    "user_name_is_invalid": "以下會員名稱不合規定，需為(小寫英文或數字)"
+    "user_name_is_invalid": "以下會員名稱不合規定，需為小寫英文或數字",
+    "user_name_contains_spaces": "(帳號含有空格)"
   },
 
   "data_name": {
-    "item_number": "Item Number",
+    "item_number": "項次",
     "member_name": "Username",
     "ag_name": "Agent",
     "user_level": "Tier",
