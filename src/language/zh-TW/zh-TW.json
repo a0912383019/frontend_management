@@ -10,7 +10,7 @@
 
     "statistical_time_period": "資料統計區間：",
     "aggregated_data_statistical_time_period": "下表各欄位為會員時間區間內加總資料。",
-    "click_icon_display_last_days_data": "點擊表情顯示選定日期近{{days}}日資料",
+    "click_icon_display_last_days_data": "點擊表情顯示選定日期近{days}日資料",
     "last_week": "上週",
     "this_week": "本週",
     "tags_time_based_ET": "標籤時間為美東時間",

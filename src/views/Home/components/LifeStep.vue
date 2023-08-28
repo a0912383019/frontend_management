@@ -37,7 +37,7 @@ const stepDataDuration = computed(() => {
 const chartOptions = reactive({
   chart: {
     type: 'pie',
-    height: 413
+    maxHeight: 413
   },
   legend: {
     layout: 'horizontal',
@@ -174,7 +174,7 @@ watch(
 )
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section h-490">
     <SectionTitle class="mb-15" :title="t('home.member_life_cycles')">
       <template #tooltip>
         <div class="font-size-14">

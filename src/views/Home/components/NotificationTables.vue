@@ -64,19 +64,19 @@ const allTableColumns = computed(() => {
     {
       label: t('home.category'),
       prop: 'category',
-      minWidth: 100,
+      minWidth: 90,
       align: 'center'
     },
     {
       label: t('home.content'),
       prop: 'content',
-      minWidth: 350,
+      minWidth: 340,
       align: 'center'
     },
     {
       label: t('date.date'),
       prop: 'date',
-      minWidth: 115,
+      minWidth: 110,
       align: 'center'
     },
     {
@@ -112,7 +112,7 @@ const querySmallMesNote = async (kind = '0') => {
         //整理及地圖對應的資料
         transformQuerySmallMesNote(result.data.result)
       } else {
-        clickRankMessageKey.value = 'noResult'
+        allMessageKey.value = 'noResult'
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
       }
@@ -211,7 +211,7 @@ const msgCheck = (event, ele) => {
 }
 
 //會員明細Dialog點擊
-const handleMemberDetailClick = (val, ev) => {
+const handleMemberDetailClick = (val) => {
   //寫入store
   dialogMemberDetailStore.memberData = {}
   dialogMemberDetailStore.memberData = val
@@ -222,7 +222,7 @@ const handleMemberDetailClick = (val, ev) => {
 const transformUser = (val) => {
   const user = {}
   user.user_name = val.split('@')[0]
-  user.user_id = val.split('@')[1]
+  user.user_id = Number(val.split('@')[1])
   return user
 }
 
@@ -237,7 +237,7 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
 })
 </script>
 <template>
-  <section class="cdp-section padding-bottom-10">
+  <section class="cdp-section padding-bottom-10 h-490">
     <SectionTitle class="mb-10" :title="t('home.news')"></SectionTitle>
     <DialogMemberDetail ref="refDialogMemberDetail" />
     <el-row :gutter="20" class="mb-10">
@@ -249,6 +249,7 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
       :messageKey="allMessageKey"
       bg="white"
       v-if="allApiSuccess === false"
+      :height="300"
       class="mt-25"
     />
     <el-row v-else :gutter="20" class="mb-20">

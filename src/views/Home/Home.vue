@@ -4,6 +4,7 @@ import { useGlobalStore } from '@/stores/global.js'
 import TopCard from './components/TopCard.vue'
 import NotificationTables from './components/NotificationTables.vue'
 import LifeStep from './components/LifeStep.vue'
+import MemberActive from './components/MemberActive.vue'
 
 const globalStore = useGlobalStore()
 const key = ref('')
@@ -18,12 +19,17 @@ watch(
   <section class="cdp-section">
     <TopCard :key="key"></TopCard>
   </section>
-  <el-row :gutter="20" class="mb-20">
+  <el-row :gutter="20">
     <el-col :span="15">
       <NotificationTables :key="key"></NotificationTables>
     </el-col>
     <el-col :span="9">
       <LifeStep :key="key"></LifeStep>
+    </el-col>
+  </el-row>
+  <el-row>
+    <el-col :span="24">
+      <MemberActive :key="key"></MemberActive>
     </el-col>
   </el-row>
 </template>

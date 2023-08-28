@@ -68,8 +68,14 @@
   }
 }
 
-@for $i from 0 through 30 {
+@for $i from 0 through 50 {
   .font-size-#{$i} {
     font-size: #{$i}px;
+  }
+}
+
+@for $i from 1 through 1000 {
+  .h-#{$i} {
+    height: #{$i}px;
   }
 }

@@ -215,6 +215,7 @@ defineExpose({ goToFirstPage, showTableLoading })
         >
           <template #header>
             {{ column.label }}
+            <slot :name="column.prop + '-header'"></slot>
             <slot :name="column.headerSlot" v-if="column.headerSlot">
               <span v-html="column.headerSlot"></span>
             </slot>

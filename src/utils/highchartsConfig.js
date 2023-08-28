@@ -49,7 +49,7 @@ export const tooltipFormatter = ({ data, hallCode = '', unit = '', tooltipIconBo
  * @param date 帶入tooltip的this.x
  * @param hallCode 可拿pinia globalStore 的 activeHall.hall_code帶入
  */
-export const tooltipShared = ({ data, date = '', hallCode }) => {
+export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 }) => {
   let result = `
     <div style="
       padding: 6px 10px;
@@ -69,8 +69,8 @@ export const tooltipShared = ({ data, date = '', hallCode }) => {
       "></div>
       <div>
         ${data[i]['point']['series']['name']}：
-        ${getHallCurrencySign('BBIN', hallCode)}
-        ${FormatNumber(data[i]['y'])}
+        ${hallCode !== '' ? getHallCurrencySign('BBIN', hallCode) : ''}
+        ${FormatNumber(data[i]['y'], '', precision)}
       </div>
     </div>
     `
