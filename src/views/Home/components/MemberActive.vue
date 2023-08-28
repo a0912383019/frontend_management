@@ -3,15 +3,12 @@ import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { ElNotification } from 'element-plus'
-import {
-  formatDateDuration,
-  errorRespond,
-} from '@/utils/commonUtils.js'
+import { formatDateDuration, errorRespond } from '@/utils/commonUtils.js'
 import dayjs from 'dayjs'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import MemberActiveDetail from './MemberActiveDetail.vue'
 import { apiQueryLivelyChangeOverview } from '@/api/home.js'
-import { iconStep } from '@/../public/js/system_config.js';
+import { iconStep } from '@/../public/js/system_config.js'
 
 const { t } = useI18n()
 
@@ -105,16 +102,14 @@ const queryLivelyChangeOverview = async () => {
     })
     const { return_code } = result.data.status
 
-    if (return_code !== '0001') {
-      if (return_code === '0000') {
-        if (result.data.result.length !== 0) {
-          //整理table對應的資料
-          transformLivelyChangeOverview(result.data.result)
-        }
-      } else {
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
+    if (return_code === '0001') {
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+      return
+    }
+    if (return_code === '0000' && result.data.result.length !== 0) {
+      //整理table對應的資料
+      transformLivelyChangeOverview(result.data.result)
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)

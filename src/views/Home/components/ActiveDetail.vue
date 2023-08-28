@@ -74,20 +74,18 @@ const queryMemberRecentWeekLively = async (user_id) => {
     })
     const { return_code } = result.data.status
 
-    if (return_code !== '0001') {
-      if (return_code === '0000') {
-        if (result.data.result.length !== 0) {
-          weekApiSuccess.value = true
-          //整理table對應的資料
-          transformMemberRecentWeekLively(result.data.result)
-        }
-      } else {
-        weekMessageKey.value = 'noResult'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
-    } else {
+    if (return_code === '0001') {
       weekMessageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+      return
+    }
+    if (return_code === '0000' && result.data.result.length !== 0) {
+      weekApiSuccess.value = true
+      //整理table對應的資料
+      transformMemberRecentWeekLively(result.data.result)
+    } else {
+      weekMessageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
@@ -189,20 +187,18 @@ const queryMemberRecentLively = async (user_id) => {
     })
     const { return_code } = result.data.status
 
-    if (return_code !== '0001') {
-      if (return_code === '0000') {
-        if (result.data.result.length !== 0) {
-          dayApiSuccess.value = true
-          //整理table對應的資料
-          transformMemberRecentLively(result.data.result)
-        }
-      } else {
-        dayMessageKey.value = 'chartFailed'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
-    } else {
+    if (return_code === '0001') {
       dayMessageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+      return
+    }
+    if (return_code === '0000' && result.data.result.length !== 0) {
+      dayApiSuccess.value = true
+      //整理table對應的資料
+      transformMemberRecentLively(result.data.result)
+    } else {
+      dayMessageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
@@ -236,7 +232,6 @@ const transformMemberRecentLively = (data) => {
   const chartXAxis = data.map((ele) => dayjs(ele.data_date).format(t('date.format_date_rule')))
   chartOptions.series.push(chartSeries)
   chartOptions.xAxis.categories = chartXAxis
-  console.log(chartOptions)
 }
 
 const clearChart = () => {
@@ -292,8 +287,8 @@ defineExpose({ handleOpenDialog })
         >
         </CustomTable>
         <SectionTitle
-        class="mt-20 mb-10"
-        :title="t('member_active_level.daily_active_level')"
+          class="mt-20 mb-10"
+          :title="t('member_active_level.daily_active_level')"
         ></SectionTitle>
         <CdpMessage
           :messageKey="dayMessageKey"

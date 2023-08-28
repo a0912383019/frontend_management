@@ -111,20 +111,18 @@ const queryLivelyChangeDetail = async (livelyChangeAry) => {
     })
     const { return_code } = result.data.status
 
-    if (return_code !== '0001') {
-      if (return_code === '0000') {
-        if (result.data.result.length !== 0) {
-          apiSuccess.value = true
-          //整理table對應的資料
-          transformLivelyChangeDetail(result.data.result)
-        }
-      } else {
-        messageKey.value = 'noResult'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
-    } else {
+    if (return_code === '0001') {
       messageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+      return
+    }
+    if (return_code === '0000' && result.data.result.length !== 0) {
+      apiSuccess.value = true
+      //整理table對應的資料
+      transformLivelyChangeDetail(result.data.result)
+    } else {
+      messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
