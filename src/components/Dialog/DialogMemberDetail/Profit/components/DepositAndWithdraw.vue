@@ -162,7 +162,6 @@ const transformMemberPeriodDepositWithdrawAmount = (data) => {
   Object.keys(chartData).forEach((item) => {
     chartOptions.series.push(chartData[item])
   })
-  console.log(chartOptions)
 }
 
 const clearChart = () => {
