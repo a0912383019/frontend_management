@@ -129,8 +129,8 @@ const router = createRouter({
       children: [
         {
           path: '/game-tag-analysis',
-          name: 'game-tag-analysis'
-          // component: () => import('../views/Home/Home.vue')
+          name: 'game-tag-analysis',
+          component: () => import('../views/GameTagAnalysis/GameTagAnalysis.vue')
         }
       ]
     },
