@@ -30,11 +30,55 @@ export const apiReadSmartMesNote = (params) => {
   })
 }
 
-//訊息通知已讀
+//會員生命週期人數佔比
 export const apiQueryLatestLifeCycleSummary = (params) => {
   const { hall_name, search_date } = params
   return axiosInstance.post('/api/auth/home/query_latest_life_cycle_summary' + sessionStorage.from_page, {
     hall_name,
     search_date
+  })
+}
+
+//會員活躍度變化統計
+export const apiQueryLivelyChangeOverview = (params) => {
+  const { hall_name, search_date, member_lively_change_vip_tag = '10001,10003' } = params
+  return axiosInstance.post('/api/auth/home/query_lively_change_overview' + sessionStorage.from_page, {
+    hall_name,
+    search_date,
+    member_lively_change_vip_tag
+  })
+}
+
+//會員活躍度變化明細
+export const apiQueryLivelyChangeDetail = (params) => {
+  const { hall_name, search_date, lively_change_ary, member_lively_change_vip_tag = '10001,10003' } = params
+  return axiosInstance.post('/api/auth/home/query_lively_change_detail' + sessionStorage.from_page, {
+    hall_name,
+    search_date,
+    lively_change_ary,
+    member_lively_change_vip_tag
+  })
+}
+
+//週活躍度
+export const apiQueryMemberRecentWeekLively = (params) => {
+  const { hall_name, member_id, start_date, end_date } = params
+  return axiosInstance.post('/api/auth/vip/bbin/query_member_recent_week_lively' + sessionStorage.from_page, {
+    hall_name,
+    member_id,
+    start_date,
+    end_date
+  })
+}
+
+//日活躍度
+
+export const apiQueryMemberRecentLively = (params) => {
+  const { hall_name, member_id, start_date, end_date } = params
+  return axiosInstance.post('/api/auth/vip/bbin/query_member_recent_lively' + sessionStorage.from_page, {
+    hall_name,
+    member_id,
+    start_date,
+    end_date
   })
 }

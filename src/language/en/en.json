@@ -10,7 +10,7 @@
 
     "statistical_time_period": "Interval：",
     "aggregated_data_statistical_time_period": "Each column in the below table is the aggregated data during specified time.",
-    "click_icon_display_last_days_data": "Click a face to show details for the last {{days}} days",
+    "click_icon_display_last_days_data": "Click a face to show details for the last {days} days",
     "last_week": "Last week",
     "this_week": "This week",
     "tags_time_based_ET": "Eastern Time Zone",

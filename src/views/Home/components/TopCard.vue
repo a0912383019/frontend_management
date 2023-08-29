@@ -163,7 +163,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <el-row :gutter="20" class="">
+  <el-row :gutter="20">
     <el-col :span="6" v-for="(item, idx) in topCardData" :key="idx">
       <div class="cdp-shadow-light-sm border-radius-5">
         <div
