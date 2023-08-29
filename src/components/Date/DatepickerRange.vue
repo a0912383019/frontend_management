@@ -4,13 +4,15 @@ import { useI18n } from 'vue-i18n'
 import { dayjs } from 'element-plus'
 import { formatDateDuration } from '@/utils/commonUtils.js'
 import {
+  date_range_picker_config_1,
   date_range_picker_config_2,
   date_range_picker_config_10,
   date_range_picker_config_11,
   date_range_picker_config_13,
   shortcutsConfig1,
   shortcutsConfig2,
-  shortcutsConfig3
+  shortcutsConfig3,
+  shortcutsConfig4
 } from '@/utils/dateConfig.js'
 
 const { t } = useI18n()
@@ -52,6 +54,11 @@ const dateValueEndDate = ref('')
 const dateMinDate = ref('')
 //根據props config決定使用的預設日期
 switch (props.config) {
+  case 1:
+    dateValueStartDate.value = date_range_picker_config_1.startDate
+    dateValueEndDate.value = date_range_picker_config_1.endDate
+    dateMinDate.value = date_range_picker_config_1.minDate
+    break
   case 2:
     dateValueStartDate.value = date_range_picker_config_2.startDate
     dateValueEndDate.value = date_range_picker_config_2.endDate
@@ -100,6 +107,8 @@ const shortcuts = computed(() => {
       return shortcutsConfig2({ rangeEndDate: props.rangeEndDate })
     case 3:
       return shortcutsConfig3({ rangeEndDate: props.rangeEndDate })
+    case 4:
+      return shortcutsConfig4({ rangeEndDate: props.rangeEndDate })
     default:
       return shortcutsConfig1({ rangeEndDate: props.rangeEndDate })
   }

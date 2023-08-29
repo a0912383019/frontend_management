@@ -8,8 +8,8 @@ import { errorRespond } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import FuzzySwitchWithTooltip from '@/components/Switch/FuzzySwitchWithTooltip.vue'
-import FilterTag from './FilterTag.vue'
-import DatepickerRange from './DatepickerRange.vue'
+import FilterTag from '@/components/Filter/FilterTag.vue'
+import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import ImportCSV from '@/components/Filter/ImportCSV.vue'
 
 const { t } = useI18n()
