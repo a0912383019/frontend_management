@@ -375,3 +375,67 @@ export const shortcutsConfig3 = ({ rangeEndDate }) => {
     }
   ]
 }
+
+// 近1週、近2週、近1個月、近2個月、近3個月、近半年、近1年
+export const shortcutsConfig4 = ({ rangeEndDate }) => {
+  const { t } = useI18n()
+  return [
+    {
+      text: t('date_range_picker.last_week'),
+      value: () => {
+        return [dayjs().subtract(7, 'day'), dayjs().startOf('day').subtract(rangeEndDate, 'day')]
+      }
+    },
+    {
+      text: t('date_range_picker.last_two_weeks'),
+      value: () => {
+        return [dayjs().subtract(14, 'day'), dayjs().startOf('day').subtract(rangeEndDate, 'day')]
+      }
+    },
+    {
+      text: t('date_range_picker.last_month'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(1, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_two_months'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(2, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_three_months'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(3, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_six_months'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(6, 'month'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    },
+    {
+      text: t('date_range_picker.last_year'),
+      value: () => {
+        return [
+          dayjs().add(1, 'day').subtract(1, 'year'),
+          dayjs().startOf('day').subtract(rangeEndDate, 'day')
+        ]
+      }
+    }
+  ]
+}

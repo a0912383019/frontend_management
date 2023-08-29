@@ -1,12 +1,15 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import Tab from '@/components/Tab.vue'
+import Filter from './components/Filter.vue'
 import AmountAnalysis from './components/AmountAnalysis/AmountAnalysis.vue'
 import PayoffAnalysis from './components/PayoffAnalysis/PayoffAnalysis.vue'
 
 const { t } = useI18n()
+
+const refFilter = ref(null)
 
 //tabs列表
 const tabData = computed(() => {
@@ -38,6 +41,14 @@ const currentTabComponent = computed(() => {
   }
   return result
 })
+
+// 監聽頁籤變動，關閉Filter popover
+watch(
+  () => currentTabs.value,
+  () => {
+    refFilter.value.popoverVisible = false
+  }
+)
 </script>
 <template>
   <section class="cdp-section">
@@ -51,7 +62,11 @@ const currentTabComponent = computed(() => {
           v-model="currentTabs"
         ></Tab>
       </el-col>
-      <el-col :span="16"> </el-col>
+      <el-col :span="16">
+        <div class="flex justify-end">
+          <Filter ref="refFilter" />
+        </div>
+      </el-col>
     </el-row>
     <keep-alive>
       <component :is="currentTabComponent"></component>
