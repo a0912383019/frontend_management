@@ -319,6 +319,6 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
 }
 
 :deep(td.el-table__cell) {
-    padding: 2px 0;
+  padding: 2px 0;
 }
 </style>

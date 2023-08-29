@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { ElNotification } from 'element-plus'
 import { formatDateDuration, errorRespond } from '@/utils/commonUtils.js'
+import CdpMessage from '@/components/CdpMessage.vue'
 import dayjs from 'dayjs'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import MemberActiveDetail from './MemberActiveDetail.vue'
@@ -14,6 +15,12 @@ const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+
+//api是否成功
+const apiSuccess = ref(false)
+
+//依照不同的messageKey產生不同的message
+const messageKey = ref('shortLoading')
 
 const lastWeekDuration = computed(() => {
   return (
@@ -94,6 +101,8 @@ let refPeople = ref([])
 
 //取得資料
 const queryLivelyChangeOverview = async () => {
+  messageKey.value = 'shortLoading'
+  apiSuccess.value = false
   if (activeHall.hall_code === '') return
   try {
     const result = await apiQueryLivelyChangeOverview({
@@ -103,14 +112,17 @@ const queryLivelyChangeOverview = async () => {
     const { return_code } = result.data.status
 
     if (return_code === '0001') {
+      messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
       return
     }
     if (return_code === '0000' && result.data.result.length !== 0) {
+      apiSuccess.value = true
       //整理table對應的資料
       transformLivelyChangeOverview(result.data.result)
     } else {
+      messageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
@@ -168,7 +180,8 @@ const showActivityStepDetail = (lastWeek, thisWeek) => {
     </SectionTitle>
     <MemberActiveDetail ref="activityStepDetail"></MemberActiveDetail>
     <el-row :gutter="20">
-      <el-col :span="8" v-for="(item, idx) in activityStep" :key="idx" class="mt-20">
+      <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" class="mt-25" />
+      <el-col v-else :span="8" v-for="(item, idx) in activityStep" :key="idx" class="mt-20">
         <div class="cdp-shadow-light-sm border-radius-5 px-15 py-10">
           <div :class="['border-radius-5', 'padding-10', item.bgColor]">
             <div style="float: left">

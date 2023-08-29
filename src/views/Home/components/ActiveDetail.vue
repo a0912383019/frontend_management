@@ -323,7 +323,6 @@ defineExpose({ handleOpenDialog })
 .cdp-member-activity-dialog {
   &.cdp-dialog {
     width: 100%;
-    width: 1200px;
     max-width: 85%;
   }
 }

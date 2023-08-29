@@ -91,19 +91,55 @@ export const chart_fixed_bgColor = [
   [51, 102, 51]
 ]
 
+// 活躍度表情icon設定
+export const iconStep = (step) => {
+  switch (step) {
+    case 0:
+      return {
+        icon: 'fa-dizzy',
+        color: 'cdp-text-light__slate__gray'
+      }
+    case 1:
+      return {
+        icon: 'fa-frown',
+        color: 'cdp-text-amethyst'
+      }
+    case 2:
+      return {
+        icon: 'fa-face-meh',
+        color: 'cdp-text-indian__red'
+      }
+    case 3:
+      return {
+        icon: 'fa-smile',
+        color: 'cdp-text-forest__green__crayola'
+      }
+    case 4:
+      return {
+        icon: 'fa-grin-beam',
+        color: 'cdp-text-glaucous'
+      }
+    case 5:
+      return {
+        icon: 'fa-grin-stars',
+        color: 'cdp-text-cadmium__orange'
+      }
+  }
+}
+
 /**
- * 活躍度表情icon設定
- */
-export const lively_icon_config = {}
-lively_icon_config[0] =
-  '<span><i class="far fa-dizzy fa-2x cdp-text-light__slate__gray"></i></span>'
-lively_icon_config[1] = '<span><i class="far fa-frown fa-2x cdp-text-amethyst"></i></span>'
-lively_icon_config[2] = '<span><i class="far fa-meh fa-2x cdp-text-indian__red"></i></span>'
-lively_icon_config[3] =
-  '<span><i class="far fa-smile fa-2x cdp-text-forest__green__crayola"></i></span>'
-lively_icon_config[4] = '<span><i class="far fa-grin-beam fa-2x cdp-text-glaucous"></i></span>'
-lively_icon_config[5] =
-  '<span><i class="far fa-grin-stars fa-2x cdp-text-cadmium__orange"></i></span>'
+//  * 活躍度表情icon設定
+//  */
+// export const lively_icon_config = {}
+// lively_icon_config[0] =
+//   '<span><i class="far fa-dizzy fa-2x cdp-text-light__slate__gray"></i></span>'
+// lively_icon_config[1] = '<span><i class="far fa-frown fa-2x cdp-text-amethyst"></i></span>'
+// lively_icon_config[2] = '<span><i class="far fa-meh fa-2x cdp-text-indian__red"></i></span>'
+// lively_icon_config[3] =
+//   '<span><i class="far fa-smile fa-2x cdp-text-forest__green__crayola"></i></span>'
+// lively_icon_config[4] = '<span><i class="far fa-grin-beam fa-2x cdp-text-glaucous"></i></span>'
+// lively_icon_config[5] =
+//   '<span><i class="far fa-grin-stars fa-2x cdp-text-cadmium__orange"></i></span>'
 
 /**
  * RFM + NAPL階段設定
@@ -180,35 +216,35 @@ RFM_NAPL_step_config['7'] = {
   step_vue_dot_color: 'cdp-bg-opal'
 }
 
-/**
- * 訊息通知種類
- */
-export const smart_message_notification_config = {}
-smart_message_notification_config['0'] = {
-  kind_name: 'all_msg',
-  kind_description: '',
-  kind_icon: ''
-}
-smart_message_notification_config['1'] = {
-  kind_name: 'vip_msg',
-  kind_description: '',
-  kind_icon: '<span class="text-success"><i class="fab fa-vimeo-v mr-1"></i></span>'
-}
-smart_message_notification_config['2'] = {
-  kind_name: 'alarm_msg',
-  kind_description: '',
-  kind_icon: '<span class="text-warning"><i class="fas fa-exclamation-circle mr-1"></i></span>'
-}
-smart_message_notification_config['3'] = {
-  kind_name: 'observe_msg',
-  kind_description: '',
-  kind_icon: '<span class="text-secondary"><i class="fas fa-broadcast-tower mr-1"></i></span>'
-}
-smart_message_notification_config['4'] = {
-  kind_name: 'game_msg',
-  kind_description: '',
-  kind_icon: '<span class="text-orange"><i class="fas fa-dice mr-1"></i></span>'
-}
+// /**
+//  * 訊息通知種類
+//  */
+// export const smart_message_notification_config = {}
+// smart_message_notification_config['0'] = {
+//   kind_name: 'all_msg',
+//   kind_description: '',
+//   kind_icon: ''
+// }
+// smart_message_notification_config['1'] = {
+//   kind_name: 'vip_msg',
+//   kind_description: '',
+//   kind_icon: '<span class="text-success"><i class="fab fa-vimeo-v mr-1"></i></span>'
+// }
+// smart_message_notification_config['2'] = {
+//   kind_name: 'alarm_msg',
+//   kind_description: '',
+//   kind_icon: '<span class="text-warning"><i class="fas fa-exclamation-circle mr-1"></i></span>'
+// }
+// smart_message_notification_config['3'] = {
+//   kind_name: 'observe_msg',
+//   kind_description: '',
+//   kind_icon: '<span class="text-secondary"><i class="fas fa-broadcast-tower mr-1"></i></span>'
+// }
+// smart_message_notification_config['4'] = {
+//   kind_name: 'game_msg',
+//   kind_description: '',
+//   kind_icon: '<span class="text-orange"><i class="fas fa-dice mr-1"></i></span>'
+// }
 
 /**
  * 使用者config
