@@ -196,6 +196,7 @@ onUnmounted(() => {
               v-model="selectTypeValue"
               class="cdp-select w-full"
               popper-class="cdp-select-popper"
+              :teleported="false"
               :placeholder="t('tags.select_type')"
               @change="changeGenerateCategoryLists"
             >
@@ -219,6 +220,7 @@ onUnmounted(() => {
               v-model="selectCategoryValue"
               class="cdp-select w-full"
               popper-class="cdp-select-popper"
+              :teleported="false"
               :disabled="selectDisabled"
               :placeholder="t('tags.select_category')"
               @change="changeGenerateTagLists"
@@ -236,6 +238,7 @@ onUnmounted(() => {
               v-model="selectTagValue"
               class="cdp-select w-full"
               popper-class="cdp-select-popper"
+              :teleported="false"
               filterable
               multiple
               collapse-tags
