@@ -113,7 +113,7 @@ const queryTagsGamePayoffRank = async (filterData) => {
     const { return_code } = result.data.status
 
     if (return_code === '0001') {
-      messageKey.value = 'chartFailed'
+      messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
       return
@@ -123,7 +123,7 @@ const queryTagsGamePayoffRank = async (filterData) => {
       //整理table對應的資料
       transformTagsGamePayoffRank(result.data.result)
     } else {
-      messageKey.value = 'noResult'
+      messageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
