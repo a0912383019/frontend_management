@@ -150,4 +150,9 @@ const handleCalendarChange = (val) => {
     padding-top: 15px;
   }
 }
+
+:deep(.el-popper.el-picker__popper.cdp-datepicker-range) {
+  right: 0 !important;
+  inset:90px 0 auto auto !important;
+}
 </style>
