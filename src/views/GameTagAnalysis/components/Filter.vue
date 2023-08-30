@@ -28,6 +28,7 @@ const updateFilterTimestamp = () => {
 // 篩選
 const handleSubmitClick = () => {
   updateFilterTimestamp()
+  popoverVisible.value = false
   gameTagAnalysisStore['filterFormData']['date'] = form['date']
   gameTagAnalysisStore['filterFormData']['searchTag'] = form['searchTag']
   gameTagAnalysisStore['filterFormData']['excludeTag'] = form['excludeTag']
@@ -48,8 +49,8 @@ defineExpose({ popoverVisible })
     <el-popover
       placement="bottom-end"
       :visible="popoverVisible"
-      :width="550"
-      trigger="click"
+      :width="600"
+      trigger="manual"
       :teleported="false"
       popper-class="cdp-popover"
     >
@@ -70,7 +71,7 @@ defineExpose({ popoverVisible })
             :config="1"
             :shortcutsConfig="4"
             :enabledThreeMonth="false"
-            :rangeEndDate="0"
+            :rangeEndDate="1"
             class="game-tag-analysis-datepicker"
           />
         </el-col>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, nextTick } from 'vue'
+import { ref, watch, onMounted, nextTick, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
@@ -8,6 +8,9 @@ import { apiQueryTagsGameRank } from '@/api/gameTagAnalysis.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { ElNotification } from 'element-plus'
+import { generateRGBColors, errorRespond, dynamicBackgroundColors } from '@/utils/commonUtils.js'
+import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
+import { tooltipDarkConfig, tooltipSingleShared } from '@/utils/highchartsConfig.js'
 
 const { t, locale: i18nLocale } = useI18n()
 
@@ -23,6 +26,63 @@ const apiSuccess = ref(false)
 //依照不同的messageKey產生不同的message
 const messageKey = ref('shortLoading')
 
+const chartOptions = reactive({
+  chart: {
+    height: 610,
+    type: 'column'
+  },
+  legend: {
+    enabled: false
+  },
+  xAxis: {
+    gridLineColor: '#e8e8e8',
+    gridLineWidth: 1,
+    lineColor: '#e8e8e8',
+    tickColor: '#e8e8e8',
+    tickWidth: 1,
+    tickInterval: 1,
+    categories: [],
+    overflow: 'allow',
+    labels: {
+      style: {
+        whiteSpace: 'nowrap', // 避免文字換行
+        textOverflow: 'none', // 防止省略號(...)
+        fontSize: '12px'
+      }
+    }
+  },
+  yAxis: {
+    gridLineColor: '#e8e8e8'
+  },
+  tooltip: {
+    ...tooltipDarkConfig,
+    shared: true,
+    useHTML: true,
+    formatter: function () {
+      return tooltipSingleShared({
+        data: this.points,
+        date: this.x,
+        hallCode: activeHall.hall_code
+      })
+    }
+  },
+  plotOptions: {
+    column: {
+      dataLabels: {
+        enabled: true,
+        style: {
+          fontSize: '12px',
+          fontWeight: '300'
+        },
+        formatter: function () {
+          return Math.round(this.y).toLocaleString()
+        }
+      }
+    }
+  },
+  series: []
+})
+
 // 取得資料
 const queryTagsGameRank = async () => {
   messageKey.value = 'shortLoading'
@@ -35,6 +95,21 @@ const queryTagsGameRank = async () => {
       exclude_tag: gameTagAnalysisStore['filterFormData']['excludeTag'],
       locale: i18nLocale.value
     })
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      apiSuccess.value = true
+      transformTagsGameRank(result.data.result)
+    } else if (return_code === '0001') {
+      apiSuccess.value = false
+      messageKey.value = 'noResults'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+    } else {
+      apiSuccess.value = false
+      messageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+    }
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
@@ -53,19 +128,53 @@ const queryTagsGameRank = async () => {
   }
 }
 
+// 轉換資料
+const transformTagsGameRank = (data) => {
+  chartOptions.xAxis.categories = []
+  chartOptions.series = [
+    {
+      data: []
+    }
+  ]
+  let chartDataBgColor = []
+  for (let i = 0; i < data.length; i++) {
+    if (i >= 20) {
+      // 只列出前20名
+      break
+    }
+    chartOptions.xAxis.categories.push(data[i].lobby_name + '-' + data[i].game_name)
+    let bgColor = ''
+    let borderColor = ''
+    if (i < chart_fixed_bgColor.length) {
+      bgColor = generateRGBColors(chart_fixed_bgColor[i], 0.7) // 使用定義好的顏色
+      borderColor = bgColor.substring(0, bgColor.lastIndexOf(',')) + ',1)'
+    } else {
+      bgColor = dynamicBackgroundColors(0.7) // 隨機產生顏色
+      while (chartDataBgColor.indexOf(bgColor) > -1) {
+        // 判斷該顏色是否已經存在
+        bgColor = dynamicBackgroundColors(0.7) // 若顏色已存在陣列中，則隨機產生新顏色
+      }
+      borderColor = bgColor.substring(0, bgColor.lastIndexOf(',')) + ',1)'
+    }
+    chartDataBgColor.push(bgColor)
+    chartOptions.series[0].data.push({
+      y: parseFloat(data[i].bet_amount.replaceAll(',', '')),
+      color: bgColor,
+      pointWidth: 55, //柱子寬度
+      borderColor
+    })
+  }
+}
+
 onMounted(() => {
   nextTick(() => {
     queryTagsGameRank()
   })
 })
 
-watch(
-  () => filterTimestamp.value,
-  () => {
-    console.log('change')
-    // queryTagsGameRank()
-  }
-)
+watch([() => filterTimestamp.value, i18nLocale], () => {
+  queryTagsGameRank()
+})
 </script>
 <template>
   <section class="cdp-section">
@@ -74,7 +183,12 @@ watch(
         {{ $t('common.show_top_only', { rank: 20 }) }}
       </template>
     </SectionTitle>
-    <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
+    <div class="relative" style="min-height: 610px">
+      <CdpMessage :messageKey="messageKey" :cover="true" bg="white" v-if="apiSuccess === false" />
+      <template v-else>
+        <highcharts :options="chartOptions"></highcharts>
+      </template>
+    </div>
   </section>
 </template>
 <style lang="scss" scoped>
