@@ -17,7 +17,7 @@ const dialogVisible = ref(false)
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-// //api是否成功
+//api是否成功
 const weekApiSuccess = ref(false)
 const dayApiSuccess = ref(false)
 

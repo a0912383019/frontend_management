@@ -140,7 +140,10 @@ const transformSmallBoxData = (data) => {
         'text-danger font-black'
       )
       topCardData.value[idx].growth = (0 - data[ele].growth).toString()
-    } else if (ele === 'premium_amount') {
+      return
+    }
+
+    if (ele === 'premium_amount') {
       topCardData.value[idx].monthAvg = addNumberColor(
         FormatNumber(0 - data[ele].month_avg, currentSign),
         'text-danger font-black'
@@ -150,11 +153,19 @@ const transformSmallBoxData = (data) => {
         'text-danger font-black'
       )
       topCardData.value[idx].growth = data[ele].growth.toString()
-    } else {
-      topCardData.value[idx].monthAvg = FormatNumber(data[ele].month_avg, currentSign)
-      topCardData.value[idx].weekAvg = FormatNumber(data[ele].week_avg, currentSign)
-      topCardData.value[idx].growth = data[ele].growth.toString()
+      return
     }
+
+    if (ele === 'active_people') {
+      topCardData.value[idx].monthAvg = FormatNumber(data[ele].month_avg)
+      topCardData.value[idx].weekAvg = FormatNumber(data[ele].week_avg)
+      topCardData.value[idx].growth = data[ele].growth.toString()
+      return
+    }
+
+    topCardData.value[idx].monthAvg = FormatNumber(data[ele].month_avg, currentSign)
+    topCardData.value[idx].weekAvg = FormatNumber(data[ele].week_avg, currentSign)
+    topCardData.value[idx].growth = data[ele].growth.toString()
   })
 }
 
