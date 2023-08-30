@@ -11,9 +11,6 @@ const { t } = useI18n()
 
 const gameTagAnalysisStore = useGameTagAnalysis()
 
-//popover 開啟狀態
-const popoverVisible = ref(false)
-
 // 資料
 const form = reactive({
   date: '', // 日期
@@ -28,10 +25,10 @@ const updateFilterTimestamp = () => {
 // 篩選
 const handleSubmitClick = () => {
   updateFilterTimestamp()
-  popoverVisible.value = false
   gameTagAnalysisStore['filterFormData']['date'] = form['date']
   gameTagAnalysisStore['filterFormData']['searchTag'] = form['searchTag']
   gameTagAnalysisStore['filterFormData']['excludeTag'] = form['excludeTag']
+  closePopover()
 }
 
 onMounted(() => {
@@ -42,15 +39,19 @@ onMounted(() => {
   })
 })
 
-defineExpose({ popoverVisible })
+const popover = ref(null) //活躍度明細
+
+const closePopover = (event) => {
+  popover.value.hide()
+}
 </script>
 <template>
   <div class="cdp-popover-container">
     <el-popover
+      ref="popover"
       placement="bottom-end"
-      :visible="popoverVisible"
       :width="600"
-      trigger="manual"
+      trigger="click"
       :teleported="false"
       popper-class="cdp-popover"
     >
@@ -60,7 +61,6 @@ defineExpose({ popoverVisible })
           size="large"
           color="purple"
           :name="t('common.advanced_filter')"
-          @click="popoverVisible = !popoverVisible"
         />
       </template>
       <el-row>

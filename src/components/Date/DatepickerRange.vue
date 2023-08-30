@@ -157,4 +157,9 @@ onMounted(() => {
     />
   </div>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.el-popper.el-picker__popper.cdp-datepicker-range) {
+  right: 0 !important;
+  inset: 80px 0 auto auto !important;
+}
+</style>
