@@ -26,23 +26,26 @@ onUnmounted(() => {
 })
 </script>
 <template>
-  <div class="accountbox">
-    <div class="accountbox__img targetDropDown">
-      <img :src="picture" alt="" />
-    </div>
-    <div class="accountbox__rightbox">
-      <div class="accountbox__name targetDropDown">
-        {{ user_name }}
-        <font-awesome-icon class="accountbox__icon" icon="fa-solid fa-angle-down" />
+  <div class="flex">
+    <div class="accountbox">
+      <div class="accountbox__img targetDropDown">
+        <img :src="picture" alt="" />
       </div>
-      <transition name="slide-up-fade">
-        <div class="accountbox__dropdown" ref="dropdownMenu" v-show="dropdownVisible">
-          <button class="btn-reset" @click="systemStore.storeLogout">
-            {{ $t('nav.log_out') }}
-          </button>
+      <div class="accountbox__rightbox">
+        <div class="accountbox__name targetDropDown font-semibold">
+          {{ user_name }}
+          <font-awesome-icon class="font-size-14 ml-8" icon="fa-solid fa-angle-down" />
         </div>
-      </transition>
+        <transition name="slide-up-fade">
+          <div class="accountbox__dropdown" ref="dropdownMenu" v-show="dropdownVisible">
+            <button class="btn-reset" @click="systemStore.storeLogout">
+              {{ $t('nav.log_out') }}
+            </button>
+          </div>
+        </transition>
+      </div>
     </div>
+    <div class="lineUger"></div>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -50,7 +53,6 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   margin-left: auto;
-  margin-right: 20px;
   color: #fff;
   &__img {
     width: 34px;
@@ -77,8 +79,9 @@ onUnmounted(() => {
   }
   &__dropdown {
     position: absolute;
+    right: 0;
     top: 140%;
-    width: 110px;
+    width: 140px;
     border: 1px solid #edf2fa;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
     border-radius: 4px;

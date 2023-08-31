@@ -228,14 +228,14 @@ watch(
 )
 </script>
 <template>
-  <div>
+  <div class="flex">
     <div class="tag-btn" @click.prevent="handleOpenDialog">
       <div class="tag-btn__icon">
         <font-awesome-icon icon="fa-solid fa-book" />
       </div>
       {{ $t('tags.tag_description') }}
     </div>
-
+    <div class="lineUger"></div>
     <el-dialog
       v-model="dialogTableVisible"
       class="cdp-dialog"
@@ -276,7 +276,7 @@ watch(
   border-radius: 5px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background-color: rgba(255, 255, 255, 0.1);
-  margin-right: 30px;
+  // margin-right: 15px;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
@@ -308,8 +308,18 @@ watch(
     margin-bottom: 12px;
   }
 }
+
 </style>
 <style lang="scss">
+.lineUger {
+  width: 3px;
+  height: 15px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 50%, transparent 0),
+    linear-gradient(to right, rgba(255, 255, 255, 0.12) 100%, transparent 0);
+  margin-top: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
 .cdp-tag-table {
   .el-table {
     th.el-table__cell.is-leaf {
