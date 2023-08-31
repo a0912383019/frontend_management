@@ -73,13 +73,13 @@ watch(i18nLocale, (newlocale) => {
 </script>
 <template>
   <div class="flex">
-    <div class="cdp-menu__icon targetDropDowns pointer">
-      <cdp-icon style="font-size: 16px" name="lang" />
+    <div class="cdp-menu__icon targetDropDowns cursor-pointer">
+      <cdp-icon class="font-size-16" name="lang" />
     </div>
-    <div class="pl-10 pt-0 targetDropDowns font-semibold pointer">
+    <div class="pl-10 pt-0 targetDropDowns font-semibold cursor-pointer">
       {{ langLabel }}
       <font-awesome-icon
-        class="font-size-14 ml-8 mt-12 targetDropDowns pointer"
+        class="font-size-14 ml-8 mt-12 targetDropDowns cursor-pointer"
         icon="fa-solid fa-angle-down"
       />
     </div>
