@@ -22,8 +22,8 @@ const updateTimes = (data) => {
     <ul class="list">
       <li class="list__tag"><Tag :times="times" /></li>
       <li class="list__hall"><Hall @time="updateTimes" /></li>
-      <li class="list__lang"><Language /></li>
       <li class="list__account"><Account /></li>
+      <li class="list__lang"><Language /></li>
     </ul>
   </header>
 </template>
@@ -65,7 +65,7 @@ header {
     margin-right: 10px;
   }
   &__lang {
-    width: 110px;
+    width: 150px;
     margin-right: 15px;
   }
 }

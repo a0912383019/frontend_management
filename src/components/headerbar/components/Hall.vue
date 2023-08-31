@@ -130,8 +130,6 @@ const resetTimer = () => {
 }
 
 const doAutoLogoutCounter = () => {
-  // let timeoutMin = 59
-  // let timeoutSec = 59
   resetTimer()
   timeoutMinText.value = timeoutZero(timeoutMin.value)
   timeoutSecText.value = timeoutZero(timeoutSec.value)
@@ -193,7 +191,6 @@ const resetCounter = (is_need_close_loading = true) => {
           ElNotification.closeAll() //關閉所有ElNotification
           if (redirect_home) {
             globalStore.isLoading = false // 關閉loading視窗
-            // router.push({ name: 'Home' }) // 導回至首頁
             updateTime()
           }
           return redirect_home
@@ -319,7 +316,6 @@ const getSystemConfig = () => {
 //init 舊版function名稱為initI18next
 const initPageNext = () => {
   if (typeof getSessionStorageEntity('user_info').user_name !== 'undefined') {
-    // doAutoLogoutCounter() // 開始系統自動登出倒數
     resetCounter()
   } else {
     // 清除所有sessionStorage與localStorage
@@ -397,48 +393,53 @@ watch(
 )
 </script>
 <template>
-  <div class="hallbox">
-    <div class="hallbox__box targetHallBox">
-      <div class="hallbox__label">{{ $t('nav.hall') }}</div>
-      <div class="hallbox__name">
-        {{ globalStore.activeHall.hall_name }}({{ globalStore.activeHall.hall_code }})
-      </div>
-      <div class="hallbox__dropbox">
-        <div class="hallbox__arrow">
-          <font-awesome-icon icon="fa-solid fa-angle-down" />
+  <div class="flex">
+    <div class="hallbox">
+      <div class="hallbox__box targetHallBox">
+        <span class="cdp-menu__hallicon">
+          <font-awesome-icon icon="fa-home" />
+        </span>
+        <div class="hallbox__name">
+          {{ globalStore.activeHall.hall_name }}({{ globalStore.activeHall.hall_code }})
+        </div>
+        <div class="hallbox__dropbox">
+          <div class="hallbox__arrow">
+            <font-awesome-icon class="font-size-14" icon="fa-solid fa-angle-down" />
+          </div>
         </div>
       </div>
+      <transition name="slide-up-fade">
+        <div class="hallbox__content" ref="refHallContent" v-show="isDropOpen">
+          <div class="hallbox__counter">
+            <div class="hallbox__counter__time">{{ timeoutMinText }}</div>
+            <div class="hallbox__counter__text font-semibold">{{ $t('unit.minute') }}</div>
+            <div class="hallbox__counter__time">{{ timeoutSecText }}</div>
+            <div class="hallbox__counter__text font-semibold">{{ $t('unit.second') }}</div>
+            <div class="hallbox__counter__text font-semibold">{{ $t('nav.auto_logout') }}</div>
+            <ButtonIcon
+              :name="$t('nav.reset')"
+              icon="history"
+              size="small"
+              color="green"
+              class="hallbox__counter__button font-semibold"
+              :disabled="isDisabledResetBtn"
+              @click="resetCounter"
+            />
+          </div>
+          <ul class="hallbox__list ul-reset">
+            <li
+              v-for="(item, index) in hallDropdownList"
+              :key="index"
+              :class="[{ active: item.is_active }, 'font-medium']"
+              @click="changeHeaderHall(item)"
+            >
+              {{ item['hall_name'] }}({{ item['hall_code'] }})
+            </li>
+          </ul>
+        </div>
+      </transition>
     </div>
-    <transition name="slide-up-fade">
-      <div class="hallbox__content" ref="refHallContent" v-show="isDropOpen">
-        <div class="hallbox__counter">
-          <div class="hallbox__counter__time">{{ timeoutMinText }}</div>
-          <div class="hallbox__counter__text">{{ $t('unit.minute') }}</div>
-          <div class="hallbox__counter__time">{{ timeoutSecText }}</div>
-          <div class="hallbox__counter__text">{{ $t('unit.second') }}</div>
-          <div class="hallbox__counter__text">{{ $t('nav.auto_logout') }}</div>
-          <ButtonIcon
-            :name="$t('nav.reset')"
-            icon="history"
-            size="small"
-            color="green"
-            class="hallbox__counter__button"
-            :disabled="isDisabledResetBtn"
-            @click="resetCounter"
-          />
-        </div>
-        <ul class="hallbox__list ul-reset">
-          <li
-            v-for="(item, index) in hallDropdownList"
-            :key="index"
-            :class="{ active: item.is_active }"
-            @click="changeHeaderHall(item)"
-          >
-            {{ item['hall_name'] }}({{ item['hall_code'] }})
-          </li>
-        </ul>
-      </div>
-    </transition>
+    <div class="lineUger"></div>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -461,7 +462,7 @@ watch(
   &__name {
     font-weight: 700;
     padding: 0.375rem 0.75rem;
-    background-color: #343a40;
+    background-color: #171d32;
   }
   &__arrow {
     display: flex;
@@ -473,9 +474,10 @@ watch(
   }
   &__dropbox {
     position: relative;
-    width: 30px;
+    right: 0;
+    width: 10px;
     border-radius: 0 0.25rem 0.25rem 0;
-    background-color: #343a40;
+    background-color: #171d32;
     font-size: 12px;
     cursor: pointer;
   }
@@ -483,8 +485,7 @@ watch(
     position: absolute;
     right: 0;
     top: 110%;
-    // width: 280px;
-    min-width: 285px;
+    min-width: 260px;
     font-size: 1rem;
     color: #212529;
     text-align: left;
@@ -496,13 +497,14 @@ watch(
   }
   &__list {
     li {
-      text-align: center;
+      text-align: left;
       padding: toRem(8) toRem(16);
       cursor: pointer;
       border-top: 1px solid #e9ecef;
       transition: all 0.5s;
       &:hover {
-        background-color: #f8f9fa;
+        color: #4f84cf;
+        background-color: rgba(79, 132, 207, 0.1);
       }
       &.active {
         background-color: #007bff;
@@ -530,5 +532,18 @@ watch(
       margin-left: 4px;
     }
   }
+}
+
+.cdp-menu__hallicon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
 }
 </style>
