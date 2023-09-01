@@ -39,7 +39,11 @@ const chartOptions = {
     shared: true,
     useHTML: true,
     formatter() {
-      return tooltipSingleShared({ data: this.points, hallCode: activeHall.hall_code })
+      return tooltipSingleShared({
+        data: this.points,
+        hallCode: activeHall.hall_code,
+        tooltipIconBorder: 1
+      })
     }
   },
   yAxis: {
@@ -161,7 +165,6 @@ const transformTagsGamePayoffRank = (data) => {
   let sortData = data.sort((a, b) => {
     return parseInt(a['payoff']) - parseInt(b['payoff'])
   })
-  console.log(sortData)
 
   let positive20 = []
   let positive20xAxis = []
@@ -186,7 +189,6 @@ const transformTagsGamePayoffRank = (data) => {
     })
     positive20xAxis.push(sortData[i].lobby_name + '-' + sortData[i].game_name)
   }
-  console.log(positive20)
   pChartOptions.series[0].data = positive20
   pChartOptions.xAxis.categories = positive20xAxis
   nChartOptions.series[0].data = negative20
