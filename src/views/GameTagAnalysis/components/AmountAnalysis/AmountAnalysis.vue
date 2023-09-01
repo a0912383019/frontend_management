@@ -8,7 +8,12 @@ import { apiQueryTagsGameRank } from '@/api/gameTagAnalysis.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { ElNotification } from 'element-plus'
-import { generateRGBColors, errorRespond, dynamicBackgroundColors } from '@/utils/commonUtils.js'
+import {
+  generateRGBColors,
+  errorRespond,
+  dynamicBackgroundColors,
+  FormatNumber
+} from '@/utils/commonUtils.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { tooltipDarkConfig, tooltipSingleShared } from '@/utils/highchartsConfig.js'
 
@@ -62,7 +67,8 @@ const chartOptions = reactive({
       return tooltipSingleShared({
         data: this.points,
         date: this.x,
-        hallCode: activeHall.hall_code
+        hallCode: activeHall.hall_code,
+        tooltipIconBorder: 1
       })
     }
   },
@@ -74,8 +80,9 @@ const chartOptions = reactive({
           fontSize: '12px',
           fontWeight: '300'
         },
+        useHTML: true,
         formatter: function () {
-          return Math.round(this.y).toLocaleString()
+          return `<div class="dataLabelsBg">${FormatNumber(this.y)}</div>`
         }
       }
     }
@@ -194,5 +201,9 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
 <style lang="scss" scoped>
 .cdp-section {
   position: relative;
+}
+
+:deep(.dataLabelsBg) {
+  padding: 3px 5px;
 }
 </style>
