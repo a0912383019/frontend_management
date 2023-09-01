@@ -67,6 +67,7 @@ export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 })
         width: 10px;
         height: 10px;
         background-color: ${data[i].color};
+    
       "></div>
       <div>
         ${data[i]['point']['series']['name']}：
@@ -84,13 +85,14 @@ export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 })
  * tooltipSingleShared formatter排版
  * @param data 帶入tooltip的this.points
  * @param hallCode 可拿pinia globalStore 的 activeHall.hall_code帶入
+ * @param tooltipIconBorder icon的border
  */
-export const tooltipSingleShared = ({ data, hallCode }) => {
+export const tooltipSingleShared = ({ data, hallCode, tooltipIconBorder = false }) => {
   let result = `
     <div style="
       padding: 6px 10px;
       border-radius: 5px;
-      background-color: rgba(0, 0, 0, 0.8)
+      background-color: rgba(0, 0, 0, 0.8);
     ">
     <div class="flex flex-col">
   `
@@ -101,6 +103,7 @@ export const tooltipSingleShared = ({ data, hallCode }) => {
         width: 10px;
         height: 10px;
         background-color: ${data[i].color};
+        border: ${Number(tooltipIconBorder)}px solid #FFF;
       "></div>
       <div>
         ${data[i]['x']}：

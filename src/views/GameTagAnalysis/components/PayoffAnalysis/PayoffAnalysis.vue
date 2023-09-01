@@ -29,7 +29,7 @@ const chartOptions = {
   chart: {
     type: 'column',
     height: 300,
-    marginLeft: 80,
+    marginLeft: 80
   },
   legend: {
     enabled: false
@@ -74,7 +74,7 @@ const pChartOptions = reactive({
         textOverflow: 'none',
         fontSize: 12
       },
-      rotation: -25,
+      rotation: -25
     }
   },
   series: [{ data: [] }]
@@ -92,7 +92,7 @@ const nChartOptions = reactive({
         textOverflow: 'none',
         fontSize: 12
       },
-      rotation: -25,
+      rotation: -25
     }
   },
   series: [{ data: [] }]
@@ -106,8 +106,8 @@ const queryTagsGamePayoffRank = async (filterData) => {
     const result = await apiQueryTagsGamePayoffRank({
       hall_name: activeHall.hall_code,
       game_payoff_analysis_date: filterData.date,
-      search_tag: filterData.searchTag,
-      exclude_tag: filterData.excludeTag,
+      search_tag_2: filterData.searchTag,
+      exclude_tag_2: filterData.excludeTag,
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
@@ -158,10 +158,10 @@ const transformTagsGamePayoffRank = (data) => {
     chartOptions.chart.height = 500
     chartOptions.chart.marginLeft = 140
   }
-
   let sortData = data.sort((a, b) => {
     return parseInt(a['payoff']) - parseInt(b['payoff'])
   })
+  console.log(sortData)
 
   let positive20 = []
   let positive20xAxis = []
@@ -186,6 +186,7 @@ const transformTagsGamePayoffRank = (data) => {
     })
     positive20xAxis.push(sortData[i].lobby_name + '-' + sortData[i].game_name)
   }
+  console.log(positive20)
   pChartOptions.series[0].data = positive20
   pChartOptions.xAxis.categories = positive20xAxis
   nChartOptions.series[0].data = negative20
