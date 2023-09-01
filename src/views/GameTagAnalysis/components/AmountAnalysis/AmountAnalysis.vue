@@ -67,7 +67,8 @@ const chartOptions = reactive({
       return tooltipSingleShared({
         data: this.points,
         date: this.x,
-        hallCode: activeHall.hall_code
+        hallCode: activeHall.hall_code,
+        tooltipIconBorder: 1
       })
     }
   },
