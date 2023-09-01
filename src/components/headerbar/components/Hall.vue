@@ -426,7 +426,7 @@ watch(
               @click="resetCounter"
             />
           </div>
-          <ul class="hallbox__list ul-reset">
+          <ul class="hallbox__list ul-reset limit-height">
             <li
               v-for="(item, index) in hallDropdownList"
               :key="index"
@@ -485,7 +485,7 @@ watch(
     position: absolute;
     right: 0;
     top: 110%;
-    min-width: 260px;
+    min-width: 270px;
     font-size: 1rem;
     color: #212529;
     text-align: left;
@@ -545,5 +545,10 @@ watch(
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.1);
+}
+
+.limit-height {
+  max-height: 400px;
+  overflow-y: scroll;
 }
 </style>
