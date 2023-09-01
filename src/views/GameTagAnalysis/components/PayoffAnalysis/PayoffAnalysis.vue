@@ -11,7 +11,7 @@ import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { useGameTagAnalysis } from '@/stores/gameTagAnalysis.js'
 import { storeToRefs } from 'pinia'
 
-const { t, locale: i18nLocale } = useI18n()
+const { locale: i18nLocale } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -205,7 +205,7 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
 </script>
 <template>
   <section class="cdp-section">
-    <SectionTitle class="mb-10" :title="t('game_tag_analysis.game_payoff_rank_positive20')">
+    <SectionTitle class="mb-10" :title="$t('game_tag_analysis.game_payoff_rank_positive20')">
       <template #tooltip>
         <div class="font-size-14">
           {{ $t('game_tag_analysis.aggregated_from_total_payoff') }}
@@ -221,7 +221,7 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
     <highcharts v-else :options="pChartOptions"></highcharts>
   </section>
   <section class="cdp-section mb-0">
-    <SectionTitle class="mb-10" :title="t('game_tag_analysis.game_payoff_rank_negative20')">
+    <SectionTitle class="mb-10" :title="$t('game_tag_analysis.game_payoff_rank_negative20')">
       <template #tooltip>
         <div class="font-size-14">
           {{ $t('game_tag_analysis.aggregated_from_total_payoff') }}
