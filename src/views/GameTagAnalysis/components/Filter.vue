@@ -41,7 +41,7 @@ onMounted(() => {
 
 const popover = ref(null) //活躍度明細
 
-const closePopover = (event) => {
+const closePopover = () => {
   popover.value.hide()
 }
 </script>

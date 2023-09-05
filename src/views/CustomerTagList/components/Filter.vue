@@ -62,6 +62,7 @@ const form = reactive({
 const handleSubmitClick = () => {
   popoverVisible.value = false
   emit('update:filter-submit', form)
+  closePopover()
 }
 
 // 取得代理帳號和會員層級
@@ -116,6 +117,13 @@ const handleCsvSuccess = (result) => {
   handleSubmitClick()
 }
 
+const popover = ref(null) //popover
+
+// 關閉 popover
+const closePopover = () => {
+  popover.value.hide()
+}
+
 onMounted(() => {
   queryAgNameUserLevel()
 })
@@ -135,8 +143,8 @@ watch(
 <template>
   <div class="cdp-popover-container">
     <el-popover
+      ref="popover"
       placement="bottom-end"
-      :visible="popoverVisible"
       :width="990"
       trigger="click"
       :teleported="false"
@@ -148,7 +156,6 @@ watch(
           size="large"
           color="purple"
           :name="t('common.advanced_filter')"
-          @click="popoverVisible = !popoverVisible"
         />
       </template>
       <el-row :gutter="15">
@@ -197,8 +204,6 @@ watch(
               :label="t('data_name.active_date')"
               class="cdp-checkbox checkbox-label"
             />
-            <!-- <SectionTitle class="cdp-text-purple ml-10" :title="t('data_name.active_date')">
-            </SectionTitle> -->
           </div>
           <DatepickerRange
             v-model="form.activatedDate"
