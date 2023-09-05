@@ -10,6 +10,7 @@ import { apiQueryMemberRecentWeekLively } from '@/api/home.js'
 import { apiQueryMemberRecentLively } from '@/api/home.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
+import { iconStep } from '@/../public/js/system_config.js'
 
 const { t } = useI18n()
 const dialogVisible = ref(false)
@@ -57,6 +58,12 @@ const activeStepTableColumns = computed(() => {
       prop: 'avgLevel',
       align: 'center',
       width: 300
+    },
+    {
+      label: t('member_active_level.active_level'),
+      prop: 'icon',
+      align: 'center',
+      width: 100
     }
   ]
 })
@@ -112,11 +119,13 @@ const transformMemberRecentWeekLively = (data) => {
   activeStepTableData.value = [
     {
       duration: thisWeekDuration,
-      avgLevel: data[0].avg_action_score
+      avgLevel: data[0].avg_action_score,
+      icon: iconStep(data[0].analysis_level)
     },
     {
       duration: lastWeekDuration,
-      avgLevel: data[1].avg_action_score
+      avgLevel: data[1].avg_action_score,
+      icon: iconStep(data[1].analysis_level)
     }
   ]
 }
@@ -285,6 +294,12 @@ defineExpose({ handleOpenDialog })
           border
           :serverSide="false"
         >
+          <template #icon="scope">
+            <font-awesome-icon
+              :class="['font-size-30', 'mt-6', 'ml-1', scope.row.icon.color]"
+              :icon="['fa-regular', scope.row.icon.icon]"
+            />
+          </template>
         </CustomTable>
         <SectionTitle
           class="mt-20 mb-10"
