@@ -11,7 +11,7 @@ import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { useGameTagAnalysis } from '@/stores/gameTagAnalysis.js'
 import { storeToRefs } from 'pinia'
 
-const { t, locale: i18nLocale } = useI18n()
+const { locale: i18nLocale } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -39,7 +39,11 @@ const chartOptions = {
     shared: true,
     useHTML: true,
     formatter() {
-      return tooltipSingleShared({ data: this.points, hallCode: activeHall.hall_code })
+      return tooltipSingleShared({
+        data: this.points,
+        hallCode: activeHall.hall_code,
+        tooltipIconBorder: 1
+      })
     }
   },
   yAxis: {
@@ -161,7 +165,6 @@ const transformTagsGamePayoffRank = (data) => {
   let sortData = data.sort((a, b) => {
     return parseInt(a['payoff']) - parseInt(b['payoff'])
   })
-  console.log(sortData)
 
   let positive20 = []
   let positive20xAxis = []
@@ -186,7 +189,6 @@ const transformTagsGamePayoffRank = (data) => {
     })
     positive20xAxis.push(sortData[i].lobby_name + '-' + sortData[i].game_name)
   }
-  console.log(positive20)
   pChartOptions.series[0].data = positive20
   pChartOptions.xAxis.categories = positive20xAxis
   nChartOptions.series[0].data = negative20
@@ -203,7 +205,7 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
 </script>
 <template>
   <section class="cdp-section">
-    <SectionTitle class="mb-10" :title="t('game_tag_analysis.game_payoff_rank_positive20')">
+    <SectionTitle class="mb-10" :title="$t('game_tag_analysis.game_payoff_rank_positive20')">
       <template #tooltip>
         <div class="font-size-14">
           {{ $t('game_tag_analysis.aggregated_from_total_payoff') }}
@@ -219,7 +221,7 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
     <highcharts v-else :options="pChartOptions"></highcharts>
   </section>
   <section class="cdp-section mb-0">
-    <SectionTitle class="mb-10" :title="t('game_tag_analysis.game_payoff_rank_negative20')">
+    <SectionTitle class="mb-10" :title="$t('game_tag_analysis.game_payoff_rank_negative20')">
       <template #tooltip>
         <div class="font-size-14">
           {{ $t('game_tag_analysis.aggregated_from_total_payoff') }}
