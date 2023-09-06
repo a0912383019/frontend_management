@@ -14,6 +14,13 @@ Highcharts.setOptions({
   credits: {
     enabled: false //關閉版權宣告
   },
+  chart: {
+    zooming: {
+      mouseWheel: {
+        enabled: false
+      }
+    }
+  },
   title: {
     text: ''
   },
