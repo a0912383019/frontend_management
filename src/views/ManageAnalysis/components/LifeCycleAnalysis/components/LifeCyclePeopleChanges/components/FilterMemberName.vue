@@ -17,8 +17,12 @@ const searchName = ref('') //搜尋的名稱
 const useCustomList = ref(manageAnalysisStore.useCustomList) //手動匯入名單
 const fuzzySearch = ref(manageAnalysisStore.fuzzySearch) //模糊搜尋
 
-//popover 開啟狀態
-const popoverVisible = ref(false)
+const popover = ref(null) //popover
+
+// 關閉 popover
+const closePopover = () => {
+  popover.value.hide()
+}
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -52,7 +56,7 @@ const handleCsvSuccess = (result) => {
   handleFileUpload(result)
   updateFilterTimestamp() //更新timestamp已更新資料
   manageAnalysisStore.useCustomList = true
-  popoverVisible.value = false // 成功後關閉popover
+  closePopover()
 }
 
 //確認篩選
@@ -62,15 +66,15 @@ const handleClick = () => {
   manageAnalysisStore.searchName = searchName.value
   manageAnalysisStore.useCustomList = useCustomList.value
   manageAnalysisStore.fuzzySearch = fuzzySearch.value
-  popoverVisible.value = false
+  closePopover()
   updateFilterTimestamp()
 }
 </script>
 <template>
   <div class="cdp-popover-container">
     <el-popover
+      ref="popover"
       placement="bottom-end"
-      :visible="popoverVisible"
       :title="t('data_name.member_name')"
       :width="320"
       trigger="click"
@@ -83,7 +87,6 @@ const handleClick = () => {
           size="large"
           color="purple"
           :name="t('common.advanced_filter')"
-          @click="popoverVisible = !popoverVisible"
         />
       </template>
       <div class="drop">
