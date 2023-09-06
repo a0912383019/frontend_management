@@ -29,8 +29,12 @@ const props = defineProps({
 
 const emit = defineEmits(['update:timestamp'])
 
-//popover 開啟狀態
-const popoverVisible = ref(false)
+const popover = ref(null) //popover
+
+// 關閉 popover
+const closePopover = () => {
+  popover.value.hide()
+}
 
 const dateValueStartDate = ref('')
 const dateValueEndDate = ref('')
@@ -76,7 +80,7 @@ const handleClick = () => {
         dayjs(dateValue.value[1]).format('YYYY-MM-DD')
     )
   })
-  popoverVisible.value = false
+  closePopover()
 }
 
 // 選擇日期後將日期放入
@@ -87,8 +91,8 @@ const handleCalendarChange = (val) => {
 <template>
   <div class="cdp-popover-container">
     <el-popover
+      ref="popover"
       placement="bottom-end"
-      :visible="popoverVisible"
       :title="t('date.date')"
       :width="320"
       trigger="click"
@@ -101,7 +105,6 @@ const handleCalendarChange = (val) => {
           size="large"
           color="purple"
           :name="t('common.advanced_filter')"
-          @click="popoverVisible = !popoverVisible"
         />
       </template>
       <div class="drop">
@@ -153,6 +156,6 @@ const handleCalendarChange = (val) => {
 
 :deep(.el-popper.el-picker__popper.cdp-datepicker-range) {
   right: 0 !important;
-  inset:90px 0 auto auto !important;
+  inset: 90px 0 auto auto !important;
 }
 </style>

@@ -4,7 +4,7 @@ import './assets/scss/master.scss'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-
+import { i18n } from '@/global/i18n'
 import App from './App.vue'
 import router from './router'
 
@@ -17,6 +17,7 @@ globalRegister(app)
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
+app.use(i18n)
 app.use(pinia)
 app.use(router)
 app.mount('#app')
