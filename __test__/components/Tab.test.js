@@ -1,4 +1,4 @@
-import { test, describe, expect, beforeEach } from 'vitest'
+import { it, describe, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import Tab from '@/components/Tab.vue'
@@ -27,16 +27,16 @@ describe('Tab', () => {
     })
   })
 
-  test('是否存在列表', () => {
+  it('是否存在列表', () => {
     expect(wrapper.find('.tabs').exists()).toBe(true)
   })
 
-  test('選取列表第一筆，class是否有active', () => {
+  it('選取列表第一筆，class是否有active', () => {
     let select = wrapper.find('.tabs li:nth-child(1)').classes()
     expect(select).toContain('active')
   })
 
-  test('測試handleTabChange', async () => {
+  it('測試handleTabChange', async () => {
     wrapper.find('.tabs li:nth-child(2)').trigger('click')
     wrapper.vm.handleTabChange('StepTrendAnalysis')
     await wrapper.setProps({ activeName: 'StepTrendAnalysis' })

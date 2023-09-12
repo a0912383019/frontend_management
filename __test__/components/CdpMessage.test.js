@@ -1,4 +1,4 @@
-import { test, describe, expect, beforeEach } from 'vitest'
+import { it, describe, expect, beforeEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -24,16 +24,16 @@ describe('CdpMessage', () => {
     })
   })
 
-  test('確認組件是否存在', () => {
+  it('確認組件是否存在', () => {
     expect(wrapper.classes('message')).toBe(true)
   })
 
-  test('測試getIcon', () => {
+  it('測試getIcon', () => {
     const result = wrapper.vm.getIcon('loading')
     expect(result).toBe('fa-solid fa-spinner')
   })
 
-  test('測試messageData', () => {
+  it('測試messageData', () => {
     const result = wrapper.vm.messageData
     expect(result).toEqual({
       icon: 'fa-solid fa-spinner',
@@ -41,18 +41,18 @@ describe('CdpMessage', () => {
     })
   })
 
-  test('測試messageStyle', () => {
+  it('測試messageStyle', () => {
     const result = wrapper.vm.messageStyle
     expect(result).toEqual({
       height: '300px'
     })
   })
 
-  test('測試props cover', () => {
+  it('測試props cover', () => {
     expect(wrapper.find('.message').classes()).toContain('cover')
   })
 
-  test('測試props bg', () => {
+  it('測試props bg', () => {
     expect(wrapper.find('.message').classes()).toContain('dark')
   })
 })
