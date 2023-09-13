@@ -4,7 +4,12 @@ import { ref, reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { apiQueryStepDetail } from '@/api/manageAnalysis.js'
-import { addNumberColor, FormatNumber, getHallCurrencySign } from '@/utils/commonUtils.js'
+import {
+  addNumberColor,
+  FormatNumber,
+  getHallCurrencySign,
+  errorRespond
+} from '@/utils/commonUtils.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import StepConfig from '@/components/StepConfig.vue'
@@ -63,6 +68,7 @@ const currentTooltipEntity = reactive({
   date: '',
   step: null
 })
+
 //呼叫api取得資料
 const query_step_detail_tbl = async (param) => {
   messageKey.value = 'loading'
@@ -76,7 +82,22 @@ const query_step_detail_tbl = async (param) => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true //取得資料成功
-      transform_step_detail_tbl(result.data.result[0]) //資料處理
+      transform_step_detail_tbl(result.data.result[0]) //資料處理'
+      return
+    }
+    if (return_code === '0001') {
+      apiSuccess.value = false
+      messageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+      return
+    }
+    if (return_code === '9999') {
+      apiSuccess.value = false
+      messageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+      return
     }
   } catch (error) {
     console.error(error)
@@ -90,6 +111,7 @@ const query_step_detail_tbl = async (param) => {
     }
   }
 }
+
 //轉換資料
 const transform_step_detail_tbl = (data) => {
   const tempObj = {}
@@ -105,7 +127,7 @@ const transform_step_detail_tbl = (data) => {
 //開啟dialog
 const handleOpenDialog = (param) => {
   dialogVisible.value = true
-  currentTooltipEntity['date'] = dayjs(param.date).format('YYYY-MM-DD')
+  currentTooltipEntity['date'] = dayjs(param.date).format(t('date.format_date_rule'))
   currentTooltipEntity['step'] = param.step
   query_step_detail_tbl(param)
 }
@@ -114,7 +136,6 @@ defineExpose({ handleOpenDialog })
 </script>
 <template>
   <div>
-    <!-- @close="handleCloseDialog" -->
     <el-dialog
       v-model="dialogVisible"
       class="cdp-dialog member-step-detail-dialog cdp-w__720"
@@ -127,7 +148,7 @@ defineExpose({ handleOpenDialog })
             <StepConfig :stepIndex="currentTooltipEntity.step" />
           </div>
           <div class="cdp-dialog__date">
-            {{ dayjs(currentTooltipEntity.date).format('YYYY/MM/DD') }}
+            {{ currentTooltipEntity.date }}
           </div>
         </div>
         <CdpMessage :messageKey="messageKey" class="cdp-bg-white" v-show="apiSuccess === false" />
