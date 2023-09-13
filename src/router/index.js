@@ -8,6 +8,10 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/',
+      redirect: '/home',
+    },
+    {
       path: '/example',
       name: 'example',
       component: () => import('../views/Example.vue')
@@ -48,7 +52,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/customer-tag-list',
+          path: 'customer-tag-list',
           name: 'customer-tag-list',
           component: () => import('../views/CustomerTagList/CustomerTagList.vue')
         }
@@ -64,7 +68,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/manage-analysis',
+          path: 'manage-analysis',
           name: 'manage-analysis',
           component: () => import('../views/ManageAnalysis/ManageAnalysis.vue')
         }
@@ -80,7 +84,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/registered-no-deposit-analysis',
+          path: 'registered-no-deposit-analysis',
           name: 'registered-no-deposit-analysis'
           // component: () => import('../views/Home/Home.vue')
         }
@@ -96,7 +100,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/vip-commercial-analysis',
+          path: 'vip-commercial-analysis',
           name: 'vip-commercial-analysis'
           // component: () => import('../views/Home/Home.vue')
         }
@@ -112,7 +116,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/target-group-analysis-list',
+          path: 'target-group-analysis-list',
           name: 'target-group-analysis-list'
           // component: () => import('../views/Home/Home.vue')
         }
@@ -128,7 +132,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/game-tag-analysis',
+          path: 'game-tag-analysis',
           name: 'game-tag-analysis',
           component: () => import('../views/GameTagAnalysis/GameTagAnalysis.vue')
         }
@@ -144,7 +148,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/activity-analysis-list',
+          path: 'activity-analysis-list',
           name: 'activity-analysis-list'
           // component: () => import('../views/Home/Home.vue')
         }
@@ -160,7 +164,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/offer-analysis-list',
+          path: 'offer-analysis-list',
           name: 'offer-analysis-list'
           // component: () => import('../views/Home/Home.vue')
         }
@@ -176,7 +180,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/rank-analysis',
+          path: 'rank-analysis',
           name: 'rank-analysis'
           // component: () => import('../views/Home/Home.vue')
         }
@@ -192,7 +196,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/risk_controll_analysis',
+          path: 'risk_controll_analysis',
           name: 'risk_controll_analysis'
           // component: () => import('../views/Home/Home.vue')
         }
@@ -208,7 +212,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/custom-tags-setting',
+          path: 'custom-tags-setting',
           name: 'custom-tags-setting'
           // component: () => import('../views/Home/Home.vue')
         }
@@ -224,7 +228,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/tag-synchronization',
+          path: 'tag-synchronization',
           name: 'tag-synchronization'
           // component: () => import('../views/Home/Home.vue')
         }
@@ -240,7 +244,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/user-export-report',
+          path: 'user-export-report',
           name: 'user-export-report'
           // component: () => import('../views/Home/Home.vue')
         }
@@ -256,7 +260,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/user-detail-info',
+          path: 'user-detail-info',
           name: 'user-detail-info'
           // component: () => import('../views/Home/Home.vue')
         }
@@ -272,7 +276,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/admin-user-list',
+          path: 'admin-user-list',
           name: 'admin-user-list'
           // component: () => import('../views/Home/Home.vue')
         }
