@@ -1,6 +1,6 @@
-import { it, describe, expect, vi } from 'vitest';
-import { shallowMount, flushPromises } from '@vue/test-utils';
-import { i18n } from '@/global/i18n';
+import { it, describe, expect, vi } from 'vitest'
+import { shallowMount, flushPromises } from '@vue/test-utils'
+import { i18n } from '@/global/i18n'
 import LifeCycleStepProfitOverview from '@/views/ManageAnalysis/components/StepTrendAnalysis/components/LifeCycleStepProfitOverview.vue'
 import { createTestingPinia } from '@pinia/testing'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -10,26 +10,30 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
 import StepConfig from '@/components/StepConfig.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
+import router from '@/router'
 
 describe('LifeCycleStepProfitOverview.vue', () => {
     const wrapper = shallowMount(LifeCycleStepProfitOverview, {
         global: {
-            plugins: [i18n, createTestingPinia(
+            plugins: [i18n, router, createTestingPinia(
                 {
                     createSpy: vi.fn
                 }
             )]
         },
-    });
+    })
+
+    //讓console.error不要洗版
+    vi.spyOn(console, 'error').mockImplementation(() => { })
 
     it('預設apiSuccess = false，預期渲染的元件', async () => {
-        expect(wrapper.findComponent(CustomTable).exists()).toBe(false);
-        expect(wrapper.findComponent(CdpMessage).exists()).toBe(true);
-        expect(wrapper.findComponent(FilterDate).exists()).toBe(true);
-        expect(wrapper.findComponent(SectionTitle).exists()).toBe(true);
-        expect(wrapper.findComponent(CurrencySignText).exists()).toBe(true);
-        expect(wrapper.findComponent(StepConfig).exists()).toBe(false);
-    });
+        expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
+        expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
+        expect(wrapper.findComponent(FilterDate).exists()).toBe(true)
+        expect(wrapper.findComponent(SectionTitle).exists()).toBe(true)
+        expect(wrapper.findComponent(CurrencySignText).exists()).toBe(true)
+        expect(wrapper.findComponent(StepConfig).exists()).toBe(false)
+    })
 
     it('語系轉換', () => {
         //更換語系
@@ -114,7 +118,7 @@ describe('LifeCycleStepProfitOverview.vue', () => {
             rangeDate: '2000-01-01'
         })
         //等待異步完成
-        await flushPromises();
+        await flushPromises()
         //預期轉換後的資料
         expect(wrapper.vm.tableData).toStrictEqual(
             [
@@ -142,7 +146,7 @@ describe('LifeCycleStepProfitOverview.vue', () => {
         //觸發watch的fn
         wrapper.vm.filterDateStepTrendTimestamp = 2323446
         //等待異步完成
-        await flushPromises();
+        await flushPromises()
         //預期轉換後的資料
         expect(wrapper.vm.tableData).toStrictEqual([])
         expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
@@ -161,51 +165,51 @@ describe('LifeCycleStepProfitOverview.vue', () => {
         //觸發watch的fn
         wrapper.vm.filterDateStepTrendTimestamp = 2323447
         //等待異步完成
-        await flushPromises();
+        await flushPromises()
         //預期轉換後的資料
         expect(wrapper.vm.tableData).toStrictEqual([])
         expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
         expect(wrapper.vm.messageKey).toBe('chartFailed')
 
         //mock error api 403
-        const error403 = new Error('Forbidden');
+        const error403 = new Error('Forbidden')
         error403.response = {
             status: 403,
-        };
-        vi.spyOn(axiosGoInstance, 'get').mockRejectedValue(error403);
+        }
+        vi.spyOn(axiosGoInstance, 'get').mockRejectedValue(error403)
         //觸發watch的fn
         wrapper.vm.filterDateStepTrendTimestamp = 2323448
         //等待異步完成
-        await flushPromises();
+        await flushPromises()
         //預期轉換後的資料
         expect(wrapper.vm.tableData).toStrictEqual([])
         expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
         expect(wrapper.vm.messageKey).toBe('noPermission')
 
         //mock error api 401
-        const error401 = new Error('error');
+        const error401 = new Error('error')
         error401.response = {
             status: 401,
-        };
-        vi.spyOn(axiosGoInstance, 'get').mockRejectedValue(error401);
+        }
+        vi.spyOn(axiosGoInstance, 'get').mockRejectedValue(error401)
         //觸發watch的fn
         wrapper.vm.filterDateStepTrendTimestamp = 2323449
         //等待異步完成
-        await flushPromises();
+        await flushPromises()
         //預期轉換後的資料
         expect(wrapper.vm.tableData).toStrictEqual([])
         expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
 
         //mock error api other
-        const errorOther = new Error('error');
+        const errorOther = new Error('error')
         errorOther.response = {
             status: 999,
-        };
-        vi.spyOn(axiosGoInstance, 'get').mockRejectedValue(errorOther);
+        }
+        vi.spyOn(axiosGoInstance, 'get').mockRejectedValue(errorOther)
         //觸發watch的fn
         wrapper.vm.filterDateStepTrendTimestamp = 2323450
         //等待異步完成
-        await flushPromises();
+        await flushPromises()
         //預期轉換後的資料
         expect(wrapper.vm.tableData).toStrictEqual([])
         expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
