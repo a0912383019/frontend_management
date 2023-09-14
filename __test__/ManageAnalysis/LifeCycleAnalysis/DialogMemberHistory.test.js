@@ -26,8 +26,6 @@ describe('開啟 Dialog Member', () => {
     wrapper.unmount()
   })
 
-  vi.spyOn(console, 'error').mockImplementation(() => {})
-
   it('開啟Dialog', () => {
     let dataValue = {
       hall_id: 3820698,

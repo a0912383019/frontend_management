@@ -35,8 +35,6 @@ describe('AvgCard', () => {
     wrapper.unmount()
   })
 
-  vi.spyOn(console, 'error').mockImplementation(() => {})
-
   it('測試 props 資料是否符合預期呈現', () => {
     let dataValue = {
       '--item-bg-color': '#59b7c8',
