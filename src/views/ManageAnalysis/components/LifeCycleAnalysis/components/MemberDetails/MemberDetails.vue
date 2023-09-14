@@ -186,6 +186,7 @@ const query_life_cycle_analysis_detail_tbl = async () => {
     }
   } catch (error) {
     console.log(error)
+    tableData.value = []
     apiSuccess.value = false //取得資料失敗
     if (error.response.status === 403) {
       messageKey.value = 'noPermission' //更改message內容

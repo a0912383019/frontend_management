@@ -16,19 +16,9 @@ let chartParam = reactive({})
 
 //開啟 dialog
 const handleOpenDialog = (param) => {
+  console.log(param)
   chartParam = param
   dialogTableVisible.value = true
-}
-
-//關閉 dialog
-const handleCloseDialog = () => {
-  // apiSuccess.value = false
-  // chartSetting.data.xLabels = []
-  // chartSetting.data.datasets = []
-  // chartSetting.options.plugins.title.text = ''
-  // legendIndex.value = 0
-  // legendArray.value = []
-  // refLifeCycleHistory.value.clearChart()
 }
 
 defineExpose({ handleOpenDialog })
@@ -38,7 +28,6 @@ defineExpose({ handleOpenDialog })
     <el-dialog
       v-model="dialogTableVisible"
       class="cdp-dialog member-step-detail-dialog"
-      @close="handleCloseDialog"
       :destroy-on-close="true"
       :append-to-body="true"
       :title="t('manage_analysis.member_life_cycle_history')"

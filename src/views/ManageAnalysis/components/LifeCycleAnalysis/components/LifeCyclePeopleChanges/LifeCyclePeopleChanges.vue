@@ -113,12 +113,10 @@ const queryLifeCycleAnalysisOverviewTbl = async (customUserList) => {
       apiTableResult.value = result.data.result //存放取得的api資料
       //資料處理
       transformLifeCycleAnalysisOverviewTbl(result.data.result)
-    } else if (return_code === '0001') {
-      apiSuccess.value = false //取得資料失敗
-      messageKey.value = 'noResult' //更改message內容
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
     } else if (return_code === '9999') {
+      apiTableResult.value = []
+      tableData.value = []
+      tableTotalPeopleNum.value = 0
       apiSuccess.value = false //取得資料失敗
       messageKey.value = 'queryFailed' //更改message內容
       let failMsg = errorRespond(result.data.status)
@@ -127,6 +125,9 @@ const queryLifeCycleAnalysisOverviewTbl = async (customUserList) => {
   } catch (error) {
     console.error(error)
     apiSuccess.value = false //取得資料失敗
+    apiTableResult.value = []
+    tableData.value = []
+    tableTotalPeopleNum.value = 0
     if (error.response.status === 403) {
       messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
