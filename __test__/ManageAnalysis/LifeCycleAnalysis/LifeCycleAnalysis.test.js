@@ -384,17 +384,6 @@ describe('會員階段人數變化', () => {
     ])
   })
 
-  it('觸發 filterTimestamp', () => {
-    //觸發updateTimestamp
-    // wrapper.vm.filterTimestamp = 31212345
-    // // 使用者名單
-    // let csvData = ['junmoxian', 'fan8750f1', 'chgu47', 'zhoupangji', 'zhcwp', 'sjoy0930']
-    // // 設定使用者名單
-    // wrapper.vm.activeFile = csvData
-    // wrapper.vm.useCustomList = true
-    // wrapper.vm.queryLifeCycleAnalysisOverviewTbl(csvData)
-  })
-
   it('觸發watch 與 mock api 是否如預期', async () => {
     //mock api 0000
     const result0 = {
