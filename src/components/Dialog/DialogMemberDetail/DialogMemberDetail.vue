@@ -38,6 +38,7 @@ const tabList = computed(() => {
 })
 //當前的component
 const currentTabComponent = computed(() => {
+  dialogMemberDetailStore.nowTag = currentTabs.value
   let result = null
   switch (currentTabs.value) {
     case 'Overview':
@@ -77,6 +78,7 @@ const handleDialogClosed = () => {
 //日期更新後執行的動作
 const updateTimestamp = (data) => {
   //將資料寫到pinia
+  dialogMemberDetailStore.timeStamp = data['timestamp']
   dialogMemberDetailStore.dialogMemberDetailRangeDate = data['rangeDate']
 }
 

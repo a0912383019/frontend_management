@@ -1,15 +1,27 @@
 <script setup>
+import { ref, watch } from 'vue'
 import MemberJourney from './components/MemberJourney.vue'
 import MemberDetail from './components/MemberDetail.vue'
 import MemberLifeCycleHistory from './components/MemberLifeCycleHistory.vue'
+import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
+
+const dialogMemberDetailStore = useDialogMemberDetailStore()
+
+const key = ref('')
+
+watch([() => dialogMemberDetailStore.nowTag, () => dialogMemberDetailStore.timeStamp], () => {
+  if (dialogMemberDetailStore.nowTag === 'Journey') {
+    key.value = dialogMemberDetailStore.timeStamp
+  }
+})
 </script>
 <template>
   <div>
-    <MemberJourney />
+    <MemberJourney :key="key" />
     <el-row :gutter="20">
-      <el-col :span="14"> <MemberDetail /> </el-col>
+      <el-col :span="14"><MemberDetail :key="key" /></el-col>
       <el-col :span="10">
-        <MemberLifeCycleHistory />
+        <MemberLifeCycleHistory :key="key" />
       </el-col>
     </el-row>
   </div>

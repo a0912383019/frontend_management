@@ -1,34 +1,45 @@
 <script setup>
+import { ref, watch } from 'vue'
 import GADetail from './components/GADetail.vue'
 import GALoginCount from './components/GALoginCount.vue'
 import PeriodOfferAmount from './components/PeriodOfferAmount.vue'
 import PeriodDayOffer from './components/PeriodDayOffer.vue'
 import GADataPage from './components/GADataPage.vue'
+import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 
+const dialogMemberDetailStore = useDialogMemberDetailStore()
+
+const key = ref('')
+
+watch([() => dialogMemberDetailStore.nowTag, () => dialogMemberDetailStore.timeStamp], () => {
+  if (dialogMemberDetailStore.nowTag === 'Analysis') {
+    key.value = dialogMemberDetailStore.timeStamp
+  }
+})
 </script>
 <template>
   <div>
     <el-row :gutter="20">
       <el-col :span="8">
-        <GADetail />
+        <GADetail :key="key" />
       </el-col>
       <el-col :span="16">
-        <GALoginCount />
+        <GALoginCount :key="key" />
       </el-col>
     </el-row>
     <el-row :gutter="20">
       <el-col :span="8">
-        <PeriodOfferAmount />
+        <PeriodOfferAmount :key="key" />
       </el-col>
       <el-col :span="16">
-        <PeriodDayOffer />
+        <PeriodDayOffer :key="key" />
       </el-col>
     </el-row>
   </div>
   <el-row :gutter="20">
-      <el-col :span="24">
-        <GADataPage />
-      </el-col>
-    </el-row>
+    <el-col :span="24">
+      <GADataPage :key="key" />
+    </el-col>
+  </el-row>
 </template>
 <style lang="scss" scoped></style>

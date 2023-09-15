@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberPeriodBetAmount } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -167,7 +167,6 @@ const transformBetAmountChart = (data) => {
 // 各裝置貨量佔比knob圖
 const knobLists = ref([])
 const transformBetAmountKnob = (data) => {
-  // console.log('transformBetAmountKnob', data)
   let pc_total_amount = 0,
     mobile_total_amount = 0,
     app_total_amount = 0
@@ -204,12 +203,6 @@ const transformBetAmountKnob = (data) => {
 onMounted(() => {
   queryBetLineChart()
 })
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryBetLineChart()
-  }
-)
 </script>
 <template>
   <section class="cdp-section">

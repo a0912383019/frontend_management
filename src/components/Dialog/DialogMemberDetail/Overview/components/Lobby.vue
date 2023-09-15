@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberLobby } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -190,12 +190,6 @@ const transformLobbyChart = (data) => {
 onMounted(() => {
   queryLobbyChart()
 })
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryLobbyChart()
-  }
-)
 </script>
 <template>
   <section class="cdp-section margin-bottom-0">

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryProfitWithdrawDepositAmount } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -61,13 +61,6 @@ const queryProfitWithdrawDepositAmount = async () => {
 onMounted(() => {
   queryProfitWithdrawDepositAmount()
 })
-
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryProfitWithdrawDepositAmount()
-  }
-)
 </script>
 <template>
   <div>
