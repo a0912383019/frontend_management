@@ -49,26 +49,20 @@ const queryQARelatedData = async () => {
     const result = await apiQueryQARelatedData({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
 
-    if (return_code !== '0001') {
-      if (return_code === '0000') {
-        if (result.data.result.length !== 0) {
-          apiSuccess.value = true
-          //整理table對應的資料
-          transformTableData(result.data.result)
-        } else {
-          messageKey.value = 'noResult'
-        }
-      } else {
-        messageKey.value = 'chartFailed'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
-    } else {
+    if (return_code === '0000') {
+      apiSuccess.value = true
+      //整理table對應的資料
+      transformTableData(result.data.result)
+    } else if (return_code === '0001') {
       messageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+    } else {
+      messageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
@@ -131,8 +125,10 @@ const transformTableData = (data) => {
     {
       name: t('customer_detail_info.bet_per_session'),
       value:
-        getHallCurrencySign('BBIN', activeHall.hall_code) +
-        FormatNumber(data.per_session_bet_amount)
+        data.per_session_bet_amount === '-'
+          ? data.per_session_bet_amount
+          : getHallCurrencySign('BBIN', activeHall.hall_code) +
+            FormatNumber(data.per_session_bet_amount)
     }
   ]
 }
@@ -140,13 +136,6 @@ const transformTableData = (data) => {
 onMounted(() => {
   queryQARelatedData()
 })
-
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryQARelatedData()
-  }
-)
 </script>
 <template>
   <section class="cdp-section">

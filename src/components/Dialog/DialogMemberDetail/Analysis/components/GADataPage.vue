@@ -11,6 +11,7 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { ElNotification } from 'element-plus'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import Tab from '@/components/Tab.vue'
+import { errorRespond } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
 
@@ -113,24 +114,25 @@ const queryGAPagePathRank = async () => {
     const result = await apiQueryGAPagePathRank({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
 
-    if (return_code !== '9999') {
-      if (return_code !== '0001') {
-        clickRankApiSuccess.value = true
-        //整理及地圖對應的資料
-        transformGAPagePathRank(result.data.result)
-      } else {
-        clickRankMessageKey.value = 'noResult'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
+    if (return_code === '0000') {
+      clickRankApiSuccess.value = true
+      //整理及地圖對應的資料
+      transformGAPagePathRank(result.data.result)
+      return
+    } else if (return_code === '0001') {
+      clickRankMessageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+      return
     } else {
       clickRankMessageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
+      return
     }
   } catch (error) {
     console.error(error)
@@ -221,14 +223,6 @@ onMounted(() => {
   queryGAPagePathRank()
   queryGADataSource()
 })
-
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryGAPagePathRank()
-    queryGADataSource()
-  }
-)
 </script>
 <template>
   <section class="cdp-section">

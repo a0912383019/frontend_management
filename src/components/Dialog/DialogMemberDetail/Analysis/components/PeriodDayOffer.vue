@@ -3,8 +3,8 @@ import { ref, reactive, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberPeriodDayOffer } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
-import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
+import { useGlobalStore } from '@/stores/global.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { FormatNumber, errorRespond, generateRGBColors } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipShared } from '@/utils/highchartsConfig.js'
@@ -30,7 +30,26 @@ const chartOptions = reactive({
     height: 300
   },
   legend: {
-    verticalAlign: 'top'
+    verticalAlign: 'top',
+    align: 'center',
+    useHTML: true,
+    symbolRadius: 0,
+    symbolWidth: 0,
+    symbolHeight: 0,
+    labelFormatter: function () {
+      return `
+        <div class="flex">
+          <div style="
+            background-color:${this.options.color};
+            width: 40px;
+            height: 12px;
+            margin-right: 6px;
+            margin-top: 3px;
+          "></div>
+          <div>${this.name}</div>
+        </div>
+      `
+    }
   },
   xAxis: {
     gridLineColor: '#e8e8e8',
@@ -80,7 +99,7 @@ const queryMemberPeriodDayOffer = async () => {
     const result = await apiQueryMemberPeriodDayOffer({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -161,12 +180,6 @@ const clearChart = () => {
 onMounted(() => {
   queryMemberPeriodDayOffer()
 })
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryMemberPeriodDayOffer()
-  }
-)
 </script>
 <template>
   <section class="cdp-section">

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberJourney } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -486,13 +486,6 @@ const handleFlagEdited = (item) => {
 onMounted(() => {
   queryMemberJourney()
 })
-
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryMemberJourney()
-  }
-)
 </script>
 <template>
   <section class="cdp-section">

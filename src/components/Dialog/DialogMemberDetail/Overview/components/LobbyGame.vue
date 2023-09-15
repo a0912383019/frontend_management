@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberLobbyGame } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -182,12 +182,6 @@ const clearChart = () => {
 onMounted(() => {
   queryLobbyGameChart()
 })
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryLobbyGameChart()
-  }
-)
 </script>
 <template>
   <section class="cdp-section margin-bottom-0">
