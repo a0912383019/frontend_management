@@ -56,46 +56,223 @@ describe('會員明細', () => {
       prop: 'deposit_amount',
       order: 'ascending'
     }
-    wrapper.vm.upadteCurrentSort(dataValue)
-    let order = dataValue['order'] == 'descending' ? 'DESC' : 'ASC'
-    expect(wrapper.vm.querySortRule.sort).toBe('deposit_amount')
-    expect(wrapper.vm.querySortRule.order).toBe(order)
-
-    // mock 排序後打api
-    wrapper.vm.custom_user_list = []
-    wrapper.vm.detail_type = 0
-    wrapper.vm.fuzzy_search = false
-    wrapper.vm.hall_name = 'esb'
-    wrapper.vm.length = 15
-    wrapper.vm.life_cycle_analysis_detail_date = '2023-08-15 ~ 2023-09-12'
-    wrapper.vm.life_cycle_analysis_step = 1
-    wrapper.vm.order = 'DESC'
-    wrapper.vm.query_date = '2023-09-12'
-    wrapper.vm.search_name = ''
-    wrapper.vm.sort = 'deposit_amount'
-    wrapper.vm.start = 0
-    wrapper.vm.platform = 'bbin'
 
     //mock api 0000
     const result0 = {
       data: {
         result: {
-          records_total: 108,
-          records_filtered: 108,
+          records_total: 215,
+          records_filtered: 215,
           data: [
             {
               hall_id: 3820698,
               domain_id: 0,
               ag_name: 'dcash888',
-              user_id: 941721245,
-              user_name: 'wuxu850223',
-              activity_day: 26,
-              bet_amount: '1218198',
-              payoff: '-32299.69',
-              deposit_amount: '245748',
-              bet_amount_avg: '46853.76',
-              payoff_avg: '-1242.3',
-              deposit_amount_avg: '9451.85'
+              user_id: 941720372,
+              user_name: '0123',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720433,
+              user_name: '162360',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'd15ck013',
+              user_id: 941720273,
+              user_name: '213wsas',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720288,
+              user_name: '2175',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720409,
+              user_name: '2875339hyy',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720430,
+              user_name: '402517',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720418,
+              user_name: '777abcdefg',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'd24ck032',
+              user_id: 941720293,
+              user_name: '8888qw',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dbt888',
+              user_id: 941720431,
+              user_name: '942132432',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720314,
+              user_name: '9527',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'd22ck063',
+              user_id: 941720386,
+              user_name: '996500568',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'd30ck035',
+              user_id: 941720337,
+              user_name: 'a19192808',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720427,
+              user_name: 'a598158606',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'd24ck018',
+              user_id: 941720367,
+              user_name: 'aeiou14579',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720397,
+              user_name: 'afd168',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
             }
           ]
         },
@@ -107,51 +284,233 @@ describe('會員明細', () => {
     }
 
     vi.spyOn(axiosGoInstance, 'post').mockResolvedValue(result0)
+
+    wrapper.vm.upadteCurrentSort(dataValue)
+
+    let order = dataValue['order'] == 'descending' ? 'DESC' : 'ASC'
+    expect(wrapper.vm.querySortRule.sort).toBe('deposit_amount')
+    expect(wrapper.vm.querySortRule.order).toBe(order)
     //等待異步完成
     await flushPromises()
   })
 
   it('測試頁碼切換', async () => {
-    let currentPage = 2
-    wrapper.vm.updateCurrentPage(currentPage)
-    let apiStart = wrapper.vm.apiDraw * wrapper.vm.apiLength - wrapper.vm.apiLength
-    expect(wrapper.vm.apiStart).toBe(apiStart)
-
-    // mock 切換頁後打api
-    wrapper.vm.custom_user_list = []
-    wrapper.vm.detail_type = 0
-    wrapper.vm.fuzzy_search = false
-    wrapper.vm.hall_name = 'esb'
-    wrapper.vm.length = 15
-    wrapper.vm.life_cycle_analysis_detail_date = '2023-08-15 ~ 2023-09-12'
-    wrapper.vm.life_cycle_analysis_step = 1
-    wrapper.vm.order = 'DESC'
-    wrapper.vm.query_date = '2023-09-12'
-    wrapper.vm.search_name = ''
-    wrapper.vm.sort = 'deposit_amount'
-    wrapper.vm.start = apiStart
-    wrapper.vm.platform = 'bbin'
-
-    //mock api 0000
+    // 切換頁後打api mock api 0000
     const result0 = {
       data: {
         result: {
-          records_total: 108,
-          records_filtered: 108,
+          records_total: 215,
+          records_filtered: 215,
           data: [
             {
               hall_id: 3820698,
               domain_id: 0,
               ag_name: 'dcash888',
-              user_id: 941721245,
-              user_name: 'wuxu850223',
-              activity_day: 26,
-              bet_amount: '1218198',
-              payoff: '-32299.69',
-              deposit_amount: '245748',
-              bet_amount_avg: '46853.76',
-              payoff_avg: '-1242.3',
-              deposit_amount_avg: '9451.85'
+              user_id: 941720392,
+              user_name: 'ahua185529',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720365,
+              user_name: 'allen168',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'desbtest',
+              user_id: 940056316,
+              user_name: 'amo999',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'd24ck018',
+              user_id: 941720436,
+              user_name: 'andy790203',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720383,
+              user_name: 'aning',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720339,
+              user_name: 'aska0880',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'desbtest',
+              user_id: 940056816,
+              user_name: 'aurora999',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720338,
+              user_name: 'baggio418',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720301,
+              user_name: 'baxuansan',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720285,
+              user_name: 'bonnie',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'desbtest',
+              user_id: 940049772,
+              user_name: 'brian999',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'desbtest',
+              user_id: 940051826,
+              user_name: 'candy999',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'desbtest',
+              user_id: 940055736,
+              user_name: 'cash999',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720269,
+              user_name: 'cctvt937',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'desbtest',
+              user_id: 940050394,
+              user_name: 'charles999',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
             }
           ]
         },
@@ -163,6 +522,11 @@ describe('會員明細', () => {
     }
 
     vi.spyOn(axiosGoInstance, 'post').mockResolvedValue(result0)
+
+    let currentPage = 2
+    wrapper.vm.updateCurrentPage(currentPage)
+    let apiStart = wrapper.vm.apiDraw * wrapper.vm.apiLength - wrapper.vm.apiLength
+    expect(wrapper.vm.apiStart).toBe(apiStart)
     //等待異步完成
     await flushPromises()
   })
@@ -178,42 +542,222 @@ describe('會員明細', () => {
   })
 
   it('觸發watch filterDateTimestamp', async () => {
-    wrapper.vm.filterDateTimestamp = 223456
-    // mock 排序後打api
-    wrapper.vm.custom_user_list = []
-    wrapper.vm.detail_type = 0
-    wrapper.vm.fuzzy_search = false
-    wrapper.vm.hall_name = 'esb'
-    wrapper.vm.length = 15
-    wrapper.vm.life_cycle_analysis_detail_date = '2023-08-15 ~ 2023-09-12'
-    wrapper.vm.life_cycle_analysis_step = 1
-    wrapper.vm.order = 'DESC'
-    wrapper.vm.query_date = '2023-09-12'
-    wrapper.vm.search_name = ''
-    wrapper.vm.sort = 'deposit_amount'
-    wrapper.vm.start = 0
-    wrapper.vm.platform = 'bbin'
-
     //mock api 0000
     const result0 = {
       data: {
         result: {
-          records_total: 108,
-          records_filtered: 108,
+          records_total: 215,
+          records_filtered: 215,
           data: [
             {
               hall_id: 3820698,
               domain_id: 0,
               ag_name: 'dcash888',
-              user_id: 941721245,
-              user_name: 'wuxu850223',
-              activity_day: 26,
-              bet_amount: '1218198',
-              payoff: '-32299.69',
-              deposit_amount: '245748',
-              bet_amount_avg: '46853.76',
-              payoff_avg: '-1242.3',
-              deposit_amount_avg: '9451.85'
+              user_id: 941720372,
+              user_name: '0123',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720433,
+              user_name: '162360',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'd15ck013',
+              user_id: 941720273,
+              user_name: '213wsas',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720288,
+              user_name: '2175',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720409,
+              user_name: '2875339hyy',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720430,
+              user_name: '402517',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720418,
+              user_name: '777abcdefg',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'd24ck032',
+              user_id: 941720293,
+              user_name: '8888qw',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dbt888',
+              user_id: 941720431,
+              user_name: '942132432',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720314,
+              user_name: '9527',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'd22ck063',
+              user_id: 941720386,
+              user_name: '996500568',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'd30ck035',
+              user_id: 941720337,
+              user_name: 'a19192808',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720427,
+              user_name: 'a598158606',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'd24ck018',
+              user_id: 941720367,
+              user_name: 'aeiou14579',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
+            },
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_id: 941720397,
+              user_name: 'afd168',
+              activity_day: 0,
+              bet_amount: '0',
+              payoff: '0',
+              deposit_amount: '0',
+              bet_amount_avg: '0',
+              payoff_avg: '0',
+              deposit_amount_avg: '0'
             }
           ]
         },
@@ -225,26 +769,14 @@ describe('會員明細', () => {
     }
 
     vi.spyOn(axiosGoInstance, 'post').mockResolvedValue(result0)
+
+    wrapper.vm.filterDateTimestamp = 223456
+
     //等待異步完成
     await flushPromises()
   })
 
   it('觸發watch 與 mock api 是否如預期', async () => {
-    // mock 排序後打api
-    wrapper.vm.custom_user_list = []
-    wrapper.vm.detail_type = 0
-    wrapper.vm.fuzzy_search = false
-    wrapper.vm.hall_name = 'esb'
-    wrapper.vm.length = 15
-    wrapper.vm.life_cycle_analysis_detail_date = '2023-08-15 ~ 2023-09-12'
-    wrapper.vm.life_cycle_analysis_step = 1
-    wrapper.vm.order = 'DESC'
-    wrapper.vm.query_date = '2023-09-12'
-    wrapper.vm.search_name = ''
-    wrapper.vm.sort = 'deposit_amount'
-    wrapper.vm.start = 0
-    wrapper.vm.platform = 'bbin'
-
     //mock api 0000
     const result0 = {
       data: {

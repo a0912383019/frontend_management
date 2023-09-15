@@ -40,7 +40,7 @@ const cssProps = computed(() => {
   <div class="card" :style="cssProps">
     <div class="card__item">
       <div class="card__icon">
-        <font-awesome-icon :icon="props.icon" />
+        <font-awesome-icon :icon="props.icon" v-if="props.icon" />
       </div>
       <div class="card__title">{{ props.title }}</div>
     </div>

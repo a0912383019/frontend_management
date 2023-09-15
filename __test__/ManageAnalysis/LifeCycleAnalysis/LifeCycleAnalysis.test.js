@@ -7,6 +7,8 @@ import { storeToRefs } from 'pinia'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { date_range_picker_config_4 } from '@/utils/dateConfig.js'
 import { dayjs } from 'element-plus'
+import ElementPlus from 'element-plus'
+import router from '@/router'
 import LifeCycleAnalysis from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/LifeCyclePeopleChanges/LifeCyclePeopleChanges.vue'
 import FilterMemberName from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/LifeCyclePeopleChanges/components/FilterMemberName.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -19,12 +21,16 @@ describe('會員階段人數變化', () => {
     global: {
       plugins: [
         i18n,
+        ElementPlus,
+        router,
         createTestingPinia({
           createSpy: vi.fn
         })
       ]
     }
   })
+
+  vi.spyOn(console, 'error').mockImplementation(() => {})
 
   // api的資料
   const apiData = {

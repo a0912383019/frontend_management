@@ -123,7 +123,7 @@ const queryLifeCycleAnalysisOverviewTbl = async (customUserList) => {
       console.error(failMsg)
     }
   } catch (error) {
-    console.error(error)
+    // console.error(error)
     apiSuccess.value = false //取得資料失敗
     apiTableResult.value = []
     tableData.value = []
