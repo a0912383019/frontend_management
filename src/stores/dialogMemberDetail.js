@@ -12,17 +12,22 @@ export const useDialogMemberDetailStore = defineStore(
     const dialogMemberDetailRangeDate = ref(
       formatDateDuration(
         dayjs(date_range_picker_config_13['startDate']).format('YYYY-MM-DD') +
-          '~' +
-          dayjs(date_range_picker_config_13['endDate']).format('YYYY-MM-DD')
+        '~' +
+        dayjs(date_range_picker_config_13['endDate']).format('YYYY-MM-DD')
       )
     )
 
     const memberData = reactive({}) //會員明細點擊會員名稱後，存放該會員資料
 
+    const nowTag = ref('')
+
+    const timeStamp = ref('')
+
     return {
       dialogMemberDetailRangeDate,
-
-      memberData
+      memberData,
+      nowTag,
+      timeStamp
     }
   },
   {

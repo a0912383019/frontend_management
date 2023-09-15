@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberPeriodPlatformPayoff } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -136,12 +136,6 @@ const clearChart = () => {
 onMounted(() => {
   queryMemberPeriodPlatformPayoff()
 })
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryMemberPeriodPlatformPayoff()
-  }
-)
 </script>
 <template>
   <section class="cdp-section">

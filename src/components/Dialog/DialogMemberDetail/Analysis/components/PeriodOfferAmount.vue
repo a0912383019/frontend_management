@@ -95,20 +95,18 @@ const queryMemberPeriodOfferAmount = async () => {
     const result = await apiQueryMemberPeriodOfferAmount({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
 
-    if (return_code !== '9999') {
-      if (return_code !== '0001') {
-        apiSuccess.value = true
-        //整理及地圖對應的資料
-        transformPeriodOfferAmount(result.data.result)
-      } else {
-        messageKey.value = 'noResult'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
+    if (return_code === '0000') {
+      apiSuccess.value = true
+      //整理及地圖對應的資料
+      transformPeriodOfferAmount(result.data.result)
+    } else if (return_code === '0001') {
+      messageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     } else {
       messageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
@@ -161,13 +159,6 @@ const transformPeriodOfferAmount = (data) => {
 onMounted(() => {
   queryMemberPeriodOfferAmount()
 })
-
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryMemberPeriodOfferAmount()
-  }
-)
 </script>
 <template>
   <section class="cdp-section">
