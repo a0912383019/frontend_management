@@ -84,16 +84,12 @@ const query_step_detail_tbl = async (param) => {
       apiSuccess.value = true //取得資料成功
       transform_step_detail_tbl(result.data.result[0]) //資料處理'
       return
-    }
-    if (return_code === '0001') {
-      apiSuccess.value = false
+    } else if (return_code === '0001') {
       messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
       return
-    }
-    if (return_code === '9999') {
-      apiSuccess.value = false
+    } else {
       messageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
