@@ -185,7 +185,7 @@ const query_life_cycle_analysis_detail_tbl = async () => {
       tableData.value = []
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     tableData.value = []
     apiSuccess.value = false //取得資料失敗
     if (error.response.status === 403) {
