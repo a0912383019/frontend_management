@@ -8,14 +8,10 @@ import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { apiQueryStepTotalPeople } from '@/api/manageAnalysis.js'
 import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
-import { FormatNumber, generateRGBColors } from '@/utils/commonUtils.js'
+import { FormatNumber, generateRGBColors, errorRespond } from '@/utils/commonUtils.js'
 import { showDatasetsLabels } from '@/utils/pluginUtils.js'
 import DialogStepDetail from '@/views/ManageAnalysis/components/StepTrendAnalysis/components/DialogStepDetail.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
-// import Vue3ChartJs from '@j-t-mcc/vue3-chartjs'
-// import ChartDataLabels from 'chartjs-plugin-datalabels'
-// import 'chartjs-adapter-dayjs-3'
-
 import Chart from 'chart.js/auto'
 
 const { t } = useI18n()
@@ -127,12 +123,6 @@ const chartSetting = {
           let legendShowArrayIndex = [] //要顯示的legend的index
 
           chart.data.datasets.forEach((item, index) => {
-            // if (item.label === text && legendCloseCount.value === chart.data.datasets.length - 1) {
-            //   //如果是目前legend顯示的最後一筆，不關閉
-            //   item.hidden = false
-            // } else if (item.label === text) {
-            //   item.hidden = !item.hidden
-            // }
             if (item.label === text) {
               item.hidden = !item.hidden
             }
@@ -199,6 +189,17 @@ const query_step_total_people = async () => {
       nextTick(() => {
         register_chart()
       })
+      return
+    } else if (return_code === '0001') {
+      messageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+      return
+    } else {
+      messageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+      return
     }
   } catch (error) {
     console.error(error)
