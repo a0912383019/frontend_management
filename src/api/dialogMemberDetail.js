@@ -273,18 +273,18 @@ export const apiQueryMemberJourneyDetail = (params) => {
 //   )
 // }
 
-//GA來源資料
-export const apiQueryGADataSource = (params) => {
-  const { search_date, hall_name, member_id } = params
-  return axiosInstance.post(
-    '/api/auth/member/bbin/query_ga_data_source' + sessionStorage.from_page,
-    {
-      search_date,
-      hall_name,
-      member_id,
-    }
-  )
-}
+// //GA來源資料
+// export const apiQueryGADataSource = (params) => {
+//   const { search_date, hall_name, member_id } = params
+//   return axiosInstance.post(
+//     '/api/auth/member/bbin/query_ga_data_source' + sessionStorage.from_page,
+//     {
+//       search_date,
+//       hall_name,
+//       member_id,
+//     }
+//   )
+// }
 //會員明細Dialog結束
 
 
@@ -350,3 +350,16 @@ export const apiQueryGAPagePathRank = (params) => {
     }
   })
 }
+
+//GA來源資料
+export const apiQueryGADataSource = (params) => {
+  const { search_date, hall_name, user_id } = params
+  return axiosGoInstance.get('/api/auth/member/ga_data_source', {
+    params: {
+      search_date,
+      hall_name,
+      user_id,
+    }
+  })
+}
+//會員明細Dialog結束
