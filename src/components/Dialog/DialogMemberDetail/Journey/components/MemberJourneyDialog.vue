@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiUpdateCustomFlag } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -212,13 +212,6 @@ const clearForm = () => {
   formOriginal.title = ''
   formOriginal.content = ''
 }
-
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    dateMinDate.value = dayjs(dialogMemberDetailRangeDate.value.split(' ~ ')[0])
-  }
-)
 
 defineExpose({ dialogOpen })
 </script>

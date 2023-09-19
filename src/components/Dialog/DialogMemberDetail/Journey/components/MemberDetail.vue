@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberJourneyDetail } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -129,13 +129,6 @@ const handleClick = () => {
 onMounted(() => {
   queryMemberJourneyDetail()
 })
-
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryMemberJourneyDetail()
-  }
-)
 </script>
 <template>
   <section class="cdp-section">

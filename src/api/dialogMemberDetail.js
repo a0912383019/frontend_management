@@ -170,18 +170,6 @@ export const apiQueryMemberJourney = (params) => {
     }
   })
 }
-// export const apiQueryMemberJourney = (params) => {
-//   const { search_date, hall_name, member_id, locale } = params
-//   return axiosInstance.post(
-//     '/api/auth/member/bbin/query_member_journey' + sessionStorage.from_page,
-//     {
-//       search_date,
-//       hall_name,
-//       member_id,
-//       locale
-//     }
-//   )
-// }
 //新增自訂旗標
 export const apiUpdateCustomFlag = (params) => {
   const { hall_name, user_id, flag_date, flag_title, flag_content } = params
@@ -209,80 +197,74 @@ export const apiQueryMemberJourneyDetail = (params) => {
 //行為分析
 //GA統計資料
 export const apiQueryQARelatedData = (params) => {
-  const { search_date, hall_name, member_id } = params
-  return axiosInstance.post(
-    '/api/auth/member/bbin/query_ga_related_data' + sessionStorage.from_page,
-    {
+  const { search_date, hall_name, user_id } = params
+  return axiosGoInstance.get('/api/auth/member/ga_related_data', {
+    params: {
       search_date,
       hall_name,
-      member_id
+      user_id
     }
-  )
+  })
 }
 
 //登入次數/GA瀏覽次數
 export const apiQueryMemberPeriodLoginGACount = (params) => {
-  const { search_date, hall_name, member_id } = params
-  return axiosInstance.post(
-    '/api/auth/member/bbin/query_member_period_login_ga_count' + sessionStorage.from_page,
-    {
+  const { search_date, hall_name, user_id } = params
+  return axiosGoInstance.get('/api/auth/member/member_period_login_ga_count', {
+    params: {
       search_date,
       hall_name,
-      member_id
+      user_id
     }
-  )
+  })
 }
 
 //領取優惠總額
 export const apiQueryMemberPeriodOfferAmount = (params) => {
-  const { search_date, hall_name, member_id } = params
-  return axiosInstance.post(
-    '/api/auth/member/bbin/query_member_period_offer_amount' + sessionStorage.from_page,
-    {
+  const { search_date, hall_name, user_id } = params
+  return axiosGoInstance.get('/api/auth/member/member_period_offer_amount', {
+    params: {
       search_date,
       hall_name,
-      member_id
+      user_id
     }
-  )
+  })
 }
 
 //領取優惠總每日今額
 export const apiQueryMemberPeriodDayOffer = (params) => {
-  const { search_date, hall_name, member_id } = params
-  return axiosInstance.post(
-    '/api/auth/member/bbin/query_member_period_day_offer' + sessionStorage.from_page,
-    {
+  const { search_date, hall_name, user_id } = params
+  return axiosGoInstance.get('/api/auth/member/member_period_day_offer', {
+    params: {
       search_date,
       hall_name,
-      member_id
+      user_id
     }
-  )
+  })
 }
 
 //GA頁面資料
 //頁面點擊排名
 export const apiQueryGAPagePathRank = (params) => {
-  const { search_date, hall_name, member_id } = params
-  return axiosInstance.post(
-    '/api/auth/member/bbin/query_ga_page_path_rank' + sessionStorage.from_page,
-    {
+  const { search_date, hall_name, user_id } = params
+  return axiosGoInstance.get('/api/auth/member/ga_page_path_rank', {
+    params: {
       search_date,
       hall_name,
-      member_id
+      user_id
     }
-  )
+  })
 }
 
 //GA來源資料
 export const apiQueryGADataSource = (params) => {
-  const { search_date, hall_name, member_id } = params
-  return axiosInstance.post(
-    '/api/auth/member/bbin/query_ga_data_source' + sessionStorage.from_page,
-    {
+  const { search_date, hall_name, user_id } = params
+  return axiosGoInstance.get('/api/auth/member/ga_data_source', {
+    params: {
       search_date,
       hall_name,
-      member_id
+      user_id
     }
-  )
+  })
 }
 //會員明細Dialog結束

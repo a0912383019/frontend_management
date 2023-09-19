@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberPeriodBetAmount } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -208,12 +208,6 @@ const transformBetAmountKnob = (data) => {
 onMounted(() => {
   queryBetLineChart()
 })
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryBetLineChart()
-  }
-)
 </script>
 <template>
   <section class="cdp-section">

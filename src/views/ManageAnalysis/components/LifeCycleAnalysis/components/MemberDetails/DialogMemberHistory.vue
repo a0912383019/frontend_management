@@ -16,7 +16,6 @@ let chartParam = reactive({})
 
 //開啟 dialog
 const handleOpenDialog = (param) => {
-  console.log(param)
   chartParam = param
   dialogTableVisible.value = true
 }

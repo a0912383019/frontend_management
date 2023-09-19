@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberLobbyGroup } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -175,12 +175,6 @@ const clearChart = () => {
 onMounted(() => {
   queryLobbyGroupChart()
 })
-watch(
-  () => dialogMemberDetailRangeDate.value,
-  () => {
-    queryLobbyGroupChart()
-  }
-)
 </script>
 <template>
   <section class="cdp-section margin-bottom-0">
