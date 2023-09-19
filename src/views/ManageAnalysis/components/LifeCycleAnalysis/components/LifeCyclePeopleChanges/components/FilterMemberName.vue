@@ -1,15 +1,16 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 
 import ImportCSV from '@/components/Filter/ImportCSV.vue'
 
 const { t } = useI18n()
 
-// const emit = defineEmits(['query:filter'])
+const route = useRoute()
 
 const manageAnalysisStore = useManageAnalysisStore()
 const { filterCustomUserList } = storeToRefs(manageAnalysisStore)
@@ -26,7 +27,6 @@ const closePopover = () => {
 
 const emit = defineEmits(['update:modelValue'])
 
-// const activeTabName = ref(props.activeName)
 const handleFileUpload = (data) => {
   emit('update:modelValue', data)
 }
@@ -69,6 +69,19 @@ const handleClick = () => {
   closePopover()
   updateFilterTimestamp()
 }
+
+// 初始化設定
+const initSetting = () => {
+  searchName.value = ''
+  manageAnalysisStore.searchName = ''
+  fuzzySearch.value = false
+  manageAnalysisStore.fuzzySearch = fuzzySearch.value
+}
+
+// 頁面切換，清空搜尋關鍵字
+watch(route, () => {
+  initSetting()
+})
 </script>
 <template>
   <div class="cdp-popover-container">

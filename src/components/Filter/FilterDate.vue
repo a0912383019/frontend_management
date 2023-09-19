@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
 import {
@@ -59,18 +59,37 @@ if (props.rangeDate !== '') {
 }
 const dateValue = ref([dateValueStartDate.value, dateValueEndDate.value])
 
-const selectDate = ref(dateValueStartDate.value) // 目前選擇的起始日，用來判斷disabledDate
+const selectDate = ref([dateValueStartDate.value, dateValueEndDate.value]) // 目前選擇的起始日，用來判斷disabledDate
 
 // 日曆禁用日期
 const disabledDate = (day) => {
-  const diff = dayjs(selectDate.value).diff(day, 'month') // 選擇的起始日往前往後大於三個月的日期disabled
-  return diff >= 3 || diff <= -3 || day < dateMinDate.value || day > dateValueEndDate.value
+  // 禁選條件一：選擇的起始日往前往後大於三個月的日期disabled
+  let diff = null
+  if (selectDate.value !== null && selectDate.value[1] === null) {
+    diff = dayjs(selectDate.value[0]).diff(day, 'month')
+    if (diff >= 3 || diff <= -3) {
+      return true
+    }
+  }
+
+  // 禁選條件二：日期小於最小日期 或 日期大於結束日
+  let activeDate = dayjs(day).format('YYYY-MM-DD')
+  let minDate = dayjs(dateMinDate.value).format('YYYY-MM-DD')
+  let endDate = dayjs(dateValueEndDate.value).format('YYYY-MM-DD')
+
+  if (activeDate < minDate || activeDate > endDate) {
+    return true
+  }
+
+  return false
 }
 
+// 快捷選項
 const shortcuts = computed(() => {
   return shortcutsConfig1({ rangeEndDate: props.rangeEndDate })
 })
 
+// 送出篩選
 const handleClick = () => {
   emit('update:timestamp', {
     timestamp: new Date().getTime(),
@@ -85,8 +104,18 @@ const handleClick = () => {
 
 // 選擇日期後將日期放入
 const handleCalendarChange = (val) => {
-  selectDate.value = val[0]
+  selectDate.value = val
 }
+
+// 當使用者清空日曆後，將selectDate一併清空
+watch(
+  () => dateValue.value,
+  () => {
+    if (dateValue.value === null) {
+      selectDate.value = null
+    }
+  }
+)
 </script>
 <template>
   <div class="cdp-popover-container">
@@ -113,7 +142,6 @@ const handleCalendarChange = (val) => {
             v-model="dateValue"
             type="daterange"
             :unlink-panels="false"
-            :clearable="false"
             popper-class="cdp-datepicker-range"
             range-separator="~"
             start-placeholder="Start date"

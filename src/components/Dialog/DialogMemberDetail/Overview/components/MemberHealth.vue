@@ -61,7 +61,7 @@ const queryMemberHealthChart = async () => {
   try {
     const result = await apiQueryMemberHealthChart({
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {

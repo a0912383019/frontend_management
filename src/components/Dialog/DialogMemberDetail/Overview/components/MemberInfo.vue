@@ -12,7 +12,8 @@ import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import {
   getSessionStorageEntity,
   checkTagUsage,
-  generateTagMultiSelect
+  generateTagMultiSelect,
+  errorRespond
 } from '@/utils/commonUtils.js'
 import { system_admin } from '@/../public/js/system_config.js'
 import { dayjs, ElNotification } from 'element-plus'
@@ -39,7 +40,7 @@ const queryMemberInfo = async () => {
   try {
     const result = await apiQueryMemberInfo({
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -53,6 +54,9 @@ const queryMemberInfo = async () => {
       apiMemberData.user_mail = user_mail
       transformMemberInfoTagStr(tag_str) //處理標籤
       boxIsLoading.value = false //載入完成 移除loading
+    } else if (return_code === '0001') {
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     }
   } catch (error) {
     console.error(error)
@@ -137,7 +141,7 @@ const updateMemberTagsEnable = async () => {
   try {
     const result = await apiUpdateMemberTagsEnable({
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id,
+      user_id: dialogMemberDetailStore.memberData.user_id,
       user_name: apiMemberData.user_name,
       user_tags_original: includeTags.value,
       user_tags_new: tagSelectValue.value.join(',')
@@ -205,18 +209,15 @@ const queryMemberLifeCycle = async () => {
   try {
     const result = await apiQueryMemberLifeCycle({
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id,
+      user_id: dialogMemberDetailStore.memberData.user_id,
       data_date: dayjs().subtract(2, 'day').format('YYYY-MM-DD') // 預設取當下日期前兩天為條件
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
-      if (result.data.result.length == 0) {
-        // 該會員沒有生命週期紀錄
-        apiMemberData.life_cycle = t('common.none')
-      } else {
-        apiMemberData.life_cycle =
-          tableConfig.value[result.data.result[0]['this_day_step']]['step_name']
-      }
+      apiMemberData.life_cycle = tableConfig.value[result.data.result['this_day_step']]['step_name']
+    } else if (return_code === '0001') {
+      // 該會員沒有生命週期紀錄
+      apiMemberData.life_cycle = t('common.none')
     }
   } catch (error) {
     console.error(error)

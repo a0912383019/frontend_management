@@ -77,7 +77,7 @@ const updateCustomFlag = async (type) => {
   try {
     const result = await apiUpdateCustomFlag({
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id,
+      user_id: dialogMemberDetailStore.memberData.user_id,
       flag_date: formatDate(form.date),
       flag_title: formTitle,
       flag_content: form.content

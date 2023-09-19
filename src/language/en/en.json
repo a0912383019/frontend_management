@@ -353,6 +353,7 @@
   "member_life_cycles": {
     "life_cycle": "Gambler Life Cycle",
     "unclassified": "Unclassified",
+    "unregistered": "尚未註冊",
     "active": "Active",
     "active_description": "Been actively betting.",
     "newBorn": "NewBorn",
@@ -411,6 +412,7 @@
     "pc": "PC",
     "mobile": "Mobile",
     "app": "APP",
+    "other": "其他",
     "total_bet_by_game_type": "Bet by Game Type",
     "total_bet_by_platform": "Bet by Platform",
     "total_bet_by_game": "Bet by Game",

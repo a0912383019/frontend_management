@@ -44,6 +44,7 @@ export const useGlobalStore = defineStore(
       const config = RFM_NAPL_step_config
       config[null]['step_name'] = t('member_life_cycles.unclassified')
       config[null]['step_description'] = t('member_life_cycles.unclassified')
+      config[0]['step_name'] = t('member_life_cycles.unregistered')
       config[1]['step_name'] = t('member_life_cycles.active')
       config[1]['step_description'] = t('member_life_cycles.active_description')
       config[2]['step_name'] = t('member_life_cycles.newBorn')
