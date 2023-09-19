@@ -180,11 +180,38 @@ const generateSelectData = () => {
     result.push({
       label: item[1]['tag_name'],
       value: item[1]['tag_key'],
+      disabled: false,
       ...item[1]
     })
   })
   tagSelectOptions.value = []
   tagSelectOptions.value = result
+}
+
+// 標籤select change事件
+const handleTagChange = () => {
+  // 取得config
+  let tagConfig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+
+  // 將選項全部先取消disabled
+  for (let i = 0; i < tagSelectOptions.value.length; i++) {
+    tagSelectOptions.value[i]['disabled'] = false
+  }
+
+  // 目前選擇的標籤list
+  for (let i = 0; i < tagSelectValue.value.length; i++) {
+    // 該標籤的互斥標籤list
+    if (tagConfig[tagSelectValue.value[i]].mutual_tags_code != null) {
+      // 互斥表
+      let mutualTagAry = tagConfig[tagSelectValue.value[i]].mutual_tags_code.split(',')
+      for (let j = 0; j < tagSelectOptions.value.length; j++) {
+        // 該option有在互斥列表裡面就disable
+        if (mutualTagAry.indexOf(tagSelectOptions.value[j]['value']) !== -1) {
+          tagSelectOptions.value[j]['disabled'] = true
+        }
+      }
+    }
+  }
 }
 
 // 取得包含標籤
@@ -323,12 +350,18 @@ onMounted(() => {
         </div>
         <div v-show="tagIsEdit">
           <div class="tags">
-            <el-select v-model="tagSelectValue" multiple class="cdp-tag-select mr-6">
+            <el-select
+              v-model="tagSelectValue"
+              @change="handleTagChange"
+              multiple
+              class="cdp-tag-select mr-6"
+            >
               <el-option
                 v-for="item in tagSelectOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
+                :disabled="item.disabled"
               />
             </el-select>
             <CdpButton

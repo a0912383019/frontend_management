@@ -94,6 +94,7 @@ const queryMemberHealthChart = async () => {
         register_chart()
       }, 100)
     } else if (return_code === '0001') {
+      apiSuccess.value = true
       memberHealthValue.value = t('common.none')
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
