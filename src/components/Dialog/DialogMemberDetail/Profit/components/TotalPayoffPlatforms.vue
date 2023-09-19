@@ -76,7 +76,7 @@ const queryMemberPeriodPlatformPayoff = async () => {
     const result = await apiQueryMemberPeriodPlatformPayoff({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id,
+      user_id: dialogMemberDetailStore.memberData.user_id,
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status

@@ -167,6 +167,7 @@ watch(
             class="cdp-select w-full"
             popper-class="cdp-select-popper"
             filterable
+            :teleported="false"
             :disabled="formDisabled"
           >
             <el-option
@@ -186,6 +187,7 @@ watch(
             class="cdp-select w-full"
             popper-class="cdp-select-popper"
             filterable
+            :teleported="false"
             :disabled="formDisabled"
           >
             <el-option

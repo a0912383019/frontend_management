@@ -108,19 +108,17 @@ const queryMemberJourney = async () => {
     const result = await apiQueryMemberJourney({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id,
+      user_id: dialogMemberDetailStore.memberData.user_id,
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
-    if (return_code !== '0001') {
-      if (return_code === '0000') {
-        apiSuccess.value = true
-        transformMemberJourney(result.data.result)
-      } else {
-        messageKey.value = 'chartFailed'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
+    if (return_code === '0000') {
+      apiSuccess.value = true
+      transformMemberJourney(result.data.result)
+    } else if (return_code !== '0001') {
+      messageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     } else {
       messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
@@ -158,10 +156,12 @@ const transformMemberJourney = (data) => {
   let chart_data_custom_flag = []
   data.forEach((item, index) => {
     let label = dayjs(item.data_date).format(t('date.format_date_rule'))
+
     chartOptions.xAxis.categories.push(dayjs(item.data_date).format(t('date.format_date_rule')))
 
     //  處理會員階段資料
     let step_config = RFM_NAPL_step_config[item.this_day_step]
+
     let this_day_step_data = {
       from: 0,
       to: data.length - 1,

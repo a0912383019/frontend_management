@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { dayjs } from 'element-plus'
 import { formatDateDuration } from '@/utils/commonUtils.js'
@@ -115,26 +115,49 @@ const shortcuts = computed(() => {
 })
 
 // 目前選擇的起始日，用來判斷disabledDate
-const selectDate = ref(dateValueStartDate.value)
+const selectDate = ref([dateValueStartDate.value, dateValueEndDate.value]) // 目前選擇的起始日，用來判斷disabledDate
 
 // 選擇日期後將日期放入
 const handleCalendarChange = (val) => {
-  selectDate.value = val[0]
+  selectDate.value = val
 }
 
 // 日曆禁用日期
 const disabledDate = (day) => {
-  if (props.enabledThreeMonth) {
-    const diff = dayjs(selectDate.value).diff(day, 'month') // 選擇的起始日往前往後大於三個月的日期disabled
-    return diff >= 3 || diff <= -3 || day < dateMinDate.value || day > dateValueEndDate.value
-  } else {
-    return day < dateMinDate.value || day > dateValueEndDate.value
+  // 禁選條件一：選擇的起始日往前往後大於三個月的日期disabled
+  let diff = null
+  if (selectDate.value !== null && selectDate.value[1] === null) {
+    diff = dayjs(selectDate.value[0]).diff(day, 'month')
+    if (diff >= 3 || diff <= -3) {
+      return true
+    }
   }
+
+  // 禁選條件二：日期小於最小日期 或 日期大於結束日
+  let activeDate = dayjs(day).format('YYYY-MM-DD')
+  let minDate = dayjs(dateMinDate.value).format('YYYY-MM-DD')
+  let endDate = dayjs(dateValueEndDate.value).format('YYYY-MM-DD')
+
+  if (activeDate < minDate || activeDate > endDate) {
+    return true
+  }
+
+  return false
 }
 
 onMounted(() => {
   handleDateChange(dateValue.value)
 })
+
+// 當使用者清空日曆後，將selectDate一併清空
+watch(
+  () => dateValue.value,
+  () => {
+    if (dateValue.value === null) {
+      selectDate.value = null
+    }
+  }
+)
 </script>
 <template>
   <div>
@@ -143,7 +166,6 @@ onMounted(() => {
       type="daterange"
       :format="t('date.format_date_rule')"
       :unlink-panels="false"
-      :clearable="false"
       popper-class="cdp-datepicker-range"
       range-separator="~"
       start-placeholder="Start date"

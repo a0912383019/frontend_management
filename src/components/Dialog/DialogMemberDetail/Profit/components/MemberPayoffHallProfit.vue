@@ -73,7 +73,7 @@ const queryMemberPeriodPayoffProfitAmount = async () => {
     const result = await apiQueryMemberPeriodPayoffProfitAmount({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
 
@@ -119,21 +119,21 @@ const transformMemberPeriodPayoffProfitAmount = (data) => {
   let chartData = {
     payoff: {
       name: t('customer_detail_info.member_payoff'),
-      dashStyle: 'Dash',
+      dashStyle: 'ShortDot',
       lineWidth: 2,
       color: 'rgba(245,105,84,1)',
       data: []
     },
     profit_loss: {
       name: t('customer_detail_info.hall_profit'),
-      dashStyle: 'LongDash',
+      dashStyle: 'Dash',
       lineWidth: 2,
       color: 'rgba(60,141,188,1)',
       data: []
     },
     accumulate_profit: {
       name: t('customer_detail_info.accumulate_hall_profit'),
-      dashStyle: 'ShortDash',
+      dashStyle: 'LongDashDotDot',
       lineWidth: 2,
       color: 'rgba(0,166,90,1)',
       data: []

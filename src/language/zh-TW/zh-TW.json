@@ -354,6 +354,7 @@
   "member_life_cycles": {
     "life_cycle": "會員生命週期",
     "unclassified": "未分類",
+    "unregistered": "尚未註冊",
     "active": "活躍期",
     "active_description": "有「持續下注」會員",
     "newBorn": "新客成長期",
@@ -412,6 +413,7 @@
     "pc": "PC",
     "mobile": "Mobile",
     "app": "APP",
+    "other": "其他",
     "total_bet_by_game_type": "遊戲種類貨量佔比",
     "total_bet_by_platform": "平台貨量佔比",
     "total_bet_by_game": "遊戲貨量佔比",

@@ -97,7 +97,7 @@ const queryBetLineChart = async () => {
     const result = await apiQueryMemberPeriodBetAmount({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.memberData.user_id
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -169,20 +169,20 @@ const knobLists = ref([])
 const transformBetAmountKnob = (data) => {
   let pc_total_amount = 0,
     mobile_total_amount = 0,
-    app_total_amount = 0
+    other_total_amount = 0
   data.forEach((item) => {
-    if (item.platform === 0) {
-      //PC:0
+    if (item.device === 0 || item.device === 6) {
+      //PC: 0, 6
       pc_total_amount = pc_total_amount + parseFloat(item.total_bet_amount)
-    } else if (item.platform === 99) {
-      // APP：99
-      app_total_amount = app_total_amount + parseFloat(item.total_bet_amount)
+    } else if (item.device === 1) {
+      // 其他: 1
+      other_total_amount = other_total_amount + parseFloat(item.total_bet_amount)
     } else {
-      // Mobile：1、2、3、4、5，其他：6, 7, 12
+      // MOBILE: 2, 3, 4, 5
       mobile_total_amount = mobile_total_amount + parseFloat(item.total_bet_amount)
     }
   })
-  let total_amount = pc_total_amount + mobile_total_amount + app_total_amount
+  let total_amount = pc_total_amount + mobile_total_amount + other_total_amount
   knobLists.value = []
   knobLists.value = [
     {
@@ -194,8 +194,8 @@ const transformBetAmountKnob = (data) => {
       amount: Math.round((mobile_total_amount / total_amount) * 100)
     },
     {
-      name: t('customer_detail_info.app'),
-      amount: Math.round((app_total_amount / total_amount) * 100)
+      name: t('customer_detail_info.other'),
+      amount: Math.round((other_total_amount / total_amount) * 100)
     }
   ]
 }

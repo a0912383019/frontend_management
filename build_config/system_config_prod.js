@@ -169,6 +169,13 @@ RFM_NAPL_step_config[null] = {
   step_icon: '',
   step_dot: ''
 }
+RFM_NAPL_step_config['0'] = {
+  step_name: '',
+  step_description: '',
+  step_color: [128, 128, 192],
+  step_icon: '',
+  step_dot: ''
+}
 RFM_NAPL_step_config['1'] = {
   step_name: '',
   step_description: '',

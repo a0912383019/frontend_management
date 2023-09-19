@@ -59,23 +59,22 @@ const queryMemberJourneyDetail = async () => {
     const result = await apiQueryMemberJourneyDetail({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      member_id: dialogMemberDetailStore.memberData.user_id,
-      source: sourceCheckList.value,
+      user_id: dialogMemberDetailStore.memberData.user_id,
+      source: sourceCheckList.value.join(','),
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
 
-    if (return_code !== '0001') {
-      if (return_code === '0000') {
-        apiSuccess.value = true
-        transformMemberJourneyDetail(result.data.result)
-      } else {
-        messageKey.value = 'chartFailed'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
+    if (return_code === '0000') {
+      apiSuccess.value = true
+      transformMemberJourneyDetail(result.data.result)
+    } else if (return_code === '0001') {
+      // 這邊前台設計以表格顯示查無資料，不使用cdpMessage
+      apiSuccess.value = true
+      // 因為沒資料api不會回傳result，只有status，這邊直接帶入空陣列
+      transformMemberJourneyDetail([])
     } else {
-      messageKey.value = 'noResult'
+      messageKey.value = 'queryFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }

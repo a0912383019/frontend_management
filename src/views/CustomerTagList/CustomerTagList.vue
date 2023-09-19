@@ -231,7 +231,6 @@ const handleTagButtonClick = (item) => {
 }
 
 const handleFilterSubmit = (data) => {
-  console.log('filter', data)
   formData['member'] = data['member']
   formData['selectAcount'] = data['selectAcount']
   formData['selectLevel'] = data['selectLevel']
