@@ -164,11 +164,6 @@ const transformBetAmountChart = (data) => {
   chartSetting.data.datasets = chart_datasets
 }
 
-// 紀錄討論結論
-// - PC: 0, 6
-// - MOBILE: 2, 3, 4, 5
-// - 其他: 1
-
 // 各裝置貨量佔比knob圖
 const knobLists = ref([])
 const transformBetAmountKnob = (data) => {
