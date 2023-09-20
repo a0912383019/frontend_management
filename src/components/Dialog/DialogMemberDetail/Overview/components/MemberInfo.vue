@@ -353,6 +353,7 @@ onMounted(() => {
             <el-select
               v-model="tagSelectValue"
               @change="handleTagChange"
+              @focus="handleTagChange"
               multiple
               class="cdp-tag-select mr-6"
             >
