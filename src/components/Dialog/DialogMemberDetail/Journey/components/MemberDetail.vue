@@ -64,17 +64,14 @@ const queryMemberJourneyDetail = async () => {
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
-
     if (return_code === '0000') {
       apiSuccess.value = true
       transformMemberJourneyDetail(result.data.result)
-    } else if (return_code === '0001') {
+    } else {
       // 這邊前台設計以表格顯示查無資料，不使用cdpMessage
       apiSuccess.value = true
       // 因為沒資料api不會回傳result，只有status，這邊直接帶入空陣列
       transformMemberJourneyDetail([])
-    } else {
-      messageKey.value = 'queryFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
