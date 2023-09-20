@@ -89,7 +89,7 @@ const transformTableData = (data) => {
   tableData.value = [
     {
       name: t('customer_detail_info.page_views'),
-      value: data.page_views
+      value: FormatNumber(data.page_views.toString())
     },
     {
       name: t('customer_detail_info.promotion_clicks'),
