@@ -61,6 +61,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons'
 
 import { faVimeoV } from '@fortawesome/free-brands-svg-icons'
+
 library.add(
   faExclamationTriangle,
   faAngleDown,
