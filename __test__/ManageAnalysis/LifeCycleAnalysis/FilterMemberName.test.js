@@ -14,6 +14,7 @@ library.add(faSliders, faCircleInfo, faSearch)
 
 describe('開啟 Dialog Member', () => {
   let wrapper = null
+  let manageAnalysisStore = null
   beforeEach(() => {
     wrapper = mount(FilterMemberName, {
       global: {
@@ -30,9 +31,11 @@ describe('開啟 Dialog Member', () => {
         }
       }
     })
+    manageAnalysisStore = useManageAnalysisStore()
   })
   afterEach(() => {
     wrapper.unmount()
+    manageAnalysisStore = null
   })
 
   it('測試 closePopover', () => {
@@ -46,8 +49,6 @@ describe('開啟 Dialog Member', () => {
   })
 
   it('測試 handleCsvSuccess', () => {
-    const manageAnalysisStore = useManageAnalysisStore()
-
     wrapper.vm.handleCsvSuccess()
     expect(manageAnalysisStore.useCustomList).toBe(true)
 
@@ -59,8 +60,6 @@ describe('開啟 Dialog Member', () => {
   })
 
   it('測試 handleClick', () => {
-    const manageAnalysisStore = useManageAnalysisStore()
-
     wrapper.vm.searchName = 'a123'
     wrapper.vm.useCustomList = false
     wrapper.vm.fuzzySearch = false
@@ -73,15 +72,12 @@ describe('開啟 Dialog Member', () => {
   })
 
   it('測試 updateFilterTimestamp', () => {
-    const manageAnalysisStore = useManageAnalysisStore()
     let time = new Date().getTime()
     wrapper.vm.updateFilterTimestamp()
     expect(manageAnalysisStore.filterTimestamp).toBe(time)
   })
 
   it('資料送出前的欄位檢查', () => {
-    const manageAnalysisStore = useManageAnalysisStore()
-
     // if useCustomList 為 true 的狀況
     wrapper.vm.useCustomList = ['a123', 'b456']
 
@@ -99,7 +95,6 @@ describe('開啟 Dialog Member', () => {
   })
 
   it('測試頁面切換，是否會執行initSetting', async () => {
-    const manageAnalysisStore = useManageAnalysisStore()
     // 設定資料
     wrapper.vm.searchName = 'a123'
     wrapper.vm.fuzzySearch = true
