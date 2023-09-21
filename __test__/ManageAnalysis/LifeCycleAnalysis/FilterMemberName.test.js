@@ -37,28 +37,38 @@ describe('開啟 Dialog Member', () => {
 
   it('測試 closePopover', () => {
     wrapper.vm.closePopover()
+
+    const el = wrapper.find('.unit-test-people-changes')
+    const attr = el.attributes()['aria-hidden']
+
+    // 預期執行關閉後，aria-hidden要為true
+    expect(attr).toBe('true')
   })
 
   it('測試 handleCsvSuccess', () => {
     const manageAnalysisStore = useManageAnalysisStore()
-    const submitSpy = vi.spyOn(wrapper.vm.ctx, 'handleBeforeSubmit')
 
     wrapper.vm.handleCsvSuccess()
     expect(manageAnalysisStore.useCustomList).toBe(true)
 
-    expect(submitSpy).toHaveBeenCalled()
+    const el = wrapper.find('.unit-test-people-changes')
+    const attr = el.attributes()['aria-hidden']
+
+    // 預期執行關閉後，aria-hidden要為true
+    expect(attr).toBe('true')
   })
 
   it('測試 handleClick', () => {
     const manageAnalysisStore = useManageAnalysisStore()
-    wrapper.vm.searchName = '123'
-    wrapper.vm.useCustomList = []
+
+    wrapper.vm.searchName = 'a123'
+    wrapper.vm.useCustomList = false
     wrapper.vm.fuzzySearch = false
 
     wrapper.vm.handleClick()
 
-    expect(manageAnalysisStore.searchName).toBe('123')
-    expect(manageAnalysisStore.useCustomList).toStrictEqual([])
+    expect(manageAnalysisStore.searchName).toBe('a123')
+    expect(manageAnalysisStore.useCustomList).toBe(false)
     expect(manageAnalysisStore.fuzzySearch).toBe(false)
   })
 
@@ -73,7 +83,7 @@ describe('開啟 Dialog Member', () => {
     const manageAnalysisStore = useManageAnalysisStore()
 
     // if useCustomList 為 true 的狀況
-    wrapper.vm.useCustomList = ['123', '456']
+    wrapper.vm.useCustomList = ['a123', 'b456']
 
     wrapper.vm.handleBeforeSubmit()
 
@@ -91,9 +101,9 @@ describe('開啟 Dialog Member', () => {
   it('測試頁面切換，是否會執行initSetting', async () => {
     const manageAnalysisStore = useManageAnalysisStore()
     // 設定資料
-    wrapper.vm.searchName = '123'
+    wrapper.vm.searchName = 'a123'
     wrapper.vm.fuzzySearch = true
-    manageAnalysisStore.searchName = '123'
+    manageAnalysisStore.searchName = 'a123'
     manageAnalysisStore.fuzzySearch = true
 
     //切換路由，觸發watch
