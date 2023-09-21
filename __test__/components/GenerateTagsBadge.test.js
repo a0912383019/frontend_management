@@ -7,11 +7,12 @@ import ElementPlus from 'element-plus'
 describe('GenerateTagsBadge', () => {
   let wrapper = null
   let spy
+
   beforeEach(() => {
     spy = vi.spyOn(
       module,
       'getSessionStorageEntity'
-    ).mockImplementation(vi.fn());
+    ).mockImplementation(vi.fn())
 
     //模擬第一次與第二次呼叫getSessionStorageEntity
     module.getSessionStorageEntity
@@ -19,8 +20,8 @@ describe('GenerateTagsBadge', () => {
         'tags_config': {
           'esb': {
             '30001': {
-              'tag_type': 1,
-            },
+              'tag_type': 1
+            }
           }
         }
       })
@@ -28,8 +29,8 @@ describe('GenerateTagsBadge', () => {
         'tags_config': {
           'esb': {
             '30001': {
-              'tag_type': 2,
-            },
+              'tag_type': 2
+            }
           }
         }
       })
