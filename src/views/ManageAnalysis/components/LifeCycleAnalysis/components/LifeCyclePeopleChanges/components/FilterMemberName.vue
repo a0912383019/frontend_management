@@ -92,7 +92,7 @@ watch(route, () => {
       :width="320"
       trigger="click"
       :teleported="false"
-      popper-class="cdp-popover"
+      popper-class="cdp-popover unit-test-people-changes"
     >
       <template #reference>
         <ButtonIcon
