@@ -13,7 +13,7 @@ describe('CurrencySignText', () => {
             global: {
                 plugins: [i18n, router, createTestingPinia(
                     {
-                        createSpy: vi.fn,
+                        createSpy: vi.fn
                     }
                 )]
             }

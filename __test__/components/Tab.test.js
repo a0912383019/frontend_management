@@ -5,6 +5,7 @@ import Tab from '@/components/Tab.vue'
 
 describe('Tab', () => {
   let wrapper = null
+
   const tabData = [
     {
       name: 'LifeCycleAnalysis',
