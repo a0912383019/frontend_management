@@ -9,9 +9,13 @@ import AvgCard from '@/views/ManageAnalysis/components/LifeCycleAnalysis/compone
 
 describe('AvgCard', () => {
   let wrapper = null
+  const propsTitle = '測試標題'
+  const propsPrice = '100'
   beforeEach(() => {
     wrapper = mount(AvgCard, {
       props: {
+        title: propsTitle,
+        price: propsPrice,
         itemBgColor: '#59b7c8',
         itemShadowColor: '#2b8696',
         cardBgColor: '#dceff2'
@@ -42,5 +46,15 @@ describe('AvgCard', () => {
       '--card-bg-color': '#dceff2'
     }
     expect(wrapper.vm.cssProps).toStrictEqual(dataValue)
+  })
+
+  it('驗證 card__title 是否與 props title 一致', () => {
+    let elCardTitle = wrapper.find('.card__title')
+    expect(elCardTitle.text()).toBe(propsTitle)
+  })
+
+  it('驗證 card__price 是否與 props price 一致', () => {
+    let elCardPrice = wrapper.find('.card__price')
+    expect(elCardPrice.text()).toBe(propsPrice)
   })
 })

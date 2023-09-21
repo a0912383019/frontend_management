@@ -52,7 +52,7 @@ const handleBeforeSubmit = () => {
 
 // csv 上傳成功
 const handleCsvSuccess = (result) => {
-  handleBeforeSubmit()
+  ctx.handleBeforeSubmit()
   handleFileUpload(result)
   updateFilterTimestamp() //更新timestamp已更新資料
   manageAnalysisStore.useCustomList = true
@@ -62,7 +62,7 @@ const handleCsvSuccess = (result) => {
 //確認篩選
 const handleClick = () => {
   //將資料寫到pinia
-  handleBeforeSubmit()
+  ctx.handleBeforeSubmit()
   manageAnalysisStore.searchName = searchName.value
   manageAnalysisStore.useCustomList = useCustomList.value
   manageAnalysisStore.fuzzySearch = fuzzySearch.value
@@ -76,6 +76,10 @@ const initSetting = () => {
   manageAnalysisStore.searchName = ''
   fuzzySearch.value = false
   manageAnalysisStore.fuzzySearch = fuzzySearch.value
+}
+
+const ctx = {
+  handleBeforeSubmit
 }
 
 // 頁面切換，清空搜尋關鍵字
