@@ -1,0 +1,43 @@
+import { it, describe, expect, beforeEach, afterEach } from 'vitest'
+import { shallowMount } from '@vue/test-utils'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import Search from '@/components/Search.vue'
+
+describe('Search', () => {
+    let wrapper = null
+
+    beforeEach(() => {
+        wrapper = shallowMount(Search, {
+            props: {
+                modelValue: 'bro',
+                'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e })
+            },
+            global: {
+                components: {
+                    FontAwesomeIcon
+                }
+            }
+        })
+    })
+
+    afterEach(() => {
+        wrapper.unmount()
+    })
+
+    it('測試渲染', () => {
+        expect(wrapper.find('.search__input').exists()).toBe(true)
+        expect(wrapper.find('.search__iconsearch').exists()).toBe(true)
+    })
+
+    it('測試input', async () => {
+        await wrapper.find('input').setValue('test')
+        expect(wrapper.emitted('update:modelValue')).toBeTruthy()
+        expect(wrapper.props('modelValue')).toBe('test')
+    })
+
+    it('測試button delete', async () => {
+        await wrapper.find('.search__icondelete').trigger('click')
+        expect(wrapper.emitted('update:modelValue')).toBeTruthy()
+        expect(wrapper.props('modelValue')).toBe('')
+    })
+})

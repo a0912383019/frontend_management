@@ -1,4 +1,4 @@
-import { it, describe, expect } from 'vitest'
+import { it, describe, expect, afterEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import PercentWithIcon from '@/components/PercentWithIcon.vue'
