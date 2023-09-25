@@ -3,13 +3,12 @@ stages:
   - "build"
 
 test:
-  image: node:v20.3.0
+  image: node:latest
   tags:
     - cdp-vue-share
   stage: test
   script:
     - npm i
-    - npm run test:unit
     - npm run coverage
 
 dev-build:
