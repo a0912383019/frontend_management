@@ -43,19 +43,20 @@ function listFilesRecursively2(folderPath) {
             // 如果是文件，打印文件路径
             console.log(fileName);
             if(tests.includes(fileName)) {
-                excel.push([filePath, 'V']); // 将文件路径包装在数组中
+                excel.push([`"${filePath}"`, '"V"']); // 将文件路径包装在数组中
             } else {
-                excel.push([filePath]);
+                excel.push([`"${filePath}"`]);
             }
         }
     });
 }
 
 // 指定要列出文件的根文件夹路径
-const rootFolder = './src/views/';
-
+const rootFolder1 = './src/views/';
+const rootFolder2 = './src/components/';
 // 调用递归函数开始列出文件
-listFilesRecursively2(rootFolder);
+listFilesRecursively2(rootFolder2);
+listFilesRecursively2(rootFolder1);
 
 if (excel.length > 0) {
     // 将文件路径保存到 CSV 文件
