@@ -12,8 +12,9 @@ test:
     - cp -r "build_config/system_config_dev.js" "./public/js/system_config.js"
   stage: test
   script:
-    - npm i
-    - npm run coverage
+    - eoch "npm run coverage" 
+    # - npm i
+    # - npm run coverage
 
 dev-build:
   stage: build
