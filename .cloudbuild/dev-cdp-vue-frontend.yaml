@@ -9,6 +9,9 @@ steps:
   - name: "ubuntu"
     args: ["bash", "-c", 'echo "_IMAGEPATH=${_IMAGEPATH}"']
 
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', '-r', 'build_config/system_config_${_ENVTYPE}.js', './public/js/system_config.js']
+
   - name: "ubuntu"
     args: ["bash", "-c", 'echo "[Build-Time] ${_PROCTIME}\r\n [Build-Env] ${_ENVTYPE}\r\n" > release.txt']
 

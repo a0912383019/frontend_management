@@ -6,6 +6,8 @@ test:
   image: node:latest
   tags:
     - cdp-vue-share
+  before_script:
+    - cp -r "build_config/system_config_dev.js" "./public/js/system_config.js"
   stage: test
   script:
     - npm i
@@ -14,7 +16,7 @@ test:
 dev-build:
   stage: build
   tags:
-    - cdp-vue-share
+    - cdp-vue-share  
   image: google/cloud-sdk:latest
   script:    
     - gcloud auth activate-service-account --key-file=$SA_TOKEN_CDP
