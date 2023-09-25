@@ -43,9 +43,9 @@ function listFilesRecursively2(folderPath) {
             // 如果是文件，打印文件路径
             console.log(fileName);
             if(tests.includes(fileName)) {
-                excel.push([`"${filePath}"`, '"V"']); // 将文件路径包装在数组中
+                excel.push([`"${filePath}"`, '"V"',]); // 将文件路径包装在数组中
             } else {
-                excel.push([`"${filePath}"`]);
+                excel.push([`"${filePath}"`,]);
             }
         }
     });
