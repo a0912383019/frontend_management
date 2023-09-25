@@ -1,5 +1,5 @@
 import { it, describe, expect, vi } from 'vitest'
-import { mount, flushPromises, shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import ManageAnalysis from '@/views/ManageAnalysis/ManageAnalysis.vue'
 import { createTestingPinia } from '@pinia/testing'
