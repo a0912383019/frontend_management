@@ -43,9 +43,9 @@ function listFilesRecursively2(folderPath) {
             // 如果是文件，打印文件路径
             console.log(fileName);
             if(tests.includes(fileName)) {
-                excel.push([`"${filePath}"`, '"V"',]); // 将文件路径包装在数组中
+                excel.push([filePath, 'V']); // 将文件路径包装在数组中
             } else {
-                excel.push([`"${filePath}"`,]);
+                excel.push([filePath]);
             }
         }
     });
@@ -60,7 +60,7 @@ listFilesRecursively2(rootFolder1);
 
 if (excel.length > 0) {
     // 将文件路径保存到 CSV 文件
-    const csvContent = excel.map(e => e.join(",")).join("\n");
+    const csvContent = excel.map(e => e.join(",")).join(",\n");
     fs.writeFileSync('my_data.csv', csvContent);
 
     console.log('CSV 文件已生成：my_data.csv');
