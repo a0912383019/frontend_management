@@ -3,7 +3,7 @@ stages:
   - "build"
 
 test:
-  image: node:latest
+  image: node:v20.3.0
   tags:
     - cdp-vue-share
   stage: test
