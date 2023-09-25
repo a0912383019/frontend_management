@@ -25,6 +25,8 @@ dev-build:
     - gcloud auth activate-service-account --key-file=$SA_TOKEN_CDP
     - gcloud config set project $PROJECTID_CDP
     - gcloud builds submit --region="asia-northeast1" --config=".cloudbuild/dev-cdp-vue-frontend.yaml" --substitutions _PROCTIME=$(date +"%m%d-%H%M") .  
+  after_script:
+    - cat public/js/system_config.js | grep --color "build_env_config"
   rules:
     - if: ($CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "push")
       when: on_success

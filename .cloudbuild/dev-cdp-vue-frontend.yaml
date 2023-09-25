@@ -1,7 +1,6 @@
 substitutions:
   _IMAGEPATH: 'us-central1-docker.pkg.dev/gcp-20190903-01/cdp-backend-images/cdp_backend_vue'  
   _ENVTYPE: 'dev'
-  _APITYPE: 'internal'
   _SERVICE: 'dev-cdp-vue-frontend'
   _SERVICEREGION: 'asia-northeast1'
 
@@ -13,6 +12,9 @@ steps:
     args: ['cp', '-r', 'build_config/system_config_${_ENVTYPE}.js', './public/js/system_config.js']
 
   - name: "ubuntu"
+    args: ["bash", "-c", 'cat public/js/system_config.js | grep --color "build_env_config"']    
+
+  - name: "ubuntu"
     args: ["bash", "-c", 'echo "[Build-Time] ${_PROCTIME}\r\n [Build-Env] ${_ENVTYPE}\r\n" > release.txt']
 
   # Docker Build
@@ -21,8 +23,6 @@ steps:
     args:
       - '-c'    
       - 'docker build --build-arg=buildenv=${_ENVTYPE} -t ${_IMAGEPATH}:${_ENVTYPE}_${_PROCTIME}  -t ${_IMAGEPATH}:${_ENVTYPE} .'
-# docker build -t $IMAGEFULLPATH .
-# if [[ ! $(cp -v "$CONFIGPATH${SYSTEMCONFIGNAME%.*}_$BUILDENV.${SYSTEMCONFIGNAME##*.}" "$SYSTEMCONFIGPATH$SYSTEMCONFIGNAME") ]]; \
 
   # Docker Push
   - name: "gcr.io/cloud-builders/docker"
