@@ -16,6 +16,7 @@ describe('Tab', () => {
       label: '趨勢分析'
     }
   ]
+
   beforeEach(() => {
     wrapper = mount(Tab, {
       props: {
