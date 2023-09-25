@@ -8,7 +8,7 @@ test:
     - cdp-vue-share
   stage: test
   script:
-  "scripts": {
+  "scripts":
     - npm install -g vitest
     - npm run test:unit
     - npm run coverage
