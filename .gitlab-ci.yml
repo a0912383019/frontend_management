@@ -7,6 +7,7 @@ test:
   tags:
     - cdp-vue-share
   before_script:
+    - mkdir public/js
     - cp -r "build_config/system_config_dev.js" "./public/js/system_config.js"
   stage: test
   script:
