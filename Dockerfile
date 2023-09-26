@@ -2,7 +2,7 @@ FROM node:lts-alpine as build
 
 WORKDIR /app
 COPY package*.json ./
-COPY /build_config/system_config_${buildenv}.js ./public/js/system_config.js
+COPY build_config/system_config_${buildenv}.js ./public/js/system_config.js
 COPY nginx.conf /etc/nginx/conf.d/configfile.template
 
 
