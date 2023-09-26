@@ -3,19 +3,14 @@ FROM node:lts-alpine as build
 ARG buildenv
 
 WORKDIR /app
-COPY package*.json ./
-COPY build_config/system_config_${buildenv}.js ./public/js/system_config.js
-COPY nginx.conf /etc/nginx/conf.d/configfile.template
-
 
 RUN npm ci
 COPY . .
+COPY package*.json ./
+COPY build_config/system_config_${buildenv}.js ./public/js/system_config.js
+COPY nginx.conf /etc/nginx/conf.d/configfile.template
+RUN mkdir -p /dist
 RUN npm run build
-
-
-COPY /dist /usr/share/nginx/html
-
-
 
 FROM nginx:alpine
 
