@@ -13,7 +13,10 @@
 # RUN npm build
 
 # server environment
-FROM nginx:alpine
+FROM node:20-alpine3.17
+RUN npm install
+RUN npm run build
+
 ARG buildenv
 
 COPY nginx.conf /etc/nginx/conf.d/configfile.template
@@ -21,6 +24,7 @@ COPY /dist /usr/share/nginx/html
 
 COPY /build_config/system_config_${buildenv}.js ./public/js/system_config.js
 
+FROM nginx:alpine
 ENV PORT 80
 ENV HOST 0.0.0.0
 EXPOSE 80
