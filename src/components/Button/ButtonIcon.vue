@@ -25,15 +25,15 @@ const props = defineProps({
 
 const buttonClass = computed(() => {
   let className = ''
-  className += ` button__${props.size}`
-  className += ` button__${props.color}`
+  className += `button__${props.size} `
+  className += `button__${props.color}`
   if (props.bg === false) className += ` button__nobg`
   return className
 })
 </script>
 <template>
   <button class="btn-reset" :class="buttonClass">
-    <font-awesome-icon class="mr-6" :icon="`fa-solid fa-${props.icon}`" v-if="props.icon" />
+    <font-awesome-icon class="mr-6" :icon="`fa-${props.icon}`" v-if="props.icon" />
     {{ props.name }}
   </button>
 </template>
