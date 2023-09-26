@@ -16,8 +16,6 @@
 FROM nginx:alpine
 ARG buildenv
 
-RUN npm run build
-
 COPY nginx.conf /etc/nginx/conf.d/configfile.template
 COPY /dist /usr/share/nginx/html
 
