@@ -120,3 +120,5 @@ library.add(
   faDizzy,
   faChevronDown
 )
+
+export { library }

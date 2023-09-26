@@ -55,7 +55,7 @@ const currentTabComponent = computed(() => {
           v-model="currentTabs"
         ></Tab>
       </el-col>
-      <el-col :span="11"> </el-col>
+      <el-col :span="11"></el-col>
     </el-row>
     <keep-alive>
       <component :is="currentTabComponent"></component>
