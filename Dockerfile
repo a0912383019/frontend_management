@@ -1,5 +1,7 @@
 FROM node:lts-alpine as build
 
+ARG buildenv
+
 WORKDIR /app
 COPY package*.json ./
 COPY build_config/system_config_${buildenv}.js ./public/js/system_config.js

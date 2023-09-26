@@ -54,7 +54,7 @@ git commit -m "Build Version"
 git push
 
 echo "\n建立image檔案..."$IMAGEFULLPATH
-docker build -t $IMAGEFULLPATH .
+docker build --build-arg buildenv=$BuildENV -t $IMAGEFULLPATH .
 
 echo "\n上傳至gcp..."
 docker push $IMAGEFULLPATH
