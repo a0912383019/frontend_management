@@ -1,21 +1,18 @@
 FROM node:lts-alpine as build
-
 ARG buildenv
 
 WORKDIR /app
-
-RUN npm ci
-COPY . .
-COPY package*.json ./
-COPY build_config/system_config_${buildenv}.js ./public/js/system_config.js
-COPY nginx.conf /etc/nginx/conf.d/configfile.template
-RUN mkdir -p /dist
+RUN npm install
 RUN npm run build
 
-FROM nginx:alpine
 
-WORKDIR /app
+FROM nginx:alpine
+ARG buildenv
+
+COPY nginx.conf /etc/nginx/conf.d/configfile.template
 COPY --from=build /app/dist /usr/share/nginx/html
+
+COPY /build_config/system_config_${buildenv}.js ./public/js/system_config.js
 
 ENV PORT 80
 ENV HOST 0.0.0.0
