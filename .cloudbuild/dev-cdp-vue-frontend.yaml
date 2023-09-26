@@ -5,14 +5,14 @@ substitutions:
   _SERVICEREGION: 'us-central1'
 
 steps:
- - name: 'node'
+ - name: 'node:latest'
     entrypoint: 'npm'
     args: ['install']
 
-  - name: 'node'
+  - name: 'node:latest'
     entrypoint: 'npm'
     args: ['run', 'build']
-    
+
   - name: "ubuntu"
     args: ["bash", "-c", 'echo "_IMAGEPATH= ${_IMAGEPATH}:${_ENVTYPE}_${_PROCTIME}"']
 
