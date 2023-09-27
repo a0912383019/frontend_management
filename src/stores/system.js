@@ -10,11 +10,9 @@ export const useSystemStore = defineStore('system', () => {
   const { t } = useI18n()
   const router = useRouter()
   async function storeLogout() {
-    console.log('logout')
     globalStore.isLoading = true
     try {
-      const reslut = await apiLogout()
-      console.log(reslut)
+      await apiLogout()
     } catch (error) {
       router.push({ name: 'Login' })
     } finally {

@@ -135,7 +135,7 @@ defineExpose({ query_life_cycle_analysis_avg_data })
       <SectionTitle class="mb-15" :title="t('manage_analysis.life_cycle_step_overview')" />
       <div class="step-top-box__right">
         <ExportReport class="mr-10" v-if="apiSuccess" />
-        <FilterDate @update:timestamp="updateTimestamp" />
+        <FilterDate @update:timestamp="updateTimestamp" v-if="apiSuccess" />
       </div>
     </div>
     <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
@@ -176,6 +176,8 @@ defineExpose({ query_life_cycle_analysis_avg_data })
 </template>
 <style lang="scss" scoped>
 .step-top-box {
+  position: relative;
+  z-index: 10;
   display: flex;
   justify-content: space-between;
   margin-bottom: 43px;

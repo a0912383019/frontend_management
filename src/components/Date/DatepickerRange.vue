@@ -3,17 +3,15 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { dayjs } from 'element-plus'
 import { formatDateDuration } from '@/utils/commonUtils.js'
-import {
+import { useDateStore } from '@/stores/dateConfig.js'
+
+const {
   date_range_picker_config_1,
   date_range_picker_config_2,
-  date_range_picker_config_10,
-  date_range_picker_config_11,
-  date_range_picker_config_13,
+  date_range_picker_config_7,
   shortcutsConfig1,
-  shortcutsConfig2,
-  shortcutsConfig3,
-  shortcutsConfig4
-} from '@/utils/dateConfig.js'
+  shortcutsConfig2
+} = useDateStore()
 
 const { t } = useI18n()
 
@@ -27,19 +25,15 @@ const props = defineProps({
   },
   config: {
     type: Number,
-    default: 11 // config_11 : 預設選取近1個月，最早可選至3年前，最晚可選至前二日
+    default: 1 // config_1 : 預設選取近1個月
   },
   rangeDate: {
     type: String,
     default: ''
   },
-  rangeEndDate: {
-    type: Number,
-    default: 2 //日期區間-結束日期回推的天數，預設兩天
-  },
   shortcutsConfig: {
     type: Number,
-    default: 1 // config_11 : 預設選取近1個月，最早可選至3年前，最晚可選至前二日
+    default: 1
   },
   enabledThreeMonth: {
     type: Boolean,
@@ -52,32 +46,26 @@ const emit = defineEmits(['update:modelValue'])
 const dateValueStartDate = ref('')
 const dateValueEndDate = ref('')
 const dateMinDate = ref('')
+const dateMaxDate = ref('')
 //根據props config決定使用的預設日期
 switch (props.config) {
   case 1:
     dateValueStartDate.value = date_range_picker_config_1.startDate
     dateValueEndDate.value = date_range_picker_config_1.endDate
     dateMinDate.value = date_range_picker_config_1.minDate
+    dateMaxDate.value = date_range_picker_config_1.maxDate
     break
   case 2:
     dateValueStartDate.value = date_range_picker_config_2.startDate
     dateValueEndDate.value = date_range_picker_config_2.endDate
     dateMinDate.value = date_range_picker_config_2.minDate
+    dateMaxDate.value = date_range_picker_config_2.maxDate
     break
-  case 10:
-    dateValueStartDate.value = date_range_picker_config_10.startDate
-    dateValueEndDate.value = date_range_picker_config_10.endDate
-    dateMinDate.value = date_range_picker_config_10.minDate
-    break
-  case 11:
-    dateValueStartDate.value = date_range_picker_config_11.startDate
-    dateValueEndDate.value = date_range_picker_config_11.endDate
-    dateMinDate.value = date_range_picker_config_11.minDate
-    break
-  case 13:
-    dateValueStartDate.value = date_range_picker_config_13.startDate
-    dateValueEndDate.value = date_range_picker_config_13.endDate
-    dateMinDate.value = date_range_picker_config_13.minDate
+  case 7:
+    dateValueStartDate.value = date_range_picker_config_7.startDate
+    dateValueEndDate.value = date_range_picker_config_7.endDate
+    dateMinDate.value = date_range_picker_config_7.minDate
+    dateMaxDate.value = date_range_picker_config_7.maxDate
     break
 }
 //如果props rangedate有值，優先使用
@@ -90,27 +78,22 @@ const dateValue = ref([dateValueStartDate.value, dateValueEndDate.value])
 
 // 選完日期後觸發
 const handleDateChange = (date) => {
-  let result = formatDateDuration(
-    dayjs(date[0]).format(t('date.format_date_rule')) +
-      '~' +
-      dayjs(date[1]).format(t('date.format_date_rule'))
-  )
-  emit('update:modelValue', result)
+  if (date !== null) {
+    let result = formatDateDuration(
+      dayjs(date[0]).format(t('date.format_date_rule')) +
+        '~' +
+        dayjs(date[1]).format(t('date.format_date_rule'))
+    )
+    emit('update:modelValue', result)
+  }
 }
 
 // 日期快捷選項
 const shortcuts = computed(() => {
-  switch (props.shortcutsConfig) {
-    case 1:
-      return shortcutsConfig1({ rangeEndDate: props.rangeEndDate })
-    case 2:
-      return shortcutsConfig2({ rangeEndDate: props.rangeEndDate })
-    case 3:
-      return shortcutsConfig3({ rangeEndDate: props.rangeEndDate })
-    case 4:
-      return shortcutsConfig4({ rangeEndDate: props.rangeEndDate })
-    default:
-      return shortcutsConfig1({ rangeEndDate: props.rangeEndDate })
+  if (props.shortcutsConfig === 2) {
+    return shortcutsConfig2()
+  } else {
+    return shortcutsConfig1()
   }
 })
 

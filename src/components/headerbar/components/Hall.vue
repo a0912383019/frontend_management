@@ -327,7 +327,7 @@ const initPageNext = () => {
 }
 
 // 監聽瀏覽器頁籤是否被切換
-const handleVisibilityChange = (e) => {
+const handleVisibilityChange = () => {
   if (document.visibilityState === 'visible') {
     //當畫面切回當前頁籤，則取得時間計算相差時間
     const startTime = JSON.parse(sessionStorage.start_timer) //倒數計時器開始後設定的時間

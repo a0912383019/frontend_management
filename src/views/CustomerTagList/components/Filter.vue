@@ -209,10 +209,8 @@ watch(
           </div>
           <DatepickerRange
             v-model="form.activatedDate"
-            :config="10"
-            :shortcutsConfig="3"
-            :enabledThreeMonth="false"
-            :rangeEndDate="0"
+            :config="1"
+            :shortcutsConfig="1"
             :disabled="formDisabled || !form.isActivedDateCheck"
             class="w-full filter-datepicker"
           />
@@ -225,7 +223,6 @@ watch(
             :config="2"
             :shortcutsConfig="2"
             :enabledThreeMonth="false"
-            :rangeEndDate="0"
             :disabled="formDisabled"
             class="w-full filter-datepicker"
           />
