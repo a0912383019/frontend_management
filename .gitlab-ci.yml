@@ -81,7 +81,7 @@ it-build:
   script:    
     - gcloud auth activate-service-account --key-file=$SA_TOKEN_IT
     - gcloud config set project $PROJECTID_IT
-    - gcloud builds submit --region="us-central1" --config=".cloudbuild/prod-cdp-vue-frontend.yaml" --substitutions _PROCTIME=$(date +"%m%d-%H%M") .  
+    - gcloud builds submit --region="us-central1" --config=".cloudbuild/it-cdp-vue-frontend.yaml" --substitutions _PROCTIME=$(date +"%m%d-%H%M") .  
   rules:
     - if: ($CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "push") && $CI_COMMIT_BRANCH == "it"
       when: manual
