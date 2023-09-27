@@ -26,7 +26,7 @@ dev-build:
     - gcloud config set project $PROJECTID_CDP
     - gcloud builds submit --region="us-central1" --config=".cloudbuild/dev-cdp-vue-frontend.yaml" --substitutions _PROCTIME=$(date +"%m%d-%H%M") .  
   rules:
-    - if: ($CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "push")
+    - if: ($CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "push") && ($CI_COMMIT_BRANCH != "demo" && $CI_COMMIT_BRANCH != "prod")
       when: manual
     - if: $CI_PIPELINE_SOURCE == "pipeline"
       when: never
