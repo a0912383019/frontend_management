@@ -10,6 +10,8 @@ test:
   script:
     # - echo "npm run coverage" 
     - npm i
+    - mkdir public/js
+    - cp build_config/system_config_it.js public/js/system_config.js
     - npm run coverage
 
 dev-build:
