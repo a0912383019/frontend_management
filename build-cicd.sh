@@ -6,7 +6,7 @@
 PROJECT=gcp-20190903-01
 SERVICE=cdp-vue-frontend
 
-NOWTIME=$(date)
+NOWTIME=$(date +"%Y%m%d-%H%M")
 
 #部署環境 [讀取第一個參數]
 BUILDENV=$1

@@ -1,3 +1,4 @@
+export const build_env_config ='prod'
 /***
  * 廳別config
  */
