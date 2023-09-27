@@ -19,11 +19,12 @@ dev-build:
   image: google/cloud-sdk:latest
   before_script:
     - mkdir public/js
-    - cp -r "build_config/system_config_dev.js" "./public/js/system_config.js"
+    - mkdir dist
+    - mkdir node_modules
   script:    
     - gcloud auth activate-service-account --key-file=$SA_TOKEN_CDP
     - gcloud config set project $PROJECTID_CDP
-    - gcloud builds submit --region="us-central1" --config=".cloudbuild/dev-cdp-vue-frontend.yaml" --substitutions _PROCTIME=$(date +"%m%d-%H%M") .  
+    - gcloud builds submit --region="us-central1" --config=".cloudbuild/dev-cdp-vue-frontend.yaml" --substitutions _PROCTIME=$(date +"%m%d-%H%M") .
   after_script:
     - cat public/js/system_config.js | grep --color "build_env_config"
   rules:
