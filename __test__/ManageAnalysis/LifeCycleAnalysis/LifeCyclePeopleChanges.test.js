@@ -303,8 +303,6 @@ describe('會員階段人數變化', () => {
   })
 
   it('測試 tooltip 時間是否符合預期', () => {
-    // const dateStore = useDateStore()
-    // console.log('dateStore', dateStore)
     // 設定日期時間
     const dateValue = {
       today: dayjs(dateStore.date_range_picker_config_4['startDate']).format('YYYY/MM/DD'),
@@ -319,7 +317,6 @@ describe('會員階段人數變化', () => {
   })
 
   it('測試 handleClick', () => {
-    // const manageAnalysisStore = useManageAnalysisStore()
     // 參數
     const dataValue = {
       data: '3,725',
@@ -337,7 +334,6 @@ describe('會員階段人數變化', () => {
   })
 
   it('上傳使用手動匯入名單', () => {
-    // const manageAnalysisStore = useManageAnalysisStore()
     const { filterCustomUserList } = storeToRefs(manageAnalysisStore)
     // 使用者名單
     let csvData = ['junmoxian', 'fan8750f1', 'chgu47', 'zhoupangji', 'zhcwp', 'sjoy0930']
