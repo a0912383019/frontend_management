@@ -1,7 +1,7 @@
 substitutions:
   _IMAGEPATH: 'us-central1-docker.pkg.dev/gcp-20190903-01/cdp-backend-images/cdp_frontend_vue'  
-  _ENVTYPE: 'dev'
-  _SERVICE: 'dev-cdp-vue-frontend'
+  _ENVTYPE: 'prod'
+  _SERVICE: 'prod-cdp-vue-frontend'
   _SERVICEREGION: 'us-central1'
 
 steps:

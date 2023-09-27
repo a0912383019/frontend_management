@@ -30,3 +30,60 @@ dev-build:
       when: on_success
     - if: $CI_PIPELINE_SOURCE == "pipeline"
       when: never
+
+demo-build:
+  stage: build
+  tags:
+    - cdp-vue-share  
+  image: google/cloud-sdk:latest
+  before_script:
+    - mkdir public/js
+    - mkdir dist
+    - mkdir node_modules
+  script:    
+    - gcloud auth activate-service-account --key-file=$SA_TOKEN_CDP
+    - gcloud config set project $PROJECTID_CDP
+    - gcloud builds submit --region="us-central1" --config=".cloudbuild/demo-cdp-vue-frontend.yaml" --substitutions _PROCTIME=$(date +"%m%d-%H%M") .  
+  rules:
+    - if: ($CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "push") && $CI_COMMIT_BRANCH == "demo"
+      when: on_success
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
+      when: never
+
+prod-build:
+  stage: build
+  tags:
+    - cdp-vue-share  
+  image: google/cloud-sdk:latest
+  before_script:
+    - mkdir public/js
+    - mkdir dist
+    - mkdir node_modules
+  script:    
+    - gcloud auth activate-service-account --key-file=$SA_TOKEN_CDP
+    - gcloud config set project $PROJECTID_CDP
+    - gcloud builds submit --region="us-central1" --config=".cloudbuild/prod-cdp-vue-frontend.yaml" --substitutions _PROCTIME=$(date +"%m%d-%H%M") .  
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == "prod"
+      when: manual
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
+      when: never
+
+it-build:
+  stage: build
+  tags:
+    - cdp-vue-share  
+  image: google/cloud-sdk:latest
+  before_script:
+    - mkdir public/js
+    - mkdir dist
+    - mkdir node_modules
+  script:    
+    - gcloud auth activate-service-account --key-file=$SA_TOKEN_IT
+    - gcloud config set project $PROJECTID_IT
+    - gcloud builds submit --region="us-central1" --config=".cloudbuild/prod-cdp-vue-frontend.yaml" --substitutions _PROCTIME=$(date +"%m%d-%H%M") .  
+  rules:
+    - if: ($CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "push") && $CI_COMMIT_BRANCH == "it"
+      when: manual
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
+      when: never
