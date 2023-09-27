@@ -1,4 +1,5 @@
 # Gitlab-Runner
+sh CICD-TEST/build-image.sh
 git commit -a -m "$(date +"%m%d-%H%M")_commit";git pull;git push
 
 # CICD 前置
