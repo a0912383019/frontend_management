@@ -5,11 +5,10 @@ import dayjs from 'dayjs'
 import { useDateStore } from '@/stores/dateConfig.js'
 import { formatDateDuration } from '@/utils/commonUtils.js'
 
-const { date_range_picker_config_7 } = useDateStore()
-
 export const useDialogMemberDetailStore = defineStore(
   'dialogMemberDetail',
   () => {
+    const { date_range_picker_config_7 } = useDateStore()
     //會員生命週期-會員明細Dialog日期區間
     const dialogMemberDetailRangeDate = ref(
       formatDateDuration(

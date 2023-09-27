@@ -125,31 +125,31 @@ export const useDateStore = defineStore('dateStore', () => {
       {
         text: t('date_range_picker.last_week'),
         value: () => {
-          return [dayjs().subtract(7, 'day'), LAST_DATE]
+          return [dayjs().subtract(7, 'day'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_two_weeks'),
         value: () => {
-          return [dayjs().subtract(14, 'day'), LAST_DATE]
+          return [dayjs().subtract(14, 'day'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_month'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(1, 'month'), LAST_DATE]
+          return [dayjs().add(1, 'day').subtract(1, 'month'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_two_months'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(2, 'month'), LAST_DATE]
+          return [dayjs().add(1, 'day').subtract(2, 'month'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_three_months'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(3, 'month'), LAST_DATE]
+          return [dayjs().add(1, 'day').subtract(3, 'month'), LAST_DATE.value]
         }
       }
     ]
@@ -162,43 +162,43 @@ export const useDateStore = defineStore('dateStore', () => {
       {
         text: t('date_range_picker.last_week'),
         value: () => {
-          return [dayjs().subtract(7, 'day'), LAST_DATE]
+          return [dayjs().subtract(7, 'day'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_two_weeks'),
         value: () => {
-          return [dayjs().subtract(14, 'day'), LAST_DATE]
+          return [dayjs().subtract(14, 'day'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_month'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(1, 'month'), LAST_DATE]
+          return [dayjs().add(1, 'day').subtract(1, 'month'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_year'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(1, 'year'), LAST_DATE]
+          return [dayjs().add(1, 'day').subtract(1, 'year'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_three_years'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(3, 'year'), LAST_DATE]
+          return [dayjs().add(1, 'day').subtract(3, 'year'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_five_years'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(5, 'year'), LAST_DATE]
+          return [dayjs().add(1, 'day').subtract(5, 'year'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_twenty_years'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(20, 'year'), LAST_DATE]
+          return [dayjs().add(1, 'day').subtract(20, 'year'), LAST_DATE.value]
         }
       }
     ]
