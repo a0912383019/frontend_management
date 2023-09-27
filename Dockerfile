@@ -1,18 +1,17 @@
 FROM node:alpine as build
 
-WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
 
-# 加入project.toml修正錯誤∶ Could not load /app/src/components/.../*.vue
-RUN npm run build:prod
+RUN npm run build
 
 
 FROM nginx:alpine
 
 COPY --from=build nginx.conf /etc/nginx/conf.d/configfile.template
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /dist /usr/share/nginx/html
+
 
 ENV PORT 80
 ENV HOST 0.0.0.0

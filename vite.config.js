@@ -14,7 +14,8 @@ export default defineConfig({
   plugins: [vue(), svgBuilder('./src/assets/icons/')],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      components: './src/components',
     }
   },
   css: {
