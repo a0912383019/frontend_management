@@ -1,3 +1,19 @@
+#FROM nginx:alpine
+# 將 nginx.conf 文件複製到容器中的 /etc/nginx 目錄下
+# COPY nginx.conf /etc/nginx/nginx.conf
+
+#COPY /dist /usr/share/nginx/html
+
+# vue.js environment
+# FROM node:14-alpine as vue-build
+# WORKDIR /app
+# COPY package*.json ./
+# RUN npm install
+# COPY ./ .
+# RUN npm build
+
+# server environment
+
 FROM node:alpine as build
 
 COPY package*.json ./
