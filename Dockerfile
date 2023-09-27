@@ -6,7 +6,7 @@ RUN npm install
 COPY . .
 
 # 加入project.toml修正錯誤∶ Could not load /app/src/components/.../*.vue
-RUN npm run build
+RUN npm run build:prod
 
 
 FROM nginx:alpine
