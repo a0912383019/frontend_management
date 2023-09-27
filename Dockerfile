@@ -2,12 +2,13 @@ FROM node:alpine as build
 ARG buildenv
 COPY package*.json ./
 RUN npm install
+
 COPY . .
+COPY build_config/system_config_${buildenv}.js ./public/js
 
 RUN npm run build
 
-COPY --from=build build_config/system_config_${buildenv}.js ./dist/
-COPY --from=build release.txt ./dist/
+COPY release.txt ./dist/
 
 FROM nginx:alpine
 
