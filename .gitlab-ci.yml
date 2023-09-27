@@ -9,7 +9,7 @@ test:
   stage: test
   script:
     # - echo "npm run coverage" 
-    # - npm i
+    - npm i
     - npm run coverage
 
 dev-build:
