@@ -5,11 +5,11 @@ substitutions:
   _SERVICEREGION: 'us-central1'
 
 steps:
-  - name: 'gcr.io/cloud-builders/gsutil'
-    args: ['cp', '-r', 'build_config/system_config_${_ENVTYPE}.js', './public/js']
+  # - name: 'gcr.io/cloud-builders/gsutil'
+  #   args: ['cp', '-r', 'build_config/system_config_${_ENVTYPE}.js', './public/js/system_config.js']
 
-  - name: 'ubuntu'
-    args: ["bash", "-c", 'cat public/js/system_config.js | grep --color "build_env_config"']
+  # - name: 'ubuntu'
+  #   args: ["bash", "-c", 'cat public/js/system_config.js | grep --color "build_env_config"']
 
   - name: "ubuntu"
     args: ["bash", "-c", 'echo "_IMAGEPATH= ${_IMAGEPATH}:${_ENVTYPE}_${_PROCTIME}"']
@@ -22,7 +22,7 @@ steps:
     entrypoint: 'bash'
     args:
       - '-c'    
-      - 'docker build -t ${_IMAGEPATH}:${_ENVTYPE}_${_PROCTIME}  -t ${_IMAGEPATH}:${_ENVTYPE} .'
+      - 'docker build --build-arg=buildenv=${_ENVTYPE} -t ${_IMAGEPATH}:${_ENVTYPE}_${_PROCTIME}  -t ${_IMAGEPATH}:${_ENVTYPE} .'
 
   # Docker Push
   - name: "gcr.io/cloud-builders/docker"
