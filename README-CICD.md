@@ -11,7 +11,7 @@ git commit -a -m "$(date +"%m%d-%H%M")_commit";git pull;git push
 - [安裝 Google Cloud CLI](https://cloud.google.com/sdk/docs/downloads-interactive?hl=zh-cn)
 - [開通映像庫存取權限] gcloud auth configure-docker us-central1-docker.pkg.dev
 
-# Shell Script ......佈署
+# Shell Script ......佈署  
 
 - 佈署指令： sh build-cicd.sh ${環境} ${版號}
 - sh build-cicd.sh dev 39395ab
