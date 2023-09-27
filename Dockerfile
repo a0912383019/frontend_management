@@ -13,9 +13,23 @@
 # RUN npm build
 
 # server environment
+
+FROM node:alpine as build
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
 FROM nginx:alpine
-COPY nginx.conf /etc/nginx/conf.d/configfile.template
-COPY /dist /usr/share/nginx/html
+
+COPY --from=build nginx.conf /etc/nginx/conf.d/configfile.template
+COPY --from=build /dist /usr/share/nginx/html
+COPY --from=build release.txt /usr/share/nginx/html
+
+
 ENV PORT 80
 ENV HOST 0.0.0.0
 EXPOSE 80

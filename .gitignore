@@ -13,6 +13,7 @@ dist
 dist-ssr
 coverage
 *.local
+my_data.csv
 
 /public/js/system_config.js
 
@@ -28,3 +29,4 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+CICD-TEST/*

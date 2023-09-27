@@ -2,10 +2,10 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSidebarStore } from '@/stores/sidebar.js'
-import Tag from '@/components/Headerbar/components/Tag.vue'
-import Hall from '@/components/Headerbar/components/Hall.vue'
-import Language from '@/components/Headerbar/components/Language.vue'
-import Account from '@/components/Headerbar/components/Account.vue'
+import Tag from '@/components/headerbar/components/Tag.vue'
+import Hall from '@/components/headerbar/components/Hall.vue'
+import Language from '@/components/headerbar/components/Language.vue'
+import Account from '@/components/headerbar/components/Account.vue'
 
 const sidebarStore = useSidebarStore()
 const { isSidebarClose } = storeToRefs(sidebarStore)

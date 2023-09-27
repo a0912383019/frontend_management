@@ -23,7 +23,7 @@ const props = defineProps({
 const iconSizeClass = 'font-size-' + props.iconSize
 const fontSizeClass = 'font-size-' + props.fontSize
 const color = computed(() => {
-  if (!props.hasColor || props.percentData === '0') {
+  if (!props.hasColor || props.percentData === '0' || props.percentData === '-') {
     return 'cdp-text-light__slate__gray'
   } else if (props.hasColor && props.percentData.indexOf('-') !== -1) {
     return 'text-danger'
@@ -34,11 +34,11 @@ const color = computed(() => {
 
 const icon = computed(() => {
   if (props.percentData === '0') {
-    return 'fas fa-caret-left'
+    return 'fa-caret-left'
   } else if (props.percentData.indexOf('-') !== -1) {
-    return 'fas fa-caret-down'
+    return 'fa-caret-down'
   } else {
-    return 'fas fa-caret-up'
+    return 'fa-caret-up'
   }
 })
 </script>
