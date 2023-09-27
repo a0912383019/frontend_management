@@ -8,9 +8,9 @@ test:
     - cdp-vue-share
   stage: test
   script:
-    - echo "npm run coverage" 
+    # - echo "npm run coverage" 
     # - npm i
-    # - npm run coverage
+    - npm run coverage
 
 dev-build:
   stage: build
