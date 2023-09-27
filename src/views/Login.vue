@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { apiLogin, apiGoLogin } from '@/api/system.js'
-import ErrorText from '@/components/errorText.vue'
+import ErrorText from '@/components/ErrorText.vue'
 import { ElNotification } from 'element-plus'
 import { useGlobalStore } from '@/stores/global.js'
 
