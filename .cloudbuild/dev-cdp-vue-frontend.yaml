@@ -16,7 +16,7 @@ steps:
     entrypoint: 'bash'
     args:
       - '-c'    
-      - 'docker build -t ${_IMAGEPATH}:${_ENVTYPE}_${_PROCTIME}  -t ${_IMAGEPATH}:${_ENVTYPE} .'
+      - 'docker build --build-arg=buildenv=${_ENVTYPE} -t ${_IMAGEPATH}:${_ENVTYPE}_${_PROCTIME}  -t ${_IMAGEPATH}:${_ENVTYPE} .'
 
   # Docker Push
   - name: "gcr.io/cloud-builders/docker"

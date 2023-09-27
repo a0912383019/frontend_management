@@ -4,11 +4,11 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+
 COPY build_config/system_config_${buildenv}.js ./public/js
+COPY release.txt ./dist/
 
 RUN npm run build
-
-COPY release.txt ./dist/
 
 FROM nginx:alpine
 
