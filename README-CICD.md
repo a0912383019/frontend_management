@@ -4,6 +4,7 @@ git commit -a -m "$(date +"%m%d-%H%M")_commit";git pull;git push
 [前端-官網(VUE)-測試站](https://dev-cdp-v.caino.club/release.txt)
 [前端-官網(VUE)-DEMO站](https://demo-cdp-v.caino.club/release.txt)
 [前端-官網(VUE)-正式站](https://cdp-v.caino.club/release.txt)
+[前端-官網(VUE)-IT站](https://it-cdp-vue-frontend-z45yv6qs7q-an.a.run.app/release.txt)
 
 # CICD 前置
 - [Docker](https://www.docker.com/)
