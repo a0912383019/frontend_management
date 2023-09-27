@@ -1,11 +1,12 @@
-import { it, describe, expect, vi } from 'vitest'
+import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
 import { storeToRefs } from 'pinia'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
-import { date_range_picker_config_4 } from '@/utils/dateConfig.js'
+// import { date_range_picker_config_4 } from '@/utils/dateConfig.js'
+import { useDateStore } from '@/stores/dateConfig.js'
 import { dayjs } from 'element-plus'
 import ElementPlus from 'element-plus'
 import router from '@/router'
@@ -17,17 +18,29 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import StepConfig from '@/components/StepConfig.vue'
 
 describe('會員階段人數變化', () => {
-  const wrapper = shallowMount(LifeCycleAnalysis, {
-    global: {
-      plugins: [
-        i18n,
-        ElementPlus,
-        router,
-        createTestingPinia({
-          createSpy: vi.fn
-        })
-      ]
-    }
+  let wrapper = null
+  let manageAnalysisStore = null
+  let dateStore = null
+  beforeEach(() => {
+    wrapper = shallowMount(LifeCycleAnalysis, {
+      global: {
+        plugins: [
+          i18n,
+          ElementPlus,
+          router,
+          createTestingPinia({
+            createSpy: vi.fn
+          })
+        ]
+      }
+    })
+    manageAnalysisStore = useManageAnalysisStore()
+    dateStore = useDateStore()
+  })
+  afterEach(() => {
+    wrapper.unmount()
+    manageAnalysisStore = null
+    dateStore = null
   })
 
   vi.spyOn(console, 'error').mockImplementation(() => {})
@@ -290,10 +303,12 @@ describe('會員階段人數變化', () => {
   })
 
   it('測試 tooltip 時間是否符合預期', () => {
+    // const dateStore = useDateStore()
+    // console.log('dateStore', dateStore)
     // 設定日期時間
     const dateValue = {
-      today: dayjs(date_range_picker_config_4['startDate']).format('YYYY/MM/DD'),
-      yesterday: dayjs(date_range_picker_config_4['startDate'])
+      today: dayjs(dateStore.date_range_picker_config_4['startDate']).format('YYYY/MM/DD'),
+      yesterday: dayjs(dateStore.date_range_picker_config_4['startDate'])
         .startOf('day')
         .subtract(1, 'day')
         .format('YYYY/MM/DD')
@@ -304,7 +319,7 @@ describe('會員階段人數變化', () => {
   })
 
   it('測試 handleClick', () => {
-    const manageAnalysisStore = useManageAnalysisStore()
+    // const manageAnalysisStore = useManageAnalysisStore()
     // 參數
     const dataValue = {
       data: '3,725',
@@ -322,7 +337,7 @@ describe('會員階段人數變化', () => {
   })
 
   it('上傳使用手動匯入名單', () => {
-    const manageAnalysisStore = useManageAnalysisStore()
+    // const manageAnalysisStore = useManageAnalysisStore()
     const { filterCustomUserList } = storeToRefs(manageAnalysisStore)
     // 使用者名單
     let csvData = ['junmoxian', 'fan8750f1', 'chgu47', 'zhoupangji', 'zhcwp', 'sjoy0930']

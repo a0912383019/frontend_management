@@ -6,7 +6,6 @@ import { useGlobalStore } from '@/stores/global.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { dayjs } from 'element-plus'
 import { findHallIdMappingKey, checkTagUsage, formatDateDuration } from '@/utils/commonUtils.js'
-import { date_range_picker_config_2, date_range_picker_config_10 } from '@/utils/dateConfig.js'
 import { ElNotification } from 'element-plus'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -16,6 +15,9 @@ import PageTitle from '@/components/Title/PageTitle.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
 import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
 import Filter from './components/Filter.vue'
+import { useDateStore } from '@/stores/dateConfig.js'
+
+const { date_range_picker_config_1, date_range_picker_config_2 } = useDateStore()
 
 const { t } = useI18n()
 
@@ -97,9 +99,9 @@ const formData = reactive({
   selectAcount: '', //代理帳號
   selectLevel: '', //會員層級
   activatedDate: formatDateDuration(
-    dayjs(date_range_picker_config_10.startDate).format(t('date.format_date_rule')) +
+    dayjs(date_range_picker_config_1.startDate).format(t('date.format_date_rule')) +
       '~' +
-      dayjs(date_range_picker_config_10.endDate).format(t('date.format_date_rule'))
+      dayjs(date_range_picker_config_1.endDate).format(t('date.format_date_rule'))
   ), //實動日期
   registerDate: formatDateDuration(
     dayjs(date_range_picker_config_2.startDate).format(t('date.format_date_rule')) +

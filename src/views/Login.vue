@@ -57,6 +57,7 @@ const googleLoginCallback = (response) => {
       globalStore.isLoading = false
       //  登入成功取得api access_token後才導至首頁
       router.push({ path: '/home' })
+      // router.push({ path: '/customer-tag-list' })
 
       let { user_name } = JSON.parse(sessionStorage.user_info)
       ElNotification({

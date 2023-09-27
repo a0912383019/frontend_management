@@ -5,14 +5,16 @@ import dayjs from 'dayjs'
 import { apiQueryLifeCycleAnalysisOverview } from '@/api/manageAnalysis.js'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
+import { useDateStore } from '@/stores/dateConfig.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
-import { date_range_picker_config_4 } from '@/utils/dateConfig.js'
 import FilterMemberName from './components/FilterMemberName.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import StepConfig from '@/components/StepConfig.vue'
+
+const { date_range_picker_config_4 } = useDateStore()
 
 const { t, locale: i18nLocale } = useI18n()
 const globalStore = useGlobalStore()

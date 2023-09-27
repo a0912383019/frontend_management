@@ -2,13 +2,11 @@
 import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
-import {
-  date_range_picker_config_11,
-  date_range_picker_config_13,
-  shortcutsConfig1
-} from '@/utils/dateConfig.js'
+import { useDateStore } from '@/stores/dateConfig.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import { formatDateDuration } from '@/utils/commonUtils.js'
+
+const { date_range_picker_config_1, date_range_picker_config_7, shortcutsConfig1 } = useDateStore()
 
 const { t } = useI18n()
 
@@ -20,10 +18,6 @@ const props = defineProps({
   rangeDate: {
     type: String,
     default: ''
-  },
-  rangeEndDate: {
-    type: Number,
-    default: 2 //日期區間-結束日期回推的天數，預設兩天
   }
 })
 
@@ -39,17 +33,20 @@ const closePopover = () => {
 const dateValueStartDate = ref('')
 const dateValueEndDate = ref('')
 const dateMinDate = ref('')
+const dateMaxDate = ref('')
 //根據props config決定使用的預設日期
 switch (props.config) {
-  case 11:
-    dateValueStartDate.value = date_range_picker_config_11.startDate
-    dateValueEndDate.value = date_range_picker_config_11.endDate
-    dateMinDate.value = date_range_picker_config_11.minDate
+  case 7:
+    dateValueStartDate.value = date_range_picker_config_7.startDate
+    dateValueEndDate.value = date_range_picker_config_7.endDate
+    dateMinDate.value = date_range_picker_config_7.minDate
+    dateMaxDate.value = date_range_picker_config_7.maxDate
     break
-  case 13:
-    dateValueStartDate.value = date_range_picker_config_13.startDate
-    dateValueEndDate.value = date_range_picker_config_13.endDate
-    dateMinDate.value = date_range_picker_config_13.minDate
+  case 11:
+    dateValueStartDate.value = date_range_picker_config_1.startDate
+    dateValueEndDate.value = date_range_picker_config_1.endDate
+    dateMinDate.value = date_range_picker_config_1.minDate
+    dateMaxDate.value = date_range_picker_config_1.maxDate
     break
 }
 //如果props rangedate有值，優先使用
@@ -75,9 +72,9 @@ const disabledDate = (day) => {
   // 禁選條件二：日期小於最小日期 或 日期大於結束日
   let activeDate = dayjs(day).format('YYYY-MM-DD')
   let minDate = dayjs(dateMinDate.value).format('YYYY-MM-DD')
-  let endDate = dayjs(dateValueEndDate.value).format('YYYY-MM-DD')
+  let maxDate = dayjs(dateMaxDate.value).format('YYYY-MM-DD')
 
-  if (activeDate < minDate || activeDate > endDate) {
+  if (activeDate < minDate || activeDate > maxDate) {
     return true
   }
 
@@ -86,7 +83,7 @@ const disabledDate = (day) => {
 
 // 快捷選項
 const shortcuts = computed(() => {
-  return shortcutsConfig1({ rangeEndDate: props.rangeEndDate })
+  return shortcutsConfig1()
 })
 
 // 送出篩選

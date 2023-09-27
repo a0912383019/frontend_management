@@ -66,14 +66,7 @@ const closePopover = () => {
       <el-row>
         <el-col :span="24" class="mb-15">
           <SectionTitle class="cdp-text-purple mb-10" :title="t('date.date')"> </SectionTitle>
-          <DatepickerRange
-            v-model="form.date"
-            :config="1"
-            :shortcutsConfig="4"
-            :enabledThreeMonth="false"
-            :rangeEndDate="1"
-            class="game-tag-analysis-datepicker"
-          />
+          <DatepickerRange v-model="form.date" class="game-tag-analysis-datepicker" />
         </el-col>
         <el-col :span="24" class="mb-15">
           <SectionTitle class="cdp-text-purple mb-10" :title="t('common.include_tags')">

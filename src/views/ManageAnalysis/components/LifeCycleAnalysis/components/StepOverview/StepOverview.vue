@@ -176,6 +176,8 @@ defineExpose({ query_life_cycle_analysis_avg_data })
 </template>
 <style lang="scss" scoped>
 .step-top-box {
+  position: relative;
+  z-index: 10;
   display: flex;
   justify-content: space-between;
   margin-bottom: 43px;

@@ -4,11 +4,13 @@ import { useI18n } from 'vue-i18n'
 import { apiUpdateCustomFlag } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
+import { useDateStore } from '@/stores/dateConfig.js'
 import { storeToRefs } from 'pinia'
 import { formatDate } from '@/utils/commonUtils.js'
-import { date_range_picker_config_4 } from '@/utils/dateConfig.js'
 import { ElNotification, dayjs } from 'element-plus'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
+
+const { date_range_picker_config_4 } = useDateStore()
 
 const { t } = useI18n()
 

@@ -2,8 +2,10 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import dayjs from 'dayjs'
-import { date_range_picker_config_4, date_range_picker_config_11 } from '@/utils/dateConfig.js'
+import { useDateStore } from '@/stores/dateConfig.js'
 import { formatDateDuration } from '@/utils/commonUtils.js'
+
+const { date_range_picker_config_1, date_range_picker_config_4 } = useDateStore()
 
 export const useManageAnalysisStore = defineStore('manageAnalysis', () => {
   //會員階段人數變化，進階篩選內的欄位資料
@@ -19,18 +21,18 @@ export const useManageAnalysisStore = defineStore('manageAnalysis', () => {
   //會員生命週期日期區間
   const deatilRangeDate = ref(
     formatDateDuration(
-      dayjs(date_range_picker_config_11['startDate']).format('YYYY-MM-DD') +
+      dayjs(date_range_picker_config_1['startDate']).format('YYYY-MM-DD') +
         '~' +
-        dayjs(date_range_picker_config_11['endDate']).format('YYYY-MM-DD')
+        dayjs(date_range_picker_config_1['endDate']).format('YYYY-MM-DD')
     )
   )
 
   //趨勢分析日期區間
   const stepTrendRangeDate = ref(
     formatDateDuration(
-      dayjs(date_range_picker_config_11['startDate']).format('YYYY-MM-DD') +
+      dayjs(date_range_picker_config_1['startDate']).format('YYYY-MM-DD') +
         '~' +
-        dayjs(date_range_picker_config_11['endDate']).format('YYYY-MM-DD')
+        dayjs(date_range_picker_config_1['endDate']).format('YYYY-MM-DD')
     )
   )
 
