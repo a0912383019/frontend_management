@@ -41,7 +41,7 @@ describe('階段總覽', () => {
   vi.spyOn(console, 'error').mockImplementation(() => {})
 
   it('預設apiSuccess = false，預期渲染的元件', async () => {
-    expect(wrapper.findComponent(FilterDate).exists()).toBe(true)
+    expect(wrapper.findComponent(FilterDate).exists()).toBe(false)
     expect(wrapper.findComponent(ExportReport).exists()).toBe(false)
     expect(wrapper.findComponent(AvgCard).exists()).toBe(false)
     expect(wrapper.findComponent(SectionTitle).exists()).toBe(true)
