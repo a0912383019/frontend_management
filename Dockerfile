@@ -1,12 +1,9 @@
 FROM node:alpine as build
 
-ARG buildenv
-
 COPY package*.json ./
 RUN npm install
 
 COPY . .
-COPY build_config/system_config_${buildenv}.js ./public/js/system_config.js
 
 RUN npm run build
 
