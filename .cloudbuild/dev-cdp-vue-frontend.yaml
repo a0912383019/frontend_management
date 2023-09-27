@@ -8,6 +8,9 @@ steps:
   - name: 'gcr.io/cloud-builders/gsutil'
     args: ['cp', '-r', 'build_config/system_config_${_ENVTYPE}.js', './public/js']
 
+  - name: 'ubuntu'
+    args: ["bash", "-c", 'cat public/js/system_config.js | grep --color "build_env_config"']
+
   - name: "ubuntu"
     args: ["bash", "-c", 'echo "_IMAGEPATH= ${_IMAGEPATH}:${_ENVTYPE}_${_PROCTIME}"']
 
