@@ -1,16 +1,20 @@
 FROM node:alpine as build
-
+ARG buildenv
 COPY package*.json ./
 RUN npm install
 COPY . .
 
 RUN npm run build
 
+COPY --from=build build_config/system_config_${buildenv}.js ./dist/
+COPY --from=build release.txt ./dist/
 
 FROM nginx:alpine
 
 COPY --from=build nginx.conf /etc/nginx/conf.d/configfile.template
 COPY --from=build /dist /usr/share/nginx/html
+
+
 
 
 ENV PORT 80
