@@ -37,12 +37,12 @@ const stepDataDuration = computed(() => {
 const chartOptions = reactive({
   chart: {
     type: 'pie',
-    maxHeight: 413
+    height: 380
   },
   legend: {
-    layout: 'horizontal',
-    align: 'center',
-    verticalAlign: 'bottom',
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle',
     useHTML: true,
     symbolRadius: 0,
     symbolWidth: 0,
@@ -52,7 +52,7 @@ const chartOptions = reactive({
         <div class="flex">
           <div style="
             background-color:${this.options.color};
-            width: 40px;
+            width: 12px;
             height: 12px;
             margin-right: 6px;
             margin-top: 3px;
@@ -174,7 +174,7 @@ watch(
 )
 </script>
 <template>
-  <section class="cdp-section h-490">
+  <section class="cdp-section h-444">
     <SectionTitle class="mb-15" :title="t('home.member_life_cycles')">
       <template #tooltip>
         <div class="font-size-14">
@@ -184,7 +184,7 @@ watch(
         </div>
       </template>
     </SectionTitle>
-    <CdpMessage :messageKey="messageKey" bg="white" :height="156" v-if="apiSuccess === false" />
+    <CdpMessage :messageKey="messageKey" bg="white" :height="320" v-if="apiSuccess === false" />
     <template v-else>
       <highcharts :options="chartOptions"></highcharts>
     </template>

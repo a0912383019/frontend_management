@@ -55,8 +55,6 @@ const pageEnd = computed(() => {
         })
       }}
     </span>
-    <!-- {{ FormatNumber(pageStart) }} - {{ FormatNumber(pageEnd) }} / 共
-    {{ FormatNumber(props.total) }} 筆 -->
   </div>
 </template>
 <style lang="scss" scoped>

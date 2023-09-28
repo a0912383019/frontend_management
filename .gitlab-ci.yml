@@ -14,7 +14,7 @@ test:
     - cp build_config/system_config_it.js public/js/system_config.js
     - npm run coverage
     - node excel.js
-    - cp excel.js excel.js
+    - cp excel.js $CI_PROJECT_DIR/excel.js
 
 dev-build:
   stage: build

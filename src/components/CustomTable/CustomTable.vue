@@ -4,6 +4,7 @@ import LoadingAnimation from '@/components/Loading/LoadingAnimation.vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
 import TotalPagination from '@/components/Pagination/TotalPagination.vue'
 import { useI18n } from 'vue-i18n'
+import { Search } from '@element-plus/icons-vue'
 
 const { t } = useI18n()
 
@@ -87,6 +88,10 @@ const props = defineProps({
     //要搜尋的欄位
     type: Array,
     default: []
+  },
+  customSearchClass: {
+    type: String,
+    default: ''
   }
 })
 
@@ -103,8 +108,7 @@ const handleTableSort = ({ prop, order }) => {
 const page = reactive({
   currentPage: 1,
   pageSize: props.pageSize,
-  filtered: false,
-  totalDataCount: props.tableData.length
+  filtered: false
 })
 
 const updateCurrentPage = (val) => {
@@ -151,7 +155,7 @@ const pageTableData = computed(() => {
       page.pageSize * page.currentPage
     )
 
-    if(search.value) {
+    if (search.value) {
       page.filtered = true
     } else {
       page.filtered = false
@@ -160,6 +164,10 @@ const pageTableData = computed(() => {
     data = props.tableData
   }
   return data
+})
+
+const totalDataCount = computed(() => {
+  return props.tableData.length
 })
 
 const pageTableTotal = computed(() => {
@@ -180,13 +188,16 @@ defineExpose({ goToFirstPage, showTableLoading })
 </script>
 <template>
   <div class="relative">
-    <div v-show="props.search && !props.serverSide" class="mb-10 text-right">
-      <font-awesome-icon class="mr-8 font-size-17 cdp-text-grey relative t-1" icon="fas fa-search" />
-      <el-input
-        v-model="search"
-        size="default"
-        style="width: 180px"
-      />
+    <div
+      v-show="props.search && !props.serverSide"
+      class="mb-10 text-right"
+      :class="customSearchClass"
+    >
+      <!-- <font-awesome-icon
+        class="mr-8 font-size-17 cdp-text-grey relative t-1"
+        icon="fas fa-search"
+      /> -->
+      <el-input v-model="search" size="default" style="width: 180px" :suffix-icon="Search" />
     </div>
     <el-table
       :data="pageTableData"
@@ -198,6 +209,7 @@ defineExpose({ goToFirstPage, showTableLoading })
       :sum-text="props.sumText"
       :span-method="spanMethod"
       class="cdp-table"
+      :class="customSearchClass + '__eltable'"
       @sort-change="handleTableSort"
       style="width: 100%; color: black"
     >
@@ -234,7 +246,7 @@ defineExpose({ goToFirstPage, showTableLoading })
         <div>{{ $t('table.sZeroRecords') }}</div>
       </template>
     </el-table>
-    <div class="paginationBox" v-if="hasPagination">
+    <div class="paginationBox" :class="customSearchClass + '__eltable'" v-if="hasPagination">
       <CustomPagination
         :page="page.currentPage"
         :pageSize="page.pageSize"
@@ -249,7 +261,7 @@ defineExpose({ goToFirstPage, showTableLoading })
         :pageSize="props.pageSize"
         :total="pageTableTotal"
         :filtered="page.filtered"
-        :totalDataCount="page.totalDataCount"
+        :totalDataCount="totalDataCount"
       />
     </div>
     <div class="paginationBox" v-if="hasPagination === false && hasTotalPagination === true">
@@ -436,7 +448,14 @@ defineExpose({ goToFirstPage, showTableLoading })
   }
 }
 .customTable2 {
+  .el-table__inner-wrapper::before {
+    position: relative;
+  }
   .el-table {
+    :first-child,
+    :last-child {
+      border-radius: 5px;
+    }
     th {
       &.el-table {
         &__cell {
@@ -481,5 +500,27 @@ defineExpose({ goToFirstPage, showTableLoading })
   align-items: center;
   justify-content: center;
   background-color: rgba(#fff, 0.8);
+}
+.el-input__wrapper:hover {
+  box-shadow: 0 0 0 1px #4f84cf inset !important;
+  .el-input__suffix {
+    color: #4f84cf !important;
+  }
+}
+.el-input__wrapper.is-focus {
+  box-shadow: 0 0 0 1px #4f84cf inset !important;
+  .el-input__suffix {
+    color: #4f84cf !important;
+  }
+}
+.el-pager li.is-active {
+  color: #4f84cf !important;
+}
+.home-notify {
+  position: relative;
+  top: -100px;
+}
+.home-notify__eltable {
+  top: -35px;
 }
 </style>
