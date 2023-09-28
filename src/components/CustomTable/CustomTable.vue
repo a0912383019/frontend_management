@@ -193,10 +193,6 @@ defineExpose({ goToFirstPage, showTableLoading })
       class="mb-10 text-right"
       :class="customSearchClass"
     >
-      <!-- <font-awesome-icon
-        class="mr-8 font-size-17 cdp-text-grey relative t-1"
-        icon="fas fa-search"
-      /> -->
       <el-input v-model="search" size="default" style="width: 180px" :suffix-icon="Search" />
     </div>
     <el-table
