@@ -16,12 +16,14 @@
 
 FROM node:alpine as build
 
+ARG buildenv
+
 COPY package*.json ./
 RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN npm run build:${buildenv}
 
 FROM nginx:alpine
 
