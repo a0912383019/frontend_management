@@ -20,10 +20,10 @@ watch(
     <TopCard :key="key"></TopCard>
   </section>
   <el-row :gutter="20">
-    <el-col :span="15">
+    <el-col :span="14">
       <NotificationTables :key="key"></NotificationTables>
     </el-col>
-    <el-col :span="9">
+    <el-col :span="10">
       <LifeStep :key="key"></LifeStep>
     </el-col>
   </el-row>
