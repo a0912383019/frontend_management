@@ -86,6 +86,14 @@ export const useDateStore = defineStore('dateStore', () => {
     maxDate: LAST_DATE //限制最大可選日期
   }
 
+  // config_5 : 預設選取前後一個月，最早可選至20年前，最晚可選至一年後
+  const date_range_picker_config_5 = {
+    startDate: dayjs().add(1, 'day').subtract(1, 'month'), //預設起始時間
+    endDate: dayjs().startOf('day').add(1, 'month'), //預設結束時間
+    minDate: MIN_DATE, //限制最小可選日期
+    maxDate: dayjs().startOf('day').add(1, 'year') //限制最大可選日期
+  }
+
   // config_6 : 預設選取近2個月
   const date_range_picker_config_6 = {
     startDate: dayjs().add(1, 'day').subtract(2, 'month'), //預設起始時間
@@ -108,14 +116,6 @@ export const useDateStore = defineStore('dateStore', () => {
     endDate: LAST_DATE, //預設結束時間
     minDate: MIN_DATE, //限制最小可選日期
     maxDate: LAST_DATE //限制最大可選日期
-  }
-
-  // config_9 : 預設選取前後一個月，最早可選至20年前，最晚可選至一年後
-  const date_range_picker_config_9 = {
-    startDate: dayjs().add(1, 'day').subtract(1, 'month'), //預設起始時間
-    endDate: dayjs().startOf('day').add(1, 'month'), //預設結束時間
-    minDate: MIN_DATE, //限制最小可選日期
-    maxDate: dayjs().startOf('day').add(1, 'year') //限制最大可選日期
   }
 
   // 近1週、近2週、近1個月、近2個月、近3個月
@@ -209,10 +209,10 @@ export const useDateStore = defineStore('dateStore', () => {
     date_range_picker_config_2,
     date_range_picker_config_3,
     date_range_picker_config_4,
+    date_range_picker_config_5,
     date_range_picker_config_6,
     date_range_picker_config_7,
     date_range_picker_config_8,
-    date_range_picker_config_9,
     shortcutsConfig1,
     shortcutsConfig2
   }
