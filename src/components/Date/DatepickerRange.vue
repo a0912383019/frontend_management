@@ -109,7 +109,11 @@ const handleCalendarChange = (val) => {
 const disabledDate = (day) => {
   // 禁選條件一：選擇的起始日往前往後大於三個月的日期disabled
   let diff = null
-  if (selectDate.value !== null && selectDate.value[1] === null) {
+  if (
+    selectDate.value !== null &&
+    selectDate.value[1] === null &&
+    props.enabledThreeMonth === true
+  ) {
     diff = dayjs(selectDate.value[0]).diff(day, 'month')
     if (diff >= 3 || diff <= -3) {
       return true

@@ -13,7 +13,6 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue'])
 
-// const activeTabName = ref(props.activeName)
 const handleTabChange = (data) => {
   emit('update:modelValue', data)
 }
@@ -68,10 +67,10 @@ const handleTabChange = (data) => {
           color: #fff;
           &::before {
             content: '';
-            width: 100%;
+            width: calc(100% + 1px);
             height: 100%;
+            left: -1px;
             top: 0;
-            left: 0;
             position: absolute;
             box-sizing: border-box;
             border-radius: 5px;
@@ -89,9 +88,11 @@ const handleTabChange = (data) => {
     position: relative;
     z-index: 99;
     width: 100%;
-    padding: 9px 20px;
+    padding: 7px 20px;
     border-radius: 5px;
-    min-height: 44px;
+    min-height: 40px;
+    font-size: 16px;
+    color: #7d818f;
     text-align: center;
     transition: all 0.3s ease-in-out;
     &:hover {
