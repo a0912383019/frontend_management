@@ -8,9 +8,10 @@ test:
     - cdp-vue-share
   stage: test
   script:
-    - echo "npm run coverage" 
-    # - npm i
-    # - npm run coverage
+    - npm i
+    - mkdir public/js
+    - cp build_config/system_config_demo.js public/js/system_config.js
+    - npm run coverage
 
 dev-build:
   stage: build
@@ -72,7 +73,7 @@ prod-build:
 it-build:
   stage: build
   tags:
-    - cdp-vue-share  
+    - cdp-vue-share
   image: google/cloud-sdk:latest
   before_script:
     - mkdir public/js

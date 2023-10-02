@@ -29,6 +29,9 @@ const allMessageKey = ref('shortLoading')
 
 const refDialogMemberDetail = ref(null) //會員明細Dialog組件ref
 
+const apiIsCalled = ref([false, false, false, false, false])
+const tableDatas = ref([[], [], [], [], []])
+
 //當前顯示的tab
 const currentTabs = ref('all')
 //tabs列表
@@ -57,9 +60,9 @@ const tabList = computed(() => {
   ]
 })
 
-const allTableData = ref([])
+const tableData = ref([])
 //頁面點擊排名欄位
-const allTableColumns = computed(() => {
+const tableColumns = computed(() => {
   return [
     {
       label: t('home.category'),
@@ -111,6 +114,28 @@ const querySmallMesNote = async (kind = '0') => {
         allApiSuccess.value = true
         //整理及地圖對應的資料
         transformQuerySmallMesNote(result.data.result)
+        switch (kind) {
+          case '0':
+            apiIsCalled.value[0] = true
+            tableDatas.value[0] = tableData.value
+            break
+          case '1':
+            apiIsCalled.value[1] = true
+            tableDatas.value[1] = tableData.value
+            break
+          case '2':
+            apiIsCalled.value[2] = true
+            tableDatas.value[2] = tableData.value
+            break
+          case '3':
+            apiIsCalled.value[3] = true
+            tableDatas.value[3] = tableData.value
+            break
+          case '4':
+            apiIsCalled.value[4] = true
+            tableDatas.value[4] = tableData.value
+            break
+        }
       } else {
         allMessageKey.value = 'noResult'
         let failMsg = errorRespond(result.data.status)
@@ -179,7 +204,7 @@ const readSmartMesNote = async (msgId, kind) => {
 }
 
 const transformQuerySmallMesNote = (data) => {
-  allTableData.value = data.map((ele, idx) => {
+  tableData.value = data.map((ele, idx) => {
     //給v-for的值
     const contentCut = ele.content.split('#')
     //給搜尋的值，原始值跟頁面呈現不一樣
@@ -198,16 +223,18 @@ const transformQuerySmallMesNote = (data) => {
       content: displayContent,
       date: dayjs(ele.created_time).format(t('date.format_date_rule')),
       msgId: ele.message_id,
-      contentCut: contentCut
+      contentCut: contentCut,
+      kind: ele.kind
     }
   })
 }
 
-const msgCheck = (event, ele) => {
+const msgCheck = (event, msgId, msgKind) => {
   event.target.closest('.el-table__row').classList.add('remove-style')
   const tabNameArr = tabList.value.map((ele) => ele.name)
-  const kind = tabNameArr.indexOf(currentTabs.value).toString()
-  readSmartMesNote(ele, kind)
+  const tabKind = tabNameArr.indexOf(currentTabs.value)
+  apiIsCalled.value[Number(msgKind)] = false
+  readSmartMesNote(msgId, tabKind.toString())
 }
 
 //會員明細Dialog點擊
@@ -232,12 +259,16 @@ onMounted(() => {
 
 watch([() => currentTabs.value, () => i18nLocale.value], () => {
   const tabNameArr = tabList.value.map((ele) => ele.name)
-  const kind = tabNameArr.indexOf(currentTabs.value).toString()
-  querySmallMesNote(kind)
+  const kind = tabNameArr.indexOf(currentTabs.value)
+  if (!apiIsCalled.value[kind]) {
+    querySmallMesNote(kind.toString())
+  } else {
+    tableData.value = tableDatas.value[kind]
+  }
 })
 </script>
 <template>
-  <section class="cdp-section padding-bottom-10 h-490">
+  <section class="cdp-section padding-bottom-10 h-444">
     <SectionTitle class="mb-10" :title="t('home.news')"></SectionTitle>
     <DialogMemberDetail ref="refDialogMemberDetail" />
     <el-row :gutter="20" class="mb-10">
@@ -256,14 +287,16 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
       <el-col :span="24">
         <CustomTable
           :stripe="true"
-          :tableData="allTableData"
-          :tableColumns="allTableColumns"
+          :tableData="tableData"
+          :tableColumns="tableColumns"
           :hasPagination="true"
           :serverSide="false"
           :pageSize="5"
           :search="true"
           class="customTable2"
+          customSearchClass="home-notify"
         >
+        <template v-slot:custom-search></template>
           <template #content="scope">
             <span v-for="(item, idx) in scope.row.contentCut" :key="idx">
               <a
@@ -277,7 +310,7 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
             </span>
           </template>
           <template #read="scope">
-            <el-checkbox @click.once="msgCheck($event, scope.row.msgId)" size="large" />
+            <el-checkbox @click.once="msgCheck($event, scope.row.msgId, scope.row.kind)" size="large" />
           </template>
         </CustomTable>
       </el-col>
