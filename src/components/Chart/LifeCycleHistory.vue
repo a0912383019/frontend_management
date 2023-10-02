@@ -91,7 +91,6 @@ const chartSetting = {
         position: 'top',
         labels: {
           filter: function (item, chart) {
-            // console.log(item, chart)
           }
         },
         onClick: function (e) {
@@ -209,6 +208,7 @@ const transformMemberStepDetail = (data) => {
   chartSetting.data.xLabels = []
   chartSetting.data.xLabels = chartXLabels
   chartSetting.data.datasets = []
+  console.log(chartDatasets)
   chartSetting.data.datasets = chartDatasets
 }
 
