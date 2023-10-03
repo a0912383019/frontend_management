@@ -34,6 +34,7 @@ const tableDatas = ref([[], [], [], [], []])
 
 //當前顯示的tab
 const currentTabs = ref('all')
+const refTable = ref(null) // ref table
 //tabs列表
 const tabList = computed(() => {
   return [
@@ -233,6 +234,7 @@ const msgCheck = (event, msgId, msgKind) => {
   event.target.closest('.el-table__row').classList.add('remove-style')
   const tabNameArr = tabList.value.map((ele) => ele.name)
   const tabKind = tabNameArr.indexOf(currentTabs.value)
+  apiIsCalled.value[0] = false
   apiIsCalled.value[Number(msgKind)] = false
   readSmartMesNote(msgId, tabKind.toString())
 }
@@ -260,6 +262,7 @@ onMounted(() => {
 watch([() => currentTabs.value, () => i18nLocale.value], () => {
   const tabNameArr = tabList.value.map((ele) => ele.name)
   const kind = tabNameArr.indexOf(currentTabs.value)
+  refTable.value.goToFirstPage()
   if (!apiIsCalled.value[kind]) {
     querySmallMesNote(kind.toString())
   } else {
@@ -286,6 +289,7 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
     <el-row v-else :gutter="20" class="mb-20">
       <el-col :span="24">
         <CustomTable
+          ref="refTable"
           :stripe="true"
           :tableData="tableData"
           :tableColumns="tableColumns"
@@ -296,7 +300,7 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
           class="customTable2"
           customSearchClass="home-notify"
         >
-        <template v-slot:custom-search></template>
+          <template v-slot:custom-search></template>
           <template #content="scope">
             <span v-for="(item, idx) in scope.row.contentCut" :key="idx">
               <a
@@ -310,7 +314,10 @@ watch([() => currentTabs.value, () => i18nLocale.value], () => {
             </span>
           </template>
           <template #read="scope">
-            <el-checkbox @click.once="msgCheck($event, scope.row.msgId, scope.row.kind)" size="large" />
+            <el-checkbox
+              @click.once="msgCheck($event, scope.row.msgId, scope.row.kind)"
+              size="large"
+            />
           </template>
         </CustomTable>
       </el-col>

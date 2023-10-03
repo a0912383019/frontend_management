@@ -1,4 +1,4 @@
-import { it, describe, expect, vi } from 'vitest'
+import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import DialogStepDetail from '@/views/ManageAnalysis/components/StepTrendAnalysis/components/DialogStepDetail.vue'
@@ -10,17 +10,33 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import router from '@/router'
 
 describe('DialogStepDetail.vue', () => {
-    const wrapper = mount(DialogStepDetail, {
-        global: {
-            plugins: [i18n, ElementPlus, router, createTestingPinia(
-                {
-                    createSpy: vi.fn,
+    let wrapper = null
+    let param
+    beforeEach(() => {
+        wrapper = mount(DialogStepDetail, {
+            global: {
+                plugins: [i18n, ElementPlus, router, createTestingPinia(
+                    {
+                        createSpy: vi.fn,
+                    }
+                )],
+                components: {
+                    FontAwesomeIcon
                 }
-            )],
-            components: {
-                FontAwesomeIcon
-            }
-        },
+            },
+        })
+        //activeHall給值
+        wrapper.vm.activeHall.hall_name = 'esballbbos'
+        wrapper.vm.activeHall.hall_code = 'esb'
+
+
+        param = {
+            date: '2000/09/03',
+            step: 7
+        }
+    })
+    afterEach(() => {
+        wrapper.unmount()
     })
 
     //讓console.error不要洗版
@@ -62,10 +78,6 @@ describe('DialogStepDetail.vue', () => {
     })
 
     it('開啟dialog', async () => {
-        //activeHall給值
-        wrapper.vm.activeHall.hall_name = 'esballbbos'
-        wrapper.vm.activeHall.hall_code = 'esb'
-
         //mock api 0000
         const result = {
             data: {
@@ -88,10 +100,6 @@ describe('DialogStepDetail.vue', () => {
         //預期一開始tableData為空陣列
         expect(wrapper.vm.tableData).toStrictEqual([])
 
-        const param = {
-            date: '2000/09/03',
-            step: 7
-        }
         //觸發handleOpenDialog
         wrapper.vm.handleOpenDialog(param)
         await flushPromises()
@@ -109,7 +117,9 @@ describe('DialogStepDetail.vue', () => {
         expect(wrapper.findComponent(CustomTable).exists()).toBe(true)
         expect(wrapper.vm.currentTooltipEntity).toStrictEqual(param)
         expect(wrapper.vm.apiSuccess).toBe(true)
+    })
 
+    it('開啟dialog，no result', async () => {
         //mock api 0001
         const result1 = {
             data: {
@@ -126,8 +136,10 @@ describe('DialogStepDetail.vue', () => {
         expect(wrapper.vm.apiSuccess).toBe(false)
         expect(wrapper.vm.messageKey).toBe('noResult')
         expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
+    })
 
-        //mock api 0001
+    it('開啟dialog，9999', async () => {
+        //mock api 9999
         const result2 = {
             data: {
                 status: {
@@ -144,7 +156,9 @@ describe('DialogStepDetail.vue', () => {
         await flushPromises()
         expect(wrapper.vm.apiSuccess).toBe(false)
         expect(wrapper.vm.messageKey).toBe('chartFailed')
+    })
 
+    it('開啟dialog，error 403', async () => {
         //mock error api 403
         const error403 = new Error('Forbidden')
         error403.response = {
@@ -159,7 +173,9 @@ describe('DialogStepDetail.vue', () => {
         expect(wrapper.vm.apiSuccess).toBe(false)
         expect(wrapper.vm.messageKey).toBe('noPermission')
         expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
+    })
 
+    it('開啟dialog，error 401', async () => {
         //mock error api 401
         const error401 = new Error('error')
         error401.response = {
@@ -173,7 +189,9 @@ describe('DialogStepDetail.vue', () => {
         //預期轉換後的資料
         expect(wrapper.vm.apiSuccess).toBe(false)
         expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
+    })
 
+    it('開啟dialog，error other', async () => {
         //mock error api other
         const errorOther = new Error('error')
         errorOther.response = {
