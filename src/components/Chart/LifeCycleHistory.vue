@@ -20,6 +20,10 @@ const props = defineProps({
   },
   detailDate: {
     type: String
+  },
+  timestamp: {
+    type: Number,
+    default: 0
   }
 })
 
@@ -91,6 +95,7 @@ const chartSetting = {
         position: 'top',
         labels: {
           filter: function (item, chart) {
+            // console.log(item, chart)
           }
         },
         onClick: function (e) {
@@ -120,6 +125,7 @@ const chartSetting = {
 const registerChart = () => {
   let ctx = refChart.value.getContext('2d')
   chart = new Chart(ctx, chartSetting)
+  // console.log('Chart', chart)
 }
 
 const queryMemberStepDetail = async () => {
@@ -208,13 +214,31 @@ const transformMemberStepDetail = (data) => {
   chartSetting.data.xLabels = []
   chartSetting.data.xLabels = chartXLabels
   chartSetting.data.datasets = []
-  console.log(chartDatasets)
   chartSetting.data.datasets = chartDatasets
+}
+
+// 清空chart資料
+const clearChart = () => {
+  console.log('clearChart')
+  apiSuccess.value = false
+  chartSetting.data.xLabels = []
+  chartSetting.data.datasets = []
+  chartSetting.options.plugins.title.text = ''
+  legendLists.value = []
+  chartTitle.value = ''
+}
+
+// 查詢api
+const queryChartApi = () => {
+  queryMemberStepDetail()
+  chartTitle.value = props.userName
 }
 
 onMounted(() => {
   queryMemberStepDetail()
 })
+
+defineExpose({ queryChartApi, clearChart })
 </script>
 <template>
   <div class="relative" style="min-height: 300px">

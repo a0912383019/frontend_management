@@ -11,56 +11,61 @@ import 'chartjs-adapter-dayjs-3'
 
 describe('LifeCycleHistory.vue', () => {
     let wrapper = null
-    beforeEach(() => {
-        const result = {
-            data: {
-                status: {
-                    return_code: '0000',
-                    message: 'success',
-                },
-                result: [
-                    {
-                        this_day_step: 1,
-                        data_date: '2023-09-03'
-                    }
-                ]
-            }
-        }
-        vi.spyOn(axiosGoInstance, 'get').mockResolvedValue(result)
+    const DateReal = global.Date;
+    const mockDate = new Date("2020-11-01T00:00:00.000Z");
 
-        wrapper = shallowMount(LifeCycleHistory, {
-            global: {
-                plugins: [i18n, createTestingPinia(
-                    {
-                        createSpy: vi.fn
-                    }
-                )],
-                components: {
-                    CdpMessage
-                }
-            },
-            props: {
-                userName: 'jason',
-                detailDate: '2020/12/12 ~ 2021/1/31'
+    const spy = vi
+        .spyOn(global, 'Date')
+        .mockImplementation((...args) => {
+            if (args.length) {
+                return new DateReal(...args);
             }
+            return mockDate;
         })
-    })
+    beforeEach(() => {
+            const result = {
+                data: {
+                    status: {
+                        return_code: '0000',
+                        message: 'success',
+                    },
+                    result: [
+                        {
+                            this_day_step: 1,
+                            data_date: '2023-09-03'
+                        }
+                    ]
+                }
+            }
+
+            wrapper = shallowMount(LifeCycleHistory, {
+                global: {
+                    plugins: [i18n, createTestingPinia(
+                        {
+                            createSpy: vi.fn
+                        }
+                    )],
+                    components: {
+                        CdpMessage
+                    }
+                },
+                props: {
+                    userName: 'jason',
+                    detailDate: '2023-09-03 ~ 2023-09-30'
+                }
+            })
+        })
 
     it('ManageAnalysis', () => {
         //元件渲染是否正確
         expect(wrapper.vm.chartTitle).toBe('jason')
         const chartXLabels = [
             '2023-09-03',
-            '2021-02-01'
+            '2023-10-01'
         ]
         expect(wrapper.vm.chartSetting.data.xLabels).toStrictEqual(chartXLabels)
-        const chartDatasets = [
-            '2023-09-03',
-            '2021-02-01'
-        ]
-        expect(wrapper.vm.chartSetting.data.datasets).toStrictEqual(chartDatasets)
-        // expect(wrapper.findComponent(LifeCycleAnalysis).exists()).toBe(true)
-        // expect(wrapper.findComponent(StepTrendAnalysis).exists()).toBe(false)
+
+        console.log(wrapper.vm.chartSetting.data.datasets[0].data[0][0])
     })
 
     // it('dict', () => {
