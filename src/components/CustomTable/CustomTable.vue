@@ -445,16 +445,17 @@ defineExpose({ goToFirstPage, showTableLoading })
 }
 .customTable2 {
   .el-table__inner-wrapper::before {
-    position: relative;
+    z-index: -1;
   }
-
   .el-table__empty-block {
     height: 200px !important;
   }
   .el-table {
-    :first-child,
+    :first-child {
+      border-radius: 5px 0 0 5px;
+    }
     :last-child {
-      border-radius: 5px;
+      border-radius: 0 5px 5px 0;
     }
     th {
       &.el-table {
