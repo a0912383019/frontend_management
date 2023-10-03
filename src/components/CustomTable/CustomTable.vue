@@ -447,6 +447,10 @@ defineExpose({ goToFirstPage, showTableLoading })
   .el-table__inner-wrapper::before {
     position: relative;
   }
+
+  .el-table__empty-block {
+    height: 200px !important;
+  }
   .el-table {
     :first-child,
     :last-child {
