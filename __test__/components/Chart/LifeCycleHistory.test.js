@@ -6,8 +6,6 @@ import router from '@/router'
 import LifeCycleHistory from '@/components/Chart/LifeCycleHistory.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
-// import Chart from 'chart.js/auto'
-// import 'chartjs-adapter-dayjs-3'
 
 describe('LifeCycleHistory.vue', () => {
     let wrapper = null
