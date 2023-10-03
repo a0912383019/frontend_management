@@ -44,7 +44,7 @@ const end = computed(() => circumference.value * (props.percent / 100))
       </svg>
       <div class="knob__percent">{{ props.percent }}</div>
     </div>
-    <div class="knob__text cpd-">
+    <div class="knob__text">
       {{ props.text }}
     </div>
   </div>
