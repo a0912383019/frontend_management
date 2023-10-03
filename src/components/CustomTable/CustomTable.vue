@@ -447,7 +447,6 @@ defineExpose({ goToFirstPage, showTableLoading })
   .el-table__inner-wrapper::before {
     z-index: -1;
   }
-
   .el-table__empty-block {
     height: 200px !important;
   }
