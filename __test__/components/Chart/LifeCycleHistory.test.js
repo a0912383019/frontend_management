@@ -35,7 +35,6 @@ describe('LifeCycleHistory.vue', () => {
             }
         }
         vi.spyOn(axiosGoInstance, 'get').mockResolvedValue(result)
-
         wrapper = shallowMount(LifeCycleHistory, {
             global: {
                 plugins: [i18n, router, createTestingPinia(
@@ -52,6 +51,9 @@ describe('LifeCycleHistory.vue', () => {
                 detailDate: '2023-09-04 ~ 2023-10-01'
             }
         })
+        //模擬canvas
+        HTMLCanvasElement.prototype.getContext = vi.fn()
+        vi.spyOn(console, 'error').mockImplementation(() => { })
     })
 
     it('ManageAnalysis', () => {
@@ -64,22 +66,47 @@ describe('LifeCycleHistory.vue', () => {
             '2023-10-02'
         ]
         const chartDatasetsData = [
-            [[
-                new Date('2023-09-04'),
-                new Date('2023-09-19')
-            ]],
-            [[
-                new Date('2023-09-19'),
-                new Date('2023-10-01')
-            ]],
-            [[
-                new Date('2023-10-01'),
-                '2023-10-02'
-            ]]
+            {
+                backgroundColor: 'rgb(232,70,94,0.7)',
+                borderColor: 'rgb(232,70,94,1)',
+                borderWidth: 1,
+                data: [
+                    [
+                        '2023-09-04',
+                        '2023-09-19',
+                    ],
+                ],
+                hoverBorderWidth: 3,
+                label: '活躍期',
+            },
+            {
+                backgroundColor: 'rgb(62,150,169,0.7)',
+                borderColor: 'rgb(62,150,169,1)',
+                borderWidth: 1,
+                data: [
+                    [
+                        '2023-09-19',
+                        '2023-10-01',
+                    ],
+                ],
+                hoverBorderWidth: 3,
+                label: '活躍衰退期',
+            },
+            {
+                backgroundColor: 'rgb(232,70,94,0.7)',
+                borderColor: 'rgb(232,70,94,1)',
+                borderWidth: 1,
+                data: [
+                    [
+                        '2023-10-01',
+                        '2023-10-02',
+                    ],
+                ],
+                hoverBorderWidth: 3,
+                label: '活躍期',
+            }
         ]
         expect(wrapper.vm.chartSetting.data.xLabels).toStrictEqual(chartXLabels)
-        expect(wrapper.vm.chartSetting.data.datasets[0].data).toStrictEqual(chartDatasetsData[0])
-        expect(wrapper.vm.chartSetting.data.datasets[1].data).toStrictEqual(chartDatasetsData[1])
-        expect(wrapper.vm.chartSetting.data.datasets[2].data).toStrictEqual(chartDatasetsData[2])
+        expect(wrapper.vm.chartSetting.data.datasets).toStrictEqual(chartDatasetsData)
     })
 })

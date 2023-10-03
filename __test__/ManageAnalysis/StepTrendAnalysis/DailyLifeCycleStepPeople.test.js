@@ -21,7 +21,7 @@ describe('DailyLifeCycleStepPeople.vue', () => {
     })
 
     //模擬canvas
-    HTMLCanvasElement.prototype.getContext = vi.fn();
+    HTMLCanvasElement.prototype.getContext = vi.fn()
     //讓console.error不要洗版
     vi.spyOn(console, 'error').mockImplementation(() => { })
 

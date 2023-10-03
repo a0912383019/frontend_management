@@ -36,9 +36,7 @@ const messageKey = ref('shortLoading')
 const refChart = ref(null)
 const legendLists = ref([]) // 自定義legend
 const chartTitle = ref(props.userName) // chart的標題
-let chart
 const chartSetting = {
-  id: 'bar',
   type: 'bar',
   data: {
     xLabels: [],
@@ -119,8 +117,8 @@ const chartSetting = {
 }
 //註冊chart
 const registerChart = () => {
-  let ctx = refChart.value.getContext('2d')
-  chart = new Chart(ctx, chartSetting)
+  let ctx = refChart.value
+  new Chart(ctx, chartSetting)
 }
 
 const queryMemberStepDetail = async () => {
@@ -191,10 +189,10 @@ const transformMemberStepDetail = (data) => {
         borderColor: generateRGBColors(stepConfig.step_color, 1),
         data: [
           [
-            new Date(data[i].data_date),
+            data[i].data_date,
             i + 1 === data.length
               ? chartXLabels[chartXLabels.length - 1]
-              : new Date(data[i + 1].data_date)
+              : data[i + 1].data_date
           ]
         ]
       }
