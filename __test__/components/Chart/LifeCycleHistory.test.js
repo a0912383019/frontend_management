@@ -1,4 +1,4 @@
-import { it, describe, expect, vi, beforeEach } from 'vitest'
+import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount, shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
@@ -9,6 +9,11 @@ import axiosGoInstance from '@/api/axiosGoInstance.js'
 
 describe('LifeCycleHistory.vue', () => {
     let wrapper = null
+
+    afterEach(() => {
+        wrapper.unmount()
+    })
+
     beforeEach(() => {
         const result = {
             data: {
