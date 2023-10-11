@@ -4,7 +4,6 @@ import LoadingAnimation from '@/components/Loading/LoadingAnimation.vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
 import TotalPagination from '@/components/Pagination/TotalPagination.vue'
 import { useI18n } from 'vue-i18n'
-import { Search } from '@element-plus/icons-vue'
 
 const { t } = useI18n()
 
@@ -89,13 +88,15 @@ const props = defineProps({
     type: Array,
     default: []
   },
+  //自訂search input的class
+  //customSearchClass + __eltable，自訂table跟pagination的class
   customSearchClass: {
     type: String,
     default: ''
   }
 })
 
-const search = ref('')
+const searchValue = ref('')
 
 //排序相關
 const emit = defineEmits(['sort', 'update:currentPage'])
@@ -145,9 +146,9 @@ const pageTableData = computed(() => {
           itemColFilter ||
           item[props.tableColumns[searchArr[i]].prop]
             .toLowerCase()
-            .includes(search.value.toLowerCase())
+            .includes(searchValue.value.toLowerCase())
       }
-      return !search.value || itemColFilter
+      return !searchValue.value || itemColFilter
     })
     searchTableData.value = filterTableData
     data = filterTableData.slice(
@@ -155,7 +156,7 @@ const pageTableData = computed(() => {
       page.pageSize * page.currentPage
     )
 
-    if (search.value) {
+    if (searchValue.value) {
       page.filtered = true
     } else {
       page.filtered = false
@@ -193,7 +194,11 @@ defineExpose({ goToFirstPage, showTableLoading })
       class="mb-10 text-right"
       :class="customSearchClass"
     >
-      <el-input v-model="search" size="default" style="width: 180px" :suffix-icon="Search" />
+      <el-input v-model="searchValue" size="default" style="width: 180px">
+        <template #suffix>
+          <font-awesome-icon class="search__iconsearch" icon="fa-solid fa-magnifying-glass" />
+        </template>
+      </el-input>
     </div>
     <el-table
       :data="pageTableData"
@@ -451,10 +456,10 @@ defineExpose({ goToFirstPage, showTableLoading })
     height: 200px !important;
   }
   .el-table {
-    :first-child {
+    td:first-child {
       border-radius: 5px 0 0 5px;
     }
-    :last-child {
+    td:last-child {
       border-radius: 0 5px 5px 0;
     }
     th {
@@ -463,6 +468,12 @@ defineExpose({ goToFirstPage, showTableLoading })
           &.is-leaf {
             background-color: #e9eef6;
             border-bottom: none;
+            &:first-child {
+              border-radius: 5px 0 0 5px;
+            }
+            &:last-child {
+              border-radius: 0 5px 5px 0;
+            }
           }
         }
       }
@@ -519,7 +530,7 @@ defineExpose({ goToFirstPage, showTableLoading })
 }
 .home-notify {
   position: relative;
-  top: -100px;
+  top: -95px;
 }
 .home-notify__eltable {
   top: -35px;
