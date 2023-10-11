@@ -4,7 +4,6 @@ import LoadingAnimation from '@/components/Loading/LoadingAnimation.vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
 import TotalPagination from '@/components/Pagination/TotalPagination.vue'
 import { useI18n } from 'vue-i18n'
-import { Search } from '@element-plus/icons-vue'
 
 const { t } = useI18n()
 
