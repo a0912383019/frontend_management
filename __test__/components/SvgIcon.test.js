@@ -3,12 +3,12 @@ import { mount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
 import router from '@/router'
-import svgIcon from '@/components/svgIcon.vue'
+import SvgIcon from '@/components/SvgIcon.vue'
 
-describe('svgIcon', () => {
+describe('SvgIcon', () => {
   let wrapper = null
   beforeEach(() => {
-    wrapper = mount(svgIcon, {
+    wrapper = mount(SvgIcon, {
       props: {
         name: 'arrow',
         color: '#faa'
