@@ -101,6 +101,14 @@ button {
 .cdp-section {
   padding: 20px;
   margin-bottom: 20px;
+  border: 1px solid rgba(230, 234, 242, 1);
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.cdp-section-in {
+  padding: 20px;
+  margin-bottom: 20px;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.14);
   border-radius: 5px;
   background-color: #fff;

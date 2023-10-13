@@ -1,8 +1,8 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import { useSidebarStore } from '@/stores/sidebar.js'
-import Headerbar from '@/components/headerbar/headerbar.vue'
-import Sidebar from '@/components/sidebar.vue'
+import Headerbar from '@/components/HeaderBar/HeaderBar.vue'
+import Sidebar from '@/components/SideBar.vue'
 
 const sidebarStore = useSidebarStore()
 </script>

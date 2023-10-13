@@ -386,6 +386,7 @@
 
     "member_life_cycles": "会员生命周期人数占比",
     "excluding_who_did_not_bet_for_the_last_week": "仅纳入近一周有下注会员",
+    "excluding_who_did_not_bet_for_the_last_month": "仅纳入近一个月有下注会员",
 
     "changes_in_member_active_level": "会员活跃度变化统计"
   },

@@ -28,7 +28,7 @@ const messageKey = ref('shortLoading')
 
 const stepDataDuration = computed(() => {
   return (
-    dayjs().subtract(8, 'day').startOf('day').format(t('date.format_date_rule')) +
+    dayjs().subtract(31, 'day').startOf('day').format(t('date.format_date_rule')) +
     '~' +
     dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
   )
@@ -178,7 +178,7 @@ watch(
     <SectionTitle class="mb-15" :title="t('home.member_life_cycles')">
       <template #tooltip>
         <div class="font-size-14">
-          {{ $t('home.excluding_who_did_not_bet_for_the_last_week') }}
+          {{ $t('home.excluding_who_did_not_bet_for_the_last_month') }}
           <br />
           {{ $t('date.statistical_time_period') + stepDataDuration }}
         </div>
