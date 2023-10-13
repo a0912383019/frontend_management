@@ -22,7 +22,7 @@ const handleTagAddText = (data) => {
 <template>
   <div class="drop">
     <div v-show="props.operator">
-      <div class="drop__title">運算子</div>
+      <div class="drop__title">{{ $t('tags.operator_math') }}</div>
       <div class="drop__item" @click="handleTagAddText({ value: 'OR', label: 'OR' })">OR</div>
     </div>
     <div class="drop__title">{{ props.tagTitle }}</div>

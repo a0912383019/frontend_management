@@ -20,15 +20,15 @@ const apiTotal = computed(() => {
   return props.total
 })
 
-const averageTypeValue = ref('週平均')
+const averageTypeValue = ref(t('customer_tag_list.weekly_average'))
 const averageTypeOptions = ref([
   {
-    label: '週平均',
-    value: '週平均'
+    label: t('customer_tag_list.weekly_average'),
+    value: t('customer_tag_list.weekly_average')
   },
   {
-    label: '日平均',
-    value: '日平均'
+    label: t('customer_tag_list.daily_average'),
+    value: t('customer_tag_list.daily_average')
   }
 ])
 </script>
@@ -81,7 +81,9 @@ const averageTypeOptions = ref([
               <font-awesome-icon icon="fa-info-circle" />
               {{ $t('customer_tag_list.increase_condition_reduce_time') }}
             </div>
-            <div class="flex justify-end"><ButtonIcon name="確認匯出" color="blue" /></div>
+            <div class="flex justify-end">
+              <ButtonIcon :name="t('modal.confirm_export')" color="blue" />
+            </div>
           </el-col>
         </el-row>
       </div>

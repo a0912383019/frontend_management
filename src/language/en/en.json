@@ -242,6 +242,7 @@
     "do_not_save": "Do not save",
     "save": "Save",
     "confirm": "Confirm",
+    "confirm_export": "確認匯出",
     "delete": "Delete",
     "are_you_sure_to_delete": "Sure to delete",
     "cancel": "Cancel",
@@ -319,6 +320,8 @@
 
     "operator": "Operator",
     "operator_or": "OR",
+
+    "operator_math": "運算子",
 
     "filter": "Filter...",
     "apply": "Apply"
