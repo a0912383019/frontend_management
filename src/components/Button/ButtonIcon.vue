@@ -54,14 +54,14 @@ button {
       padding: 2px 4px;
       font-size: 12px;
       line-height: 1.5;
-      border-radius: 3;
+      border-radius: 5px;
     }
     &__medium {
-      padding: 5px 8px;
+      padding: 6px 8px;
       font-size: 14px;
       line-height: 1.5;
-      border-radius: 3px;
-      min-width: 100px;
+      border-radius: 5px;
+      min-width: 120px;
     }
     &__large {
       display: inline-flex;

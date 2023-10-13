@@ -10,7 +10,7 @@ import { ElNotification } from 'element-plus'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
-import ExportReport from '@/components/ExportReport.vue'
+import ExportCSV from './components/ExportCSV.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
 import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
@@ -19,7 +19,7 @@ import { useDateStore } from '@/stores/dateConfig.js'
 
 const { date_range_picker_config_1, date_range_picker_config_2 } = useDateStore()
 
-const { t } = useI18n()
+const { t, locale: i18nLocale } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -97,7 +97,8 @@ const tableColumns = computed(() => {
 const formData = reactive({
   member: '', //會員名稱
   selectAcount: '', //代理帳號
-  selectLevel: '', //會員層級
+  selectLevel: 0, //會員層級
+  customUserList: [], // 手動匯入名單的帳號
   activatedDate: formatDateDuration(
     dayjs(date_range_picker_config_1.startDate).format(t('date.format_date_rule')) +
       '~' +
@@ -123,21 +124,20 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
   }
   try {
     const result = await apiListMemberTags({
-      hall_name: activeHall.hall_code,
-      activated_date_hide: formData['activatedDate'], //實動日期
-      search_date_hide: formData['registerDate'], //註冊日期
+      activated_date: formData['activatedDate'], //實動日期
       ag_name: formData['selectAcount'], //代理帳號
-      user_level_id: formData['selectLevel'], //會員層級
-      search_name: formData['member'], //會員名稱
+      custom_user_list: formData['customUserList'], // 手動匯入名單的帳號
+      exclude_tag: formData['excludeTag'], //排除標籤
       fuzzy_search: formData['fuzzySearch'], //模糊搜尋
-      search_tag_hide: formData['searchTag'], //包含標籤
-      exclude_tag_hide: formData['excludeTag'], //排除標籤
-      use_custom_list: false,
-      recordsTotal_hide: '',
-      refresh_recordsTotal_hide: true,
-      draw: apiDraw.value,
+      hall_name: activeHall.hall_code,
+      length: 10,
+      locale: i18nLocale.value,
+      records_total: 0,
+      search_date: formData['registerDate'], //註冊日期
+      search_name: formData['member'], //會員名稱
+      search_tag: formData['searchTag'], //包含標籤
       start: apiStart.value,
-      length: 10
+      user_level_id: formData['selectLevel'] === '' ? 0 : formData['selectLevel'] //會員層級
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -153,8 +153,10 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
         })
       }
       tableData.value = []
-      tableData.value = transformListMemberTags(result.data.data)
-      apiRecordsTotal.value = result.data.recordsTotal
+      tableData.value = transformListMemberTags(result.data.result.data)
+      apiRecordsTotal.value = result.data.result.records_total
+    } else if (return_code === '0001') {
+      messageKey.value = 'noResult'
     } else {
       messageKey.value = 'queryFailed'
     }
@@ -233,6 +235,7 @@ const handleTagButtonClick = (item) => {
 }
 
 const handleFilterSubmit = (data) => {
+  formData['customUserList'] = data['custom_user_list']
   formData['member'] = data['member']
   formData['selectAcount'] = data['selectAcount']
   formData['selectLevel'] = data['selectLevel']
@@ -254,7 +257,7 @@ onMounted(() => {
       <!-- justify-between -->
       <PageTitle icon="fas fa-tags" :title="t('sidebar.bbin_customer_tag_list')" />
       <div class="flex">
-        <ExportReport class="mr-10" />
+        <ExportCSV class="mr-10" :total="apiRecordsTotal" />
         <Filter @update:filter-submit="handleFilterSubmit" />
       </div>
     </div>

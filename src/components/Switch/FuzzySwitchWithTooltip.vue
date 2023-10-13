@@ -18,7 +18,7 @@ const handleSwitchChange = (data) => {
       v-model="fuzzySearch"
       @change="handleSwitchChange"
       :active-text="t('common.fuzzy_search')"
-      class="mr-10"
+      class="cdp-switch mr-10"
     />
     <el-tooltip
       class="box-item"

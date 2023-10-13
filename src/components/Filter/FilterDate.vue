@@ -139,7 +139,7 @@ watch(
             v-model="dateValue"
             type="daterange"
             :unlink-panels="false"
-            popper-class="cdp-datepicker-range"
+            popper-class="cdp-datepicker-range-popper"
             range-separator="~"
             start-placeholder="Start date"
             end-placeholder="End date"
@@ -179,7 +179,7 @@ watch(
   }
 }
 
-:deep(.el-popper.el-picker__popper.cdp-datepicker-range) {
+:deep(.el-popper.el-picker__popper.cdp-datepicker-range-popper) {
   right: 0 !important;
   inset: 90px 0 auto auto !important;
 }

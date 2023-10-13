@@ -4,6 +4,10 @@ const props = defineProps({
   title: {
     type: String,
     default: ''
+  },
+  size: {
+    type: String,
+    default: ''
   }
 })
 
@@ -11,7 +15,7 @@ const props = defineProps({
 const hasSlotContent = !!useSlots().tooltip
 </script>
 <template>
-  <div class="title">
+  <div class="title" :class="props.size">
     <div class="title__name">{{ props.title }}</div>
     <el-tooltip effect="dark" placement="top" v-if="hasSlotContent">
       <template #content><slot name="tooltip"></slot></template>
@@ -32,6 +36,13 @@ const hasSlotContent = !!useSlots().tooltip
   &__icon {
     font-size: 13px;
     cursor: pointer;
+  }
+  &.small {
+    .title {
+      &__name {
+        font-size: 14px;
+      }
+    }
   }
 }
 </style>

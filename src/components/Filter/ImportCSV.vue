@@ -100,7 +100,7 @@ const handleUseCustomSwitchChange = (type) => {
       v-model="switchValue"
       @change="handleUseCustomSwitchChange"
       :active-text="t('import_export_file.import_manually')"
-      class="mr-10"
+      class="mr-10 cdp-switch"
     />
     <el-tooltip
       class="box-item"

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
@@ -28,6 +28,11 @@ const {
   fuzzySearch,
   stepType,
   detailType,
+  apiDraw,
+  apiStart,
+  apiLength,
+  apiRecordsTotal,
+  querySortRule,
   filterTimestamp,
   deatilRangeDate,
   filterDateTimestamp,
@@ -127,22 +132,11 @@ const tableColumns = computed(() => {
 
 const tableData = ref([])
 
-const apiDraw = ref(1) //第幾頁
-const apiStart = ref(0) //起始筆數
-const apiLength = ref(15) //一頁幾筆
-const apiRecordsTotal = ref(0) //資料總數
-
-//會員明細表格排序規則
-const querySortRule = reactive({
-  sort: 'deposit_amount',
-  order: 'DESC'
-})
-
 //自定義排序執行的內容
 const upadteCurrentSort = (data) => {
   let order = data['order'] == 'descending' ? 'DESC' : 'ASC'
-  querySortRule['sort'] = data['prop']
-  querySortRule['order'] = order
+  querySortRule.value['sort'] = data['prop']
+  querySortRule.value['order'] = order
   query_life_cycle_analysis_detail_tbl()
 }
 
@@ -168,10 +162,10 @@ const query_life_cycle_analysis_detail_tbl = async () => {
       length: apiLength.value,
       life_cycle_analysis_detail_date: deatilRangeDate.value,
       life_cycle_analysis_step: stepType.value,
-      order: querySortRule['order'],
+      order: querySortRule.value['order'],
       query_date: queryDate,
       search_name: searchName.value,
-      sort: querySortRule['sort'],
+      sort: querySortRule.value['sort'],
       start: apiStart.value
     })
     const { return_code } = result.data.status
