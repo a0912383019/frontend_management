@@ -21,7 +21,6 @@ const handleClick = () => {
       color="blue"
       :name="t('import_export_file.export')"
       class="export__button"
-      @click="handleClick"
     />
   </div>
 </template>

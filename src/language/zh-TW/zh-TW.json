@@ -243,6 +243,7 @@
     "do_not_save": "不儲存",
     "save": "儲存",
     "confirm": "確認",
+    "confirm_export": "確認匯出",
     "delete": "刪除",
     "are_you_sure_to_delete": "確認刪除",
     "cancel": "取消",
@@ -320,6 +321,8 @@
 
     "operator": "關聯邏輯",
     "operator_or": "OR",
+
+    "operator_math": "運算子",
 
     "filter": "篩選標籤...",
     "apply": "加入"

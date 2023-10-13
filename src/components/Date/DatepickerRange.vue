@@ -38,6 +38,10 @@ const props = defineProps({
   enabledThreeMonth: {
     type: Boolean,
     default: true // 預設開啟，選擇起始日後，結束日三個月限制
+  },
+  teleported: {
+    type: Boolean,
+    default: false //是否将 date-picker 的下拉列表插入至 body 元素
   }
 })
 
@@ -145,6 +149,10 @@ watch(
     }
   }
 )
+
+const handleFocus = () => {
+  // dateValue.value = []
+}
 </script>
 <template>
   <div>
@@ -153,22 +161,62 @@ watch(
       type="daterange"
       :format="t('date.format_date_rule')"
       :unlink-panels="false"
-      popper-class="cdp-datepicker-range"
+      popper-class="cdp-datepicker-range-popper"
+      class="cdp-datepicker-range"
       range-separator="~"
       start-placeholder="Start date"
       end-placeholder="End date"
       :shortcuts="shortcuts"
-      :teleported="false"
+      :teleported="props.teleported"
       :disabled-date="disabledDate"
       :disabled="props.disabled"
+      :clearable="false"
       @calendar-change="handleCalendarChange"
       @change="handleDateChange"
+      @focus="handleFocus"
     />
   </div>
 </template>
 <style lang="scss" scoped>
-:deep(.el-popper.el-picker__popper.cdp-datepicker-range) {
+:deep(.el-popper.el-picker__popper.cdp-datepicker-range-popper) {
   right: 0 !important;
   inset: 80px 0 auto auto !important;
+}
+</style>
+<style lang="scss">
+.cdp-datepicker-range {
+  justify-content: flex-start;
+  &.el-date-editor {
+    &.el-input__wrapper {
+      position: relative;
+      width: 100%;
+      height: 36px;
+      box-shadow: none;
+      border-radius: 5px;
+      border: 1px solid #cfd8e6;
+      &::after {
+        content: '';
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        margin-top: -6px;
+        width: 12px;
+        height: 12px;
+        background-image: url('@/assets/images/time.svg');
+        background-repeat: no-repeat;
+      }
+    }
+  }
+  .el-icon {
+    display: none;
+  }
+  .el-range-input {
+    width: 70px;
+    height: 34px;
+    line-height: 34px;
+  }
+  .el-range-separator {
+    flex: none;
+  }
 }
 </style>

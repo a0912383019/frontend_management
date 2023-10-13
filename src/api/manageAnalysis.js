@@ -86,6 +86,46 @@ export const apiQueryLifeCycleAnalysisDetailTbl = (params) => {
   )
 }
 
+// 匯出報表
+export const apiExportLifeCycleAnalysisDetail = (params) => {
+  const {
+    custom_user_list,
+    detail_type,
+    fuzzy_search,
+    hall_name,
+    length,
+    life_cycle_analysis_detail_date,
+    life_cycle_analysis_step,
+    locale,
+    order,
+    query_date,
+    search_name,
+    sort,
+    start
+  } = params
+  return axiosGoInstance.post(
+    '/api/auth/manage/export_life_cycle_analysis_detail',
+    {
+      custom_user_list,
+      detail_type,
+      fuzzy_search,
+      hall_name,
+      length,
+      life_cycle_analysis_detail_date,
+      life_cycle_analysis_step,
+      locale,
+      order,
+      query_date,
+      search_name,
+      sort,
+      start
+    },
+    {
+      headers: { 'Content-Type': 'application/json' }
+    }
+  )
+}
+
 //趨勢分析
 //階段盈利總覽
 export const apiQueryStepTrendAnalysisOverview = (params) => {

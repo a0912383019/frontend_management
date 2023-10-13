@@ -1,50 +1,53 @@
-import axiosInstance from './axiosInstance.js'
+import axiosGoInstance from './axiosGoInstance.js'
 
 //會員標籤列表
 export const apiListMemberTags = (params) => {
   const {
-    hall_name,
-    activated_date_hide,
-    search_date_hide,
+    activated_date,
     ag_name,
-    user_level_id,
-    search_name,
+    custom_user_list,
+    exclude_tag,
     fuzzy_search,
-    search_tag_hide,
-    exclude_tag_hide,
-    use_custom_list,
-    recordsTotal_hide,
-    refresh_recordsTotal_hide,
-    draw,
+    hall_name,
+    length,
+    locale,
+    records_total,
+    search_date,
+    search_name,
+    search_tag,
     start,
-    length
+    user_level_id
   } = params
-  return axiosInstance.post('/api/auth/member/bbin/list_member_tags' + sessionStorage.from_page, {
-    hall_name,
-    activated_date_hide,
-    search_date_hide,
-    ag_name,
-    user_level_id,
-    search_name,
-    fuzzy_search,
-    search_tag_hide,
-    exclude_tag_hide,
-    use_custom_list,
-    recordsTotal_hide,
-    refresh_recordsTotal_hide,
-    draw,
-    start,
-    length
-  })
+  return axiosGoInstance.post(
+    '/api/auth/member/list_member_tags',
+    {
+      activated_date,
+      ag_name,
+      custom_user_list,
+      exclude_tag,
+      fuzzy_search,
+      hall_name,
+      length,
+      locale,
+      records_total,
+      search_date,
+      search_name,
+      search_tag,
+      start,
+      user_level_id
+    },
+    {
+      headers: { 'Content-Type': 'application/json' }
+    }
+  )
 }
 
 // 進階篩選內的代理帳號及會員層級
 export const apiQueryAgNameUserLevel = (params) => {
   const { hall_name } = params
-  return axiosInstance.post(
-    '/api/auth/member/bbin/query_ag_name_user_level' + sessionStorage.from_page,
-    {
+  return axiosGoInstance.get('/api/auth/member/ag_name_user_level', {
+    params: {
       hall_name
     }
-  )
+  })
 }

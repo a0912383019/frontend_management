@@ -1,5 +1,5 @@
 //單元：會員經營分析
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import dayjs from 'dayjs'
 import { useDateStore } from '@/stores/dateConfig.js'
@@ -16,6 +16,18 @@ export const useManageAnalysisStore = defineStore('manageAnalysis', () => {
   //對應api query_life_cycle_analysis_avg_data 的life_cycle_analysis_step和detail_type欄位
   const stepType = ref(null) //life_cycle_analysis_step
   const detailType = ref(null) //detail_type
+
+  // 會員明細表格
+  const apiDraw = ref(1) //第幾頁
+  const apiStart = ref(0) //起始筆數
+  const apiLength = ref(15) //一頁幾筆
+  const apiRecordsTotal = ref(0) //資料總數
+
+  //會員明細表格排序規則
+  const querySortRule = reactive({
+    sort: 'deposit_amount',
+    order: 'DESC'
+  })
 
   //會員生命週期日期區間
   const deatilRangeDate = ref(
@@ -50,6 +62,11 @@ export const useManageAnalysisStore = defineStore('manageAnalysis', () => {
     useCustomList,
     stepType,
     detailType,
+    apiDraw,
+    apiStart,
+    apiLength,
+    apiRecordsTotal,
+    querySortRule,
     deatilRangeDate,
     stepTrendRangeDate,
 

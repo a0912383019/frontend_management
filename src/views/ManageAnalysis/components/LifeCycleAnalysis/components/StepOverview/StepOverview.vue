@@ -7,7 +7,7 @@ import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { apiQueryLifeCycleAnalysisAvgData } from '@/api/manageAnalysis.js'
 import { FormatNumber, getHallCurrencySign } from '@/utils/commonUtils.js'
 import FilterDate from '@/components/Filter/FilterDate.vue'
-import ExportReport from '@/components/ExportReport.vue'
+import ExportCSV from './components/ExportCSV.vue'
 import AvgCard from './components/AvgCard.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -134,7 +134,7 @@ defineExpose({ query_life_cycle_analysis_avg_data })
     <div class="step-top-box">
       <SectionTitle class="mb-15" :title="t('manage_analysis.life_cycle_step_overview')" />
       <div class="step-top-box__right">
-        <ExportReport class="mr-10" v-if="apiSuccess" />
+        <ExportCSV class="mr-10" v-if="apiSuccess" />
         <FilterDate @update:timestamp="updateTimestamp" v-show="apiSuccess" />
       </div>
     </div>

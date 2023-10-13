@@ -8,7 +8,7 @@ import { errorRespond } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import FuzzySwitchWithTooltip from '@/components/Switch/FuzzySwitchWithTooltip.vue'
-import FilterTag from '@/components/Filter/FilterTag.vue'
+import SelectTag from '@/components/Filter/SelectTag.vue'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import ImportCSV from '@/components/Filter/ImportCSV.vue'
 
@@ -145,7 +145,7 @@ watch(
     <el-popover
       ref="popover"
       placement="bottom-end"
-      :width="990"
+      :width="600"
       trigger="click"
       :teleported="false"
       popper-class="cdp-popover"
@@ -160,13 +160,14 @@ watch(
       </template>
       <el-row :gutter="15">
         <el-col :span="12" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="t('data_name.ag_name')">
+          <SectionTitle size="small" class="cdp-text-purple mb-10" :title="t('data_name.ag_name')">
           </SectionTitle>
           <el-select
             v-model="form.selectAcount"
             class="cdp-select w-full"
             popper-class="cdp-select-popper"
             filterable
+            suffix-icon="CaretBottom"
             :teleported="false"
             :disabled="formDisabled"
           >
@@ -180,13 +181,18 @@ watch(
           </el-select>
         </el-col>
         <el-col :span="12" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="t('data_name.user_level')">
+          <SectionTitle
+            size="small"
+            class="cdp-text-purple mb-10"
+            :title="t('data_name.user_level')"
+          >
           </SectionTitle>
           <el-select
             v-model="form.selectLevel"
             class="cdp-select w-full"
             popper-class="cdp-select-popper"
             filterable
+            suffix-icon="CaretBottom"
             :teleported="false"
             :disabled="formDisabled"
           >
@@ -216,19 +222,27 @@ watch(
           />
         </el-col>
         <el-col :span="12" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="t('data_name.register_date')">
+          <SectionTitle
+            size="small"
+            class="cdp-text-purple mb-10"
+            style="min-height: 25px"
+            :title="t('data_name.register_date')"
+          >
           </SectionTitle>
           <DatepickerRange
             v-model="form.registerDate"
             :config="2"
-            :shortcutsConfig="2"
-            :enabledThreeMonth="false"
+            :shortcutsConfig="1"
             :disabled="formDisabled"
             class="w-full filter-datepicker"
           />
         </el-col>
         <el-col :span="24" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="t('data_name.member_name')">
+          <SectionTitle
+            size="small"
+            class="cdp-text-purple mb-10"
+            :title="t('data_name.member_name')"
+          >
             <template #tooltip>
               {{ $t('customer_tag_list.search_by_member_name') }}
             </template>
@@ -240,14 +254,22 @@ watch(
           />
         </el-col>
         <el-col :span="24" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="t('common.include_tags')">
+          <SectionTitle
+            size="small"
+            class="cdp-text-purple mb-10"
+            :title="t('common.include_tags')"
+          >
           </SectionTitle>
-          <FilterTag v-model="form.searchTag" :disabled="formDisabled" />
+          <SelectTag v-model="form.searchTag" />
         </el-col>
         <el-col :span="24" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="t('common.exclude_tags')">
+          <SectionTitle
+            size="small"
+            class="cdp-text-purple mb-10"
+            :title="t('common.exclude_tags')"
+          >
           </SectionTitle>
-          <FilterTag v-model="form.excludeTag" :disabled="formDisabled" />
+          <SelectTag v-model="form.excludeTag" />
         </el-col>
       </el-row>
       <div class="drop">

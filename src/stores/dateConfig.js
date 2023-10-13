@@ -63,7 +63,7 @@ export const useDateStore = defineStore('dateStore', () => {
 
   // config_2 : 預設選取近20年
   const date_range_picker_config_2 = {
-    startDate: dayjs().add(1, 'day').subtract(20, 'year'), //預設起始時間
+    startDate: dayjs().add(1, 'day').subtract(3, 'month'), //預設起始時間
     endDate: LAST_DATE, //預設結束時間
     minDate: dayjs().subtract(20, 'year'), //限制最小可選日期
     maxDate: LAST_DATE //限制最大可選日期
