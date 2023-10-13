@@ -387,6 +387,7 @@
 
     "member_life_cycles": "會員生命週期人數佔比",
     "excluding_who_did_not_bet_for_the_last_week": "僅納入近一週有下注會員",
+    "excluding_who_did_not_bet_for_the_last_month": "僅納入近一個月有下注會員",
 
     "changes_in_member_active_level": "會員活躍度變化統計"
   },

@@ -386,6 +386,7 @@
 
     "member_life_cycles": "Gambler Life Cycles",
     "excluding_who_did_not_bet_for_the_last_week": "Excluding who didn't bet for a week ago",
+    "excluding_who_did_not_bet_for_the_last_month": "Excluding who didn't bet for a month ago",
 
     "changes_in_member_active_level": "Changes in Gambler Activity Level"
   },

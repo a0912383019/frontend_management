@@ -7,7 +7,6 @@ const fuzzySearch = ref(false)
 
 const emit = defineEmits(['update:modelValue'])
 
-// const activeTabName = ref(props.activeName)
 const handleSwitchChange = (data) => {
   emit('update:modelValue', data)
 }
