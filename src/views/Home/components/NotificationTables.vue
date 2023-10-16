@@ -259,7 +259,17 @@ onMounted(() => {
   querySmallMesNote()
 })
 
-watch([() => currentTabs.value, () => i18nLocale.value], () => {
+watch(
+  () => i18nLocale.value,
+  () => {
+    apiIsCalled.value = apiIsCalled.value.map((ele) => false)
+    const tabNameArr = tabList.value.map((ele) => ele.name)
+    const kind = tabNameArr.indexOf(currentTabs.value)
+    querySmallMesNote(kind.toString())
+  }
+)
+
+watch([() => currentTabs.value], () => {
   const tabNameArr = tabList.value.map((ele) => ele.name)
   const kind = tabNameArr.indexOf(currentTabs.value)
   refTable.value.goToFirstPage()

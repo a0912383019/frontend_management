@@ -55,11 +55,13 @@ const changeLang = (lang) => {
       options.value[idx].active = true
     }
   })
-  console.log(langIdx)
   i18nLocale.value = lang
 }
 
 onMounted(() => {
+  if(i18nLocale.value !== '') {
+    changeLang(i18nLocale.value)
+  }
   document.addEventListener('click', handleDocumentClicks)
 })
 onUnmounted(() => {
