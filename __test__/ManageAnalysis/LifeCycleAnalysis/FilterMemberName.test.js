@@ -6,11 +6,9 @@ import ElementPlus from 'element-plus'
 import router from '@/router'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSliders, faCircleInfo, faSearch } from '@fortawesome/free-solid-svg-icons'
+import CdpIcon from '@/components/CdpIcon.vue'
+import { library } from '@/utils/fontawsome.js'
 import FilterMemberName from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/LifeCyclePeopleChanges/components/FilterMemberName.vue'
-
-library.add(faSliders, faCircleInfo, faSearch)
 
 describe('開啟 Dialog Member', () => {
   let wrapper = null
@@ -27,7 +25,8 @@ describe('開啟 Dialog Member', () => {
           })
         ],
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })

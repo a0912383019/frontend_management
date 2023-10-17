@@ -4,6 +4,7 @@ import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import MemberDetails from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/MemberDetails.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -29,7 +30,8 @@ describe('會員明細', () => {
           })
         ],
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })

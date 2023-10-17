@@ -5,6 +5,7 @@ import { createTestingPinia } from '@pinia/testing'
 import ElementPlus from 'element-plus'
 import router from '@/router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import AvgCard from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/StepOverview/components/AvgCard.vue'
 
 describe('AvgCard', () => {
@@ -30,7 +31,8 @@ describe('AvgCard', () => {
           })
         ],
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })

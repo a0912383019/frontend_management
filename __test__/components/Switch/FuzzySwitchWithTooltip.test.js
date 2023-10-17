@@ -1,6 +1,7 @@
 import { it, describe, expect, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import FuzzySwitchWithTooltip from '@/components/Switch/FuzzySwitchWithTooltip.vue'
 import ElementPlus from 'element-plus'
 import { i18n } from '@/global/i18n'
@@ -15,7 +16,8 @@ describe('FuzzySwitchWithTooltip', () => {
         plugins: [ElementPlus, i18n]
       },
       components: {
-        FontAwesomeIcon
+        FontAwesomeIcon,
+        CdpIcon
       }
     })
   })

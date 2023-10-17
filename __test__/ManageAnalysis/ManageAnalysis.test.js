@@ -9,6 +9,7 @@ import Tab from '@/components/Tab.vue'
 import LifeCycleAnalysis from '@/views/ManageAnalysis/components/LifeCycleAnalysis/LifeCycleAnalysis.vue'
 import StepTrendAnalysis from '@/views/ManageAnalysis/components/StepTrendAnalysis/StepTrendAnalysis.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import router from '@/router'
 import { library } from '@/utils/fontawsome.js'
 
@@ -28,7 +29,8 @@ describe('ManageAnalysis.vue', () => {
         Tab,
         LifeCycleAnalysis,
         StepTrendAnalysis,
-        FontAwesomeIcon
+        FontAwesomeIcon,
+        CdpIcon
       }
     }
   })

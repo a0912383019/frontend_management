@@ -1,6 +1,7 @@
 import { it, describe, expect, beforeEach, afterEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import Search from '@/components/Search.vue'
 
 describe('Search', () => {
@@ -14,7 +15,8 @@ describe('Search', () => {
       },
       global: {
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })
