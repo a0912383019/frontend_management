@@ -7,25 +7,25 @@ import { i18n } from '@/global/i18n'
 import { library } from '@/utils/fontawsome.js'
 
 describe('FuzzySwitchWithTooltip', () => {
-    let wrapper = null
+  let wrapper = null
 
-    beforeEach(() => {
-        wrapper = mount(FuzzySwitchWithTooltip, {
-            global: {
-                plugins: [ElementPlus, i18n]
-            },
-            components: {
-                FontAwesomeIcon
-            }
-        })
+  beforeEach(() => {
+    wrapper = mount(FuzzySwitchWithTooltip, {
+      global: {
+        plugins: [ElementPlus, i18n]
+      },
+      components: {
+        FontAwesomeIcon
+      }
     })
+  })
 
-    afterEach(() => {
-        wrapper.unmount()
-    })
+  afterEach(() => {
+    wrapper.unmount()
+  })
 
-    it('是否有正確觸發emit', async () => {
-        await wrapper.find('.el-switch__input').trigger('click')
-        expect(wrapper.emitted('update:modelValue')).toBeTruthy()
-    })
+  it('是否有正確觸發emit', async () => {
+    await wrapper.find('.el-switch__input').trigger('click')
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
+  })
 })
