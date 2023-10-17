@@ -3,7 +3,7 @@ import { shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import Language from '@/components/HeaderBar/components/Language.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import CdpIcon from '@/components/SvgIcon.vue'
+import CdpIcon from '@/components/CdpIcon.vue'
 
 describe('Language', () => {
   let wrapper = null

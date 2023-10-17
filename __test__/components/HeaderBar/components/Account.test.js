@@ -5,6 +5,7 @@ import { i18n } from '@/global/i18n'
 import { useSystemStore } from '@/stores/system.js'
 import Account from '@/components/HeaderBar/components/Account.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import router from '@/router'
 
 describe('Account', () => {
@@ -36,7 +37,8 @@ describe('Account', () => {
         }
       },
       components: {
-        FontAwesomeIcon
+        FontAwesomeIcon,
+        CdpIcon
       }
     })
     systemStore = useSystemStore()

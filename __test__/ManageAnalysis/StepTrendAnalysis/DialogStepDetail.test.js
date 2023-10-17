@@ -7,6 +7,7 @@ import axiosGoInstance from '@/api/axiosGoInstance.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import ElementPlus from 'element-plus'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import router from '@/router'
 
 describe('DialogStepDetail.vue', () => {
@@ -24,7 +25,8 @@ describe('DialogStepDetail.vue', () => {
           })
         ],
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })

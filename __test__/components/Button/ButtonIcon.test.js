@@ -2,6 +2,7 @@ import { it, describe, expect, afterEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 
 describe('ButtonIcon', () => {
   let wrapper = null
@@ -20,7 +21,8 @@ describe('ButtonIcon', () => {
       },
       global: {
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })
@@ -41,7 +43,8 @@ describe('ButtonIcon', () => {
       },
       global: {
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })

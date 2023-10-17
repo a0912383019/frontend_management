@@ -1,8 +1,9 @@
 import { it, describe, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import ErrorText from '@/components/ErrorText.vue'
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { library } from '@/utils/fontawsome.js'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faExclamationTriangle)
@@ -15,7 +16,8 @@ describe('ErrorText', () => {
     wrapper = mount(ErrorText, {
       global: {
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       },
       slots: {

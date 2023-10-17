@@ -2,6 +2,7 @@ import { it, describe, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import LoadingAnimation from '@/components/Loading/LoadingAnimation.vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
@@ -163,6 +164,7 @@ describe('CustomTable', () => {
         plugins: [i18n, ElementPlus],
         components: {
           FontAwesomeIcon,
+          CdpIcon,
           LoadingAnimation,
           CustomPagination,
           TotalPagination
