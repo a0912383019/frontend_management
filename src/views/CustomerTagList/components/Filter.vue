@@ -154,7 +154,8 @@ watch(
     >
       <template #reference>
         <ButtonIcon
-          icon="sliders"
+          icon="filter"
+          :isSvg="true"
           size="large"
           color="purple"
           :name="t('common.advanced_filter')"

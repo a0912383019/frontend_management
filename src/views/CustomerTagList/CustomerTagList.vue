@@ -294,7 +294,9 @@ onMounted(() => {
                 @click="handleTagButtonClick(scope.row)"
                 v-if="scope.row.tag_button_show"
               >
-                {{ scope.row.tag_show ? 'close' : '。。。' }}
+                <el-tooltip effect="dark" content="顯示全部標籤" placement="top" :hide-after="0">
+                  {{ scope.row.tag_show ? 'close' : '⋯' }}
+                </el-tooltip>
               </li>
             </ul>
           </div>
@@ -302,8 +304,10 @@ onMounted(() => {
         <template #operation="scope">
           <div>
             <ButtonIcon
-              icon="eye"
-              :name="t('common.detail')"
+              class="detail-button"
+              icon="magnifier"
+              :isSvg="true"
+              :name="t('common.detail_short')"
               @click="handleMemberDetailClick(scope.row)"
             />
           </div>
@@ -378,7 +382,8 @@ onMounted(() => {
 }
 
 .customTagListTable {
-  .el-table .cell {
+  button.detail-button {
+    min-width: 80px;
   }
 }
 </style>

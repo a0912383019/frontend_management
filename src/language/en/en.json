@@ -65,6 +65,7 @@
     "operation": "Move",
     "manage": "Manage",
     "detail": "Details",
+    "detail_short": "詳情",
     "edit": "Edit",
     "delete": "Delete",
     "pending": "Pending",
@@ -96,6 +97,9 @@
   "import_export_file": {
     "export": "Export",
     "redirect_to_export_report": "Exported ... Please go to【$t(sidebar.user_export_report)】to download.",
+
+    "dialog_export_report_title": "Exported",
+    "dialog_export_report_text": "Please go to【{ sidebar }】to download.",
 
     "import": "Import Manually",
     "import_manually": "Import Manually",
