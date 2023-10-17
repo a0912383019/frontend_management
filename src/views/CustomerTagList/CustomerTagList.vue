@@ -132,7 +132,7 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
       hall_name: activeHall.hall_code,
       length: 10,
       locale: i18nLocale.value,
-      records_total: 0,
+      records_total: apiRecordsTotal.value,
       search_date: formData['registerDate'], //註冊日期
       search_name: formData['member'], //會員名稱
       search_tag: formData['searchTag'], //包含標籤
