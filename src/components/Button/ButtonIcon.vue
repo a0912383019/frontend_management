@@ -37,12 +37,7 @@ const buttonClass = computed(() => {
 </script>
 <template>
   <button class="btn-reset" :class="buttonClass">
-    <template v-if="props.isSvg">
-      <cdp-icon class="mr-6" :name="props.icon" />
-    </template>
-    <template v-else>
-      <font-awesome-icon class="mr-6" :icon="`fa-${props.icon}`" v-if="props.icon" />
-    </template>
+    <font-awesome-icon class="mr-6" :icon="`fa-${props.icon}`" v-if="props.icon" />
     {{ props.name }}
   </button>
 </template>

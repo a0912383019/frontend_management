@@ -305,8 +305,7 @@ onMounted(() => {
           <div>
             <ButtonIcon
               class="detail-button"
-              icon="magnifier"
-              :isSvg="true"
+              icon="eye"
               :name="t('common.detail_short')"
               @click="handleMemberDetailClick(scope.row)"
             />
