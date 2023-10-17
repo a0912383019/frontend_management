@@ -6,11 +6,9 @@ import ElementPlus from 'element-plus'
 import router from '@/router'
 import { useGlobalStore } from '@/stores/global.js'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBaby } from '@fortawesome/free-solid-svg-icons'
+import CdpIcon from '@/components/CdpIcon.vue'
 import StepConfig from '@/components/StepConfig.vue'
-
-library.add(faBaby)
+import { library } from '@/utils/fontawsome.js'
 
 describe('StepConfig', () => {
   let wrapper = null
@@ -31,7 +29,8 @@ describe('StepConfig', () => {
         ]
       },
       components: {
-        FontAwesomeIcon
+        FontAwesomeIcon,
+        CdpIcon
       }
     })
     globalStore = useGlobalStore()

@@ -6,6 +6,7 @@ import { storeToRefs } from 'pinia'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import StepOverview from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/StepOverview/StepOverview.vue'
 import FilterDate from '@/components/Filter/FilterDate.vue'
 import ExportReport from '@/components/ExportReport.vue'
@@ -29,7 +30,8 @@ describe('階段總覽', () => {
           })
         ],
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })

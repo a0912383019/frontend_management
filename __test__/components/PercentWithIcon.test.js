@@ -1,6 +1,7 @@
 import { it, describe, expect, afterEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import PercentWithIcon from '@/components/PercentWithIcon.vue'
 
 describe('PercentWithIcon', () => {
@@ -14,7 +15,8 @@ describe('PercentWithIcon', () => {
     wrapper = shallowMount(PercentWithIcon, {
       global: {
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })
@@ -34,7 +36,8 @@ describe('PercentWithIcon', () => {
       },
       global: {
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })
@@ -56,7 +59,8 @@ describe('PercentWithIcon', () => {
       },
       global: {
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })
@@ -78,7 +82,8 @@ describe('PercentWithIcon', () => {
       },
       global: {
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })
@@ -100,7 +105,8 @@ describe('PercentWithIcon', () => {
       },
       global: {
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })

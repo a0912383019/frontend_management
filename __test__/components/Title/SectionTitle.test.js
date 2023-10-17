@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import ElementPlus from 'element-plus'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import { library } from '@/utils/fontawsome.js'
 
 describe('SectionTitle', () => {
@@ -18,7 +19,8 @@ describe('SectionTitle', () => {
         plugins: [ElementPlus]
       },
       components: {
-        FontAwesomeIcon
+        FontAwesomeIcon,
+        CdpIcon
       },
       props: {
         title: 'Section with Title'
@@ -36,7 +38,8 @@ describe('SectionTitle', () => {
         plugins: [ElementPlus]
       },
       components: {
-        FontAwesomeIcon
+        FontAwesomeIcon,
+        CdpIcon
       },
       props: {
         title: 'Section with Title and Tooltip'

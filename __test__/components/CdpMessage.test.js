@@ -2,6 +2,7 @@ import { it, describe, expect, beforeEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import CdpIcon from '@/components/CdpIcon.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 
 describe('CdpMessage', () => {
@@ -18,7 +19,8 @@ describe('CdpMessage', () => {
       global: {
         plugins: [i18n],
         components: {
-          FontAwesomeIcon
+          FontAwesomeIcon,
+          CdpIcon
         }
       }
     })

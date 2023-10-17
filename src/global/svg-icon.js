@@ -1,5 +1,5 @@
-import SvgIcon from '@/components/SvgIcon.vue'
+import CdpIcon from '@/components/CdpIcon.vue'
 
 export const svgIconRegister = (app) => {
-  app.component('cdp-icon', SvgIcon)
+  app.component('cdp-icon', CdpIcon)
 }
