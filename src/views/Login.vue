@@ -54,6 +54,7 @@ const googleLoginCallback = (response) => {
   // his Google account from the popup
   handleLogin({ credential: response.credential })
     .then(() => {
+      console.log(response)
       globalStore.isLoading = false
       //  登入成功取得api access_token後才導至首頁
       router.push({ path: '/home' })

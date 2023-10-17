@@ -13,46 +13,49 @@ import router from '@/router'
 import { library } from '@/utils/fontawsome.js'
 
 describe('ManageAnalysis.vue', () => {
-    const wrapper = mount(ManageAnalysis, {
-        global: {
-            plugins: [i18n, ElementPlus, router, createTestingPinia(
-                {
-                    createSpy: vi.fn,
-                }
-            )],
-            components: {
-                PageTitle,
-                Tab,
-                LifeCycleAnalysis,
-                StepTrendAnalysis,
-                FontAwesomeIcon
-            }
-        }
-    })
+  const wrapper = mount(ManageAnalysis, {
+    global: {
+      plugins: [
+        i18n,
+        ElementPlus,
+        router,
+        createTestingPinia({
+          createSpy: vi.fn
+        })
+      ],
+      components: {
+        PageTitle,
+        Tab,
+        LifeCycleAnalysis,
+        StepTrendAnalysis,
+        FontAwesomeIcon
+      }
+    }
+  })
 
-    it('ManageAnalysis', () => {
-        //元件渲染是否正確
-        expect(wrapper.findComponent(PageTitle).exists()).toBe(true)
-        expect(wrapper.findComponent(Tab).exists()).toBe(true)
-        expect(wrapper.findComponent(LifeCycleAnalysis).exists()).toBe(true)
-        expect(wrapper.findComponent(StepTrendAnalysis).exists()).toBe(false)
-    })
+  it('ManageAnalysis', () => {
+    //元件渲染是否正確
+    expect(wrapper.findComponent(PageTitle).exists()).toBe(true)
+    expect(wrapper.findComponent(Tab).exists()).toBe(true)
+    expect(wrapper.findComponent(LifeCycleAnalysis).exists()).toBe(true)
+    expect(wrapper.findComponent(StepTrendAnalysis).exists()).toBe(false)
+  })
 
-    it('dict', () => {
-        //字典檔是否正確
-        const tabData = [
-            { name: 'LifeCycleAnalysis', label: '會員生命週期分析' },
-            { name: 'StepTrendAnalysis', label: '趨勢分析' }
-        ]
-        expect(wrapper.vm.tabData).toStrictEqual(tabData)
-    })
+  it('dict', () => {
+    //字典檔是否正確
+    const tabData = [
+      { name: 'LifeCycleAnalysis', label: '會員生命週期分析' },
+      { name: 'StepTrendAnalysis', label: '趨勢分析' }
+    ]
+    expect(wrapper.vm.tabData).toStrictEqual(tabData)
+  })
 
-    it('change tab', async () => {
-        //切換tab，currentTabs是否有改變
-        const tabs = wrapper.findAll('.tabs-manage-analysis.tabs li')
-        await tabs[1].trigger('click')
-        expect(wrapper.vm.currentTabs).toStrictEqual('StepTrendAnalysis')
-        expect(wrapper.findComponent(LifeCycleAnalysis).exists()).toBe(false)
-        expect(wrapper.findComponent(StepTrendAnalysis).exists()).toBe(true)
-    })
+  it('change tab', async () => {
+    //切換tab，currentTabs是否有改變
+    const tabs = wrapper.findAll('.tabs-manage-analysis.tabs li')
+    await tabs[1].trigger('click')
+    expect(wrapper.vm.currentTabs).toStrictEqual('StepTrendAnalysis')
+    expect(wrapper.findComponent(LifeCycleAnalysis).exists()).toBe(false)
+    expect(wrapper.findComponent(StepTrendAnalysis).exists()).toBe(true)
+  })
 })
