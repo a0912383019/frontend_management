@@ -115,6 +115,8 @@ const handleCsvSuccess = (result) => {
   form['custom_user_list'] = []
   form['custom_user_list'] = result
   handleSubmitClick()
+  // 查詢後將custom_user_list清空
+  form['custom_user_list'] = []
 }
 
 const popover = ref(null) //popover

@@ -9,6 +9,10 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  isSvg: {
+    type: Boolean,
+    default: false
+  },
   size: {
     type: String,
     default: 'medium'

@@ -121,7 +121,8 @@ export const apiExportLifeCycleAnalysisDetail = (params) => {
       start
     },
     {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      timeout: 10 * 1000 // 10秒
     }
   )
 }

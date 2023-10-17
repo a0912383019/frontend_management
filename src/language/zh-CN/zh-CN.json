@@ -65,6 +65,7 @@
     "operation": "操作",
     "manage": "管理",
     "detail": "详细资料",
+    "detail_short": "详情",
     "edit": "编辑",
     "delete": "删除",
     "pending": "待执行",
@@ -96,6 +97,9 @@
   "import_export_file": {
     "export": "汇出报表",
     "redirect_to_export_report": "已送出 ... 请至【$t(sidebar.user_export_report)】下载。",
+
+    "dialog_export_report_title": "已送出",
+    "dialog_export_report_text": "请至【{ sidebar }】下载。",
 
     "import": "导入名单",
     "import_manually": "使用手动导入名单",
