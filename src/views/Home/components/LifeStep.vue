@@ -175,7 +175,7 @@ watch(
 </script>
 <template>
   <section class="cdp-section h-444">
-    <SectionTitle class="mb-15" :title="t('home.member_life_cycles')">
+    <SectionTitle class="mb-15" :title="$t('home.member_life_cycles')">
       <template #tooltip>
         <div class="font-size-14">
           {{ $t('home.excluding_who_did_not_bet_for_the_last_month') }}

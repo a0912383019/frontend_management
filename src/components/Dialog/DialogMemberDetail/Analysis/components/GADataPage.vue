@@ -224,7 +224,7 @@ onMounted(() => {
 </script>
 <template>
   <section class="cdp-section">
-    <SectionTitle class="mb-15" :title="t('customer_detail_info.ga_page_path')"></SectionTitle>
+    <SectionTitle class="mb-15" :title="$t('customer_detail_info.ga_page_path')"></SectionTitle>
     <div>
       <el-row :gutter="20" class="mb-20">
         <el-col :span="8">

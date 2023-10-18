@@ -130,12 +130,12 @@ onMounted(() => {
 <template>
   <section class="cdp-section">
     <div class="flex justify-between mb-20">
-      <SectionTitle class="mb-15" :title="t('customer_detail_info.member_journey_detail')">
+      <SectionTitle class="mb-15" :title="$t('customer_detail_info.member_journey_detail')">
       </SectionTitle>
       <el-popover
         placement="bottom-end"
         :visible="popoverVisible"
-        :title="t('customer_detail_info.journey_detail_source')"
+        :title="$t('customer_detail_info.journey_detail_source')"
         :width="500"
         trigger="click"
         popper-class="cdp-popover"
@@ -145,7 +145,7 @@ onMounted(() => {
             icon="sliders"
             size="large"
             color="purple"
-            :name="t('common.advanced_filter')"
+            :name="$t('common.advanced_filter')"
             @click="popoverVisible = !popoverVisible"
           />
         </template>
@@ -174,7 +174,7 @@ onMounted(() => {
               icon="search"
               color="purple"
               size="large large-120"
-              :name="t('common.filter')"
+              :name="$t('common.filter')"
               @click="handleClick"
             />
           </div>

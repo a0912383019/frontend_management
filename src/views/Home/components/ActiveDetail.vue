@@ -278,7 +278,7 @@ defineExpose({ handleOpenDialog })
       <div class="cdp-section mb-0">
         <SectionTitle
           class="mb-10"
-          :title="t('member_active_level.weekly_active_level')"
+          :title="$t('member_active_level.weekly_active_level')"
         ></SectionTitle>
         <CdpMessage
           :messageKey="weekMessageKey"
@@ -303,7 +303,7 @@ defineExpose({ handleOpenDialog })
         </CustomTable>
         <SectionTitle
           class="mt-20 mb-10"
-          :title="t('member_active_level.daily_active_level')"
+          :title="$t('member_active_level.daily_active_level')"
         ></SectionTitle>
         <CdpMessage
           :messageKey="dayMessageKey"

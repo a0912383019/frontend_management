@@ -247,7 +247,7 @@ watch(
 <template>
   <section class="cdp-section">
     <div class="section-top-filter"><FilterMemberName v-model="activeFile" /></div>
-    <SectionTitle class="mb-15" :title="t('manage_analysis.life_cycle_people_changes')">
+    <SectionTitle class="mb-15" :title="$t('manage_analysis.life_cycle_people_changes')">
       <template #tooltip>
         <div class="tooltip-date">
           <div>{{ $t('date.yesterday') }}：{{ tooltipDate['yesterday'] }}</div>
@@ -316,7 +316,7 @@ watch(
       <template #append>
         <table class="table-total">
           <tr>
-            <td width="20%" align="center">{{ t('data_name.total_people_num') }}</td>
+            <td width="20%" align="center">{{ $t('data_name.total_people_num') }}</td>
             <td width="80%" align="center">{{ tableTotalPeopleNum }}</td>
           </tr>
         </table>

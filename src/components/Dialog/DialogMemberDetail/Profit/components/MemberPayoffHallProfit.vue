@@ -169,7 +169,7 @@ onMounted(() => {
 </script>
 <template>
   <section class="cdp-section">
-    <SectionTitle class="mb-15" :title="t('customer_detail_info.member_payoff_hall_profit')">
+    <SectionTitle class="mb-15" :title="$t('customer_detail_info.member_payoff_hall_profit')">
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>

@@ -82,7 +82,7 @@ onMounted(() => {
           <span class="mr-8">{{ $t('customer_detail_info.net_amount') }}</span>
           <el-tooltip
             effect="dark"
-            :content="t('customer_detail_info.net_amount_desc')"
+            :content="$t('customer_detail_info.net_amount_desc')"
             placement="top"
           >
             <font-awesome-icon class="cursor-pointer" icon="fa-solid fa-info-circle" />

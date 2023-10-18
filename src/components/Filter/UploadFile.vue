@@ -157,8 +157,8 @@ defineExpose({ dialogClose })
       {{ errorText }}
     </div>
     <el-table :data="notOkAccountData" style="width: 100%" v-if="notOkAccountData.length > 0">
-      <el-table-column prop="no" :label="t('data_name.item_number')" width="80" align="center" />
-      <el-table-column prop="name" :label="t('data_name.member_name')">
+      <el-table-column prop="no" :label="$t('data_name.item_number')" width="80" align="center" />
+      <el-table-column prop="name" :label="$t('data_name.member_name')">
         <template #default="scope">
           {{ scope.row.name }} <span class="cdp-text-red-dark">{{ scope.row.note }}</span>
         </template>

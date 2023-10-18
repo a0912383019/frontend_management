@@ -255,7 +255,7 @@ onMounted(() => {
   <section class="cdp-section">
     <div class="flex items-center justify-between mb-20">
       <!-- justify-between -->
-      <PageTitle icon="fas fa-tags" :title="t('sidebar.bbin_customer_tag_list')" />
+      <PageTitle icon="fas fa-tags" :title="$t('sidebar.bbin_customer_tag_list')" />
       <div class="flex">
         <ExportCSV class="mr-10" :total="apiRecordsTotal" />
         <Filter @update:filter-submit="handleFilterSubmit" />
@@ -307,7 +307,7 @@ onMounted(() => {
               class="detail-button"
               icon="magnifier"
               :isSvg="true"
-              :name="t('common.detail_short')"
+              :name="$t('common.detail_short')"
               @click="handleMemberDetailClick(scope.row)"
             />
           </div>

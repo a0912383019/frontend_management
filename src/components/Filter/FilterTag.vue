@@ -197,7 +197,7 @@ onUnmounted(() => {
               class="cdp-select w-full"
               popper-class="cdp-select-popper"
               :teleported="false"
-              :placeholder="t('tags.select_type')"
+              :placeholder="$t('tags.select_type')"
               @change="changeGenerateCategoryLists"
             >
               <el-option-group
@@ -222,7 +222,7 @@ onUnmounted(() => {
               popper-class="cdp-select-popper"
               :teleported="false"
               :disabled="selectDisabled"
-              :placeholder="t('tags.select_category')"
+              :placeholder="$t('tags.select_category')"
               @change="changeGenerateTagLists"
             >
               <el-option
@@ -244,7 +244,7 @@ onUnmounted(() => {
               collapse-tags
               :max-collapse-tags="1"
               :disabled="selectDisabled"
-              :placeholder="t('tags.select_tag')"
+              :placeholder="$t('tags.select_tag')"
               @change="changeTagLists"
             >
               <template v-for="item in selectTagLists" :key="item.value">
