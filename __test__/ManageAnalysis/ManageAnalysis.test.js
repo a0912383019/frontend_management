@@ -25,10 +25,6 @@ describe('ManageAnalysis.vue', () => {
         })
       ],
       components: {
-        PageTitle,
-        Tab,
-        LifeCycleAnalysis,
-        StepTrendAnalysis,
         FontAwesomeIcon,
         CdpIcon
       }

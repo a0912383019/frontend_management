@@ -2,13 +2,13 @@ import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ElementPlus from 'element-plus'
 import { i18n } from '@/global/i18n'
-import Tag from '@/components/HeaderBar/components/Tag.vue'
+import Tags from '@/components/HeaderBar/components/Tags.vue'
 import { createTestingPinia } from '@pinia/testing'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@/utils/fontawsome.js'
 import router from '@/router'
 
-describe('Tag', () => {
+describe('Tags', () => {
   let wrapper = null
   let system_config = null
 
@@ -95,7 +95,7 @@ describe('Tag', () => {
     }
     sessionStorage.setItem('system_config', JSON.stringify(system_config))
 
-    wrapper = mount(Tag, {
+    wrapper = mount(Tags, {
       global: {
         plugins: [
           i18n,
