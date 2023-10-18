@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSidebarStore } from '@/stores/sidebar.js'
-import Tag from '@/components/HeaderBar/components/Tag.vue'
+import Tags from '@/components/HeaderBar/components/Tags.vue'
 import Hall from '@/components/HeaderBar/components/Hall.vue'
 import Language from '@/components/HeaderBar/components/Language.vue'
 import Account from '@/components/HeaderBar/components/Account.vue'
@@ -20,7 +20,7 @@ const updateTimes = (data) => {
       <font-awesome-icon icon="fa-solid fa-bars" />
     </button>
     <ul class="list">
-      <li class="list__tag"><Tag :times="times" /></li>
+      <li class="list__tag"><Tags :times="times" /></li>
       <li class="list__hall"><Hall @time="updateTimes" /></li>
       <li class="list__account"><Account /></li>
       <li class="list__lang"><Language /></li>
