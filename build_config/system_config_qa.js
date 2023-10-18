@@ -1,4 +1,4 @@
-export const build_env_config ='demo'
+export const build_env_config ='qa'
 /***
  * 廳別config
  */
