@@ -209,7 +209,7 @@ watch(
           </el-select>
         </el-col>
         <el-col :span="12" class="mb-15">
-          <div class="flex items-start mb-8">
+          <div class="flex items-start mb-10">
             <el-checkbox
               v-model="form.isActivedDateCheck"
               :label="$t('data_name.active_date')"
