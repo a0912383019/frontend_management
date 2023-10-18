@@ -212,8 +212,8 @@ const handleFocus = () => {
   }
   .el-range-input {
     width: 70px;
-    height: 34px;
-    line-height: 34px;
+    height: 32px;
+    line-height: 32px;
   }
   .el-range-separator {
     flex: none;
