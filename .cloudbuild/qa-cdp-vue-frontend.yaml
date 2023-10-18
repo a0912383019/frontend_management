@@ -1,7 +1,7 @@
 substitutions:
-  _IMAGEPATH: 'us-central1-docker.pkg.dev/gcp-20230816-003/bi-cdp/cdp_frontend_vue'
-  _ENVTYPE: 'it'
-  _SERVICE: 'bi-cdp-vue-frontend'
+  _IMAGEPATH: 'us-central1-docker.pkg.dev/gcp-20230911-001/bi-cdp/cdp_frontend_vue'
+  _ENVTYPE: 'qa'
+  _SERVICE: 'qa-cdp-vue-frontend'
   _SERVICEREGION: 'us-central1'
 
 steps:
