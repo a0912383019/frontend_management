@@ -165,7 +165,7 @@ const showActivityStepDetail = (lastWeek, thisWeek) => {
 </script>
 <template>
   <section class="cdp-section mb-0">
-    <SectionTitle class="margin-bottom-5-" :title="t('home.changes_in_member_active_level')">
+    <SectionTitle class="margin-bottom-5-" :title="$t('home.changes_in_member_active_level')">
       <template #tooltip>
         <div class="font-size-14">
           {{ $t('member_active_level.changes') + $t('date.last_week') }}
@@ -195,7 +195,7 @@ const showActivityStepDetail = (lastWeek, thisWeek) => {
                 {{ item.title }}
               </span>
               <span>
-                {{ t('unit.unit') + t('unit.unit_people') }}
+                {{ $t('unit.unit') + $t('unit.unit_people') }}
               </span>
             </div>
           </div>

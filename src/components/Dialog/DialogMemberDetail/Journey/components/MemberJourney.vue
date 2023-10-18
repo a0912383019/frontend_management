@@ -490,7 +490,7 @@ onMounted(() => {
 <template>
   <section class="cdp-section">
     <div class="flex justify-between items-center mb-30">
-      <SectionTitle :title="t('customer_detail_info.tab_journey')">
+      <SectionTitle :title="$t('customer_detail_info.tab_journey')">
         <template #tooltip>
           {{ $t('customer_detail_info.member_journey_chart_reminder') }}
         </template>
@@ -500,7 +500,7 @@ onMounted(() => {
         size="large"
         color="blue"
         :bg="false"
-        :name="t('customer_detail_info.custom_flag')"
+        :name="$t('customer_detail_info.custom_flag')"
         class="export__button"
         @click="handleAdd"
       />

@@ -1,7 +1,6 @@
 <script setup>
 import { ref, reactive, watch, computed } from 'vue'
 import { findRootHall, findParentKey, getSessionStorageEntity } from '@/utils/commonUtils'
-import { ElDialog } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -9,7 +8,10 @@ import Tab from '@/components/Tab.vue'
 import Search from '@/components/Search.vue'
 
 const { t } = useI18n()
+
 const globalStore = useGlobalStore()
+const { activeHall } = globalStore
+
 const dialogTableVisible = ref(false) //dialog開啟狀態
 
 const props = defineProps({
@@ -73,12 +75,6 @@ const tagsData = reactive({
   type5: []
 })
 let tagsDataOriginal = reactive({})
-//清空tagsData的value資料
-// const clearTagsData = () => {
-//   Object.keys(tagsData).forEach((item) => {
-//     tagsData[item] = []
-//   })
-// }
 
 //取得sessiontStorage tags_config資料
 const getTagsConfig = () => {
@@ -87,12 +83,11 @@ const getTagsConfig = () => {
 
 //轉換 tags_config 格式
 const transformTagsConfig = () => {
-  // clearTagsData()
   Object.keys(tagsData).forEach((item) => {
     tagsData[item] = []
   })
 
-  let tagsConfigData = tagsConfig[findParentKey(globalStore.activeHall.hall_code)]
+  let tagsConfigData = tagsConfig[findParentKey(activeHall.hall_code)]
   if (tagsConfigData !== undefined) {
     Object.entries(tagsConfigData).forEach((key) => {
       let value = key[1]
@@ -113,7 +108,7 @@ const transformTagsConfig = () => {
   }
 
   // 加入tag_type = 3的tag_category說明(2~7)
-  let root_hall = findRootHall(globalStore.activeHall.hall_code)
+  let root_hall = findRootHall(activeHall.hall_code)
   let type3_data = []
   for (let i = 2; i <= 9; i++) {
     switch (i) {
@@ -164,7 +159,6 @@ const searchText = ref('')
 const handleSearch = () => {
   let handleSearchText = searchText.value.toLowerCase()
   if (handleSearchText !== '') {
-    // console.log('tagsDataOriginal[currentTabs]', tagsDataOriginal[currentTabs.value])
     let result = tagsDataOriginal[currentTabs.value].filter((value) => {
       return (
         value['tag_name'].toLowerCase().indexOf(handleSearchText) != -1 ||
@@ -180,7 +174,6 @@ const handleSearch = () => {
 //開啟 dialog
 const handleOpenDialog = () => {
   dialogTableVisible.value = true
-  console.log(tagsData)
 }
 
 //dialog close callback
@@ -198,7 +191,7 @@ watch(
 )
 
 watch(
-  () => globalStore.activeHall.hall_code,
+  () => activeHall.hall_code,
   (newVal, oldVal) => {
     if (oldVal !== '') {
       tagsConfig = getTagsConfig()
@@ -240,15 +233,15 @@ watch(
       v-model="dialogTableVisible"
       class="cdp-dialog"
       :append-to-body="true"
-      :title="t('tags.tag_description')"
+      :title="$t('tags.tag_description')"
       @close="handleCloseDialog"
     >
-      <tab
+      <Tab
         :tabData="tabData"
         :activeName="currentTabs"
         v-model="currentTabs"
         class="cdp-dialog__tab"
-      ></tab>
+      ></Tab>
       <div class="cdp-dialog__content">
         <div class="cdp-dialog__tablebox">
           <div class="cdp-dialog__search">
@@ -276,7 +269,6 @@ watch(
   border-radius: 5px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background-color: rgba(255, 255, 255, 0.1);
-  // margin-right: 15px;
   font-size: 14px;
   font-weight: 500;
   text-align: center;

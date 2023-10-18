@@ -88,7 +88,7 @@ watch(route, () => {
     <el-popover
       ref="popover"
       placement="bottom-end"
-      :title="t('data_name.member_name')"
+      :title="$t('data_name.member_name')"
       :width="320"
       trigger="click"
       :teleported="false"
@@ -99,22 +99,22 @@ watch(route, () => {
           icon="sliders"
           size="large"
           color="purple"
-          :name="t('common.advanced_filter')"
+          :name="$t('common.advanced_filter')"
         />
       </template>
       <div class="drop">
         <div class="drop__search">
-          <el-input v-model="searchName" :placeholder="t('common.input_member_name_search')" />
+          <el-input v-model="searchName" :placeholder="$t('common.input_member_name_search')" />
         </div>
         <div class="drop__item">
           <ImportCSV v-model="useCustomList" :csvType="1" @update:success="handleCsvSuccess" />
         </div>
         <div class="drop__item">
-          <el-switch v-model="fuzzySearch" :active-text="t('common.fuzzy_search')" class="mr-10" />
+          <el-switch v-model="fuzzySearch" :active-text="$t('common.fuzzy_search')" class="mr-10" />
           <el-tooltip
             class="box-item"
             effect="dark"
-            :content="t('common.return_similar_username')"
+            :content="$t('common.return_similar_username')"
             placement="top"
           >
             <font-awesome-icon icon="fa-solid fa-circle-info" />
@@ -126,7 +126,7 @@ watch(route, () => {
             size="large large-120"
             color="purple"
             @click="handleClick"
-            :name="t('common.filter')"
+            :name="$t('common.filter')"
           />
         </div>
       </div>

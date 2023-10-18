@@ -241,7 +241,7 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
 </script>
 <template>
   <div class="top-box">
-    <SectionTitle class="mb-15" :title="t('manage_analysis.member_details')" />
+    <SectionTitle class="mb-15" :title="$t('manage_analysis.member_details')" />
     <CurrencySignText v-show="apiSuccess" />
   </div>
   <CdpMessage :messageKey="messageKey" :height="500" v-show="apiSuccess === false" />
@@ -305,7 +305,7 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
         <ButtonIcon
           @click="handleStepClick(scope.row)"
           icon="eye"
-          :name="t('manage_analysis.life_cycle_history')"
+          :name="$t('manage_analysis.life_cycle_history')"
         />
       </template>
     </CustomTable>

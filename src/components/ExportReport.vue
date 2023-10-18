@@ -12,7 +12,7 @@ const { t } = useI18n()
       size="large"
       :bg="false"
       color="blue"
-      :name="t('import_export_file.export')"
+      :name="$t('import_export_file.export')"
       class="export__button"
     />
   </div>

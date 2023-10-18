@@ -119,7 +119,7 @@ watch(
     <el-popover
       ref="popover"
       placement="bottom-end"
-      :title="t('date.date')"
+      :title="$t('date.date')"
       :width="320"
       trigger="click"
       :teleported="false"
@@ -130,7 +130,7 @@ watch(
           icon="sliders"
           size="large"
           color="purple"
-          :name="t('common.advanced_filter')"
+          :name="$t('common.advanced_filter')"
         />
       </template>
       <div class="drop">
@@ -155,7 +155,7 @@ watch(
             size="large large-120"
             color="purple"
             @click="handleClick"
-            :name="t('common.filter')"
+            :name="$t('common.filter')"
           />
         </div>
       </div>

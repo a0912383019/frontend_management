@@ -223,19 +223,19 @@ defineExpose({ dialogOpen })
       v-model="dialogVisible"
       class="cdp-dialog journey-dialog"
       :append-to-body="true"
-      :title="t('customer_detail_info.custom_flag')"
+      :title="$t('customer_detail_info.custom_flag')"
       :destroy-on-close="true"
       @close="handleDialogClose"
     >
       <div class="cdp-dialog__content">
         <el-form :model="form" ref="refForm" label-position="top">
-          <el-form-item :label="t('customer_detail_info.flag_date')" prop="date">
+          <el-form-item :label="$t('customer_detail_info.flag_date')" prop="date">
             <el-date-picker
               v-model="form.date"
               type="date"
               :disabled-date="disabledDate"
-              :format="t('date.format_date_rule')"
-              :value-format="t('date.format_date_rule')"
+              :format="$t('date.format_date_rule')"
+              :value-format="$t('date.format_date_rule')"
               :disabled="dialogType === 'edit' ? true : false"
               popper-class="cdp-datepicker-single"
               class="cdp-datepicker-single-input full"
@@ -247,17 +247,17 @@ defineExpose({ dialogOpen })
             </el-date-picker>
           </el-form-item>
           <el-form-item
-            :label="t('customer_detail_info.flag_title')"
+            :label="$t('customer_detail_info.flag_title')"
             :rules="[
               {
                 required: true,
-                message: t('customer_detail_info.blank_flag_title_error_msg'),
+                message: $t('customer_detail_info.blank_flag_title_error_msg'),
                 trigger: 'blur'
               },
               {
                 max: 8,
                 required: true,
-                message: t('customer_detail_info.flag_title_length_limit_error_msg'),
+                message: $t('customer_detail_info.flag_title_length_limit_error_msg'),
                 trigger: 'blur'
               }
             ]"
@@ -265,23 +265,23 @@ defineExpose({ dialogOpen })
           >
             <el-input
               v-model="form.title"
-              :placeholder="t('customer_detail_info.input_flag_title')"
+              :placeholder="$t('customer_detail_info.input_flag_title')"
               @blur="handleBlur"
               class="cdp-input"
             />
           </el-form-item>
           <el-form-item
-            :label="t('customer_detail_info.flag_content')"
+            :label="$t('customer_detail_info.flag_content')"
             :rules="[
               {
                 required: true,
-                message: t('customer_detail_info.blank_flag_content_error_msg'),
+                message: $t('customer_detail_info.blank_flag_content_error_msg'),
                 trigger: 'blur'
               },
               {
                 max: 800,
                 required: true,
-                message: t('customer_detail_info.flag_content_length_limit_error_msg'),
+                message: $t('customer_detail_info.flag_content_length_limit_error_msg'),
                 trigger: 'blur'
               }
             ]"
@@ -290,21 +290,21 @@ defineExpose({ dialogOpen })
             <el-input
               v-model="form.content"
               type="textarea"
-              :placeholder="t('customer_detail_info.input_flag_content')"
+              :placeholder="$t('customer_detail_info.input_flag_content')"
               @blur="handleBlur"
               class="cdp-textarea"
             />
           </el-form-item>
           <el-row :gutter="15" v-if="dialogType === 'edit'">
             <el-col :span="12">
-              <el-form-item :label="t('customer_detail_info.flag_operator')" prop="user">
+              <el-form-item :label="$t('customer_detail_info.flag_operator')" prop="user">
                 <el-input v-model="form.user" class="cdp-input cdp-input-disabled" readonly>
                   <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="t('data_name.created_time')" prop="updatedTime">
+              <el-form-item :label="$t('data_name.created_time')" prop="updatedTime">
                 <el-input v-model="form.updatedTime" class="cdp-input cdp-input-disabled" readonly>
                   <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
                 </el-input>
@@ -314,14 +314,14 @@ defineExpose({ dialogOpen })
         </el-form>
         <div class="flex justify-end w-full">
           <ButtonIcon
-            :name="t('modal.delete')"
+            :name="$t('modal.delete')"
             color="red"
             @click="handleDelete"
             class="mr-5"
             v-if="dialogType === 'edit'"
           />
           <ButtonIcon
-            :name="t('modal.confirm')"
+            :name="$t('modal.confirm')"
             type="submit"
             color="blue"
             @click="handleCheckSubmit(refForm)"
@@ -366,8 +366,8 @@ defineExpose({ dialogOpen })
           </li>
         </ul>
         <div class="inner-dialog__button">
-          <ButtonIcon color="gray" :name="t('modal.modify')" @click="submitCheckVisible = false" />
-          <ButtonIcon color="blue" :name="t('modal.confirm')" @click="handleSubmit" />
+          <ButtonIcon color="gray" :name="$t('modal.modify')" @click="submitCheckVisible = false" />
+          <ButtonIcon color="blue" :name="$t('modal.confirm')" @click="handleSubmit" />
         </div>
       </div>
     </el-dialog>
@@ -396,12 +396,12 @@ defineExpose({ dialogOpen })
           <ButtonIcon
             color="gray"
             :bg="false"
-            :name="t('modal.cancel')"
+            :name="$t('modal.cancel')"
             @click="deleteVisible = false"
           />
           <ButtonIcon
             color="red"
-            :name="t('modal.confirm')"
+            :name="$t('modal.confirm')"
             @click="handleSubmit('delete'), (notSaveVisible = false)"
           />
         </div>
@@ -425,12 +425,12 @@ defineExpose({ dialogOpen })
         <div class="inner-dialog__button">
           <ButtonIcon
             color="gray"
-            :name="t('modal.do_not_save')"
+            :name="$t('modal.do_not_save')"
             @click="clearForm(), (notSaveVisible = false)"
           />
           <ButtonIcon
             color="blue"
-            :name="t('modal.save')"
+            :name="$t('modal.save')"
             @click="handleSubmit(), (notSaveVisible = false)"
           />
         </div>

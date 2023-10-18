@@ -99,13 +99,13 @@ const handleUseCustomSwitchChange = (type) => {
     <el-switch
       v-model="switchValue"
       @change="handleUseCustomSwitchChange"
-      :active-text="t('import_export_file.import_manually')"
+      :active-text="$t('import_export_file.import_manually')"
       class="mr-10 cdp-switch"
     />
     <el-tooltip
       class="box-item"
       effect="dark"
-      :content="t('import_export_file.filter_imported_data')"
+      :content="$t('import_export_file.filter_imported_data')"
       placement="top"
     >
       <font-awesome-icon icon="fa-solid fa-circle-info" />
@@ -115,7 +115,7 @@ const handleUseCustomSwitchChange = (type) => {
       v-model="dialogVisible"
       class="cdp-dialog cdp-dialog-filer-file"
       @close="handleClose"
-      :title="t('import_export_file.import')"
+      :title="$t('import_export_file.import')"
     >
       <div class="cdp-dialog-filer-file__example">
         <el-tooltip class="box-item" effect="dark" placement="top">

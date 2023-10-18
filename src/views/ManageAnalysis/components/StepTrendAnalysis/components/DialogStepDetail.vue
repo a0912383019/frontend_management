@@ -136,7 +136,7 @@ defineExpose({ handleOpenDialog })
       v-model="dialogVisible"
       class="cdp-dialog member-step-detail-dialog cdp-w__720"
       :append-to-body="true"
-      :title="t('common.detail')"
+      :title="$t('common.detail')"
     >
       <div class="cdp-dialog__content">
         <div class="cdp-dialog__top">
