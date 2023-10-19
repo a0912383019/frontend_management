@@ -10,8 +10,9 @@ const globalStore = useGlobalStore()
 
 const router = useRouter()
 
-const test = import.meta.env.VITE_ENV
-console.log('目前環境：', test)
+// 開發環境
+const developmentEnvironment = import.meta.env.VITE_ENV
+sessionStorage.setItem('developmentEnvironment', developmentEnvironment)
 
 //震動
 const isShake = ref(false)
