@@ -117,10 +117,6 @@ const updateCurrentPage = (val) => {
   emit('update:currentPage', val)
 }
 
-const updatePageSize = (val) => {
-  page.pageSize = val
-}
-
 const searchTableData = ref(props.tableData)
 
 //表格資料
@@ -255,7 +251,6 @@ defineExpose({ goToFirstPage, showTableLoading })
         :layout="paginationLayout"
         class="customPagination"
         @update:currentPage="updateCurrentPage"
-        @update:pageSize="updatePageSize"
       />
       <TotalPagination
         :page="page.currentPage"

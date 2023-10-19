@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { FormatNumber } from '@/utils/commonUtils.js'
+
 const props = defineProps({
   page: {
     type: Number,
@@ -31,6 +32,7 @@ const pageStart = computed(() => {
   }
   return props.page * props.pageSize - props.pageSize + 1
 })
+
 const pageEnd = computed(() => {
   const end = props.page * props.pageSize
   if (end > props.total) {
@@ -48,7 +50,7 @@ const pageEnd = computed(() => {
         TOTAL: FormatNumber(props.total)
       })
     }}
-    <span v-show="filtered">
+    <span v-show="props.filtered">
       {{
         $t('table.sInfoFiltered', {
           MAX: FormatNumber(props.totalDataCount)
