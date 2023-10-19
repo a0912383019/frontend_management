@@ -28,6 +28,7 @@ const tagTextAry = ref([])
 // 篩選標籤input欄位
 const tagInputText = ref('')
 const tagInputTextOld = ref('')
+const refTagInput = ref()
 // 發送api需要的key
 const apiRequestKey = ref('')
 
@@ -118,8 +119,13 @@ const changeGenerateTagLists = () => {
 // 下拉選單開啟狀態
 const isDropShow = ref(false)
 
+// input focus事件
 const handleInputFocus = () => {
   isDropShow.value = true
+}
+
+const clearTagInputValue = () => {
+  tagInputText.value = ''
 }
 
 const handleInputKeyup = (e) => {
@@ -149,7 +155,10 @@ const handleInputKeyup = (e) => {
   }
 }
 
+// 新增標籤類型＆種類文字
 const handleTagAddText = (data) => {
+  // 自動選取input框
+  refTagInput.value.focus()
   if (data.value === 'OR') {
     // 如果是OR，將OR傳入標籤列表
     currentTagAry.value.push({ value: 'OR', label: 'OR', active: false })
@@ -185,10 +194,17 @@ const isOperatorShow = computed(() => {
 // 點擊tag，刪除tag
 const handleTagDelete = ({ index }) => {
   currentTagAry.value.splice(index, 1)
+  // 如果刪除後的陣列，第1筆是OR，要將OR刪除，不可單除存在
+  if (currentTagAry.value.length > 0) {
+    if (currentTagAry.value[0]['value'] === 'OR') {
+      currentTagAry.value.splice(0, 1)
+    }
+  }
 }
 
 // 點擊空白區域關閉dropdown
 const handleDocumentClick = (e) => {
+  clearTagInputValue()
   if (e.target.closest(`.${dropClass}`)) {
     isDropShow.value = true
   } else {
@@ -316,7 +332,8 @@ watch(
         v-model="tagInputText"
         class="select-tag__input"
         :class="dropClass"
-        :placeholder="t('tags.filter')"
+        :placeholder="$t('tags.filter')"
+        ref="refTagInput"
         @focus="handleInputFocus"
         @keyup="handleInputKeyup"
       />
@@ -324,7 +341,7 @@ watch(
         v-model="selectTypeValue"
         :class="dropClass"
         :lists="selectTypeLists"
-        :tagTitle="t('tags.type')"
+        :tagTitle="$t('tags.type')"
         :operator="isOperatorShow"
         v-show="tagTextAry.length === 0 && isDropShow === true"
         @update:tagtext="handleTagAddText"
@@ -333,7 +350,7 @@ watch(
         v-model="selectCategoryValue"
         :class="dropClass"
         :lists="selectCategoryLists"
-        :tagTitle="t('tags.category')"
+        :tagTitle="$t('tags.category')"
         :operator="false"
         v-show="tagTextAry.length === 1 && isDropShow === true"
         @update:tagtext="handleTagAddText"
@@ -341,7 +358,7 @@ watch(
       <SelectTagDropdown
         :lists="selectTagLists"
         :class="dropClass"
-        :tagTitle="t('tags.select_tag')"
+        :tagTitle="$t('tags.select_tag')"
         :operator="false"
         v-show="tagTextAry.length === 2 && isDropShow === true"
         @update:tagtext="handleTagAddText"

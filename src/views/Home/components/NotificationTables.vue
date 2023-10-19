@@ -282,7 +282,7 @@ watch([() => currentTabs.value], () => {
 </script>
 <template>
   <section class="cdp-section padding-bottom-10 h-444">
-    <SectionTitle class="mb-10" :title="t('home.news')"></SectionTitle>
+    <SectionTitle class="mb-10" :title="$t('home.news')"></SectionTitle>
     <DialogMemberDetail ref="refDialogMemberDetail" />
     <el-row :gutter="20" class="mb-10">
       <el-col :span="24">
@@ -310,7 +310,6 @@ watch([() => currentTabs.value], () => {
           class="customTable2"
           customSearchClass="home-notify"
         >
-          <template v-slot:custom-search></template>
           <template #content="scope">
             <span v-for="(item, idx) in scope.row.contentCut" :key="idx">
               <a

@@ -183,7 +183,7 @@ onMounted(() => {
 </script>
 <template>
   <section class="cdp-section">
-    <SectionTitle class="mb-15" :title="t('customer_detail_info.daily_bonuses')">
+    <SectionTitle class="mb-15" :title="$t('customer_detail_info.daily_bonuses')">
       <template #tooltip>
         {{ $t('common.show_top_only', { rank: 5 }) }}
       </template>

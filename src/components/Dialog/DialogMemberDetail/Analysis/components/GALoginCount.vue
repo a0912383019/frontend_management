@@ -184,7 +184,7 @@ onMounted(() => {
 </script>
 <template>
   <section class="cdp-section">
-    <SectionTitle class="mb-15" :title="t('data_name.login_num') + ' / ' + t('data_name.ga_num')">
+    <SectionTitle class="mb-15" :title="$t('data_name.login_num') + ' / ' + $t('data_name.ga_num')">
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>

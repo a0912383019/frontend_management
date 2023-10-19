@@ -163,7 +163,7 @@ defineExpose({ query_step_trend_analysis_overview_tbl })
     <div class="cdp-section__top">
       <SectionTitle
         class="mb-15"
-        :title="t('manage_analysis.life_cycle_step_profit_overview')"
+        :title="$t('manage_analysis.life_cycle_step_profit_overview')"
       ></SectionTitle>
       <CurrencySignText />
     </div>

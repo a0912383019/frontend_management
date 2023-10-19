@@ -38,6 +38,7 @@ describe('CustomTable', () => {
       align: 'center'
     }
   ]
+
   const tableData = [
     {
       category: 'VIP',
@@ -163,17 +164,16 @@ describe('CustomTable', () => {
       global: {
         plugins: [i18n, ElementPlus],
         components: {
-          FontAwesomeIcon,
-          CdpIcon,
-          LoadingAnimation,
-          CustomPagination,
-          TotalPagination
+          FontAwesomeIcon
         }
       }
     })
   })
 
   it('確認組件是否存在', async () => {
+    expect(wrapper.findComponent(LoadingAnimation).exists()).toBe(true)
+    expect(wrapper.findComponent(CustomPagination).exists()).toBe(true)
+    expect(wrapper.findComponent(TotalPagination).exists()).toBe(true)
     expect(wrapper.vm.searchTableData).toStrictEqual(tableData)
     expect(wrapper.vm.totalDataCount).toStrictEqual(tableData.length)
 
@@ -215,9 +215,5 @@ describe('CustomTable', () => {
 
     expect(wrapper.vm.page.currentPage).toBe(2)
     expect(wrapper.emitted('update:currentPage')).toBeTruthy()
-
-    wrapper.vm.updatePageSize(10)
-
-    expect(wrapper.vm.page.pageSize).toBe(10)
   })
 })

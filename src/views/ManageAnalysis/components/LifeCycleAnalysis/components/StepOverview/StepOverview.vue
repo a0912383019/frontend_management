@@ -132,7 +132,7 @@ defineExpose({ query_life_cycle_analysis_avg_data })
 <template>
   <div>
     <div class="step-top-box">
-      <SectionTitle class="mb-15" :title="t('manage_analysis.life_cycle_step_overview')" />
+      <SectionTitle class="mb-15" :title="$t('manage_analysis.life_cycle_step_overview')" />
       <div class="step-top-box__right">
         <ExportCSV class="mr-10" v-if="apiSuccess" />
         <FilterDate @update:timestamp="updateTimestamp" v-show="apiSuccess" />
@@ -143,7 +143,7 @@ defineExpose({ query_life_cycle_analysis_avg_data })
       <el-col :span="8">
         <AvgCard
           icon="fa-solid fa-piggy-bank"
-          :title="t('data_name.daily_avg_deposit')"
+          :title="$t('data_name.daily_avg_deposit')"
           :price="stepData['deposit']['data']"
           itemBgColor="#59b7c8"
           itemShadowColor="#2b8696"
@@ -153,7 +153,7 @@ defineExpose({ query_life_cycle_analysis_avg_data })
       <el-col :span="8">
         <AvgCard
           icon="fa-solid fa-money-bill-wave"
-          :title="t('data_name.daily_avg_bet_amount')"
+          :title="$t('data_name.daily_avg_bet_amount')"
           :price="stepData['betAmount']['data']"
           itemBgColor="#c68961"
           itemShadowColor="#c68961"
@@ -163,7 +163,7 @@ defineExpose({ query_life_cycle_analysis_avg_data })
       <el-col :span="8">
         <AvgCard
           icon="fa-solid fa-chart-area"
-          :title="t('data_name.daily_avg_payoff')"
+          :title="$t('data_name.daily_avg_payoff')"
           :class="stepData['payoff']['className']"
           :price="stepData['payoff']['data']"
           itemBgColor="#ca8484"

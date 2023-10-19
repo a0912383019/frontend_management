@@ -60,21 +60,21 @@ const closePopover = () => {
           icon="sliders"
           size="large"
           color="purple"
-          :name="t('common.advanced_filter')"
+          :name="$t('common.advanced_filter')"
         />
       </template>
       <el-row>
         <el-col :span="24" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="t('date.date')"> </SectionTitle>
+          <SectionTitle class="cdp-text-purple mb-10" :title="$t('date.date')"> </SectionTitle>
           <DatepickerRange v-model="form.date" class="game-tag-analysis-datepicker" />
         </el-col>
         <el-col :span="24" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="t('common.include_tags')">
+          <SectionTitle class="cdp-text-purple mb-10" :title="$t('common.include_tags')">
           </SectionTitle>
           <FilterTag v-model="form.searchTag" />
         </el-col>
         <el-col :span="24" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="t('common.exclude_tags')">
+          <SectionTitle class="cdp-text-purple mb-10" :title="$t('common.exclude_tags')">
           </SectionTitle>
           <FilterTag v-model="form.excludeTag" />
         </el-col>
@@ -84,7 +84,7 @@ const closePopover = () => {
             size="large large-120"
             color="purple"
             @click="handleSubmitClick"
-            :name="t('common.filter')"
+            :name="$t('common.filter')"
           />
         </el-col>
       </el-row>

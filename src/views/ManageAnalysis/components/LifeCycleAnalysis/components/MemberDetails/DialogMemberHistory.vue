@@ -29,7 +29,7 @@ defineExpose({ handleOpenDialog })
       class="cdp-dialog member-step-detail-dialog"
       :destroy-on-close="true"
       :append-to-body="true"
-      :title="t('manage_analysis.member_life_cycle_history')"
+      :title="$t('manage_analysis.member_life_cycle_history')"
     >
       <div class="cdp-dialog__content">
         <LifeCycleHistory

@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 <template>
   <section class="cdp-section">
-    <SectionTitle class="mb-15" :title="t('customer_detail_info.member_life_cycle_history')">
+    <SectionTitle class="mb-15" :title="$t('customer_detail_info.member_life_cycle_history')">
     </SectionTitle>
     <LifeCycleHistory
       :memberId="dialogMemberDetailStore.memberData.user_id"

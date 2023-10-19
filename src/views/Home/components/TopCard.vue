@@ -186,14 +186,14 @@ onMounted(() => {
         </div>
         <div class="padding-10">
           <div class="flex flex-wrap justify-between mb-4">
-            <span class="font-size-14">{{ t('home.30-day_moving_average') }}</span>
+            <span class="font-size-14">{{ $t('home.30-day_moving_average') }}</span>
             <span class="font-size-12">({{ monthDuration }})</span>
           </div>
           <div class="cdp-money-place py-7 px-20 mb-7 font-black">
             <span v-html="item.monthAvg"></span>
           </div>
           <div class="flex flex-wrap justify-between mb-4">
-            <span class="font-size-14">{{ t('home.7-day_moving_average') }}</span>
+            <span class="font-size-14">{{ $t('home.7-day_moving_average') }}</span>
             <span class="font-size-12">({{ weekDuration }})</span>
           </div>
           <div class="cdp-money-place py-7 px-20 mb-0 font-black flex justify-between">

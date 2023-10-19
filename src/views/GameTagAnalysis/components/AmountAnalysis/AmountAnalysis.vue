@@ -185,7 +185,7 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
 </script>
 <template>
   <section class="cdp-section">
-    <SectionTitle class="mb-15" :title="t('game_tag_analysis.game_bet_amount_rank')">
+    <SectionTitle class="mb-15" :title="$t('game_tag_analysis.game_bet_amount_rank')">
       <template #tooltip>
         {{ $t('common.show_top_only', { rank: 20 }) }}
       </template>

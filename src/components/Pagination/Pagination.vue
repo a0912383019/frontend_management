@@ -36,7 +36,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:currentPage', 'update:pageSize'])
+const emit = defineEmits(['update:currentPage'])
 
 //當前頁數
 const currentPage = computed({
@@ -49,52 +49,20 @@ const currentPage = computed({
 })
 
 //當前下拉選項(每頁幾筆)
-const currentPageSize = computed({
-  get() {
-    return props.pageSize
-  },
-  set(newVal) {
-    emit('update:pageSize', newVal)
-  }
-})
-
-//每頁幾筆下拉
-const pageSizesArray = computed(() => {
-  let result = []
-  let total = props.total
-  switch (true) {
-    case total <= 10:
-      result = [10]
-      break
-    case total <= 25:
-      result = [10, 25]
-      break
-    case total <= 50:
-      result = [10, 25, 50]
-      break
-    case total <= 100:
-      result = [10, 25, 50, 100]
-      break
-    case total <= 250:
-      result = [10, 25, 50, 100, 250, 500]
-      break
-    default:
-      result = [10, 25, 50, 100, 250, 500]
-  }
-  return result
+const currentPageSize = computed(() => {
+  return props.pageSize
 })
 </script>
 <template>
   <el-pagination
     v-model:current-page="currentPage"
     v-model:page-size="currentPageSize"
-    :page-sizes="pageSizesArray"
-    :pager-count="pagerCount"
-    :small="small"
-    :disabled="disabled"
-    :background="background"
-    :layout="layout"
-    :total="total"
+    :pager-count="props.pagerCount"
+    :small="props.small"
+    :disabled="props.disabled"
+    :background="props.background"
+    :layout="props.layout"
+    :total="props.total"
   />
 </template>
 <style lang="scss">

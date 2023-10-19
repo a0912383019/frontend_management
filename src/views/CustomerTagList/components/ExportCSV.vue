@@ -39,7 +39,7 @@ const averageTypeOptions = ref([
       v-model="dialogVisible"
       class="cdp-dialog customer-tag-dialog"
       :append-to-body="true"
-      :title="t('import_export_file.export')"
+      :title="$t('import_export_file.export')"
     >
       <div class="dialog-inner">
         <el-row>
@@ -82,7 +82,7 @@ const averageTypeOptions = ref([
               {{ $t('customer_tag_list.increase_condition_reduce_time') }}
             </div>
             <div class="flex justify-end">
-              <ButtonIcon :name="t('modal.confirm_export')" color="blue" />
+              <ButtonIcon :name="$t('modal.confirm_export')" color="blue" />
             </div>
           </el-col>
         </el-row>

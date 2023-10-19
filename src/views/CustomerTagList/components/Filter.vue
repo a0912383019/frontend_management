@@ -158,12 +158,12 @@ watch(
           :isSvg="true"
           size="large"
           color="purple"
-          :name="t('common.advanced_filter')"
+          :name="$t('common.advanced_filter')"
         />
       </template>
       <el-row :gutter="15">
         <el-col :span="12" class="mb-15">
-          <SectionTitle size="small" class="cdp-text-purple mb-10" :title="t('data_name.ag_name')">
+          <SectionTitle size="small" class="cdp-text-purple mb-10" :title="$t('data_name.ag_name')">
           </SectionTitle>
           <el-select
             v-model="form.selectAcount"
@@ -187,7 +187,7 @@ watch(
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-10"
-            :title="t('data_name.user_level')"
+            :title="$t('data_name.user_level')"
           >
           </SectionTitle>
           <el-select
@@ -209,10 +209,10 @@ watch(
           </el-select>
         </el-col>
         <el-col :span="12" class="mb-15">
-          <div class="flex items-start mb-8">
+          <div class="flex items-start mb-10">
             <el-checkbox
               v-model="form.isActivedDateCheck"
-              :label="t('data_name.active_date')"
+              :label="$t('data_name.active_date')"
               class="cdp-checkbox checkbox-label"
             />
           </div>
@@ -229,7 +229,7 @@ watch(
             size="small"
             class="cdp-text-purple mb-10"
             style="min-height: 25px"
-            :title="t('data_name.register_date')"
+            :title="$t('data_name.register_date')"
           >
           </SectionTitle>
           <DatepickerRange
@@ -244,7 +244,7 @@ watch(
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-10"
-            :title="t('data_name.member_name')"
+            :title="$t('data_name.member_name')"
           >
             <template #tooltip>
               {{ $t('customer_tag_list.search_by_member_name') }}
@@ -253,14 +253,14 @@ watch(
           <el-input
             v-model="form.member"
             class="cdp-input"
-            :placeholder="t('common.input_member_name_search')"
+            :placeholder="$t('common.input_member_name_search')"
           />
         </el-col>
         <el-col :span="24" class="mb-15">
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-10"
-            :title="t('common.include_tags')"
+            :title="$t('common.include_tags')"
           >
           </SectionTitle>
           <SelectTag v-model="form.searchTag" />
@@ -269,7 +269,7 @@ watch(
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-10"
-            :title="t('common.exclude_tags')"
+            :title="$t('common.exclude_tags')"
           >
           </SectionTitle>
           <SelectTag v-model="form.excludeTag" />
@@ -291,7 +291,7 @@ watch(
             size="large large-120"
             color="purple"
             @click="handleSubmitClick"
-            :name="t('common.filter')"
+            :name="$t('common.filter')"
           />
         </div>
       </div>

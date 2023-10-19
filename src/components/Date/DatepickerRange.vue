@@ -149,17 +149,13 @@ watch(
     }
   }
 )
-
-const handleFocus = () => {
-  // dateValue.value = []
-}
 </script>
 <template>
   <div>
     <el-date-picker
       v-model="dateValue"
       type="daterange"
-      :format="t('date.format_date_rule')"
+      :format="$t('date.format_date_rule')"
       :unlink-panels="false"
       popper-class="cdp-datepicker-range-popper"
       class="cdp-datepicker-range"
@@ -173,7 +169,6 @@ const handleFocus = () => {
       :clearable="false"
       @calendar-change="handleCalendarChange"
       @change="handleDateChange"
-      @focus="handleFocus"
     />
   </div>
 </template>
@@ -212,8 +207,8 @@ const handleFocus = () => {
   }
   .el-range-input {
     width: 70px;
-    height: 34px;
-    line-height: 34px;
+    height: 32px;
+    line-height: 32px;
   }
   .el-range-separator {
     flex: none;

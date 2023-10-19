@@ -31,10 +31,7 @@ describe('Account', () => {
           createTestingPinia({
             createSpy: vi.fn
           })
-        ],
-        provide: {
-          sessionStorage
-        }
+        ]
       },
       components: {
         FontAwesomeIcon,

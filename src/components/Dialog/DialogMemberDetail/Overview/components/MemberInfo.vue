@@ -343,7 +343,7 @@ onMounted(() => {
             </div>
             <CdpButton
               class="tags__button custom-bg-dark__blue"
-              :name="t('common.edit')"
+              :name="$t('common.edit')"
               @click="handleTagIsEdit(true)"
             />
           </div>
@@ -367,7 +367,7 @@ onMounted(() => {
             </el-select>
             <CdpButton
               class="tags__button custom-bg-dark__blue"
-              :name="t('modal.confirm')"
+              :name="$t('modal.confirm')"
               @click="handleTagIsEdit(false)"
             />
           </div>
@@ -415,12 +415,12 @@ onMounted(() => {
         <div class="inner-dialog__button">
           <CdpButton
             class="cdp__modal-btn__cancel"
-            :name="t('modal.modify')"
+            :name="$t('modal.modify')"
             @click="handleInnerTagIsEdit('modify')"
           />
           <CdpButton
             class="cdp__modal-btn__submit"
-            :name="t('modal.confirm')"
+            :name="$t('modal.confirm')"
             @click="handleInnerTagIsEdit('confirm')"
           />
         </div>
