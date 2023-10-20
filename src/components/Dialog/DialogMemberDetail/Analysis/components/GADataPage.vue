@@ -136,18 +136,13 @@ const queryGAPagePathRank = async () => {
     }
   } catch (error) {
     console.error(error)
+    clickRankApiSuccess.value = false //取得資料失敗
     if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
+      clickRankMessageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      ElNotification({
-        title: t('msg.update_failed'),
-        type: 'error'
-      })
+      clickRankMessageKey.value = 'chartFailed' //更改message內容
     }
   }
 }
@@ -179,18 +174,13 @@ const queryGADataSource = async () => {
     }
   } catch (error) {
     console.error(error)
+    sourceDataApiSuccess.value = false //取得資料失敗
     if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
+      sourceDataMessageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      ElNotification({
-        title: t('msg.update_failed'),
-        type: 'error'
-      })
+      sourceDataMessageKey.value = 'chartFailed' //更改message內容
     }
   }
 }

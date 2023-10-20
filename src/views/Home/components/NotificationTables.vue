@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed, watch, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQuerySmallMesNote } from '@/api/home.js'
 import { apiReadSmartMesNote } from '@/api/home.js'
@@ -7,6 +7,7 @@ import { useGlobalStore } from '@/stores/global.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { ElNotification } from 'element-plus'
+import Search from '@/components/Search.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import Tab from '@/components/Tab.vue'
 import dayjs from 'dayjs'
@@ -29,12 +30,21 @@ const allMessageKey = ref('shortLoading')
 
 const refDialogMemberDetail = ref(null) //會員明細Dialog組件ref
 
+const searchText = ref('')
+
 const apiIsCalled = ref([false, false, false, false, false])
-const tableDatas = ref([[], [], [], [], []])
+const tableDatas = reactive({
+  0: [],
+  1: [],
+  2: [],
+  3: [],
+  4: []
+})
 
 //當前顯示的tab
 const currentTabs = ref('all')
 const refTable = ref(null) // ref table
+
 //tabs列表
 const tabList = computed(() => {
   return [
@@ -118,25 +128,26 @@ const querySmallMesNote = async (kind = '0') => {
         switch (kind) {
           case '0':
             apiIsCalled.value[0] = true
-            tableDatas.value[0] = tableData.value
+            tableDatas[0] = tableData.value
             break
           case '1':
             apiIsCalled.value[1] = true
-            tableDatas.value[1] = tableData.value
+            tableDatas[1] = tableData.value
             break
           case '2':
             apiIsCalled.value[2] = true
-            tableDatas.value[2] = tableData.value
+            tableDatas[2] = tableData.value
             break
           case '3':
             apiIsCalled.value[3] = true
-            tableDatas.value[3] = tableData.value
+            tableDatas[3] = tableData.value
             break
           case '4':
             apiIsCalled.value[4] = true
-            tableDatas.value[4] = tableData.value
+            tableDatas[4] = tableData.value
             break
         }
+        handleSearch(kind)
       } else {
         allMessageKey.value = 'noResult'
         let failMsg = errorRespond(result.data.status)
@@ -255,34 +266,65 @@ const transformUser = (val) => {
   return user
 }
 
+const handleSearch = (kind) => {
+  const convertTableDatas = JSON.parse(JSON.stringify(tableDatas))
+  let handleSearchText = searchText.value.toLowerCase()
+
+  if (handleSearchText !== '') {
+    let result = convertTableDatas[kind].filter((value) => {
+      return (
+        value['content'].toLowerCase().indexOf(handleSearchText) != -1 ||
+        value['category'].toLowerCase().indexOf(handleSearchText) != -1 ||
+        value['date'].toLowerCase().indexOf(handleSearchText) != -1
+      )
+    })
+    tableData.value = result
+  } else {
+    tableData.value = convertTableDatas[kind]
+  }
+}
+
 onMounted(() => {
   querySmallMesNote()
+})
+
+const currentKind = computed(() => {
+  const tabNameArr = tabList.value.map((ele) => ele.name)
+  const kind = tabNameArr.indexOf(currentTabs.value)
+  return kind.toString()
 })
 
 watch(
   () => i18nLocale.value,
   () => {
     apiIsCalled.value = apiIsCalled.value.map((ele) => false)
-    const tabNameArr = tabList.value.map((ele) => ele.name)
-    const kind = tabNameArr.indexOf(currentTabs.value)
-    querySmallMesNote(kind.toString())
+    querySmallMesNote(currentKind.value)
   }
 )
 
 watch([() => currentTabs.value], () => {
-  const tabNameArr = tabList.value.map((ele) => ele.name)
-  const kind = tabNameArr.indexOf(currentTabs.value)
+  searchText.value = ''
   refTable.value.goToFirstPage()
-  if (!apiIsCalled.value[kind]) {
-    querySmallMesNote(kind.toString())
+  if (!apiIsCalled.value[currentKind.value]) {
+    querySmallMesNote(currentKind.value)
   } else {
-    tableData.value = tableDatas.value[kind]
+    tableData.value = tableDatas[currentKind.value]
   }
 })
+
+watch(
+  () => searchText.value,
+  () => {
+    handleSearch(currentKind.value)
+  }
+)
 </script>
 <template>
   <section class="cdp-section padding-bottom-10 h-444">
-    <SectionTitle class="mb-10" :title="$t('home.news')"></SectionTitle>
+    <div class="flex flex-wrap justify-between">
+      <SectionTitle class="mb-10" :title="$t('home.news')"></SectionTitle>
+      <Search class="notify-search" v-model="searchText"></Search>
+    </div>
     <DialogMemberDetail ref="refDialogMemberDetail" />
     <el-row :gutter="20" class="mb-10">
       <el-col :span="24">
@@ -349,6 +391,10 @@ watch([() => currentTabs.value], () => {
   height: 7px;
   left: 8px;
   top: 4px;
+}
+
+.notify-search {
+  top: -9px;
 }
 
 .padding-bottom-10 {

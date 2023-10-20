@@ -3,10 +3,6 @@ import { ref, computed, reactive } from 'vue'
 import LoadingAnimation from '@/components/Loading/LoadingAnimation.vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
 import TotalPagination from '@/components/Pagination/TotalPagination.vue'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
-
 const props = defineProps({
   tableData: {
     //表格資料
@@ -77,26 +73,8 @@ const props = defineProps({
     //是否啟用後端服務器模式(每頁單獨發api)，啟用後pageTableData會有差異
     type: Boolean,
     default: false
-  },
-  search: {
-    //是否啟用搜尋，只有serverSide = false與hasPagination = true會觸發
-    type: Boolean,
-    default: false
-  },
-  searchCol: {
-    //要搜尋的欄位
-    type: Array,
-    default: []
-  },
-  //自訂search input的class
-  //customSearchClass + __eltable，自訂table跟pagination的class
-  customSearchClass: {
-    type: String,
-    default: ''
   }
 })
-
-const searchValue = ref('')
 
 //排序相關
 const emit = defineEmits(['sort', 'update:currentPage'])
@@ -108,8 +86,7 @@ const handleTableSort = ({ prop, order }) => {
 //頁碼相關
 const page = reactive({
   currentPage: 1,
-  pageSize: props.pageSize,
-  filtered: false
+  pageSize: props.pageSize
 })
 
 const updateCurrentPage = (val) => {
@@ -117,59 +94,27 @@ const updateCurrentPage = (val) => {
   emit('update:currentPage', val)
 }
 
-const searchTableData = ref(props.tableData)
+const updatePageSize = (val) => {
+  page.pageSize = val
+}
 
 //表格資料
 const pageTableData = computed(() => {
   let data
-
-  //能搜尋的欄位陣列
-  let searchArr = []
   if (props.hasPagination && props.serverSide === false) {
-    searchArr = props.searchCol
-
-    //空陣列的話，全部欄位都可搜尋
-    if (searchArr.length === 0) {
-      searchArr = props.tableColumns.map((ele, key) => key)
-    }
-
-    //模糊搜尋
-    let filterTableData = props.tableData.filter((item) => {
-      let itemColFilter = false
-      for (let i = 0; i < searchArr.length; i++) {
-        if (typeof item[props.tableColumns[searchArr[i]].prop] === 'undefined') continue
-        itemColFilter =
-          itemColFilter ||
-          item[props.tableColumns[searchArr[i]].prop]
-            .toLowerCase()
-            .includes(searchValue.value.toLowerCase())
-      }
-      return !searchValue.value || itemColFilter
-    })
-    searchTableData.value = filterTableData
-    data = filterTableData.slice(
+    data = props.tableData.slice(
       (page.currentPage - 1) * page.pageSize,
       page.pageSize * page.currentPage
     )
-
-    if (searchValue.value) {
-      page.filtered = true
-    } else {
-      page.filtered = false
-    }
   } else {
     data = props.tableData
   }
   return data
 })
 
-const totalDataCount = computed(() => {
-  return props.tableData.length
-})
-
-const pageTableTotal = computed(() => {
+const pageTableTotla = computed(() => {
   if (props.tableTotal === 0) {
-    return searchTableData.value.length
+    return props.tableData.length
   } else {
     return props.tableTotal
   }
@@ -185,17 +130,6 @@ defineExpose({ goToFirstPage, showTableLoading })
 </script>
 <template>
   <div class="relative">
-    <div
-      v-show="props.search && !props.serverSide"
-      class="mb-10 text-right"
-      :class="customSearchClass"
-    >
-      <el-input v-model="searchValue" size="default" style="width: 180px">
-        <template #suffix>
-          <font-awesome-icon class="search__iconsearch" icon="fa-solid fa-magnifying-glass" />
-        </template>
-      </el-input>
-    </div>
     <el-table
       :data="pageTableData"
       :default-sort="defaultSort"
@@ -206,9 +140,8 @@ defineExpose({ goToFirstPage, showTableLoading })
       :sum-text="props.sumText"
       :span-method="spanMethod"
       class="cdp-table"
-      :class="customSearchClass + '__eltable'"
       @sort-change="handleTableSort"
-      style="width: 100%; color: black"
+      style="width: 100%"
     >
       <template v-for="column in tableColumns" :key="column.prop">
         <el-table-column
@@ -224,7 +157,6 @@ defineExpose({ goToFirstPage, showTableLoading })
         >
           <template #header>
             {{ column.label }}
-            <slot :name="column.prop + '-header'"></slot>
             <slot :name="column.headerSlot" v-if="column.headerSlot">
               <span v-html="column.headerSlot"></span>
             </slot>
@@ -243,28 +175,27 @@ defineExpose({ goToFirstPage, showTableLoading })
         <div>{{ $t('table.sZeroRecords') }}</div>
       </template>
     </el-table>
-    <div class="paginationBox" :class="customSearchClass + '__eltable'" v-if="hasPagination">
+    <div class="paginationBox" v-if="hasPagination">
       <CustomPagination
         :page="page.currentPage"
         :pageSize="page.pageSize"
-        :total="pageTableTotal"
+        :total="pageTableTotla"
         :layout="paginationLayout"
         class="customPagination"
         @update:currentPage="updateCurrentPage"
+        @update:pageSize="updatePageSize"
       />
       <TotalPagination
         :page="page.currentPage"
         :pageSize="props.pageSize"
-        :total="pageTableTotal"
-        :filtered="page.filtered"
-        :totalDataCount="totalDataCount"
+        :total="pageTableTotla"
       />
     </div>
     <div class="paginationBox" v-if="hasPagination === false && hasTotalPagination === true">
       <TotalPagination
         :page="page.currentPage"
-        :pageSize="pageTableTotal"
-        :total="pageTableTotal"
+        :pageSize="pageTableTotla"
+        :total="pageTableTotla"
       />
     </div>
     <transition>
@@ -275,12 +206,10 @@ defineExpose({ goToFirstPage, showTableLoading })
   </div>
 </template>
 <style lang="scss">
-.t-1 {
-  top: 1px;
-}
 .cdp-table {
   border-radius: 5px;
   overflow: hidden;
+  // border: 1px solid #e6eaf2;
   .cdp-link-click {
     color: #4f84cf;
   }
@@ -350,7 +279,9 @@ defineExpose({ goToFirstPage, showTableLoading })
   }
 }
 .customTable {
+  // border-radius: 15px;
   box-shadow: 3px 3px 5px 0 rgba(162, 162, 162, 0.2);
+  // border: solid 0.5px #d0d0d0;
   background-color: #e9eef6;
   tr {
     background-color: #e9eef6;
@@ -444,17 +375,11 @@ defineExpose({ goToFirstPage, showTableLoading })
   }
 }
 .customTable2 {
-  .el-table__inner-wrapper::before {
-    z-index: -1;
-  }
-  .el-table__empty-block {
-    height: 200px !important;
-  }
   .el-table {
-    td:first-child {
+    td:first-child, th:first-child {
       border-radius: 5px 0 0 5px;
     }
-    td:last-child {
+    td:last-child, th:last-child {
       border-radius: 0 5px 5px 0;
     }
     th {
@@ -463,12 +388,6 @@ defineExpose({ goToFirstPage, showTableLoading })
           &.is-leaf {
             background-color: #e9eef6;
             border-bottom: none;
-            &:first-child {
-              border-radius: 5px 0 0 5px;
-            }
-            &:last-child {
-              border-radius: 0 5px 5px 0;
-            }
           }
         }
       }
@@ -507,27 +426,5 @@ defineExpose({ goToFirstPage, showTableLoading })
   align-items: center;
   justify-content: center;
   background-color: rgba(#fff, 0.8);
-}
-.el-input__wrapper:hover {
-  box-shadow: 0 0 0 1px #4f84cf inset !important;
-  .el-input__suffix {
-    color: #4f84cf !important;
-  }
-}
-.el-input__wrapper.is-focus {
-  box-shadow: 0 0 0 1px #4f84cf inset !important;
-  .el-input__suffix {
-    color: #4f84cf !important;
-  }
-}
-.el-pager li.is-active {
-  color: #4f84cf !important;
-}
-.home-notify {
-  position: relative;
-  top: -95px;
-}
-.home-notify__eltable {
-  top: -35px;
 }
 </style>

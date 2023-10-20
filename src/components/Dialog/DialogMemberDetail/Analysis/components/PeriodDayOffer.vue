@@ -116,18 +116,13 @@ const queryMemberPeriodDayOffer = async () => {
     }
   } catch (error) {
     console.error(error)
+    apiSuccess.value = false //取得資料失敗
     if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
+      messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      ElNotification({
-        title: t('msg.update_failed'),
-        type: 'error'
-      })
+      messageKey.value = 'chartFailed' //更改message內容
     }
   }
 }

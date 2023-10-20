@@ -157,6 +157,7 @@ const tableData = computed(() => {
 //search
 const searchText = ref('')
 const handleSearch = () => {
+  console.log(tagsDataOriginal[currentTabs.value])
   let handleSearchText = searchText.value.toLowerCase()
   if (handleSearchText !== '') {
     let result = tagsDataOriginal[currentTabs.value].filter((value) => {
@@ -300,7 +301,6 @@ watch(
     margin-bottom: 12px;
   }
 }
-
 </style>
 <style lang="scss">
 .lineUger {
@@ -314,6 +314,12 @@ watch(
 }
 .cdp-tag-table {
   .el-table {
+    td:first-child, th:first-child {
+      border-radius: 5px 0 0 5px;
+    }
+    td:last-child, th:last-child {
+      border-radius: 0 5px 5px 0;
+    }
     th.el-table__cell.is-leaf {
       background-color: #e9eef6;
     }

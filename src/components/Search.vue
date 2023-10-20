@@ -17,19 +17,19 @@ const handleDelete = () => {
 </script>
 <template>
   <div class="search">
-    <font-awesome-icon class="search__iconsearch" icon="fa-solid fa-magnifying-glass" />
     <input
       class="search__input"
       type="text"
       :value="props.modelValue"
       @input="handelSearchChange"
     />
-    <button
-      class="search__icondelete btn-reset"
-      @click="handleDelete"
-      v-show="props.modelValue !== ''"
-    >
-      <font-awesome-icon icon="fa-solid fa-xmark" />
+    <font-awesome-icon
+      v-if="props.modelValue === ''"
+      class="search__iconsearch"
+      icon="fa-magnifying-glass"
+    />
+    <button class="search__icondelete btn-reset" @click="handleDelete" v-else>
+      <font-awesome-icon icon="fa-xmark" />
     </button>
   </div>
 </template>
@@ -48,11 +48,17 @@ const handleDelete = () => {
     padding-left: 10px;
     padding-right: 30px;
     background-color: #fff;
-    border: 1px solid #ced4da;
-    border-radius: 0.2rem;
+    border: 1px solid rgba(79, 132, 207, 0.3);
+    border-radius: 0.3rem;
     font-size: 0.875rem;
     line-height: 1.5;
     letter-spacing: 0.05em;
+    &:hover, &:focus {
+      border: 1px solid rgba(79, 132, 207, 0.7);
+      ~ .search__iconsearch {
+        color: rgba(79, 132, 207, 0.7);
+      }
+    }
   }
   &__icondelete {
     position: absolute;
@@ -63,8 +69,19 @@ const handleDelete = () => {
     justify-content: center;
     width: 30px;
     height: 100%;
-    color: #7d818f;
+    color: rgba(79, 132, 207, 0.8);
     font-size: 17px;
+  }
+  &__iconsearch {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 100%;
+    color: rgba(79, 132, 207, 0.3);
   }
 }
 </style>
