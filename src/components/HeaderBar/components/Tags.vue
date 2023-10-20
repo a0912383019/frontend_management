@@ -157,7 +157,6 @@ const tableData = computed(() => {
 //search
 const searchText = ref('')
 const handleSearch = () => {
-  console.log(tagsDataOriginal[currentTabs.value])
   let handleSearchText = searchText.value.toLowerCase()
   if (handleSearchText !== '') {
     let result = tagsDataOriginal[currentTabs.value].filter((value) => {
