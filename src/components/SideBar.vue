@@ -31,8 +31,8 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
               <div class="cdp-menu__item">
                 <router-link :to="item.url_path">
                   <span class="cdp-menu__icon">
-                    <font-awesome-icon :icon="item.nav_icon" />
-                    <!-- <cdp-icon :name="item.svg_icon" /> -->
+                    <!-- <font-awesome-icon :icon="item.nav_icon" /> -->
+                    <cdp-icon :name="item.svg_icon" />
                   </span>
                   <span class="cdp-menu__title">{{ t(`sidebar.${item.item_id}`) }}</span>
                 </router-link>
@@ -43,8 +43,8 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
                 <div class="cdp-menu__item">
                   <a href="javascript:;">
                     <span class="cdp-menu__icon">
-                      <font-awesome-icon :icon="item.nav_icon" />
-                      <!-- <cdp-icon :name="item.svg_icon" /> -->
+                      <!-- <font-awesome-icon :icon="item.nav_icon" /> -->
+                      <cdp-icon :name="item.svg_icon" />
                     </span>
                     <span class="cdp-menu__title">{{ t(`sidebar.${item.item_id}`) }}</span>
                   </a>
@@ -116,7 +116,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
   overflow: hidden;
   transition: all 0.3s ease-in-out;
   &.isClose {
-    width: 75px;
+    width: 92px;
     .sidebar {
       &__version {
         display: none;
@@ -127,7 +127,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
         }
       }
       &__menu {
-        width: 40px;
+        width: 60px;
       }
     }
   }
@@ -207,6 +207,14 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
       &__icon {
         margin-right: 0;
       }
+      &__item {
+        a {
+          display: flex;
+          justify-content: center;
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
     }
   }
   &__submenu {
@@ -221,8 +229,8 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
       align-items: center;
       min-width: 40px;
       min-height: 40px;
-      padding-left: 8px;
-      padding-right: 8px;
+      padding-left: 16px;
+      padding-right: 16px;
       color: #cdd0dd;
       border-radius: 5px;
       transition: all 0.3s ease;
@@ -272,6 +280,10 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
     background-image: url('@/assets/images/sidebar-icon_bg-active.svg');
     background-size: contain;
     background-repeat: no-repeat;
+    svg {
+      width: 18px;
+      height: 18px;
+    }
   }
   &__title {
     line-height: 1;
