@@ -112,17 +112,13 @@ const queryLivelyChangeDetail = async (livelyChangeAry) => {
     const { return_code } = result.data.status
 
     if (return_code === '0001') {
-      messageKey.value = 'chartFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-      return
-    }
-    if (return_code === '0000' && result.data.result.length !== 0) {
+      messageKey.value = 'noResult'
+    } else if (return_code === '0000' && result.data.result.length !== 0) {
       apiSuccess.value = true
       //整理table對應的資料
       transformLivelyChangeDetail(result.data.result)
     } else {
-      messageKey.value = 'noResult'
+      messageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
@@ -136,8 +132,9 @@ const queryLivelyChangeDetail = async (livelyChangeAry) => {
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
+      messageKey.value = 'chartFailed'
       ElNotification({
-        title: t('msg.update_failed'),
+        title: t('msg.query_failed'),
         type: 'error'
       })
     }

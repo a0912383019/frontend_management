@@ -92,16 +92,9 @@ const querySmallBoxData = async () => {
     })
     const { return_code } = result.data.status
 
-    if (return_code !== '0001') {
-      if (return_code === '0000') {
-        if (result.data.result.length !== 0) {
-          //整理table對應的資料
-          transformSmallBoxData(result.data.result)
-        }
-      } else {
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
+    if (return_code === '0000' && result.data.result.length !== 0) {
+      //整理table對應的資料
+      transformSmallBoxData(result.data.result)
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
@@ -117,7 +110,7 @@ const querySmallBoxData = async () => {
       globalStore.storeHandleApiError()
     } else {
       ElNotification({
-        title: t('msg.update_failed'),
+        title: t('msg.query_failed'),
         type: 'error'
       })
     }
