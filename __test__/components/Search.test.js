@@ -26,13 +26,17 @@ describe('Search', () => {
     wrapper.unmount()
   })
 
-  // 測試渲染
-  it('expect component', () => {
+  it('expect component', async () => {
     expect(wrapper.find('.search__input').exists()).toBe(true)
+    expect(wrapper.find('.search__iconsearch').exists()).toBe(false)
+    expect(wrapper.find('.search__icondelete').exists()).toBe(true)
+
+    await wrapper.setProps({modelValue: ''})
     expect(wrapper.find('.search__iconsearch').exists()).toBe(true)
+    expect(wrapper.find('.search__icondelete').exists()).toBe(false)
   })
 
-  // 測試input
+
   it('test input', async () => {
     await wrapper.find('input').setValue('test')
     expect(wrapper.emitted('update:modelValue')).toBeTruthy()
