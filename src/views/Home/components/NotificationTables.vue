@@ -156,19 +156,10 @@ const querySmallMesNote = async (kind = '0') => {
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
+    if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
       allMessageKey.value = 'chartFailed'
-      ElNotification({
-        title: t('msg.query_failed'),
-        type: 'error'
-      })
     }
   }
 }
@@ -204,7 +195,7 @@ const readSmartMesNote = async (msgId, kind) => {
       globalStore.storeHandleApiError()
     } else {
       ElNotification({
-        title: t('msg.query_failed'),
+        title: t('msg.update_failed'),
         type: 'error'
       })
     }

@@ -94,19 +94,10 @@ const queryMemberRecentWeekLively = async (user_id) => {
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
+    if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
       weekMessageKey.value = 'chartFailed'
-      ElNotification({
-        title: t('msg.query_failed'),
-        type: 'error'
-      })
     }
   }
 }
@@ -206,19 +197,10 @@ const queryMemberRecentLively = async (user_id) => {
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
+    if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
       dayMessageKey.value = 'chartFailed'
-      ElNotification({
-        title: t('msg.query_failed'),
-        type: 'error'
-      })
     }
   }
 }
