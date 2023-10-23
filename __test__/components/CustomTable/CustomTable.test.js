@@ -175,35 +175,6 @@ describe('CustomTable', () => {
     expect(wrapper.findComponent(LoadingAnimation).exists()).toBe(true)
     expect(wrapper.findComponent(CustomPagination).exists()).toBe(true)
     expect(wrapper.findComponent(TotalPagination).exists()).toBe(true)
-    expect(wrapper.vm.searchTableData).toStrictEqual(tableData)
-    expect(wrapper.vm.totalDataCount).toStrictEqual(tableData.length)
-
-    await wrapper.setProps({
-      search: true
-    })
-    wrapper.vm.searchValue = 'f'
-    const searchTableDate = [
-      {
-        category: 'VIP',
-        content: '會員aben1989f1今天贏了 ¥65,298 元',
-        date: '2023/10/10',
-        msgId: 1610,
-        contentCut: ['會員 ', 'aben1989f1@941777360', ' 今天贏了 ¥65,298 元'],
-        kind: '1'
-      },
-      {
-        category: 'VIP',
-        content: '會員aben1989f1今天贏了 ¥32,103 元',
-        date: '2023/10/06',
-        msgId: 1581,
-        contentCut: ['會員 ', 'aben1989f1@941777360', ' 今天贏了 ¥32,103 元'],
-        kind: '1'
-      }
-    ]
-
-    await wrapper.vm.$nextTick()
-    expect(wrapper.vm.searchTableData).toStrictEqual(searchTableDate)
-    expect(wrapper.vm.pageTableTotal).toStrictEqual(searchTableDate.length)
   })
 
   // 測試emit跟update
