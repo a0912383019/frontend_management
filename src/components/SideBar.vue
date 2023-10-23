@@ -31,7 +31,6 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
               <div class="cdp-menu__item">
                 <router-link :to="item.url_path">
                   <span class="cdp-menu__icon">
-                    <!-- <font-awesome-icon :icon="item.nav_icon" /> -->
                     <cdp-icon :name="item.svg_icon" />
                   </span>
                   <span class="cdp-menu__title">{{ t(`sidebar.${item.item_id}`) }}</span>
@@ -43,7 +42,6 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
                 <div class="cdp-menu__item">
                   <a href="javascript:;">
                     <span class="cdp-menu__icon">
-                      <!-- <font-awesome-icon :icon="item.nav_icon" /> -->
                       <cdp-icon :name="item.svg_icon" />
                     </span>
                     <span class="cdp-menu__title">{{ t(`sidebar.${item.item_id}`) }}</span>
