@@ -28,11 +28,13 @@ describe('SvgIcon', () => {
     wrapper.unmount()
   })
 
-  it('驗證iconName', () => {
+  // 驗證iconName
+  it('iconName', () => {
     expect(wrapper.vm.iconName).toBe('#icon-arrow')
   })
 
-  it('驗證svgClass', () => {
+  // 驗證svgClass
+  it('svgClass', () => {
     expect(wrapper.vm.svgClass).toBe('svg-icon icon-arrow')
   })
 })

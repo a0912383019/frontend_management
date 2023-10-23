@@ -9,19 +9,19 @@ import { useDateStore } from '@/stores/dateConfig.js'
 import { dayjs } from 'element-plus'
 import ElementPlus from 'element-plus'
 import router from '@/router'
-import LifeCycleAnalysis from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/LifeCyclePeopleChanges/LifeCyclePeopleChanges.vue'
+import LifeCyclePeopleChanges from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/LifeCyclePeopleChanges/LifeCyclePeopleChanges.vue'
 import FilterMemberName from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/LifeCyclePeopleChanges/components/FilterMemberName.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import StepConfig from '@/components/StepConfig.vue'
 
-describe('會員階段人數變化', () => {
+describe('LifeCyclePeopleChanges', () => {
   let wrapper = null
   let manageAnalysisStore = null
   let dateStore = null
   beforeEach(() => {
-    wrapper = shallowMount(LifeCycleAnalysis, {
+    wrapper = shallowMount(LifeCyclePeopleChanges, {
       global: {
         plugins: [
           i18n,
@@ -293,7 +293,8 @@ describe('會員階段人數變化', () => {
     }
   ]
 
-  it('預設apiSuccess = false，預期渲染的元件', async () => {
+  // 預設apiSuccess = false，預期渲染的元件
+  it('Default apiSuccess = false, expected rendering components', async () => {
     expect(wrapper.findComponent(FilterMemberName).exists()).toBe(true)
     expect(wrapper.findComponent(SectionTitle).exists()).toBe(true)
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
@@ -301,7 +302,8 @@ describe('會員階段人數變化', () => {
     expect(wrapper.findComponent(StepConfig).exists()).toBe(false)
   })
 
-  it('測試 tooltip 時間是否符合預期', () => {
+  // 測試 tooltip 時間是否符合預期
+  it('Test whether the tooltip time is as expected', () => {
     // 設定日期時間
     const dateValue = {
       today: dayjs(dateStore.date_range_picker_config_4['startDate']).format('YYYY/MM/DD'),
@@ -315,7 +317,8 @@ describe('會員階段人數變化', () => {
     expect(wrapper.vm.tooltipDate).toStrictEqual(dateValue)
   })
 
-  it('測試 handleClick', () => {
+  // 測試 handleClick
+  it('Test handleClick', () => {
     // 參數
     const dataValue = {
       data: '3,725',
@@ -332,7 +335,8 @@ describe('會員階段人數變化', () => {
     expect(manageAnalysisStore.detailType).toBe(dataValue.detail)
   })
 
-  it('上傳使用手動匯入名單', () => {
+  // 上傳使用手動匯入名單
+  it('Upload the list using manual import', () => {
     const { filterCustomUserList } = storeToRefs(manageAnalysisStore)
     // 使用者名單
     let csvData = ['junmoxian', 'fan8750f1', 'chgu47', 'zhoupangji', 'zhcwp', 'sjoy0930']
@@ -345,7 +349,8 @@ describe('會員階段人數變化', () => {
     expect(filterCustomUserList.value).toEqual(csvData)
   })
 
-  it('語系轉換，tableColumns和轉換資料是否符合預期', () => {
+  // 語系轉換，tableColumns和轉換資料是否符合預期
+  it('Language conversion, tableColumns and conversion data are as expected', () => {
     // 更換語系
     wrapper.vm.i18nLocale = 'en'
     wrapper.vm.apiTableResult = apiData
@@ -400,7 +405,8 @@ describe('會員階段人數變化', () => {
     ])
   })
 
-  it('觸發watch 與 mock api 是否如預期', async () => {
+  // 觸發watch 與 mock api 是否如預期
+  it('Is triggering watch and mock api as expected?', async () => {
     //mock api 0000
     const result0 = {
       data: {
@@ -542,7 +548,8 @@ describe('會員階段人數變化', () => {
     expect(wrapper.vm.messageKey).toBe('chartFailed')
   })
 
-  it('切換廳主', () => {
+  // 切換廳主
+  it('Switch hall owner', () => {
     wrapper.vm.activeHall.hall_code = '15'
     expect(wrapper.vm.apiSuccess).toBe(false)
     expect(wrapper.vm.apiTableResult).toStrictEqual([])

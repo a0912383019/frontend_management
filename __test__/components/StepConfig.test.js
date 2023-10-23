@@ -40,7 +40,8 @@ describe('StepConfig', () => {
     globalStore = null
   })
 
-  it('預期取得tableConfig[2]的description', () => {
+  // 預期取得tableConfig[2]的description
+  it('Expected to obtain the description of tableConfig[2]', () => {
     let description = '註冊或登入會員「產生下注或存款行為」'
     expect(globalStore.tableConfig[wrapper.vm.props.stepIndex]['step_description']).toBe(
       description

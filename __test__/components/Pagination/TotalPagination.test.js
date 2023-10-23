@@ -26,7 +26,8 @@ describe('TotalPagination', () => {
     wrapper.unmount()
   })
 
-  it('預期渲染是否正確', async () => {
+  // 預期渲染是否正確
+  it('expect componen', async () => {
     expect(wrapper.props('page')).toBe(propsData.page)
     expect(wrapper.props('pageSize')).toBe(propsData.pageSize)
     expect(wrapper.props('total')).toBe(propsData.total)

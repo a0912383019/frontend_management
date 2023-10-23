@@ -11,7 +11,8 @@ describe('PageTitle', () => {
     wrapper.unmount()
   })
 
-  it('no props.icon，確認組件是否渲染正確', () => {
+  // no props.icon，確認組件是否渲染正確
+  it('no props.icon，expect component', () => {
     wrapper = shallowMount(PageTitle, {
       props: {
         title: 'no icon'
@@ -28,7 +29,8 @@ describe('PageTitle', () => {
     expect(wrapper.find('.title__name').text()).toStrictEqual('no icon')
   })
 
-  it('props.icon exists，確認組件是否渲染正確', () => {
+  // props.icon exists，確認組件是否渲染正確
+  it('props.icon exists，expect component', () => {
     wrapper = shallowMount(PageTitle, {
       props: {
         icon: 'fa-gear',

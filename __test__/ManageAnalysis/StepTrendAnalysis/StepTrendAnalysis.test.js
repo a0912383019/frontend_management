@@ -24,7 +24,8 @@ describe('StepTrendAnalysis.vue', () => {
   wrapper.vm.$refs.life.query_step_trend_analysis_overview_tbl = vi.fn()
   wrapper.vm.$refs.daily.query_step_total_people = vi.fn()
 
-  it('watch是否正常', () => {
+  // watch是否正常
+  it('test watch', () => {
     wrapper.vm.activeHall.hall_code = 'bmw'
     expect(wrapper.findComponent(LifeCycleStepProfitOverview).exists()).toBe(true)
     expect(wrapper.findComponent(DailyLifeCycleStepPeople).exists()).toBe(true)

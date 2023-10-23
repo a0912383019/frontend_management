@@ -29,16 +29,19 @@ describe('Tab', () => {
     })
   })
 
-  it('是否存在列表', () => {
+  // 是否存在列表
+  it('Does the list exist?', () => {
     expect(wrapper.find('.tabs').exists()).toBe(true)
   })
 
-  it('選取列表第一筆，class是否有active', () => {
+  // 選取列表第一筆，class是否有active
+  it('Select the first item in the list, whether the class is active', () => {
     let select = wrapper.find('.tabs li:nth-child(1)').classes()
     expect(select).toContain('active')
   })
 
-  it('測試handleTabChange', async () => {
+  // 測試handleTabChange
+  it('Test handleTabChange', async () => {
     wrapper.find('.tabs li:nth-child(2)').trigger('click')
     wrapper.vm.handleTabChange('StepTrendAnalysis')
     await wrapper.setProps({ activeName: 'StepTrendAnalysis' })

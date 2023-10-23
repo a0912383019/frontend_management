@@ -13,7 +13,8 @@ describe('SectionTitle', () => {
     wrapper.unmount()
   })
 
-  it('no tooltip，確認組件是否渲染正確', () => {
+  // no tooltip，確認組件是否渲染正確
+  it('no tooltip，expect component', () => {
     wrapper = mount(SectionTitle, {
       global: {
         plugins: [ElementPlus]
@@ -32,7 +33,8 @@ describe('SectionTitle', () => {
     expect(wrapper.vm.hasSlotContent).toBe(false)
   })
 
-  it('has tooltip，確認組件是否渲染正確', async () => {
+  // has tooltip，確認組件是否渲染正確
+  it('has tooltip，expect component', async () => {
     wrapper = mount(SectionTitle, {
       global: {
         plugins: [ElementPlus]

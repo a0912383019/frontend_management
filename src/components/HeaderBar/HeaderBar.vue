@@ -42,7 +42,7 @@ header {
   color: #fff;
   transition: all 0.3s ease-in-out;
   &.isClose {
-    padding-left: 75px;
+    padding-left: 92px;
   }
 }
 .m_menu_button {

@@ -26,7 +26,8 @@ describe('FuzzySwitchWithTooltip', () => {
     wrapper.unmount()
   })
 
-  it('是否有正確觸發emit', async () => {
+  // 是否有正確觸發emit
+  it('test emit', async () => {
     await wrapper.find('.el-switch__input').trigger('click')
     expect(wrapper.emitted('update:modelValue')).toBeTruthy()
   })

@@ -28,12 +28,15 @@ describe('LifeCycleAnalysis', () => {
     wrapper.unmount()
   })
 
-  it('預期渲染的元件', async () => {
+  // 預期渲染的元件
+  it('Components expected to be rendered', async () => {
     expect(wrapper.findComponent(LifeCyclePeopleChanges).exists()).toBe(true)
     expect(wrapper.findComponent(StepOverview).exists()).toBe(true)
     expect(wrapper.findComponent(MemberDetails).exists()).toBe(true)
   })
-  it('預期函示有觸發', async () => {
+
+  // 預期函示有觸發
+  it('Anticipation letter is triggered', async () => {
     //mock ref functions
     wrapper.vm.$refs.step.query_life_cycle_analysis_avg_data = vi.fn()
     wrapper.vm.$refs.member.query_life_cycle_analysis_detail_tbl = vi.fn()

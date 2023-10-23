@@ -1,4 +1,4 @@
-import { test, describe, expect, vi } from 'vitest'
+import { it, describe, expect, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import App from '@/App.vue'
@@ -14,11 +14,13 @@ describe('App.vue', () => {
     }
   })
 
-  test('ElConfigProvider 元件是否存在於畫面上', () => {
+  // ElConfigProvider 元件是否存在於畫面上
+  it('Whether the ElConfigProvider component exists on the screen', () => {
     expect(wrapper.findComponent(ElConfigProvider).exists()).toBe(true)
   })
 
-  test('Loading 元件是否存在於畫面上', () => {
+  // Loading 元件是否存在於畫面上
+  it('Whether the Loading component exists on the screen', () => {
     expect(wrapper.findComponent(Loading).exists()).toBe(true)
   })
 })

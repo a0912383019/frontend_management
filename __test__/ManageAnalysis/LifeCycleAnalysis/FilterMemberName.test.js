@@ -10,7 +10,7 @@ import CdpIcon from '@/components/CdpIcon.vue'
 import { library } from '@/utils/fontawsome.js'
 import FilterMemberName from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/LifeCyclePeopleChanges/components/FilterMemberName.vue'
 
-describe('開啟 Dialog Member', () => {
+describe('FilterMemberName', () => {
   let wrapper = null
   let manageAnalysisStore = null
   beforeEach(() => {
@@ -37,7 +37,8 @@ describe('開啟 Dialog Member', () => {
     manageAnalysisStore = null
   })
 
-  it('測試 closePopover', () => {
+  // 測試 closePopover
+  it('test closePopover', () => {
     wrapper.vm.closePopover()
 
     const el = wrapper.find('.unit-test-people-changes')
@@ -47,7 +48,8 @@ describe('開啟 Dialog Member', () => {
     expect(attr).toBe('true')
   })
 
-  it('測試 handleCsvSuccess', () => {
+  // 測試 handleCsvSuccess
+  it('test handleCsvSuccess', () => {
     wrapper.vm.handleCsvSuccess()
     expect(manageAnalysisStore.useCustomList).toBe(true)
 
@@ -58,7 +60,8 @@ describe('開啟 Dialog Member', () => {
     expect(attr).toBe('true')
   })
 
-  it('測試 handleClick', () => {
+  // 測試 handleClick
+  it('test handleClick', () => {
     wrapper.vm.searchName = 'a123'
     wrapper.vm.useCustomList = false
     wrapper.vm.fuzzySearch = false
@@ -70,13 +73,15 @@ describe('開啟 Dialog Member', () => {
     expect(manageAnalysisStore.fuzzySearch).toBe(false)
   })
 
-  it('測試 updateFilterTimestamp', () => {
+  // 測試 updateFilterTimestamp
+  it('test updateFilterTimestamp', () => {
     let time = new Date().getTime()
     wrapper.vm.updateFilterTimestamp()
     expect(manageAnalysisStore.filterTimestamp).toBe(time)
   })
 
-  it('資料送出前的欄位檢查', () => {
+  // 資料送出前的欄位檢查
+  it('Field checking before data is sent', () => {
     // if useCustomList 為 true 的狀況
     wrapper.vm.useCustomList = ['a123', 'b456']
 
@@ -93,7 +98,8 @@ describe('開啟 Dialog Member', () => {
     expect(wrapper.vm.filterCustomUserList).toStrictEqual([])
   })
 
-  it('測試頁面切換，是否會執行initSetting', async () => {
+  // 測試頁面切換，是否會執行initSetting
+  it('Test page switching, whether initSetting will be executed', async () => {
     // 設定資料
     wrapper.vm.searchName = 'a123'
     wrapper.vm.fuzzySearch = true

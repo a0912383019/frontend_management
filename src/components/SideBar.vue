@@ -31,7 +31,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
               <div class="cdp-menu__item">
                 <router-link :to="item.url_path">
                   <span class="cdp-menu__icon">
-                    <font-awesome-icon :icon="item.nav_icon" />
+                    <cdp-icon :name="item.svg_icon" />
                   </span>
                   <span class="cdp-menu__title">{{ t(`sidebar.${item.item_id}`) }}</span>
                 </router-link>
@@ -42,7 +42,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
                 <div class="cdp-menu__item">
                   <a href="javascript:;">
                     <span class="cdp-menu__icon">
-                      <font-awesome-icon :icon="item.nav_icon" />
+                      <cdp-icon :name="item.svg_icon" />
                     </span>
                     <span class="cdp-menu__title">{{ t(`sidebar.${item.item_id}`) }}</span>
                   </a>
@@ -64,14 +64,14 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
           </template>
         </el-menu>
       </div>
-      <div class="sidebar__content__logo">
+    </div>
+    <div class="sidebar__version">
+      <div class="sidebar__version__logo">
         <img src="@/assets/images/logo_white.svg" alt="logo-white" />
       </div>
-      <div class="sidebar__version">
-        <p>Version {{ version }}｜</p>
-        <p>Copyright © 2023 All rights reserved.</p>
-        <p class="sidebar__version-release">e491fa4</p>
-      </div>
+      <p>Version {{ version }}｜</p>
+      <p>Copyright © 2023 All rights reserved.</p>
+      <p class="sidebar__version__release">e491fa4</p>
     </div>
   </div>
 </template>
@@ -81,7 +81,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
     font-size: 16px;
   }
   &__icon {
-    font-size: 13px;
+    font-size: 16px;
   }
   .el-sub-menu {
     &__title {
@@ -114,7 +114,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
   overflow: hidden;
   transition: all 0.3s ease-in-out;
   &.isClose {
-    width: 75px;
+    width: 92px;
     .sidebar {
       &__version {
         display: none;
@@ -125,14 +125,14 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
         }
       }
       &__menu {
-        width: 40px;
+        width: 60px;
       }
     }
   }
   &__logo {
     padding-top: 10px;
     height: 50px;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
     a {
       display: flex;
       align-items: center;
@@ -151,23 +151,27 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 30px;
+  }
+  &__version {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(#fff, 0.6);
+    line-height: 1.4;
     &__logo {
       display: flex;
       justify-content: center;
-      padding-top: 40px;
-      margin-bottom: 50px;
+      margin-bottom: 20px;
       img {
         display: block;
         width: 100%;
         max-width: 200px;
       }
     }
-  }
-  &__version {
-    font-size: 12px;
-    font-weight: 500;
-    color: rgba(#fff, 0.6);
-    &-release {
+    &__release {
       display: none;
     }
   }
@@ -201,6 +205,14 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
       &__icon {
         margin-right: 0;
       }
+      &__item {
+        a {
+          display: flex;
+          justify-content: center;
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
     }
   }
   &__submenu {
@@ -215,9 +227,9 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
       align-items: center;
       min-width: 40px;
       min-height: 40px;
-      padding-left: 8px;
-      padding-right: 8px;
-      color: #c2c7d0;
+      padding-left: 16px;
+      padding-right: 16px;
+      color: #cdd0dd;
       border-radius: 5px;
       transition: all 0.3s ease;
       &::after {
@@ -259,16 +271,21 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     flex-shrink: 0;
     margin-right: 12px;
     background-image: url('@/assets/images/sidebar-icon_bg-active.svg');
     background-size: contain;
     background-repeat: no-repeat;
+    svg {
+      width: 18px;
+      height: 18px;
+    }
   }
   &__title {
     line-height: 1;
+    font-size: 16px;
     transition: all 0.3s ease;
   }
   .el-menu-item {

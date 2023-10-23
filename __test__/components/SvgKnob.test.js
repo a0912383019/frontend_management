@@ -28,17 +28,20 @@ describe('SvgKnob', () => {
     wrapper.unmount()
   })
 
-  it('驗證end數值是否正確', () => {
+  // 驗證end數值是否正確
+  it('Verify that the end value is correct', () => {
     let circumference = 2 * Math.PI * 100
     let end = circumference * (wrapper.vm.props.percent / 100)
     expect(wrapper.vm.end).toBe(end)
   })
 
-  it('測試.knob__percent是否為props percent', () => {
+  // 測試.knob__percent是否為props percent
+  it('Test whether .knob__percent is props percent', () => {
     expect(wrapper.find('.knob__percent').text()).toContain(wrapper.vm.props.percent)
   })
 
-  it('測試.knob__text是否為props text', () => {
+  // 測試.knob__text是否為props text
+  it('Test whether .knob__text is props text', () => {
     expect(wrapper.find('.knob__text').text()).toContain(wrapper.vm.props.text)
   })
 })

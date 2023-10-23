@@ -27,14 +27,16 @@ describe('DailyLifeCycleStepPeople.vue', () => {
   //讓console.error不要洗版
   vi.spyOn(console, 'error').mockImplementation(() => {})
 
-  it('預期渲染的元件', async () => {
+  // 預期渲染的元件
+  it('Components expected to be rendered', async () => {
     expect(wrapper.findComponent(SectionTitle).exists()).toBe(true)
     expect(wrapper.findComponent(DialogStepDetail).exists()).toBe(true)
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
     expect(wrapper.find('.cdp-dialog__chart').exists()).toBe(false)
   })
 
-  it('觸發watch，mock api', async () => {
+  // 觸發watch，mock api
+  it('Trigger watch, mock api', async () => {
     //mock api 0000
     const result = {
       data: {

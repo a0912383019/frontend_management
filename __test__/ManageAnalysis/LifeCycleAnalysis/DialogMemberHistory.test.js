@@ -6,7 +6,7 @@ import ElementPlus from 'element-plus'
 import router from '@/router'
 import DialogMemberHistory from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/DialogMemberHistory.vue'
 
-describe('開啟 Dialog Member', () => {
+describe('Dialog Member', () => {
   let wrapper = null
   beforeEach(() => {
     wrapper = shallowMount(DialogMemberHistory, {
@@ -26,7 +26,8 @@ describe('開啟 Dialog Member', () => {
     wrapper.unmount()
   })
 
-  it('開啟Dialog', () => {
+  // 開啟Dialog
+  it('open Dialog', () => {
     let dataValue = {
       hall_id: 3820698,
       domain_id: 0,
