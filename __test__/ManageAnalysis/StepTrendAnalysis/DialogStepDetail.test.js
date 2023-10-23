@@ -46,7 +46,8 @@ describe('DialogStepDetail.vue', () => {
   //讓console.error不要洗版
   vi.spyOn(console, 'error').mockImplementation(() => {})
 
-  it('預期表頭資料', () => {
+  // 預期表頭資料
+  it('Expected header information', () => {
     const tableColumnsValue = wrapper.vm.tableColumns
     expect(tableColumnsValue).toStrictEqual([
       {
@@ -80,7 +81,8 @@ describe('DialogStepDetail.vue', () => {
     ])
   })
 
-  it('開啟dialog', async () => {
+  // 開啟dialog
+  it('Open dialog', async () => {
     //mock api 0000
     const result = {
       data: {
@@ -121,7 +123,8 @@ describe('DialogStepDetail.vue', () => {
     expect(wrapper.vm.apiSuccess).toBe(true)
   })
 
-  it('開啟dialog，no result', async () => {
+  // 開啟dialog，no result
+  it('Open dialog, no result', async () => {
     //mock api 0001
     const result1 = {
       data: {
@@ -140,7 +143,8 @@ describe('DialogStepDetail.vue', () => {
     expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
   })
 
-  it('開啟dialog，9999', async () => {
+  // 開啟dialog，9999
+  it('Open dialog, 9999', async () => {
     //mock api 9999
     const result2 = {
       data: {
@@ -160,7 +164,8 @@ describe('DialogStepDetail.vue', () => {
     expect(wrapper.vm.messageKey).toBe('chartFailed')
   })
 
-  it('開啟dialog，error 403', async () => {
+  // 開啟dialog，error 403
+  it('Open dialog, error 403', async () => {
     //mock error api 403
     const error403 = new Error('Forbidden')
     error403.response = {
@@ -177,7 +182,8 @@ describe('DialogStepDetail.vue', () => {
     expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
   })
 
-  it('開啟dialog，error 401', async () => {
+  // 開啟dialog，error 401
+  it('Open dialog, error 401', async () => {
     //mock error api 401
     const error401 = new Error('error')
     error401.response = {
@@ -193,7 +199,8 @@ describe('DialogStepDetail.vue', () => {
     expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
   })
 
-  it('開啟dialog，error other', async () => {
+  // 開啟dialog，error other
+  it('Open dialog, error other', async () => {
     //mock error api other
     const errorOther = new Error('error')
     errorOther.response = {

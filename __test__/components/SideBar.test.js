@@ -53,14 +53,16 @@ describe('SideBar', () => {
     wrapper.unmount()
   })
 
-  it('驗證SideBar是否關閉', async () => {
+  // 驗證SideBar是否關閉
+  it('Verify that SideBar is closed', async () => {
     // 設定關閉，sidebar class是否正確
     wrapper.vm.isSidebarClose = true
     await wrapper.vm.$nextTick()
     expect(wrapper.find('.sidebar').classes()).toContain('isClose')
   })
 
-  it('驗證選單', async () => {
+  // 驗證選單
+  it('Verification menu', async () => {
     await wrapper.vm.$nextTick()
     // 預期選單第一筆的標題為 首頁
     expect(wrapper.find('.el-menu-item:nth-child(1) .cdp-menu__title').text()).toBe('首頁')

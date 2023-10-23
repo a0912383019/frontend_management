@@ -29,7 +29,8 @@ describe('Language', () => {
     expect(removeEventListenerSpy).toHaveBeenCalledWith('click', wrapper.vm.handleDocumentClicks)
   })
 
-  it('預期渲染與開啟下拉是否正確，函式是否正確呼叫', async () => {
+  // 預期渲染與開啟下拉是否正確，函式是否正確呼叫
+  it('test component, test function', async () => {
     expect(wrapper.vm.i18nLocale).toStrictEqual('zh-TW')
     expect(wrapper.vm.langLabel).toBe('繁體中文')
     expect(wrapper.vm.options[1].active).toBe(true)

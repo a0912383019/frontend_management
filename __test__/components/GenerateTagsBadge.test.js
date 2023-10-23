@@ -9,34 +9,32 @@ describe('GenerateTagsBadge', () => {
   let spy
 
   beforeEach(() => {
-    spy = vi.spyOn(
-      module,
-      'getSessionStorageEntity'
-    ).mockImplementation(vi.fn())
+    spy = vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
 
     //模擬第一次與第二次呼叫getSessionStorageEntity
     module.getSessionStorageEntity
       .mockReturnValueOnce({
-        'tags_config': {
-          'esb': {
-            '30001': {
-              'tag_type': 1
+        tags_config: {
+          esb: {
+            30001: {
+              tag_type: 1
             }
           }
         }
       })
       .mockReturnValueOnce({
-        'tags_config': {
-          'esb': {
-            '30001': {
-              'tag_type': 2
+        tags_config: {
+          esb: {
+            30001: {
+              tag_type: 2
             }
           }
         }
       })
   })
 
-  it('掛載元件時是否有根據tag_type的不同去切換class', async () => {
+  // 掛載元件時是否有根據tag_type的不同去切換class
+  it('Switch classes according to different tag_types', async () => {
     //第一次掛載wrapper
     wrapper = mount(GenerateTagsBadge, {
       props: {

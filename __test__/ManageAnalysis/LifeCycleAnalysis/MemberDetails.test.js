@@ -16,7 +16,7 @@ import CurrencySignText from '@/components/CurrencySignText.vue'
 import ElementPlus from 'element-plus'
 import router from '@/router'
 
-describe('會員明細', () => {
+describe('MemberDetails', () => {
   let wrapper = null
   beforeEach(() => {
     wrapper = mount(MemberDetails, {
@@ -42,7 +42,8 @@ describe('會員明細', () => {
 
   vi.spyOn(console, 'error').mockImplementation(() => {})
 
-  it('預設apiSuccess = false，預期渲染的元件', async () => {
+  // 預設apiSuccess = false，預期渲染的元件
+  it('Default apiSuccess = false, expected rendering components', async () => {
     expect(wrapper.findComponent(SectionTitle).exists()).toBe(true)
     expect(wrapper.findComponent(CurrencySignText).exists()).toBe(true)
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
@@ -52,7 +53,8 @@ describe('會員明細', () => {
     expect(wrapper.findComponent(ButtonIcon).exists()).toBe(true)
   })
 
-  it('測試自定義排序，是否符合預期', async () => {
+  // 測試自定義排序，是否符合預期
+  it('Test custom sorting to see if it meets expectations', async () => {
     // 測試排序
     let dataValue = {
       prop: 'deposit_amount',
@@ -296,7 +298,8 @@ describe('會員明細', () => {
     await flushPromises()
   })
 
-  it('測試頁碼切換', async () => {
+  // 測試頁碼切換
+  it('Test page number switching', async () => {
     // 切換頁後打api mock api 0000
     const result0 = {
       data: {
@@ -533,17 +536,20 @@ describe('會員明細', () => {
     await flushPromises()
   })
 
-  it('表格頁碼切換到第一頁', () => {
+  // 表格頁碼切換到第一頁
+  it('Table page number switches to the first page', () => {
     wrapper.vm.tableGoToFirstPage()
   })
 
-  it('觸發watch filterTimestamp', () => {
+  // 觸發watch filterTimestamp
+  it('Trigger watch filterTimestamp', () => {
     wrapper.vm.filterTimestamp = 123456
     expect(wrapper.vm.apiSuccess).toBe(false)
     expect(wrapper.vm.messageKey).toBe('clickNumberAboveToShow')
   })
 
-  it('觸發watch filterDateTimestamp', async () => {
+  // 觸發watch filterDateTimestamp
+  it('Trigger watch filterDateTimestamp', async () => {
     //mock api 0000
     const result0 = {
       data: {
@@ -778,7 +784,8 @@ describe('會員明細', () => {
     await flushPromises()
   })
 
-  it('觸發watch 與 mock api 是否如預期', async () => {
+  // 觸發watch 與 mock api 是否如預期
+  it('Is triggering watch and mock api as expected?', async () => {
     //mock api 0000
     const result0 = {
       data: {

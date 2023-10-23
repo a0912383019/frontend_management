@@ -18,7 +18,8 @@ describe('ExportReport', () => {
     })
   })
 
-  it('確認組件是否存在', async () => {
+  // 確認組件是否存在
+  it('expect component', async () => {
     //檢查元件是否渲染
     expect(wrapper.findComponent(ButtonIcon).exists()).toBe(true)
   })

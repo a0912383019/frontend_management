@@ -11,7 +11,8 @@ describe('ButtonIcon', () => {
     wrapper.unmount()
   })
 
-  it('props.icon default，確認組件是否渲染正確', () => {
+  // props.icon default，確認組件是否渲染正確
+  it('props.icon default, confirm whether the component is rendered correctly', () => {
     wrapper = shallowMount(ButtonIcon, {
       props: {
         name: 'btn name one',
@@ -32,7 +33,8 @@ describe('ButtonIcon', () => {
     expect(wrapper.find('.btn-reset').text()).toStrictEqual('btn name one')
   })
 
-  it('確認組件是否渲染正確', () => {
+  // 確認組件是否渲染正確
+  it('expect component', () => {
     wrapper = shallowMount(ButtonIcon, {
       props: {
         name: 'btn name two',

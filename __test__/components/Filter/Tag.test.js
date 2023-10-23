@@ -16,11 +16,13 @@ describe('Tag', () => {
     wrapper.unmount()
   })
 
-  it('驗證tag class是否符合預期', () => {
+  // 驗證tag class是否符合預期
+  it('Verify that the tag class meets expectations', () => {
     expect(wrapper.find('.tag').classes()).toContain('blue')
   })
 
-  it('驗證tag title是否符合預期', () => {
+  // 驗證tag title是否符合預期
+  it('Verify that the tag title is as expected', () => {
     expect(wrapper.find('.tag').text()).toBe('測試標題')
   })
 })

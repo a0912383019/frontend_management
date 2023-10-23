@@ -27,14 +27,14 @@ describe('HeaderBar', () => {
       }
     })
     sidebarStore = useSidebarStore()
-    
   })
-  
+
   afterEach(() => {
     wrapper.unmount()
   })
-  
-  it('預期渲染與開啟下拉是否正確，函式是否正確呼叫', async () => {
+
+  // 預期渲染與開啟下拉是否正確，函式是否正確呼叫
+  it('test component, test function', async () => {
     expect(wrapper.findComponent(Tags).exists()).toBe(true)
     expect(wrapper.findComponent(Hall).exists()).toBe(true)
     expect(wrapper.findComponent(Language).exists()).toBe(true)

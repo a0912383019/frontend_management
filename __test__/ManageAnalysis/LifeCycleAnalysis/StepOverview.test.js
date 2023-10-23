@@ -16,7 +16,7 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import ElementPlus from 'element-plus'
 import router from '@/router'
 
-describe('階段總覽', () => {
+describe('StepOverview', () => {
   let wrapper = null
   beforeEach(() => {
     wrapper = mount(StepOverview, {
@@ -42,7 +42,8 @@ describe('階段總覽', () => {
 
   vi.spyOn(console, 'error').mockImplementation(() => {})
 
-  it('預設apiSuccess = false，預期渲染的元件', async () => {
+  // 預設apiSuccess = false，預期渲染的元件
+  it('Default apiSuccess = false, expected rendering components', async () => {
     expect(wrapper.findComponent(FilterDate).exists()).toBe(true)
     expect(wrapper.findComponent(ExportReport).exists()).toBe(false)
     expect(wrapper.findComponent(AvgCard).exists()).toBe(false)
@@ -50,7 +51,8 @@ describe('階段總覽', () => {
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
   })
 
-  it('進階篩選，日期更新後執行的動作', async () => {
+  // 進階篩選，日期更新後執行的動作
+  it('Advanced filtering, actions performed after date update', async () => {
     const value = {
       timestamp: 1694577285954,
       rangeDate: '2023-08-14 ~ 2023-09-11'
@@ -91,13 +93,15 @@ describe('階段總覽', () => {
     await flushPromises()
   })
 
-  it('監聽FilterMemberName.vue時間戳記', () => {
+  // 監聽FilterMemberName.vue時間戳記
+  it('Listen to FilterMemberName.vue timestamp', () => {
     wrapper.vm.filterTimestamp = 123456
     expect(wrapper.vm.apiSuccess).toBe(false)
     expect(wrapper.vm.messageKey).toBe('clickNumberAboveToShow')
   })
 
-  it('觸發watch 與 mock api 是否如預期', async () => {
+  // 觸發watch 與 mock api 是否如預期
+  it('Is triggering watch and mock api as expected?', async () => {
     wrapper.vm.filterCustomUserList = []
     wrapper.vm.activeHall.hall_code = 'esb'
     wrapper.vm.queryDate = '2023-09-11'

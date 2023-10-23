@@ -29,7 +29,8 @@ describe('Pagination', () => {
     wrapper.unmount()
   })
 
-  it('預期渲染是否正確', async () => {
+  // 預期渲染是否正確
+  it('expect component', async () => {
     expect(wrapper.props('background')).toBe(propsData.background)
     expect(wrapper.props('disabled')).toBe(propsData.disabled)
     expect(wrapper.props('layout')).toBe(propsData.layout)

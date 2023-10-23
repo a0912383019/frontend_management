@@ -170,7 +170,8 @@ describe('CustomTable', () => {
     })
   })
 
-  it('確認組件是否存在', async () => {
+  // 確認組件是否存在
+  it('expect component', async () => {
     expect(wrapper.findComponent(LoadingAnimation).exists()).toBe(true)
     expect(wrapper.findComponent(CustomPagination).exists()).toBe(true)
     expect(wrapper.findComponent(TotalPagination).exists()).toBe(true)
@@ -205,7 +206,8 @@ describe('CustomTable', () => {
     expect(wrapper.vm.pageTableTotal).toStrictEqual(searchTableDate.length)
   })
 
-  it('測試emit跟update', async () => {
+  // 測試emit跟update
+  it('Test emit and update', async () => {
     await wrapper.find('.ascending i.sort-caret').trigger('click')
 
     expect(wrapper.emitted('sort')).toBeTruthy()

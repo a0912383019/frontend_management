@@ -41,7 +41,8 @@ describe('AvgCard', () => {
     wrapper.unmount()
   })
 
-  it('測試 props 資料是否符合預期呈現', () => {
+  // 測試 props 資料是否符合預期呈現
+  it('test props', () => {
     let dataValue = {
       '--item-bg-color': '#59b7c8',
       '--item-shadow-color': '#2b8696',
@@ -50,12 +51,14 @@ describe('AvgCard', () => {
     expect(wrapper.vm.cssProps).toStrictEqual(dataValue)
   })
 
-  it('驗證 card__title 是否與 props title 一致', () => {
+  // 驗證 card__title 是否與 props title 一致
+  it('Verify whether card__title is consistent with props title', () => {
     let elCardTitle = wrapper.find('.card__title')
     expect(elCardTitle.text()).toBe(propsTitle)
   })
 
-  it('驗證 card__price 是否與 props price 一致', () => {
+  // 驗證 card__price 是否與 props price 一致
+  it('Verify whether card__price is consistent with props price', () => {
     let elCardPrice = wrapper.find('.card__price')
     expect(elCardPrice.text()).toBe(propsPrice)
   })

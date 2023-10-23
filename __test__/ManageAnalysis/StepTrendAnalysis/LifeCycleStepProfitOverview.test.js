@@ -28,7 +28,8 @@ describe('LifeCycleStepProfitOverview.vue', () => {
   //讓console.error不要洗版
   vi.spyOn(console, 'error').mockImplementation(() => {})
 
-  it('預設apiSuccess = false，預期渲染的元件', async () => {
+  // 預設apiSuccess = false，預期渲染的元件
+  it('Default apiSuccess = false, expected rendering components', async () => {
     expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
     expect(wrapper.findComponent(FilterDate).exists()).toBe(true)
@@ -37,7 +38,8 @@ describe('LifeCycleStepProfitOverview.vue', () => {
     expect(wrapper.findComponent(StepConfig).exists()).toBe(false)
   })
 
-  it('語系轉換', () => {
+  // 語系轉換
+  it('language switch', () => {
     //更換語系
     wrapper.vm.i18nLocale = 'en'
     const tableColumnsValue = wrapper.vm.tableColumns
@@ -75,7 +77,8 @@ describe('LifeCycleStepProfitOverview.vue', () => {
     ])
   })
 
-  it('觸發watch 與 mock api 是否如預期', async () => {
+  // 觸發watch 與 mock api 是否如預期
+  it('Is triggering watch and mock api as expected?', async () => {
     //mock api 0000
     const result0 = {
       data: {

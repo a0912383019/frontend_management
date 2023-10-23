@@ -16,7 +16,8 @@ describe('CdpButton', () => {
     wrapper.unmount()
   })
 
-  it('確認組件是否渲染正確', () => {
+  // 確認組件是否渲染正確
+  it('expect component', () => {
     //檢查元件是否渲染
     expect(wrapper.vm.buttonClass).toStrictEqual('cdp-btn__sm-120')
     expect(wrapper.find('.cdp-btn').text()).toStrictEqual('btn name')

@@ -11,7 +11,8 @@ describe('PercentWithIcon', () => {
     wrapper.unmount()
   })
 
-  it('測試props default', () => {
+  // 測試props default
+  it('test props default', () => {
     wrapper = shallowMount(PercentWithIcon, {
       global: {
         components: {
@@ -26,7 +27,8 @@ describe('PercentWithIcon', () => {
     expect(wrapper.find('.font-size-16').text()).toContain('-')
   })
 
-  it('測試props hasColor = false', () => {
+  // 測試props hasColor = false
+  it('test props hasColor = false', () => {
     wrapper = shallowMount(PercentWithIcon, {
       props: {
         percentData: '22',
@@ -49,7 +51,8 @@ describe('PercentWithIcon', () => {
     expect(wrapper.find('.font-size-18').text()).toContain('22%')
   })
 
-  it('測試props percentData = 0', () => {
+  // 測試props percentData = 0
+  it('test props percentData = 0', () => {
     wrapper = shallowMount(PercentWithIcon, {
       props: {
         percentData: '0',
@@ -72,7 +75,8 @@ describe('PercentWithIcon', () => {
     expect(wrapper.find('.font-size-18').text()).toContain('0%')
   })
 
-  it('測試props percentData negative', () => {
+  // 測試props percentData negative
+  it('test props percentData negative', () => {
     wrapper = shallowMount(PercentWithIcon, {
       props: {
         percentData: '-22',
@@ -95,7 +99,8 @@ describe('PercentWithIcon', () => {
     expect(wrapper.find('.font-size-18').text()).toContain('22%')
   })
 
-  it('測試props percentData positive', () => {
+  // 測試props percentData positive
+  it('test props percentData positive', () => {
     wrapper = shallowMount(PercentWithIcon, {
       props: {
         percentData: '22',

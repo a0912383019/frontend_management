@@ -47,7 +47,8 @@ describe('Account', () => {
     expect(removeEventListenerSpy).toHaveBeenCalledWith('click', wrapper.vm.handleDocumentClick)
   })
 
-  it('預期渲染是否正確，函式是否正確呼叫', async () => {
+  // 預期渲染是否正確，函式是否正確呼叫
+  it('test component, test function', async () => {
     expect(wrapper.find('img').attributes('src')).toBe('https://lyudd.mm.mw')
     expect(wrapper.find('.accountbox__name').text()).toContain('BI-Yu')
     expect(addEventListenerSpy).toHaveBeenCalledWith('click', wrapper.vm.handleDocumentClick)

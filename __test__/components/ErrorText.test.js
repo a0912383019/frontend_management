@@ -26,7 +26,8 @@ describe('ErrorText', () => {
     })
   })
 
-  it('確認組件是否存在', () => {
+  // 確認組件是否存在
+  it('expect component', () => {
     //檢查渲染的訊息
     expect(wrapper.text()).toContain(message)
 

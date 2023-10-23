@@ -55,7 +55,8 @@ describe('DatepickerRange', () => {
     expect(wrapper.vm.selectDate).toStrictEqual(dateValue)
   })
 
-  it('props設定rangeDate，資料是否正確', async () => {
+  // props設定rangeDate，資料是否正確
+  it('props sets rangeDate, is the data correct?', async () => {
     wrapper = shallowMount(DatepickerRange, {
       global: {
         plugins: [

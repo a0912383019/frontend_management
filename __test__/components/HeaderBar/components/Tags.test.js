@@ -119,7 +119,8 @@ describe('Tags', () => {
     wrapper.unmount()
   })
 
-  it('預期渲染與開啟dialog後資料是否正確，函式是否正確呼叫', async () => {
+  // 預期渲染與開啟dialog後資料是否正確，函式是否正確呼叫
+  it('Verify whether the data is correct after opening the dialog, test function', async () => {
     expect(wrapper.vm.dialogTableVisible).toBe(false)
 
     wrapper.vm.activeHall.hall_code = 'esb'

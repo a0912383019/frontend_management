@@ -26,18 +26,21 @@ describe('Search', () => {
     wrapper.unmount()
   })
 
-  it('測試渲染', () => {
+  // 測試渲染
+  it('expect component', () => {
     expect(wrapper.find('.search__input').exists()).toBe(true)
     expect(wrapper.find('.search__iconsearch').exists()).toBe(true)
   })
 
-  it('測試input', async () => {
+  // 測試input
+  it('test input', async () => {
     await wrapper.find('input').setValue('test')
     expect(wrapper.emitted('update:modelValue')).toBeTruthy()
     expect(wrapper.props('modelValue')).toBe('test')
   })
 
-  it('測試button delete', async () => {
+  // 測試button delete
+  it('test button delete', async () => {
     await wrapper.find('.search__icondelete').trigger('click')
     expect(wrapper.emitted('update:modelValue')).toBeTruthy()
     expect(wrapper.props('modelValue')).toBe('')

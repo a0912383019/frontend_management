@@ -6,33 +6,36 @@ import CurrencySignText from '@/components/CurrencySignText.vue'
 import { createTestingPinia } from '@pinia/testing'
 
 describe('CurrencySignText', () => {
-    let wrapper = null
+  let wrapper = null
 
-    beforeEach(() => {
-        wrapper = shallowMount(CurrencySignText, {
-            global: {
-                plugins: [i18n, router, createTestingPinia(
-                    {
-                        createSpy: vi.fn
-                    }
-                )]
-            }
-        })
+  beforeEach(() => {
+    wrapper = shallowMount(CurrencySignText, {
+      global: {
+        plugins: [
+          i18n,
+          router,
+          createTestingPinia({
+            createSpy: vi.fn
+          })
+        ]
+      }
     })
+  })
 
-    it('觸發watch，確認資料轉變', async () => {
-        wrapper.vm.activeHall.hall_code = 'esb'
-        await wrapper.vm.$nextTick()
+  // 觸發watch，確認資料轉變
+  it('Trigger watch to confirm data change', async () => {
+    wrapper.vm.activeHall.hall_code = 'esb'
+    await wrapper.vm.$nextTick()
 
-        const currencyObject = {
-            currency: 'currency.currency',
-            currencySign: 'currency.currency_¥',
-            currencySignText: '¥'
-        }
+    const currencyObject = {
+      currency: 'currency.currency',
+      currencySign: 'currency.currency_¥',
+      currencySignText: '¥'
+    }
 
-        const currencyHtml = '<div> (幣別： 人民幣¥) </div>'
-        expect(wrapper.vm.currencyObj).toStrictEqual(currencyObject)
-        expect(wrapper.vm.isReady).toBe(true)
-        expect(wrapper.find('div').html()).toBe(currencyHtml)
-    })
+    const currencyHtml = '<div> (幣別： 人民幣¥) </div>'
+    expect(wrapper.vm.currencyObj).toStrictEqual(currencyObject)
+    expect(wrapper.vm.isReady).toBe(true)
+    expect(wrapper.find('div').html()).toBe(currencyHtml)
+  })
 })
