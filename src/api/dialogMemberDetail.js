@@ -1,4 +1,3 @@
-import axiosInstance from './axiosInstance.js'
 import axiosGoInstance from './axiosGoInstance.js'
 
 //會員明細Dialog開始
@@ -196,7 +195,7 @@ export const apiQueryMemberJourneyDetail = (params) => {
 }
 //行為分析
 //GA統計資料
-export const apiQueryQARelatedData = (params) => {
+export const apiQueryGARelatedData = (params) => {
   const { search_date, hall_name, user_id } = params
   return axiosGoInstance.get('/api/auth/member/ga_related_data', {
     params: {

@@ -9,7 +9,6 @@ import Overview from './Overview/Overview.vue'
 import Profit from './Profit/Profit.vue'
 import Journey from './Journey/Journey.vue'
 import Analysis from './Analysis/Analysis.vue'
-import { tabData } from './tabData.js'
 
 const router = useRouter()
 
@@ -26,16 +25,27 @@ const openNewWindow = () => {
 
 //當前顯示的tab
 const currentTabs = ref('Overview')
-
-//tabs列表
 const tabList = computed(() => {
-  return tabData.map((item) => {
-    return {
-      name: item.name,
-      label: t(item.label)
+  return [
+    {
+      name: 'Overview',
+      label: t('customer_detail_info.tab_overview')
+    },
+    {
+      name: 'Profit',
+      label: t('customer_detail_info.tab_profit')
+    },
+    {
+      name: 'Journey',
+      label: t('customer_detail_info.tab_journey')
+    },
+    {
+      name: 'Analysis',
+      label: t('customer_detail_info.tab_behaviour')
     }
-  })
+  ]
 })
+
 //當前的component
 const currentTabComponent = computed(() => {
   dialogMemberDetailStore.nowTag = currentTabs.value

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive, watch } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberPeriodLoginGACount } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -9,7 +9,7 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
 import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
-import { ElNotification, dayjs } from 'element-plus'
+import { dayjs } from 'element-plus'
 
 const { t } = useI18n()
 
