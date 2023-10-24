@@ -4,6 +4,8 @@
 
 #google container registry設定
 PROJECT=gcp-20190903-01
+gcloud config set project $PROJECT
+
 SERVICE=cdp-vue-frontend
 
 NOWTIME=$(date +"%Y%m%d-%H%M")
@@ -65,7 +67,6 @@ docker rmi $IMAGEFULLPATH
 docker push $IMAGEFULLPATHDEPLOY
 docker rmi $IMAGEFULLPATHDEPLOY
 
-gcloud config set project $PROJECT
 gcloud run deploy $BUILDENV-$SERVICE  --region=us-central1 --image $IMAGEFULLPATH
 
 echo "\nAll Done!!"
