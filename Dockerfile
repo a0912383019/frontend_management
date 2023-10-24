@@ -14,7 +14,7 @@
 
 # server environment
 
-FROM node:alpine as build
+FROM node:18.13.0 as build
 
 ARG buildenv
 
