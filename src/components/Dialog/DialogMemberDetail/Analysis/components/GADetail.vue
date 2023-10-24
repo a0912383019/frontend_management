@@ -80,7 +80,6 @@ const queryGARelatedData = async () => {
 
 // 轉換資料
 const transformTableData = (data) => {
-  console.log(data)
   tableData.value = [
     {
       name: t('customer_detail_info.page_views'),
