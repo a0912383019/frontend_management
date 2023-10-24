@@ -1,6 +1,6 @@
 #!/bin/bash
 # gcloud auth configure-docker us-central1-docker.pkg.dev
-# ex： sh build-cicd.sh dev activity0606_2023-06-12-1635
+# ex： sh build-cicd.sh demo 1024-1121
 
 #google container registry設定
 PROJECT=gcp-20190903-01
@@ -27,6 +27,7 @@ if [ -d "dist/" ]; then rm -Rf dist/; fi
 #處理各環境對應config檔案
 echo "\n切換為 $BUILDENV 環境config"
 #先刪除經過public/js內的本地設定檔
+mkdir public/js
 rm -r public/js/${SYSTEMCONFIGNAME}
 
 if [[ ! $(cp -v "$CONFIGPATH${SYSTEMCONFIGNAME%.*}_$BUILDENV.${SYSTEMCONFIGNAME##*.}" "$SYSTEMCONFIGPATH$SYSTEMCONFIGNAME") ]]; \
@@ -39,6 +40,7 @@ fi
 IMAGEHOST=us-central1-docker.pkg.dev/gcp-20190903-01/cdp-backend-images
 IMAGENAME=cdp_frontend_vue
 IMAGEFULLPATH=$IMAGEHOST/$IMAGENAME:"$BUILDENV"_$VERSION
+IMAGEFULLPATHDEPLOY=$IMAGEHOST/$IMAGENAME:$BUILDENV
 
 npm run build:$BUILDENV
 
@@ -54,12 +56,14 @@ git commit -m "Build Version"
 git push
 
 echo "\n建立image檔案..."$IMAGEFULLPATH
-docker build -t $IMAGEFULLPATH .
+docker build --build-arg=buildenv=$BUILDENV -t $IMAGEFULLPATH -t $IMAGEFULLPATHDEPLOY .
 
 echo "\n上傳至gcp..."
 docker push $IMAGEFULLPATH
-
 docker rmi $IMAGEFULLPATH
+
+docker push $IMAGEFULLPATHDEPLOY
+docker rmi $IMAGEFULLPATHDEPLOY
 
 gcloud config set project $PROJECT
 gcloud run deploy $BUILDENV-$SERVICE  --region=us-central1 --image $IMAGEFULLPATH
