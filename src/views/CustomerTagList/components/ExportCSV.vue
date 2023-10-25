@@ -2,17 +2,31 @@
 import { ref, computed } from 'vue'
 import { ElDialog } from 'element-plus'
 import { useI18n } from 'vue-i18n'
+import { useGlobalStore } from '@/stores/global.js'
+import { apiExportMemberList } from '@/api/customerTagList.js'
+import { ElNotification } from 'element-plus'
+import { errorRespond } from '@/utils/commonUtils.js'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
+import ExportDialog from '@/components/ExportDialog.vue'
 import ExportReport from '@/components/ExportReport.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 
-const { t } = useI18n()
+const { t, locale: i18nLocale } = useI18n()
+
+const globalStore = useGlobalStore()
+const { activeHall } = globalStore
 
 const props = defineProps({
   total: {
     type: Number
+  },
+  formData: {
+    type: Object,
+    default: () => {}
   }
 })
+
+const exportDialogVisible = ref(false)
 
 const dialogVisible = ref(false) //dialog開啟狀態
 
@@ -20,20 +34,102 @@ const apiTotal = computed(() => {
   return props.total
 })
 
-const averageTypeValue = ref(t('customer_tag_list.weekly_average'))
+const averageTypeValue = ref('week')
 const averageTypeOptions = ref([
   {
     label: t('customer_tag_list.weekly_average'),
-    value: t('customer_tag_list.weekly_average')
+    value: 'week'
   },
   {
     label: t('customer_tag_list.daily_average'),
-    value: t('customer_tag_list.daily_average')
+    value: 'day'
   }
 ])
+
+const currentDate = ref('') // 現況區間
+const averageDate = ref('') // 平均區間
+const monthAverageDate = ref('') // 月平均區間
+
+const handelExportReport = async () => {
+  globalStore.isLoading = true
+  const {
+    member,
+    selectAcount,
+    selectLevel,
+    customUserList,
+    activatedDate,
+    registerDate,
+    searchTag,
+    excludeTag,
+    fuzzySearch
+  } = props.formData
+  try {
+    const result = await apiExportMemberList({
+      activated_date: activatedDate,
+      ag_name: selectAcount,
+      average_date: averageDate.value,
+      average_type: averageTypeValue.value,
+      current_date: currentDate.value,
+      custom_user_list: customUserList,
+      exclude_tag: excludeTag,
+      fuzzy_search: fuzzySearch,
+      hall_name: activeHall.hall_code,
+      locale: i18nLocale.value,
+      month_average_date: monthAverageDate.value,
+      search_date: registerDate,
+      search_name: member,
+      search_tag: searchTag,
+      show_report_data: false, // true -> 會在response印出整張報表的資料
+      user_level_id: selectLevel
+    })
+    globalStore.isLoading = false
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      window.location.href = result.data.result.url
+    } else if (return_code === '0001') {
+      ElNotification({
+        title: t('msg.no_results'),
+        type: 'error'
+      })
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+    } else {
+      ElNotification({
+        title: t('msg.query_failed'),
+        type: 'error'
+      })
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+    }
+  } catch (error) {
+    // 失敗需關閉loading
+    globalStore.isLoading = false
+    if (error.code === 'ECONNABORTED') {
+      // timeout引起的錯誤
+      exportDialogVisible.value = true
+      dialogVisible.value = false
+    } else {
+      // 處理其他錯誤
+      if (error.response.status === 403) {
+        ElNotification({
+          title: t('msg.no_permission'),
+          type: 'error'
+        })
+      } else if (error.response.status === 401) {
+        globalStore.storeHandleApiError()
+      } else {
+        ElNotification({
+          title: t('msg.update_failed'),
+          type: 'error'
+        })
+      }
+    }
+  }
+}
 </script>
 <template>
   <div>
+    <ExportDialog v-model="exportDialogVisible" />
     <ExportReport @click="dialogVisible = true" />
     <el-dialog
       v-model="dialogVisible"
@@ -45,15 +141,15 @@ const averageTypeOptions = ref([
         <el-row>
           <el-col class="mb-20">
             <div class="col-title">{{ $t('customer_tag_list.current_duration') }}</div>
-            <DatepickerRange :config="1" :teleported="true" />
+            <DatepickerRange v-model="currentDate" :config="1" :teleported="true" />
           </el-col>
           <el-col class="mb-20">
             <div class="col-title">{{ $t('customer_tag_list.average_duration') }}</div>
-            <DatepickerRange :config="1" :teleported="true" />
+            <DatepickerRange v-model="averageDate" :config="1" :teleported="true" />
           </el-col>
           <el-col class="mb-20">
             <div class="col-title">{{ $t('customer_tag_list.monthly_avg_duration') }}</div>
-            <DatepickerRange :config="1" :teleported="true" />
+            <DatepickerRange v-model="monthAverageDate" :config="1" :teleported="true" />
           </el-col>
           <el-col class="mb-20">
             <div class="col-title">{{ $t('customer_tag_list.average_type') }}</div>
@@ -82,7 +178,11 @@ const averageTypeOptions = ref([
               {{ $t('customer_tag_list.increase_condition_reduce_time') }}
             </div>
             <div class="flex justify-end">
-              <ButtonIcon :name="$t('modal.confirm_export')" color="blue" />
+              <ButtonIcon
+                :name="$t('modal.confirm_export')"
+                color="blue"
+                @click="handelExportReport"
+              />
             </div>
           </el-col>
         </el-row>

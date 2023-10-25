@@ -275,6 +275,7 @@ const getSystemConfig = () => {
         .then((result) => {
           if (result.data.status.return_code === '0000') {
             sessionStorage.setItem('system_config', JSON.stringify(result.data.result))
+            globalStore.systemConfigIsOk = Math.floor(Math.random() * 1000)
             resolve('Get config success') //表示Promise物件執行成功，可往下繼續執行
           } else {
             let failMsg = {
@@ -520,7 +521,7 @@ watch(
     font-size: toRem(14);
     &__time {
       font-weight: 700;
-      color: $red;
+      color: $red-dark;
     }
     &__time,
     &__text {

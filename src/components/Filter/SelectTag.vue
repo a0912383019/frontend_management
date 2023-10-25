@@ -393,7 +393,7 @@ watch(
         line-height: 1;
         cursor: pointer;
         &.isActive {
-          background-color: $red;
+          background-color: $red-dark;
         }
       }
       &__close {
@@ -425,7 +425,7 @@ watch(
       &__item {
         &.isActive {
           // box-shadow: 0 0 0 1px $purple;
-          color: $red;
+          color: $red-dark;
         }
       }
     }

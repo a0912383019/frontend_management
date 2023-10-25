@@ -238,7 +238,7 @@ const handleLogin = async ({ credential }) => {
       height: 700px;
       margin-left: -350px;
       margin-top: -350px;
-      background-image: url('../assets/images/login_img.png');
+      background-image: url('../assets/images/login-img.png');
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;

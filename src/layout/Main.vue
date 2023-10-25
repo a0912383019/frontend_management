@@ -47,7 +47,7 @@ onUnmounted(() => {
     </div>
     <transition>
       <button class="mainArea__gotop" v-show="isGotopShow" @click="handleGotop">
-        <img src="@/assets/images/goTop.svg" alt="" />
+        <img src="@/assets/images/go-top.svg" alt="" />
       </button>
     </transition>
   </div>
@@ -70,6 +70,7 @@ onUnmounted(() => {
   }
   &__gotop {
     position: fixed;
+    z-index: 5;
     right: 50px;
     bottom: 50px;
     border: none;

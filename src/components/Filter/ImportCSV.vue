@@ -123,7 +123,7 @@ const handleUseCustomSwitchChange = (type) => {
             <div class="cdp-dialog-filer-file__example__title">
               {{ $t('import_export_file.example') }}
             </div>
-            <img src="@/assets/images/use_upload_tag_list_example.png" width="150" alt="" />
+            <img src="@/assets/images/upload-csv-example.png" width="150" alt="" />
           </template>
           <span class="cdp-dialog-filer-file__example__text">{{
             $t('import_export_file.example')
