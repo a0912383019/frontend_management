@@ -254,6 +254,8 @@ const transformUser = (val) => {
   return user
 }
 
+const filtered = ref(false)
+const tableDataLength = ref(0)
 const handleSearch = (kind) => {
   const convertTableDatas = JSON.parse(JSON.stringify(tableDatas))
   let handleSearchText = searchText.value.toLowerCase()
@@ -267,9 +269,12 @@ const handleSearch = (kind) => {
       )
     })
     tableData.value = result
+    filtered.value = true
   } else {
     tableData.value = convertTableDatas[kind]
+    filtered.value = false
   }
+  tableDataLength.value = convertTableDatas[kind].length
 }
 
 onMounted(() => {
@@ -336,7 +341,8 @@ watch(
           :hasPagination="true"
           :serverSide="false"
           :pageSize="5"
-          :search="true"
+          :filtered="filtered"   
+          :filterFrom="tableDataLength"       
           class="customTable2"
           customSearchClass="home-notify"
         >
