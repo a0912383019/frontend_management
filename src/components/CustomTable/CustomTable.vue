@@ -165,8 +165,9 @@ defineExpose({ goToFirstPage, showTableLoading })
           :sortable="column.sortable"
           :resizable="false"
         >
-          <template #header>
+        <template #header>
             {{ column.label }}
+            <slot :name="column.prop + '-header'"></slot>
             <slot :name="column.headerSlot" v-if="column.headerSlot">
               <span v-html="column.headerSlot"></span>
             </slot>

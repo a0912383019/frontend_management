@@ -243,6 +243,8 @@ const handleMemberDetailClick = (val) => {
   //寫入store
   dialogMemberDetailStore.memberData = {}
   dialogMemberDetailStore.memberData = val
+  sessionStorage.member_data = ''
+  sessionStorage.member_data = JSON.stringify(val)
   refDialogMemberDetail.value.handleOpenDialog()
 }
 

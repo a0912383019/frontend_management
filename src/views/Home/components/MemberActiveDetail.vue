@@ -248,7 +248,7 @@ const handleActiveDetailClick = (user) => {
                   {{ $t('date.this_week') }}
                 </div>
               </template>
-              <font-awesome-icon class="title__icon" icon="fa-solid fa-circle-info" />
+              <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
             </el-tooltip>
           </template>
           <template #memberName="scope">
