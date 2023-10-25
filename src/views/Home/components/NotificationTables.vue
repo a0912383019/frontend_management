@@ -120,39 +120,35 @@ const querySmallMesNote = async (kind = '0') => {
     })
     const { return_code } = result.data.status
 
-    if (return_code !== '9999') {
-      if (return_code !== '0001') {
-        allApiSuccess.value = true
-        //整理及地圖對應的資料
-        transformQuerySmallMesNote(result.data.result)
-        switch (kind) {
-          case '0':
-            apiIsCalled.value[0] = true
-            tableDatas[0] = tableData.value
-            break
-          case '1':
-            apiIsCalled.value[1] = true
-            tableDatas[1] = tableData.value
-            break
-          case '2':
-            apiIsCalled.value[2] = true
-            tableDatas[2] = tableData.value
-            break
-          case '3':
-            apiIsCalled.value[3] = true
-            tableDatas[3] = tableData.value
-            break
-          case '4':
-            apiIsCalled.value[4] = true
-            tableDatas[4] = tableData.value
-            break
-        }
-        handleSearch(kind)
-      } else {
-        allMessageKey.value = 'noResult'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
+    if (return_code === '0001') {
+      allMessageKey.value = 'noResult'
+    } else if (return_code === '0000') {
+      allApiSuccess.value = true
+      //整理及地圖對應的資料
+      transformQuerySmallMesNote(result.data.result)
+      switch (kind) {
+        case '0':
+          apiIsCalled.value[0] = true
+          tableDatas[0] = tableData.value
+          break
+        case '1':
+          apiIsCalled.value[1] = true
+          tableDatas[1] = tableData.value
+          break
+        case '2':
+          apiIsCalled.value[2] = true
+          tableDatas[2] = tableData.value
+          break
+        case '3':
+          apiIsCalled.value[3] = true
+          tableDatas[3] = tableData.value
+          break
+        case '4':
+          apiIsCalled.value[4] = true
+          tableDatas[4] = tableData.value
+          break
       }
+      handleSearch(kind)
     } else {
       allMessageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
@@ -160,18 +156,10 @@ const querySmallMesNote = async (kind = '0') => {
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
+    if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      ElNotification({
-        title: t('msg.update_failed'),
-        type: 'error'
-      })
+      allMessageKey.value = 'chartFailed'
     }
   }
 }
@@ -192,7 +180,7 @@ const readSmartMesNote = async (msgId, kind) => {
       })
     } else {
       ElNotification({
-        title: t('msg.update_failed'),
+        title: t('msg.query_failed'),
         type: 'error'
       })
     }
@@ -266,6 +254,8 @@ const transformUser = (val) => {
   return user
 }
 
+const filtered = ref(false)
+const tableDataLength = ref(0)
 const handleSearch = (kind) => {
   const convertTableDatas = JSON.parse(JSON.stringify(tableDatas))
   let handleSearchText = searchText.value.toLowerCase()
@@ -279,9 +269,12 @@ const handleSearch = (kind) => {
       )
     })
     tableData.value = result
+    filtered.value = true
   } else {
     tableData.value = convertTableDatas[kind]
+    filtered.value = false
   }
+  tableDataLength.value = convertTableDatas[kind].length
 }
 
 onMounted(() => {
@@ -348,7 +341,8 @@ watch(
           :hasPagination="true"
           :serverSide="false"
           :pageSize="5"
-          :search="true"
+          :filtered="filtered"   
+          :filterFrom="tableDataLength"       
           class="customTable2"
           customSearchClass="home-notify"
         >

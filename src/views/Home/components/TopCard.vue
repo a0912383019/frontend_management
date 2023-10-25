@@ -92,34 +92,17 @@ const querySmallBoxData = async () => {
     })
     const { return_code } = result.data.status
 
-    if (return_code !== '0001') {
-      if (return_code === '0000') {
-        if (result.data.result.length !== 0) {
-          //整理table對應的資料
-          transformSmallBoxData(result.data.result)
-        }
-      } else {
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
+    if (return_code === '0000' && result.data.result.length !== 0) {
+      //整理table對應的資料
+      transformSmallBoxData(result.data.result)
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
+    if (error.response.status === 401) {
       globalStore.storeHandleApiError()
-    } else {
-      ElNotification({
-        title: t('msg.update_failed'),
-        type: 'error'
-      })
     }
   }
 }

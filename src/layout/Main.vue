@@ -71,8 +71,8 @@ onUnmounted(() => {
   &__gotop {
     position: fixed;
     z-index: 5;
-    right: 50px;
-    bottom: 50px;
+    right: 16px;
+    bottom: 16px;
     border: none;
     background: none;
     border-radius: 50%;

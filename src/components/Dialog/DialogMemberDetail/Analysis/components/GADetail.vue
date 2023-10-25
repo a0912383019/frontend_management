@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryQARelatedData } from '@/api/dialogMemberDetail.js'
+import { apiQueryGARelatedData } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
@@ -9,7 +9,6 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import { getHallCurrencySign, FormatNumber, errorRespond } from '@/utils/commonUtils.js'
-import { ElNotification } from 'element-plus'
 
 const { t } = useI18n()
 
@@ -42,11 +41,11 @@ const tableColumns = computed(() => {
 })
 
 //取得資料
-const queryQARelatedData = async () => {
+const queryGARelatedData = async () => {
   messageKey.value = 'shortLoading'
   apiSuccess.value = false
   try {
-    const result = await apiQueryQARelatedData({
+    const result = await apiQueryGARelatedData({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
       user_id: dialogMemberDetailStore.memberData.user_id
@@ -129,7 +128,7 @@ const transformTableData = (data) => {
 }
 
 onMounted(() => {
-  queryQARelatedData()
+  queryGARelatedData()
 })
 </script>
 <template>

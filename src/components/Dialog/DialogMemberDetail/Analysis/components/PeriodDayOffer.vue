@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberPeriodDayOffer } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
@@ -8,7 +8,7 @@ import { useGlobalStore } from '@/stores/global.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { FormatNumber, errorRespond, generateRGBColors } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipShared } from '@/utils/highchartsConfig.js'
-import { ElNotification, dayjs } from 'element-plus'
+import { dayjs } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 

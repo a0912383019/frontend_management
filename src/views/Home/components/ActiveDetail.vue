@@ -82,34 +82,22 @@ const queryMemberRecentWeekLively = async (user_id) => {
     const { return_code } = result.data.status
 
     if (return_code === '0001') {
-      weekMessageKey.value = 'chartFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-      return
-    }
-    if (return_code === '0000' && result.data.result.length !== 0) {
+      weekMessageKey.value = 'noResult'
+    } else if (return_code === '0000' && result.data.result.length !== 0) {
       weekApiSuccess.value = true
       //整理table對應的資料
       transformMemberRecentWeekLively(result.data.result)
     } else {
-      weekMessageKey.value = 'noResult'
+      weekMessageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
+    if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      ElNotification({
-        title: t('msg.update_failed'),
-        type: 'error'
-      })
+      weekMessageKey.value = 'chartFailed'
     }
   }
 }
@@ -198,11 +186,7 @@ const queryMemberRecentLively = async (user_id) => {
 
     if (return_code === '0001') {
       dayMessageKey.value = 'noResult'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-      return
-    }
-    if (return_code === '0000' && result.data.result.length !== 0) {
+    } else if (return_code === '0000' && result.data.result.length !== 0) {
       dayApiSuccess.value = true
       //整理table對應的資料
       transformMemberRecentLively(result.data.result)
@@ -213,18 +197,10 @@ const queryMemberRecentLively = async (user_id) => {
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
+    if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      ElNotification({
-        title: t('msg.update_failed'),
-        type: 'error'
-      })
+      dayMessageKey.value = 'chartFailed'
     }
   }
 }

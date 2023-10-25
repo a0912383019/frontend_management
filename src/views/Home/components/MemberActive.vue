@@ -113,11 +113,7 @@ const queryLivelyChangeOverview = async () => {
 
     if (return_code === '0001') {
       messageKey.value = 'noResult'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-      return
-    }
-    if (return_code === '0000' && result.data.result.length !== 0) {
+    } else if (return_code === '0000' && result.data.result.length !== 0) {
       apiSuccess.value = true
       //整理table對應的資料
       transformLivelyChangeOverview(result.data.result)
@@ -128,18 +124,10 @@ const queryLivelyChangeOverview = async () => {
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
+    if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      ElNotification({
-        title: t('msg.update_failed'),
-        type: 'error'
-      })
+      messageKey.value = 'chartFailed'
     }
   }
 }
