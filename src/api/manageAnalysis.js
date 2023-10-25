@@ -11,9 +11,6 @@ export const apiQueryLifeCycleAnalysisOverview = (params) => {
       search_name,
       fuzzy_search,
       custom_user_list
-    },
-    {
-      headers: { 'Content-Type': 'application/json' }
     }
   )
 }
@@ -41,9 +38,6 @@ export const apiQueryLifeCycleAnalysisAvgData = (params) => {
       detail_type,
       search_name,
       fuzzy_search
-    },
-    {
-      headers: { 'Content-Type': 'application/json' }
     }
   )
 }
@@ -79,9 +73,6 @@ export const apiQueryLifeCycleAnalysisDetailTbl = (params) => {
       search_name,
       sort,
       start
-    },
-    {
-      headers: { 'Content-Type': 'application/json' }
     }
   )
 }
@@ -121,7 +112,6 @@ export const apiExportLifeCycleAnalysisDetail = (params) => {
       start
     },
     {
-      headers: { 'Content-Type': 'application/json' },
       timeout: 10 * 1000 // 10秒
     }
   )

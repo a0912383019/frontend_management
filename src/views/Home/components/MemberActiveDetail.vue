@@ -8,7 +8,7 @@ import {
   errorRespond,
   addNumberColor
 } from '@/utils/commonUtils.js'
-import { ElNotification, dayjs } from 'element-plus'
+import { dayjs } from 'element-plus'
 import CurrencySignText from '@/components/CurrencySignText.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import { apiQueryLivelyChangeDetail } from '@/api/home.js'
@@ -248,7 +248,7 @@ const handleActiveDetailClick = (user) => {
                   {{ $t('date.this_week') }}
                 </div>
               </template>
-              <font-awesome-icon class="title__icon" icon="fa-solid fa-circle-info" />
+              <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
             </el-tooltip>
           </template>
           <template #memberName="scope">
