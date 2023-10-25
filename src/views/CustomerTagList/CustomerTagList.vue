@@ -1,9 +1,10 @@
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, watch, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiListMemberTags } from '@/api/customerTagList.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
+import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
 import { findHallIdMappingKey, checkTagUsage, formatDateDuration } from '@/utils/commonUtils.js'
 import { ElNotification } from 'element-plus'
@@ -23,6 +24,7 @@ const { t, locale: i18nLocale } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+const { systemConfigIsOk } = storeToRefs(globalStore)
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
 
@@ -47,49 +49,50 @@ const tableColumns = computed(() => {
       prop: 'user_name',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '9%'
+      minWidth: '10%'
     },
     {
       label: t('data_name.ag_name'),
       prop: 'ag_name',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '9%'
+      minWidth: '10%'
     },
     {
       label: t('data_name.user_level'),
       prop: 'user_level',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '9%'
+      minWidth: '10%'
     },
     {
       label: t('tags.tags'),
       prop: 'tag_name_str',
-      headerAlign: 'center',
+      headerAlign: i18nLocale.value === 'en' ? 'left' : 'center',
       headerSlot: `
       <div class="page-customtag-type">
-        <div class="page-customtag-type__item red">${t('tags.type_1')}</div>
+        <div class="page-customtag-type__item red">${t('tags.type_3')}</div>
         <div class="page-customtag-type__item blue">${t('tags.type_3')}</div>
+        <div class="page-customtag-type__item green">${t('tags.type_1')}</div>
         <div class="page-customtag-type__item orange">${t('tags.type_4')}</div>
       </div>
       `,
       align: 'left',
-      minWidth: '43%'
+      minWidth: '46%'
     },
     {
       label: t('data_name.register_date'),
       prop: 'register_date',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '15%'
+      minWidth: '12%'
     },
     {
       label: t('common.operation'),
       prop: 'operation',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '15%'
+      minWidth: '12%'
     }
   ]
 })
@@ -132,12 +135,12 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
       hall_name: activeHall.hall_code,
       length: 10,
       locale: i18nLocale.value,
-      records_total: apiRecordsTotal.value,
+      records_total: apiRecordsTotal.value, // 前端頁面目前資料總數，0 or 不帶api都會重新拿取總資料數，如果有帶api就不會重拿，會回傳前端傳的數值
       search_date: formData['registerDate'], //註冊日期
       search_name: formData['member'], //會員名稱
       search_tag: formData['searchTag'], //包含標籤
       start: apiStart.value,
-      user_level_id: formData['selectLevel'] === '' ? 0 : formData['selectLevel'] //會員層級
+      user_level_id: formData['selectLevel'] //會員層級
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -156,8 +159,10 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
       tableData.value = transformListMemberTags(result.data.result.data)
       apiRecordsTotal.value = result.data.result.records_total
     } else if (return_code === '0001') {
+      apiRecordsTotal.value = 0
       messageKey.value = 'noResult'
     } else {
+      apiRecordsTotal.value = 0
       messageKey.value = 'queryFailed'
     }
   } catch (error) {
@@ -234,11 +239,13 @@ const handleTagButtonClick = (item) => {
   tableData.value = newData
 }
 
+// 篩選送出
 const handleFilterSubmit = (data) => {
+  apiRecordsTotal.value = 0 // 送出篩選清空前端總筆數，api重新取得
   formData['customUserList'] = data['custom_user_list']
   formData['member'] = data['member']
   formData['selectAcount'] = data['selectAcount']
-  formData['selectLevel'] = data['selectLevel']
+  formData['selectLevel'] = data['selectLevel'] === '' ? 0 : data['selectLevel']
   formData['activatedDate'] = data['isActivedDateCheck'] === true ? data['activatedDate'] : ''
   formData['registerDate'] = data['registerDate']
   formData['searchTag'] = data['searchTag']
@@ -246,6 +253,14 @@ const handleFilterSubmit = (data) => {
   formData['fuzzySearch'] = data['fuzzySearch']
   queryListMemberTags({ filterType: true })
 }
+
+const key = ref(0)
+watch(
+  () => systemConfigIsOk.value,
+  () => {
+    key.value = Math.floor(Math.random() * 100)
+  }
+)
 
 onMounted(() => {
   queryListMemberTags({ searchType: '' })
@@ -257,8 +272,8 @@ onMounted(() => {
       <!-- justify-between -->
       <PageTitle icon="fas fa-tags" :title="$t('sidebar.bbin_customer_tag_list')" />
       <div class="flex">
-        <ExportCSV class="mr-10" :total="apiRecordsTotal" />
-        <Filter @update:filter-submit="handleFilterSubmit" />
+        <ExportCSV class="mr-10" :formData="formData" :total="apiRecordsTotal" />
+        <Filter :key="key" @update:filter-submit="handleFilterSubmit" />
       </div>
     </div>
     <CdpMessage :messageKey="messageKey" v-show="apiSuccess === false" />
@@ -286,7 +301,11 @@ onMounted(() => {
             <ul class="tags__list" :class="{ allShow: scope.row.tag_show }">
               <template v-for="(item, index) in scope.row.tag_name_str" :key="item">
                 <li :class="{ hide: index > 11 }">
-                  <GenerateTagsBadge :hall_name="activeHall.hall_code" :tag_code="item" />
+                  <GenerateTagsBadge
+                    :key="key"
+                    :hall_name="activeHall.hall_code"
+                    :tag_code="item"
+                  />
                 </li>
               </template>
               <li
@@ -294,11 +313,23 @@ onMounted(() => {
                 @click="handleTagButtonClick(scope.row)"
                 v-if="scope.row.tag_button_show"
               >
-                <el-tooltip effect="dark" content="顯示全部標籤" placement="top" :hide-after="0">
+                <el-tooltip
+                  effect="dark"
+                  :content="scope.row.tag_show ? t('tags.hide_some_tag') : t('tags.open_all_tag')"
+                  placement="top"
+                  :hide-after="0"
+                >
                   {{ scope.row.tag_show ? 'close' : '⋯' }}
                 </el-tooltip>
               </li>
             </ul>
+          </div>
+        </template>
+        <template #register_date="scope">
+          <div style="line-height: 1.3">
+            {{ scope.row.register_date.split(' ')[0] }} <br />{{
+              scope.row.register_date.split(' ')[1]
+            }}
           </div>
         </template>
         <template #operation="scope">
@@ -319,11 +350,14 @@ onMounted(() => {
 <style lang="scss" scoped>
 .tags {
   display: flex;
+  width: 100%;
   &__list {
     display: flex;
     flex-wrap: wrap;
     list-style-type: none;
     padding: 0;
+    // max-height: 56px;
+    overflow: hidden;
     li {
       margin-right: 5px;
       margin-bottom: 5px;
@@ -332,6 +366,7 @@ onMounted(() => {
       display: none;
     }
     &.allShow {
+      max-height: none;
       .hide {
         display: block;
       }
@@ -339,6 +374,10 @@ onMounted(() => {
   }
   &__button {
     cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    &:hover {
+      filter: drop-shadow(0 2px 2px $blue);
+    }
   }
 }
 </style>
@@ -360,22 +399,28 @@ onMounted(() => {
       margin-right: 4px;
       border-radius: 50%;
     }
-    &.red {
-      color: #e06672;
+    &.green {
+      color: $green;
       &::before {
-        background-color: #e8465e;
+        background-color: $green;
+      }
+    }
+    &.red {
+      color: $red;
+      &::before {
+        background-color: $red;
       }
     }
     &.blue {
-      color: #4f7dc5;
+      color: $blue;
       &::before {
-        background-color: #135b86;
+        background-color: $blue;
       }
     }
     &.orange {
-      color: #ee9546;
+      color: $oragne;
       &::before {
-        background-color: #f9b40c;
+        background-color: $oragne;
       }
     }
   }
@@ -384,6 +429,14 @@ onMounted(() => {
 .customTagListTable {
   button.detail-button {
     min-width: 80px;
+  }
+  tr.el-table__row {
+    .cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 62px;
+    }
   }
 }
 </style>

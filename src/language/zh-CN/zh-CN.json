@@ -105,7 +105,7 @@
     "import_manually": "使用手动导入名单",
     "filter_imported_data": "启用后使用导入的名单进行筛选",
     "example": "格式范例",
-    "example_img_1": "<img class='img-size-150' src='./dist/img/use_upload_tag_list_example.png'>",
+    "example_img_1": "<img class='img-size-150' src='./dist/img/upload-csv-example.png'>",
     "example_img_2": "<img class='img-size-300' src='./dist/img/use_upload_custom_tags_setting_example.png'>",
     "example_reminder": "<span class='text-warning text-decoration font-italic'>$t(import_export_file.example)</span><br>$t(import_export_file.example_img, {\"context\": \"{{img_type}}\"})",
     "select_import_file": "选择文档",
@@ -297,6 +297,7 @@
     "type_3": "规则",
     "type_4": "机器",
     "type_5": "自订",
+    "type_6": "风控",
 
     "category": "标签种类",
     "select_category": "选择标签种类",
@@ -321,6 +322,9 @@
     "category_desc_9": "会员近15个实动日，登入次数最多的省份地区",
 
     "select_tag": "选择标签",
+
+    "open_all_tag": "显示全部标签",
+    "hide_some_tag": "隐藏部分标签",
 
     "operator": "关联逻辑",
     "operator_or": "OR",

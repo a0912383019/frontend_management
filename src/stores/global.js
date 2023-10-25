@@ -62,12 +62,15 @@ export const useGlobalStore = defineStore(
       return config
     })
 
+    const systemConfigIsOk = ref(0)
+
     return {
       isLoading,
       storeHandleApiError,
       activeHall,
       lobbyGroupConfig,
-      tableConfig
+      tableConfig,
+      systemConfigIsOk
     }
   },
   {

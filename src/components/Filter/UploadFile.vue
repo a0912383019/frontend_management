@@ -247,15 +247,15 @@ defineExpose({ dialogClose })
   }
   &__error-text {
     margin-bottom: 10px;
-    color: $red;
+    color: $red-dark;
   }
   &.error {
     .upload {
       &__text {
-        color: $red;
+        color: $red-dark;
       }
       &__filename {
-        border-color: $red;
+        border-color: $red-dark;
       }
     }
   }

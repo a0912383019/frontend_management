@@ -568,34 +568,21 @@
 
 /* badge for label tag */
 .badge {
-  display: inline-flex;
-  align-items: center;
-  font-size: 12px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: normal;
+  padding: 1px 8px;
+  line-height: 1.5;
+  font-size: 13px;
+  border-radius: 30px;
   color: #fff;
-  cursor: pointer;
-  min-height: 23px;
-  /* button hover background color */
 }
 .badge-custom-blue {
-  box-sizing: border-box;
-  padding: 3px 10px;
-  border-radius: 10px;
   background-color: #4f84cf;
 }
 .badge-custom-yellow {
-  box-sizing: border-box;
-  padding: 1px 8px 2px;
-  border-radius: 10px;
   background-color: #f39c10;
 }
 .badge-custom-danger {
-  box-sizing: border-box;
-  padding: 1px 8px 2px;
-  border-radius: 10px;
-  background-color: #de6850;
+  background-color: $red;
+}
+.badge-custom-green {
+  background-color: #adba53;
 }

@@ -50,9 +50,9 @@ const handelExportReport = async () => {
       start: apiStart.value
     })
     const { return_code } = result.data.status
+    globalStore.isLoading = false
     if (return_code === '0000') {
       window.location.href = result.data.result.url
-      globalStore.isLoading = false
     } else if (return_code === '0001') {
       ElNotification({
         title: t('msg.no_results'),

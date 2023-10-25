@@ -105,7 +105,7 @@
     "import_manually": "Import Manually",
     "filter_imported_data": "Filter with your own list",
     "example": "See an example",
-    "example_img_1": "<img class='img-size-150' src='./dist/img/use_upload_tag_list_example.png'>",
+    "example_img_1": "<img class='img-size-150' src='./dist/img/upload-csv-example.png'>",
     "example_img_2": "<img class='img-size-300' src='./dist/img/use_upload_custom_tags_setting_example.png'>",
     "example_reminder": "<span class='text-warning text-decoration font-italic'>$t(import_export_file.example)</span><br>$t(import_export_file.example_img, {\"context\": \"{{img_type}}\"})",
     "select_import_file": "Select a .csv file",
@@ -297,6 +297,7 @@
     "type_3": "Rule Based",
     "type_4": "AI",
     "type_5": "Custom",
+    "type_6": "Risk",
 
     "category": "Category",
     "select_category": "Click and Pick...",
@@ -321,6 +322,9 @@
     "category_desc_9": "Mostly login province area , for the last 15 days of login.",
 
     "select_tag": "Click and Pick...",
+
+    "open_all_tag": "顯示全部標籤",
+    "hide_some_tag": "隱藏部分標籤",
 
     "operator": "Operator",
     "operator_or": "OR",

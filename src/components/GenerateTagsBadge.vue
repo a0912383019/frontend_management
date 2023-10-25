@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 const props = defineProps({
   hall_name: {
@@ -22,7 +22,7 @@ if (get_tag_code !== undefined) {
   const tag_type = get_tag_code.tag_type
   switch (tag_type) {
     case 1:
-      badge_class.value += ' badge-custom-danger'
+      badge_class.value += ' badge-custom-green'
       break
     case 2:
       badge_class.value += ' badge-custom-green'
@@ -36,19 +36,26 @@ if (get_tag_code !== undefined) {
     case 5:
       badge_class.value += ' badge-custom-danger'
       break
+    case 6:
+      badge_class.value += ' badge-custom-danger'
+      break
   }
   badge_class.value += ` ${props.badge_text_class}`
 }
+
+const tagName = computed(() => {
+  return tag_description_dict[props.tag_code].tag_name
+})
 </script>
 <template>
   <el-tooltip
     effect="dark"
-    :content="tag_description_dict[tag_code].tag_description"
+    :content="tag_description_dict[props.tag_code].tag_description"
     placement="top"
     :hide-after="0"
   >
     <div :class="badge_class">
-      {{ tag_description_dict[tag_code].tag_name }}
+      {{ tagName }}
     </div>
   </el-tooltip>
 </template>

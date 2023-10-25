@@ -67,7 +67,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
     </div>
     <div class="sidebar__version">
       <div class="sidebar__version__logo">
-        <img src="@/assets/images/logo_white.svg" alt="logo-white" />
+        <img src="@/assets/images/logo-white.svg" alt="logo-white" />
       </div>
       <p>Version {{ version }}｜</p>
       <p>Copyright © 2023 All rights reserved.</p>
@@ -247,6 +247,11 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
       }
       &:hover {
         color: #fff;
+        .cdp-menu {
+          &__icon {
+            background-image: url('@/assets/images/sidebar-icon-active.svg');
+          }
+        }
         &::after {
           opacity: 1;
         }
@@ -275,9 +280,10 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
     height: 30px;
     flex-shrink: 0;
     margin-right: 12px;
-    background-image: url('@/assets/images/sidebar-icon_bg-active.svg');
+    background-image: url('@/assets/images/sidebar-icon.svg');
     background-size: contain;
     background-repeat: no-repeat;
+    transition: all 0.5s ease-in-out;
     svg {
       width: 18px;
       height: 18px;
@@ -298,6 +304,12 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
     &.is-active {
       a {
         color: #fff;
+
+        .cdp-menu {
+          &__icon {
+            background-image: url('@/assets/images/sidebar-icon-active.svg');
+          }
+        }
         &::after {
           background-color: #4f84cf;
           opacity: 1;

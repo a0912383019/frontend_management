@@ -105,7 +105,7 @@
     "import_manually": "使用手動匯入名單",
     "filter_imported_data": "啟用後使用匯入的名單進行篩選",
     "example": "格式範例",
-    "example_img_1": "<img class='img-size-150' src='./dist/img/use_upload_tag_list_example.png'>",
+    "example_img_1": "<img class='img-size-150' src='./dist/img/upload-csv-example.png'>",
     "example_img_2": "<img class='img-size-300' src='./dist/img/use_upload_custom_tags_setting_example.png'>",
     "example_reminder": "<span class='text-warning text-decoration font-italic'>$t(import_export_file.example)</span><br>$t(import_export_file.example_img, {\"context\": \"{{img_type}}\"})",
     "select_import_file": "選擇檔案",
@@ -298,6 +298,7 @@
     "type_3": "規則",
     "type_4": "機器",
     "type_5": "自訂",
+    "type_6": "風控",
 
     "category": "標籤種類",
     "select_category": "選擇標籤種類",
@@ -322,6 +323,9 @@
     "category_desc_9": "會員近15個實動日，登入次數最多的省份地區",
 
     "select_tag": "選擇標籤",
+
+    "open_all_tag": "顯示全部標籤",
+    "hide_some_tag": "隱藏部分標籤",
 
     "operator": "關聯邏輯",
     "operator_or": "OR",

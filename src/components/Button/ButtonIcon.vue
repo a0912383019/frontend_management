@@ -113,8 +113,8 @@ button {
       border-color: #f4f4f4;
     }
     &__green {
-      background-color: $green;
-      border-color: $green;
+      background-color: $green-dark;
+      border-color: $green-dark;
     }
     &__gray {
       background-color: #f4f4f4;
@@ -143,7 +143,7 @@ button {
           color: #f4f4f4;
         }
         &__green {
-          color: $green;
+          color: $green-dark;
         }
         &__gray {
           color: #8d8d8d;

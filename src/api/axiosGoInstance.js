@@ -4,7 +4,7 @@ const baseURL = import.meta.env.VITE_API_GO_BASE_URL
 const axiosGoInstance = axios.create({
   baseURL,
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/json'
   }
 })
 
@@ -14,8 +14,6 @@ axiosGoInstance.interceptors.request.use(
     if (accessToken) {
       //添加Authorization
       request.headers['Authorization'] = accessToken
-      //添加目前語系，等待後端確認是否要把語系參數放到header
-      // request.headers['Locale'] = sessionStorage.languageType ?? 'zh-TW'
     }
 
     if (request.method === 'post' || request.method === 'put' || request.method === 'delete') {
