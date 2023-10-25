@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import Tab from '@/components/Tab.vue'
-import { tabData } from '@/components/Dialog/DialogMemberDetail/tabData.js'
 import FilterDate from '@/components/Filter/FilterDate.vue'
 import Overview from '@/components/Dialog/DialogMemberDetail/Overview/Overview.vue'
 import Profit from '@/components/Dialog/DialogMemberDetail/Profit/Profit.vue'
@@ -23,12 +22,24 @@ const currentTabs = ref('Overview')
 
 // tab列表
 const tabList = computed(() => {
-  return tabData.map((item) => {
-    return {
-      name: item.name,
-      label: t(item.label)
+  return [
+    {
+      name: 'Overview',
+      label: t('customer_detail_info.tab_overview')
+    },
+    {
+      name: 'Profit',
+      label: t('customer_detail_info.tab_profit')
+    },
+    {
+      name: 'Journey',
+      label: t('customer_detail_info.tab_journey')
+    },
+    {
+      name: 'Analysis',
+      label: t('customer_detail_info.tab_behaviour')
     }
-  })
+  ]
 })
 
 //當前的component

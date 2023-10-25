@@ -71,7 +71,7 @@ const tableColumns = computed(() => {
       headerAlign: i18nLocale.value === 'en' ? 'left' : 'center',
       headerSlot: `
       <div class="page-customtag-type">
-        <div class="page-customtag-type__item red">${t('tags.type_3')}</div>
+        <div class="page-customtag-type__item red">${t('tags.type_6')}</div>
         <div class="page-customtag-type__item blue">${t('tags.type_3')}</div>
         <div class="page-customtag-type__item green">${t('tags.type_1')}</div>
         <div class="page-customtag-type__item orange">${t('tags.type_4')}</div>
