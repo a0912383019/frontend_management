@@ -73,6 +73,16 @@ const props = defineProps({
     //是否啟用後端服務器模式(每頁單獨發api)，啟用後pageTableData會有差異
     type: Boolean,
     default: false
+  },
+  filtered: {
+    //是否顯示(由 xxx 筆中進行篩選)
+    type: Boolean,
+    default: false
+  },
+  filterFrom: {
+    //上述的xxx
+    type: Number,
+    default: 0
   }
 })
 
@@ -88,6 +98,10 @@ const page = reactive({
   currentPage: 1,
   pageSize: props.pageSize
 })
+
+// const filter = computed(()=>{
+//   return 
+// })
 
 const updateCurrentPage = (val) => {
   page.currentPage = val
@@ -112,7 +126,7 @@ const pageTableData = computed(() => {
   return data
 })
 
-const pageTableTotla = computed(() => {
+const pageTableTotal = computed(() => {
   if (props.tableTotal === 0) {
     return props.tableData.length
   } else {
@@ -179,7 +193,7 @@ defineExpose({ goToFirstPage, showTableLoading })
       <CustomPagination
         :page="page.currentPage"
         :pageSize="page.pageSize"
-        :total="pageTableTotla"
+        :total="pageTableTotal"
         :layout="paginationLayout"
         class="customPagination"
         @update:currentPage="updateCurrentPage"
@@ -188,14 +202,16 @@ defineExpose({ goToFirstPage, showTableLoading })
       <TotalPagination
         :page="page.currentPage"
         :pageSize="props.pageSize"
-        :total="pageTableTotla"
+        :total="pageTableTotal"
+        :totalDataCount="props.filterFrom"
+        :filtered="props.filtered"
       />
     </div>
     <div class="paginationBox" v-if="hasPagination === false && hasTotalPagination === true">
       <TotalPagination
         :page="page.currentPage"
-        :pageSize="pageTableTotla"
-        :total="pageTableTotla"
+        :pageSize="pageTableTotal"
+        :total="pageTableTotal"
       />
     </div>
     <transition>
@@ -400,6 +416,9 @@ defineExpose({ goToFirstPage, showTableLoading })
         }
       }
     }
+  }
+  .el-table__inner-wrapper::before {
+    z-index: -1;
   }
 }
 .paginationBox {

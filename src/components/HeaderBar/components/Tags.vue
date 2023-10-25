@@ -154,6 +154,8 @@ const tableData = computed(() => {
   return tagsData[currentTabs.value]
 })
 
+const filtered = ref(false)
+const tableDataLength = ref(0)
 //search
 const searchText = ref('')
 const handleSearch = () => {
@@ -166,9 +168,12 @@ const handleSearch = () => {
       )
     })
     tagsData[currentTabs.value] = result
+    filtered.value = true
   } else {
     tagsData[currentTabs.value] = JSON.parse(JSON.stringify(tagsDataOriginal[currentTabs.value]))
+    filtered.value = false
   }
+  tableDataLength.value = tagsDataOriginal[currentTabs.value].length
 }
 
 //開啟 dialog
@@ -251,6 +256,8 @@ watch(
             :stripe="true"
             :tableData="tableData"
             :tableColumns="tableColumns"
+            :filtered="filtered"
+            :filterFrom="tableDataLength"
             class="cdp-tag-table"
             ref="refTable"
           >
@@ -313,10 +320,12 @@ watch(
 }
 .cdp-tag-table {
   .el-table {
-    td:first-child, th:first-child {
+    td:first-child,
+    th:first-child {
       border-radius: 5px 0 0 5px;
     }
-    td:last-child, th:last-child {
+    td:last-child,
+    th:last-child {
       border-radius: 0 5px 5px 0;
     }
     th.el-table__cell.is-leaf {
