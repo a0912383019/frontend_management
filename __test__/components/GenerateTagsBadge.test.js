@@ -16,8 +16,9 @@ describe('GenerateTagsBadge', () => {
       .mockReturnValueOnce({
         tags_config: {
           esb: {
-            30001: {
-              tag_type: 1
+            10001: {
+              tag_type: 1,
+              tag_description: '人工定義為高價值會員'
             }
           }
         }
@@ -25,8 +26,9 @@ describe('GenerateTagsBadge', () => {
       .mockReturnValueOnce({
         tags_config: {
           esb: {
-            30001: {
-              tag_type: 2
+            30004: {
+              tag_type: 3,
+              tag_description: '近15個實動日，當日贏後下次會賭更大會員'
             }
           }
         }
@@ -39,20 +41,7 @@ describe('GenerateTagsBadge', () => {
     wrapper = mount(GenerateTagsBadge, {
       props: {
         hall_name: 'esb',
-        tag_code: '30001',
-        badge_text_class: 'pink'
-      },
-      global: {
-        plugins: [ElementPlus]
-      }
-    })
-    expect(wrapper.vm.badge_class).toBe('badge badge-custom-danger pink')
-
-    //第二次掛載wrapper
-    wrapper = mount(GenerateTagsBadge, {
-      props: {
-        hall_name: 'esb',
-        tag_code: '30001',
+        tag_code: '10001',
         badge_text_class: 'pink'
       },
       global: {
@@ -60,5 +49,18 @@ describe('GenerateTagsBadge', () => {
       }
     })
     expect(wrapper.vm.badge_class).toBe('badge badge-custom-green pink')
+
+    //第二次掛載wrapper
+    wrapper = mount(GenerateTagsBadge, {
+      props: {
+        hall_name: 'esb',
+        tag_code: '30004',
+        badge_text_class: 'pink'
+      },
+      global: {
+        plugins: [ElementPlus]
+      }
+    })
+    expect(wrapper.vm.badge_class).toBe('badge badge-custom-blue pink')
   })
 })
