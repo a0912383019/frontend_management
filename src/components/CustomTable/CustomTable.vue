@@ -99,10 +99,6 @@ const page = reactive({
   pageSize: props.pageSize
 })
 
-// const filter = computed(()=>{
-//   return 
-// })
-
 const updateCurrentPage = (val) => {
   page.currentPage = val
   emit('update:currentPage', val)
@@ -225,7 +221,6 @@ defineExpose({ goToFirstPage, showTableLoading })
 .cdp-table {
   border-radius: 5px;
   overflow: hidden;
-  // border: 1px solid #e6eaf2;
   .cdp-link-click {
     color: #4f84cf;
   }
@@ -295,9 +290,7 @@ defineExpose({ goToFirstPage, showTableLoading })
   }
 }
 .customTable {
-  // border-radius: 15px;
   box-shadow: 3px 3px 5px 0 rgba(162, 162, 162, 0.2);
-  // border: solid 0.5px #d0d0d0;
   background-color: #e9eef6;
   tr {
     background-color: #e9eef6;
