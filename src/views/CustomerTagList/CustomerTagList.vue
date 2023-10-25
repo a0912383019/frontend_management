@@ -135,7 +135,7 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
       hall_name: activeHall.hall_code,
       length: 10,
       locale: i18nLocale.value,
-      records_total: apiRecordsTotal.value,
+      records_total: apiRecordsTotal.value, // 前端頁面目前資料總數，0 or 不帶api都會重新拿取總資料數，如果有帶api就不會重拿，會回傳前端傳的數值
       search_date: formData['registerDate'], //註冊日期
       search_name: formData['member'], //會員名稱
       search_tag: formData['searchTag'], //包含標籤
@@ -239,7 +239,9 @@ const handleTagButtonClick = (item) => {
   tableData.value = newData
 }
 
+// 篩選送出
 const handleFilterSubmit = (data) => {
+  apiRecordsTotal.value = 0 // 送出篩選清空前端總筆數，api重新取得
   formData['customUserList'] = data['custom_user_list']
   formData['member'] = data['member']
   formData['selectAcount'] = data['selectAcount']
