@@ -14,7 +14,7 @@ import {
   formatDateDuration,
   generateRGBColors
 } from '@/utils/commonUtils.js'
-import { ElNotification, dayjs } from 'element-plus'
+import { dayjs } from 'element-plus'
 
 const { t, locale: i18nLocale } = useI18n()
 

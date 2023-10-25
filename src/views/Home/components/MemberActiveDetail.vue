@@ -8,7 +8,7 @@ import {
   errorRespond,
   addNumberColor
 } from '@/utils/commonUtils.js'
-import { ElNotification, dayjs } from 'element-plus'
+import { dayjs } from 'element-plus'
 import CurrencySignText from '@/components/CurrencySignText.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import { apiQueryLivelyChangeDetail } from '@/api/home.js'

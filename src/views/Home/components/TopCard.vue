@@ -3,7 +3,6 @@ import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQuerySmallBoxData } from '@/api/home.js'
 import { useGlobalStore } from '@/stores/global.js'
-import { ElNotification } from 'element-plus'
 import {
   formatDateDuration,
   getHallCurrencySign,
