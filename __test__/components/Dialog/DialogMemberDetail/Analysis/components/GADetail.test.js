@@ -29,9 +29,6 @@ describe('GADetail.vue', () => {
     wrapper.unmount()
   })
 
-  //讓console.error不要洗版
-  vi.spyOn(console, 'error').mockImplementation(() => {})
-
   it('Expected components render correctly, mock api 0000', async () => {
     result = {
       data: {

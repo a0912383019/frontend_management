@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch, onMounted, defineExpose } from 'vue'
+import { ref, reactive, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'

@@ -1,11 +1,12 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { mount, shallowMount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
 import router from '@/router'
 import LifeCycleHistory from '@/components/Chart/LifeCycleHistory.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
+import 'vitest-canvas-mock'
 
 describe('LifeCycleHistory.vue', () => {
   let wrapper = null
@@ -56,9 +57,6 @@ describe('LifeCycleHistory.vue', () => {
         detailDate: '2023-09-04 ~ 2023-10-01'
       }
     })
-    //模擬canvas
-    HTMLCanvasElement.prototype.getContext = vi.fn()
-    vi.spyOn(console, 'error').mockImplementation(() => {})
   })
 
   it('ManageAnalysis', () => {

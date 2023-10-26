@@ -8,6 +8,7 @@ import DialogStepDetail from '@/views/ManageAnalysis/components/StepTrendAnalysi
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import router from '@/router'
+import 'vitest-canvas-mock'
 
 describe('DailyLifeCycleStepPeople.vue', () => {
   const wrapper = shallowMount(DailyLifeCycleStepPeople, {
@@ -22,8 +23,6 @@ describe('DailyLifeCycleStepPeople.vue', () => {
     }
   })
 
-  //模擬canvas
-  HTMLCanvasElement.prototype.getContext = vi.fn()
   //讓console.error不要洗版
   vi.spyOn(console, 'error').mockImplementation(() => {})
 
