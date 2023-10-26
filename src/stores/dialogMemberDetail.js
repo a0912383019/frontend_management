@@ -18,7 +18,6 @@ export const useDialogMemberDetailStore = defineStore(
       )
     )
 
-    // let memberData = reactive({}) //會員明細點擊會員名稱後，存放該會員資料
     const state = reactive({
       memberData: {} //會員明細點擊會員名稱後，存放該會員資料
     })
