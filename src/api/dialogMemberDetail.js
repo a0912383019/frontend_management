@@ -58,6 +58,7 @@ export const apiQueryProfitWithdrawDepositAmount = (params) => {
     }
   })
 }
+
 //總貨量與裝置佔比
 export const apiQueryMemberPeriodBetAmount = (params) => {
   const { search_date, hall_name, user_id } = params
@@ -69,6 +70,7 @@ export const apiQueryMemberPeriodBetAmount = (params) => {
     }
   })
 }
+
 //遊戲種類貨量佔比
 export const apiQueryMemberLobbyGroup = (params) => {
   const { search_date, hall_name, user_id } = params
@@ -80,6 +82,7 @@ export const apiQueryMemberLobbyGroup = (params) => {
     }
   })
 }
+
 //平台貨量佔比
 export const apiQueryMemberLobby = (params) => {
   const { search_date, hall_name, user_id, locale } = params
@@ -92,6 +95,7 @@ export const apiQueryMemberLobby = (params) => {
     }
   })
 }
+
 //遊戲貨量佔比
 export const apiQueryMemberLobbyGame = (params) => {
   const { search_date, hall_name, user_id, locale } = params

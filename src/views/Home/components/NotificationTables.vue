@@ -13,7 +13,6 @@ import Tab from '@/components/Tab.vue'
 import dayjs from 'dayjs'
 import { formatDateDuration, errorRespond } from '@/utils/commonUtils.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
-import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
 
 const { t, locale: i18nLocale } = useI18n()
 
