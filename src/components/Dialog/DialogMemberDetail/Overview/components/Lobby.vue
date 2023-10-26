@@ -102,7 +102,7 @@ const queryLobbyChart = async () => {
     const result = await apiQueryMemberLobby({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      user_id: dialogMemberDetailStore.memberData.user_id,
+      user_id: dialogMemberDetailStore.state.memberData.user_id,
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status

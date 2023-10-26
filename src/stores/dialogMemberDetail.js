@@ -18,7 +18,15 @@ export const useDialogMemberDetailStore = defineStore(
       )
     )
 
-    const memberData = reactive({}) //會員明細點擊會員名稱後，存放該會員資料
+    const state = reactive({
+      memberData: {} //會員明細點擊會員名稱後，存放該會員資料
+    })
+    const showMemberDialog = ref(false)
+    const updateMemberData = (val) => {
+      state.memberData = val
+      sessionStorage.member_data = JSON.stringify(val)
+      showMemberDialog.value = true
+    }
 
     const nowTag = ref('')
 
@@ -26,15 +34,17 @@ export const useDialogMemberDetailStore = defineStore(
 
     return {
       dialogMemberDetailRangeDate,
-      memberData,
+      state,
       nowTag,
-      timeStamp
+      timeStamp,
+      showMemberDialog,
+      updateMemberData
     }
   },
   {
     persist: {
       storage: sessionStorage,
-      paths: ['memberData']
+      paths: ['state']
     }
   }
 )

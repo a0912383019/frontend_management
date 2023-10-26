@@ -13,7 +13,6 @@ import Tab from '@/components/Tab.vue'
 import dayjs from 'dayjs'
 import { formatDateDuration, errorRespond } from '@/utils/commonUtils.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
-import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
 
 const { t, locale: i18nLocale } = useI18n()
 
@@ -21,14 +20,13 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
+const { updateMemberData } = dialogMemberDetailStore
 
 //api是否成功
 const allApiSuccess = ref(false)
 
 //依照不同的messageKey產生不同的message
 const allMessageKey = ref('shortLoading')
-
-const refDialogMemberDetail = ref(null) //會員明細Dialog組件ref
 
 const searchText = ref('')
 
@@ -204,7 +202,7 @@ const readSmartMesNote = async (msgId, kind) => {
 }
 
 const transformQuerySmallMesNote = (data) => {
-  tableData.value = data.map((ele, idx) => {
+  tableData.value = data.map((ele) => {
     //給v-for的值
     const contentCut = ele.content.split('#')
     //給搜尋的值，原始值跟頁面呈現不一樣
@@ -236,16 +234,6 @@ const msgCheck = (event, msgId, msgKind) => {
   apiIsCalled.value[0] = false
   apiIsCalled.value[Number(msgKind)] = false
   readSmartMesNote(msgId, tabKind.toString())
-}
-
-//會員明細Dialog點擊
-const handleMemberDetailClick = (val) => {
-  //寫入store
-  dialogMemberDetailStore.memberData = {}
-  dialogMemberDetailStore.memberData = val
-  sessionStorage.member_data = ''
-  sessionStorage.member_data = JSON.stringify(val)
-  refDialogMemberDetail.value.handleOpenDialog()
 }
 
 //雙#裡的字串拆成name跟id
@@ -292,7 +280,7 @@ const currentKind = computed(() => {
 watch(
   () => i18nLocale.value,
   () => {
-    apiIsCalled.value = apiIsCalled.value.map((ele) => false)
+    apiIsCalled.value = apiIsCalled.value.map(() => false)
     querySmallMesNote(currentKind.value)
   }
 )
@@ -320,7 +308,6 @@ watch(
       <SectionTitle class="mb-10" :title="$t('home.news')"></SectionTitle>
       <Search class="notify-search" v-model="searchText"></Search>
     </div>
-    <DialogMemberDetail ref="refDialogMemberDetail" />
     <el-row :gutter="20" class="mb-10">
       <el-col :span="24">
         <Tab :tabData="tabList" :activeName="currentTabs" v-model="currentTabs"></Tab>
@@ -343,8 +330,8 @@ watch(
           :hasPagination="true"
           :serverSide="false"
           :pageSize="5"
-          :filtered="filtered"   
-          :filterFrom="tableDataLength"       
+          :filtered="filtered"
+          :filterFrom="tableDataLength"
           class="customTable2"
           customSearchClass="home-notify"
         >
@@ -353,7 +340,7 @@ watch(
               <a
                 v-if="item.match(/(.*?)@(.*?)/)"
                 class="cdp-link-click inline"
-                @click="handleMemberDetailClick(transformUser(item))"
+                @click="updateMemberData(transformUser(item))"
               >
                 {{ transformUser(item).user_name }}
               </a>

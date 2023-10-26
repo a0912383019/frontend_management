@@ -13,12 +13,12 @@ import CurrencySignText from '@/components/CurrencySignText.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import { apiQueryLivelyChangeDetail } from '@/api/home.js'
 import ActiveDetail from './ActiveDetail.vue'
-import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { iconStep } from '@/../public/js/system_config.js'
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
+const { updateMemberData } = dialogMemberDetailStore
 
 const { t } = useI18n()
 const dialogVisible = ref(false)
@@ -40,7 +40,6 @@ const weekDuration = computed(() => {
   )
 })
 
-const refDialogMemberDetailFromActivity = ref(null) //會員明細Dialog組件ref
 const refActiveDetail = ref(null) //活躍度明細
 
 const activityTableData = ref([])
@@ -162,14 +161,6 @@ const handleOpenDialog = (lastWeek, thisWeek) => {
   queryLivelyChangeDetail([lastWeek, thisWeek])
 }
 
-//會員明細Dialog點擊
-const handleActivityMemberDetailClick = (val) => {
-  //寫入store
-  dialogMemberDetailStore.memberData = {}
-  dialogMemberDetailStore.memberData = val
-  refDialogMemberDetailFromActivity.value.handleOpenDialog()
-}
-
 defineExpose({ handleOpenDialog })
 
 //所有資料排序
@@ -252,7 +243,7 @@ const handleActiveDetailClick = (user) => {
             </el-tooltip>
           </template>
           <template #memberName="scope">
-            <span class="cdp-link-click" @click="handleActivityMemberDetailClick(scope.row.user)">
+            <span class="cdp-link-click" @click="updateMemberData(scope.row.user)">
               {{ scope.row.memberName }}
             </span>
           </template>
@@ -288,7 +279,6 @@ const handleActiveDetailClick = (user) => {
       </div>
     </el-dialog>
   </div>
-  <DialogMemberDetail ref="refDialogMemberDetailFromActivity" />
   <ActiveDetail ref="refActiveDetail" />
 </template>
 <style lang="scss" scoped>

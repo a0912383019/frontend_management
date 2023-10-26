@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import FilterDate from '@/components/Filter/FilterDate.vue'
 import Tab from '@/components/Tab.vue'
@@ -16,6 +17,7 @@ const { t } = useI18n()
 const dialogVisible = ref(false)
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
+const { showMemberDialog } = storeToRefs(dialogMemberDetailStore)
 
 // 另開視窗
 const openNewWindow = () => {
@@ -78,10 +80,12 @@ const headerTitle = computed(() => {
 const handleOpenDialog = () => {
   dialogVisible.value = true
   headerMemberName.value = ''
-  headerMemberName.value = dialogMemberDetailStore.memberData.user_name
+  headerMemberName.value = dialogMemberDetailStore.state.memberData.user_name
 }
 
+// 關閉 dialog
 const handleDialogClosed = () => {
+  showMemberDialog.value = false
   currentTabs.value = 'Overview'
 }
 
@@ -91,6 +95,15 @@ const updateTimestamp = (data) => {
   dialogMemberDetailStore.timeStamp = data['timestamp']
   dialogMemberDetailStore.dialogMemberDetailRangeDate = data['rangeDate']
 }
+
+watch(
+  () => showMemberDialog.value,
+  () => {
+    if (showMemberDialog.value) {
+      handleOpenDialog()
+    }
+  }
+)
 
 defineExpose({ handleOpenDialog })
 </script>
