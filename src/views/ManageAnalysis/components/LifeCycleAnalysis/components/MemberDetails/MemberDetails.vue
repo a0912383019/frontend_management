@@ -12,7 +12,6 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import DialogMemberHistory from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/DialogMemberHistory.vue'
-import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
 
 const { t } = useI18n()
@@ -20,6 +19,7 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
+const { updateMemberData } = dialogMemberDetailStore
 
 const manageAnalysisStore = useManageAnalysisStore()
 const { queryDate } = manageAnalysisStore
@@ -41,7 +41,6 @@ const {
 
 const apiSuccess = ref(false) //會員生明細api是否成功
 
-const refDialogMemberDetail = ref(null) //會員明細Dialog組件ref
 const refDialogMemberHistory = ref(null) //歷程紀錄Dialog組件ref
 
 //依照不同的messageKey產生不同的message
@@ -192,16 +191,6 @@ const query_life_cycle_analysis_detail_tbl = async () => {
   }
 }
 
-//會員明細Dialog點擊
-const handleMemberDetailClick = (val) => {
-  //寫入store
-  dialogMemberDetailStore.memberData = {}
-  dialogMemberDetailStore.memberData = val
-  sessionStorage.member_data = ''
-  sessionStorage.member_data = JSON.stringify(val)
-  refDialogMemberDetail.value.handleOpenDialog()
-}
-
 //歷程紀錄Dialog點擊
 const handleStepClick = (val) => {
   refDialogMemberHistory.value.handleOpenDialog(val)
@@ -247,7 +236,6 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
   <CdpMessage :messageKey="messageKey" :height="500" v-show="apiSuccess === false" />
   <div v-show="apiSuccess">
     <DialogMemberHistory ref="refDialogMemberHistory" />
-    <DialogMemberDetail ref="refDialogMemberDetail" />
     <CustomTable
       :serverSide="true"
       :tableData="tableData"
@@ -263,7 +251,7 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
     >
       <template #user_name="scope">
         <!-- 存款 -->
-        <div class="cdp-link-click" @click="handleMemberDetailClick(scope.row)">
+        <div class="cdp-link-click" @click="updateMemberData(scope.row)">
           {{ scope.row.user_name }}
         </div>
       </template>

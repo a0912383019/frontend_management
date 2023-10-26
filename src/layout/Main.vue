@@ -4,6 +4,7 @@ import { RouterView } from 'vue-router'
 import { useSidebarStore } from '@/stores/sidebar.js'
 import Headerbar from '@/components/HeaderBar/HeaderBar.vue'
 import Sidebar from '@/components/SideBar.vue'
+import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
 
 const sidebarStore = useSidebarStore()
 
@@ -51,6 +52,7 @@ onUnmounted(() => {
       </button>
     </transition>
   </div>
+  <DialogMemberDetail />
 </template>
 <style lang="scss" scoped>
 .mainArea {

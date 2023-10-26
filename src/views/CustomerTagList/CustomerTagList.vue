@@ -14,7 +14,6 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import ExportCSV from './components/ExportCSV.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
-import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
 import Filter from './components/Filter.vue'
 import { useDateStore } from '@/stores/dateConfig.js'
 
@@ -27,10 +26,10 @@ const { activeHall } = globalStore
 const { systemConfigIsOk } = storeToRefs(globalStore)
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
+const { updateMemberData } = dialogMemberDetailStore
 
 const apiSuccess = ref(false) //api是否成功
 
-const refDialogMemberDetail = ref(null) //會員明細Dialog組件ref
 const refCustomTable = ref(null) //table ref
 
 //依照不同的messageKey產生不同的message
@@ -222,16 +221,6 @@ const updateCurrentPage = (data) => {
   queryListMemberTags({ searchType: 'page' })
 }
 
-//會員明細Dialog點擊
-const handleMemberDetailClick = (val) => {
-  //寫入store
-  dialogMemberDetailStore.memberData = {}
-  dialogMemberDetailStore.memberData = val
-  sessionStorage.member_data = ''
-  sessionStorage.member_data = JSON.stringify(val)
-  refDialogMemberDetail.value.handleOpenDialog()
-}
-
 const handleTagButtonClick = (item) => {
   // 如果直接修改value，會因為vue響應式關係導致資料排序錯亂，所以先複製資料再修改狀態，再將新的資料賦予上去
   const newData = [...tableData.value]
@@ -278,7 +267,6 @@ onMounted(() => {
     </div>
     <CdpMessage :messageKey="messageKey" v-show="apiSuccess === false" />
     <div v-show="apiSuccess === true">
-      <DialogMemberDetail ref="refDialogMemberDetail" />
       <CustomTable
         :defaultSort="{ prop: 'user_level', order: 'descending' }"
         :serverSide="true"
@@ -292,7 +280,7 @@ onMounted(() => {
         @update:currentPage="updateCurrentPage"
       >
         <template #user_name="scope">
-          <div class="cdp-link-click" @click="handleMemberDetailClick(scope.row)">
+          <div class="cdp-link-click" @click="updateMemberData(scope.row)">
             {{ scope.row.user_name }}
           </div>
         </template>

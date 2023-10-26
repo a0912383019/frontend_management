@@ -40,7 +40,7 @@ const queryMemberInfo = async () => {
   try {
     const result = await apiQueryMemberInfo({
       hall_name: activeHall.hall_code,
-      user_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.state.memberData.user_id
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -141,7 +141,7 @@ const updateMemberTagsEnable = async () => {
   try {
     const result = await apiUpdateMemberTagsEnable({
       hall_name: activeHall.hall_code,
-      user_id: dialogMemberDetailStore.memberData.user_id,
+      user_id: dialogMemberDetailStore.state.memberData.user_id,
       user_name: apiMemberData.user_name,
       user_tags_original: includeTags.value,
       user_tags_new: tagSelectValue.value.join(',')
@@ -236,7 +236,7 @@ const queryMemberLifeCycle = async () => {
   try {
     const result = await apiQueryMemberLifeCycle({
       hall_name: activeHall.hall_code,
-      user_id: dialogMemberDetailStore.memberData.user_id,
+      user_id: dialogMemberDetailStore.state.memberData.user_id,
       data_date: dayjs().subtract(2, 'day').format('YYYY-MM-DD') // 預設取當下日期前兩天為條件
     })
     const { return_code } = result.data.status

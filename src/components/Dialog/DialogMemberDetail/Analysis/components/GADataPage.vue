@@ -113,7 +113,7 @@ const queryGAPagePathRank = async () => {
     const result = await apiQueryGAPagePathRank({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      user_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.state.memberData.user_id
     })
     const { return_code } = result.data.status
 
@@ -154,7 +154,7 @@ const queryGADataSource = async () => {
     const result = await apiQueryGADataSource({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      user_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.state.memberData.user_id
     })
     const { return_code } = result.data.status
 

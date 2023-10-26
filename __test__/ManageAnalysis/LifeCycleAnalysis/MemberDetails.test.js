@@ -11,7 +11,6 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import DialogMemberHistory from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/DialogMemberHistory.vue'
-import DialogMemberDetail from '@/components/Dialog/DialogMemberDetail/DialogMemberDetail.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
 import ElementPlus from 'element-plus'
 import router from '@/router'
@@ -48,7 +47,6 @@ describe('MemberDetails', () => {
     expect(wrapper.findComponent(CurrencySignText).exists()).toBe(true)
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
     expect(wrapper.findComponent(DialogMemberHistory).exists()).toBe(true)
-    expect(wrapper.findComponent(DialogMemberDetail).exists()).toBe(true)
     expect(wrapper.findComponent(CustomTable).exists()).toBe(true)
     expect(wrapper.findComponent(ButtonIcon).exists()).toBe(true)
   })

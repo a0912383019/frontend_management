@@ -99,7 +99,7 @@ const queryMemberPeriodDayOffer = async () => {
     const result = await apiQueryMemberPeriodDayOffer({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      user_id: dialogMemberDetailStore.memberData.user_id
+      user_id: dialogMemberDetailStore.state.memberData.user_id
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {

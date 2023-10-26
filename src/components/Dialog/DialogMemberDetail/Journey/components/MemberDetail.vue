@@ -59,7 +59,7 @@ const queryMemberJourneyDetail = async () => {
     const result = await apiQueryMemberJourneyDetail({
       search_date: dialogMemberDetailRangeDate.value,
       hall_name: activeHall.hall_code,
-      user_id: dialogMemberDetailStore.memberData.user_id,
+      user_id: dialogMemberDetailStore.state.memberData.user_id,
       source: sourceCheckList.value.join(','),
       locale: i18nLocale.value
     })

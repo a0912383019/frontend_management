@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { storeToRefs } from 'pinia'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import Tab from '@/components/Tab.vue'
 import FilterDate from '@/components/Filter/FilterDate.vue'
@@ -13,9 +12,8 @@ import Analysis from '@/components/Dialog/DialogMemberDetail/Analysis/Analysis.v
 const { t } = useI18n()
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
-const { memberData } = storeToRefs(dialogMemberDetailStore)
 
-memberData.value = JSON.parse(sessionStorage.member_data)
+const memberData = JSON.parse(sessionStorage.member_data)
 
 //當前顯示的tab
 const currentTabs = ref('Overview')
@@ -82,7 +80,7 @@ onMounted(() => {
   <div class="content">
     <div class="content__member-title">
       {{ $t('customer_detail_info.member_name') }}
-      <div class="underline font-bold">{{ dialogMemberDetailStore.memberData.user_name }}</div>
+      <div class="underline font-bold">{{ memberData.user_name }}</div>
     </div>
     <el-row :gutter="20" class="mb-20">
       <el-col :span="12">
