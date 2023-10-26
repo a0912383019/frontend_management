@@ -13,9 +13,9 @@ describe('GALoginCount.vue', () => {
   let wrapper = null
   let result
 
-    afterEach(() => {
-      wrapper.unmount()
-    })
+  afterEach(() => {
+    wrapper.unmount()
+  })
 
   it('Expected components render correctly, mock api 0000', async () => {
     result = {
@@ -87,7 +87,7 @@ describe('GALoginCount.vue', () => {
     //等待異步完成
     await flushPromises()
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(false)
-    
+
     const categories = [
       '2023/07/26',
       '2023/08/04',
@@ -102,10 +102,7 @@ describe('GALoginCount.vue', () => {
       {
         name: '登入次數',
         type: 'line',
-        data: [
-          1, 1, 1, 1,
-          2, 1, 3, 4
-        ],
+        data: [1, 1, 1, 1, 2, 1, 3, 4],
         color: 'rgba(245,105,84,1)',
         lineWidth: 2,
         yAxis: 0
@@ -113,10 +110,7 @@ describe('GALoginCount.vue', () => {
       {
         name: 'GA瀏覽次數',
         type: 'line',
-        data: [
-          0, 0, 0, 0,
-          0, 0, 0, 554
-        ],
+        data: [0, 0, 0, 0, 0, 0, 0, 554],
         color: 'rgba(60,141,188,1)',
         lineWidth: 2,
         yAxis: 1
