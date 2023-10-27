@@ -177,7 +177,7 @@ const showActivityStepDetail = (lastWeek, thisWeek) => {
                 :icon="['fa-regular', item.icon]"
               />
             </div>
-            <div class="flex justify-between mt-4 mb-4">
+            <div class="flex justify-between mt-4 mb-4 font-size-14">
               <span>
                 {{ item.title }}
               </span>

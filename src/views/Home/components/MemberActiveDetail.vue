@@ -267,7 +267,8 @@ const handleActiveDetailClick = (user) => {
               />
               <cdp-icon
                 name="doubleArrowDown"
-                class="iconInTooltip mt-19- font-size-10 ml-10 mr-10 cdp-text-celticblue"
+                class="iconInTooltip mt-19- font-size-10 ml-10 mr-10"
+                :class="scope.row.thisWeekIcon.color"
               />
               <font-awesome-icon
                 :class="['font-size-30', 'mt-6', 'ml-1', scope.row.thisWeekIcon.color]"
