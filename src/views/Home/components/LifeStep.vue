@@ -79,7 +79,7 @@ const chartOptions = reactive({
       dataLabels: {
         enabled: true,
         formatter: function () {
-          return '<span style="font-size:14px;">' + FormatNumber(this.y) + '</span>'
+          return '<span style="font-size:14px; color:#FFF;">' + FormatNumber(this.y) + '</span>'
         },
         useHTML: true,
         distance: '-40%',
@@ -134,7 +134,7 @@ const transformLifeCycleData = (result) => {
     return {
       name: tableConfig.value[ele.this_day_step]['step_name'],
       y: ele.total_num,
-      color: generateRGBColors(RFM_NAPL_step_config[ele.this_day_step].step_color, 0.7),
+      color: generateRGBColors(RFM_NAPL_step_config[ele.this_day_step].step_color, 1),
       borderColor: generateRGBColors(RFM_NAPL_step_config[ele.this_day_step].step_color, 1)
     }
   })
