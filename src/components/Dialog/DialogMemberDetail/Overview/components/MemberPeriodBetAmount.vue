@@ -205,7 +205,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in">
     <SectionTitle class="mb-15" :title="$t('customer_detail_info.total_bet_by_device')">
     </SectionTitle>
     <CdpMessage

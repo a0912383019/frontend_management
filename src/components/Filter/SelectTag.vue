@@ -371,8 +371,13 @@ watch(
   display: flex;
   flex-wrap: wrap;
   border: 1px solid #ccc5e1;
-  padding-left: 10px;
+  &__input::placeholder{
+    padding-left: 10px;
+  }
   border-radius: 5px;
+  &__input:hover {
+    box-shadow: 0 0 0 1px $purple inset !important;
+  }
   &__box {
     display: flex;
     flex-wrap: wrap;
@@ -424,7 +429,6 @@ watch(
       display: flex;
       &__item {
         &.isActive {
-          // box-shadow: 0 0 0 1px $purple;
           color: $red-dark;
         }
       }
