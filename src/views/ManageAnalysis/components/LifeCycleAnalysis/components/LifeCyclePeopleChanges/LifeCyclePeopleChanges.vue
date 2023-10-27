@@ -88,8 +88,8 @@ const activeFile = ref('')
 //tooltip顯示對應日期
 const tooltipDate = computed(() => {
   return {
-    today: dayjs(date_range_picker_config_4['startDate']).format(t('date.format_date_rule')),
-    yesterday: dayjs(date_range_picker_config_4['startDate'])
+    today: dayjs(date_range_picker_config_4['endDate']).format(t('date.format_date_rule')),
+    yesterday: dayjs(date_range_picker_config_4['endDate'])
       .startOf('day')
       .subtract(1, 'day')
       .format(t('date.format_date_rule'))

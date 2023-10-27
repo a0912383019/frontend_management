@@ -121,7 +121,7 @@ const transformSmallBoxData = (data) => {
         FormatNumber(0 - data[ele].week_avg, currentSign),
         'text-danger font-black'
       )
-      topCardData.value[idx].growth = (0 - data[ele].growth).toString()
+      topCardData.value[idx].growth = FormatNumber(0 - data[ele].growth)
       return
     }
 
@@ -134,20 +134,20 @@ const transformSmallBoxData = (data) => {
         FormatNumber(0 - data[ele].week_avg, currentSign),
         'text-danger font-black'
       )
-      topCardData.value[idx].growth = data[ele].growth.toString()
+      topCardData.value[idx].growth = FormatNumber(data[ele].growth)
       return
     }
 
     if (ele === 'active_people') {
       topCardData.value[idx].monthAvg = FormatNumber(data[ele].month_avg)
       topCardData.value[idx].weekAvg = FormatNumber(data[ele].week_avg)
-      topCardData.value[idx].growth = data[ele].growth.toString()
+      topCardData.value[idx].growth = FormatNumber(data[ele].growth)
       return
     }
 
     topCardData.value[idx].monthAvg = FormatNumber(data[ele].month_avg, currentSign)
     topCardData.value[idx].weekAvg = FormatNumber(data[ele].week_avg, currentSign)
-    topCardData.value[idx].growth = data[ele].growth.toString()
+    topCardData.value[idx].growth = FormatNumber(data[ele].growth)
   })
 }
 
