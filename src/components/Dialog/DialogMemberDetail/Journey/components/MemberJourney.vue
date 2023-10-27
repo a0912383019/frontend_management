@@ -488,7 +488,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in">
     <div class="flex justify-between items-center mb-30">
       <SectionTitle :title="$t('customer_detail_info.tab_journey')">
         <template #tooltip>

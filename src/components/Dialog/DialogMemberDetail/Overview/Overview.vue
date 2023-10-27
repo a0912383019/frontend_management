@@ -26,7 +26,7 @@ watch([() => dialogMemberDetailStore.nowTag, () => dialogMemberDetailStore.timeS
         <MemberHealth />
       </el-col>
       <el-col :xs="24" :sm="24" :lg="19">
-        <section class="cdp-section">
+        <section class="cdp-section-in">
           <MemberInfo />
           <MemberAmount :key="key" />
         </section>

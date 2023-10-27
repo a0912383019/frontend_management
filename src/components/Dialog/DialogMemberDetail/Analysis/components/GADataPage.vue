@@ -212,7 +212,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in margin-bottom-0">
     <SectionTitle class="mb-15" :title="$t('customer_detail_info.ga_page_path')"></SectionTitle>
     <div>
       <el-row :gutter="20" class="mb-20">
@@ -261,4 +261,8 @@ onMounted(() => {
     </div>
   </section>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.margin-bottom-0 {
+  margin-bottom: 0;
+}
+</style>

@@ -20,7 +20,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in margin-bottom-0">
     <SectionTitle class="mb-15" :title="$t('customer_detail_info.member_life_cycle_history')">
     </SectionTitle>
     <LifeCycleHistory
@@ -32,7 +32,10 @@ onMounted(() => {
   </section>
 </template>
 <style lang="scss" scoped>
-.cdp-section {
+.cdp-section-in {
   min-height: 410px;
+}
+.margin-bottom-0 {
+  margin-bottom: 0;
 }
 </style>

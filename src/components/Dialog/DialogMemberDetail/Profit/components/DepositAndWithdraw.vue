@@ -174,7 +174,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in">
     <SectionTitle class="mb-15" :title="$t('customer_detail_info.deposit_and_withdraw')">
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
