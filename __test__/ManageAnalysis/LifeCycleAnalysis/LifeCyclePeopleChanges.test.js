@@ -306,8 +306,8 @@ describe('LifeCyclePeopleChanges', () => {
   it('Test whether the tooltip time is as expected', () => {
     // 設定日期時間
     const dateValue = {
-      today: dayjs(dateStore.date_range_picker_config_4['startDate']).format('YYYY/MM/DD'),
-      yesterday: dayjs(dateStore.date_range_picker_config_4['startDate'])
+      today: dayjs(dateStore.date_range_picker_config_4['endDate']).format('YYYY/MM/DD'),
+      yesterday: dayjs(dateStore.date_range_picker_config_4['endDate'])
         .startOf('day')
         .subtract(1, 'day')
         .format('YYYY/MM/DD')

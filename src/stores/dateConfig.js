@@ -55,7 +55,7 @@ export const useDateStore = defineStore('dateStore', () => {
 
   // config_1 : 預設選取近1個月 (原：1, 5, 9, 10, 11)
   const date_range_picker_config_1 = reactive({
-    startDate: dayjs().add(1, 'day').subtract(1, 'month'), //預設起始時間
+    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(1, 'month'), //預設起始時間
     endDate: LAST_DATE, //預設結束時間
     minDate: MIN_DATE, //限制最小可選日期
     maxDate: LAST_DATE //限制最大可選日期
@@ -63,24 +63,24 @@ export const useDateStore = defineStore('dateStore', () => {
 
   // config_2 : 預設選取近20年
   const date_range_picker_config_2 = {
-    startDate: dayjs().add(1, 'day').subtract(3, 'month'), //預設起始時間
+    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(3, 'month'), //預設起始時間
     endDate: LAST_DATE, //預設結束時間
-    minDate: dayjs().subtract(20, 'year'), //限制最小可選日期
+    minDate: dayjs(LAST_DATE.value).subtract(20, 'year'), //限制最小可選日期
     maxDate: LAST_DATE //限制最大可選日期
   }
 
   // config_3 : 預設選取未來2週
   const date_range_picker_config_3 = {
-    startDate: dayjs(), //預設起始時間
-    endDate: dayjs().add(14, 'day'), //預設結束時間
+    startDate: dayjs(LAST_DATE.value), //預設起始時間
+    endDate: dayjs(LAST_DATE.value).add(14, 'day'), //預設結束時間
     minDate: MIN_DATE, //限制最小可選日期
-    maxDate: dayjs().startOf('day').add(1, 'year') //限制最大可選日期
+    maxDate: dayjs(LAST_DATE.value).add(1, 'year') //限制最大可選日期
   }
 
   // config_4 : 單日期模式，預設選前2日
   const date_range_picker_config_4 = {
     singleDatePicker: true, //是否為單日期模式
-    startDate: dayjs().startOf('day').subtract(2, 'day'), //預設起始時間
+    // startDate: dayjs(LAST_DATE.value).subtract(2, 'day'), //預設起始時間
     endDate: LAST_DATE, //預設結束時間
     minDate: MIN_DATE, //限制最小可選日期
     maxDate: LAST_DATE //限制最大可選日期
@@ -88,15 +88,15 @@ export const useDateStore = defineStore('dateStore', () => {
 
   // config_5 : 預設選取前後一個月，最早可選至20年前，最晚可選至一年後
   const date_range_picker_config_5 = {
-    startDate: dayjs().add(1, 'day').subtract(1, 'month'), //預設起始時間
-    endDate: dayjs().startOf('day').add(1, 'month'), //預設結束時間
+    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(1, 'month'), //預設起始時間
+    endDate: dayjs(LAST_DATE.value).add(1, 'month'), //預設結束時間
     minDate: MIN_DATE, //限制最小可選日期
-    maxDate: dayjs().startOf('day').add(1, 'year') //限制最大可選日期
+    maxDate: dayjs(LAST_DATE.value).add(1, 'year') //限制最大可選日期
   }
 
   // config_6 : 預設選取近2個月
   const date_range_picker_config_6 = {
-    startDate: dayjs().add(1, 'day').subtract(2, 'month'), //預設起始時間
+    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(2, 'month'), //預設起始時間
     endDate: LAST_DATE, //預設結束時間
     minDate: MIN_DATE, //限制最小可選日期
     maxDate: LAST_DATE //限制最大可選日期
@@ -104,7 +104,7 @@ export const useDateStore = defineStore('dateStore', () => {
 
   // config_7 : 預設選取近3個月
   const date_range_picker_config_7 = {
-    startDate: dayjs().add(1, 'day').subtract(3, 'month'), //預設起始時間
+    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(3, 'month'), //預設起始時間
     endDate: LAST_DATE, //預設結束時間
     minDate: MIN_DATE, //限制最小可選日期
     maxDate: LAST_DATE //限制最大可選日期
@@ -112,7 +112,7 @@ export const useDateStore = defineStore('dateStore', () => {
 
   // config_8 : 預設選取近一週
   const date_range_picker_config_8 = {
-    startDate: dayjs().startOf('day').subtract(7, 'day'), //預設起始時間
+    startDate: dayjs(LAST_DATE.value).subtract(7, 'day'), //預設起始時間
     endDate: LAST_DATE, //預設結束時間
     minDate: MIN_DATE, //限制最小可選日期
     maxDate: LAST_DATE //限制最大可選日期
@@ -125,31 +125,31 @@ export const useDateStore = defineStore('dateStore', () => {
       {
         text: t('date_range_picker.last_week'),
         value: () => {
-          return [dayjs().subtract(7, 'day'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(7, 'day'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_two_weeks'),
         value: () => {
-          return [dayjs().subtract(14, 'day'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(14, 'day'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_month'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(1, 'month'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(1, 'month'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_two_months'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(2, 'month'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(2, 'month'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_three_months'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(3, 'month'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(3, 'month'), LAST_DATE.value]
         }
       }
     ]
@@ -162,43 +162,43 @@ export const useDateStore = defineStore('dateStore', () => {
       {
         text: t('date_range_picker.last_week'),
         value: () => {
-          return [dayjs().subtract(7, 'day'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).subtract(7, 'day'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_two_weeks'),
         value: () => {
-          return [dayjs().subtract(14, 'day'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).subtract(14, 'day'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_month'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(1, 'month'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(1, 'month'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_year'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(1, 'year'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(1, 'year'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_three_years'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(3, 'year'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(3, 'year'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_five_years'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(5, 'year'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(5, 'year'), LAST_DATE.value]
         }
       },
       {
         text: t('date_range_picker.last_twenty_years'),
         value: () => {
-          return [dayjs().add(1, 'day').subtract(20, 'year'), LAST_DATE.value]
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(20, 'year'), LAST_DATE.value]
         }
       }
     ]
