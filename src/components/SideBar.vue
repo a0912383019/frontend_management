@@ -154,6 +154,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
   }
   &__version {
     position: absolute;
+    width: 100%;
     left: 0;
     bottom: 0;
     padding: 20px;
