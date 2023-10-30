@@ -95,6 +95,7 @@ const checkAccount = (data) => {
       notOkAccountData.value.push(tempObj)
     }
   })
+
   if (isAllOk === false) errorText.value = t('import_export_file.user_name_is_invalid')
   isParseFile.value = isAllOk
 }
