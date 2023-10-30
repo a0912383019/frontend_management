@@ -84,8 +84,17 @@ describe('UploadFile', () => {
 
   // 送出
   it('handleSubmit function', () => {
+    wrapper.vm.fileData = {
+      name: 'demo.csv'
+    }
     wrapper.vm.isCSVFile = true
     wrapper.vm.handleSubmit()
-    expect(wrapper.emitted('update:files')).toStrictEqual([[null]])
+    expect(wrapper.emitted('update:files')).toStrictEqual([
+      [
+        {
+          name: 'demo.csv'
+        }
+      ]
+    ])
   })
 })
