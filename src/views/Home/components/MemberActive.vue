@@ -173,7 +173,7 @@ const showActivityStepDetail = (lastWeek, thisWeek) => {
           <div :class="['border-radius-5', 'padding-10', item.bgColor]">
             <div style="float: left">
               <font-awesome-icon
-                :class="['ml-2', 'mr-8', 'mt-2', 'font-size-28', item.iconColor]"
+                :class="['ml-2', 'mr-8', 'mt-2', 'font-size-30', item.iconColor]"
                 :icon="['fa-regular', item.icon]"
               />
             </div>
@@ -205,7 +205,7 @@ const showActivityStepDetail = (lastWeek, thisWeek) => {
                 :key="iconIdx"
               >
                 <font-awesome-icon
-                  :class="['font-size-32', 'mt-6', 'ml-1', iconItem.iconColor]"
+                  :class="['font-size-30', 'mt-6', 'ml-1', iconItem.iconColor]"
                   :icon="['fa-regular', iconItem.icon]"
                 />
               </el-col>

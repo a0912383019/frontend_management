@@ -1,4 +1,3 @@
-import axiosInstance from './axiosInstance.js'
 import axiosGoInstance from './axiosGoInstance.js'
 
 //首頁
@@ -29,11 +28,9 @@ export const apiQuerySmartMessNote = (params) => {
 //訊息通知已讀
 export const apiReadSmartMessNote = (params) => {
   const { hall_name, message_id } = params
-  return axiosGoInstance.post('/api/auth/home/smart_message_notification', {
-    params: {
-      hall_name,
-      message_id
-    }
+  return axiosGoInstance.put('/api/auth/home/smart_message_notification', {
+    hall_name,
+    message_id
   })
 }
 
@@ -61,7 +58,7 @@ export const apiQueryLivelyChangeOverview = (params) => {
 
 //會員活躍度變化明細
 export const apiQueryLivelyChangeDetail = (params) => {
-  const { hall_name, search_date, analysis_level, compare_level  } = params
+  const { hall_name, search_date, analysis_level, compare_level } = params
   return axiosGoInstance.get('/api/auth/home/lively_change_detail', {
     params: {
       hall_name,
@@ -74,29 +71,27 @@ export const apiQueryLivelyChangeDetail = (params) => {
 
 //週活躍度
 export const apiQueryMemberRecentWeekLively = (params) => {
-  const { hall_name, member_id, start_date, end_date } = params
-  return axiosInstance.post(
-    '/api/auth/vip/bbin/query_member_recent_week_lively' + sessionStorage.from_page,
-    {
+  const { hall_name, user_id, start_date, end_date } = params
+  return axiosGoInstance.get('/api/auth/home/member_recent_week_lively', {
+    params: {
       hall_name,
-      member_id,
+      user_id,
       start_date,
       end_date
     }
-  )
+  })
 }
 
 //日活躍度
 
 export const apiQueryMemberRecentLively = (params) => {
-  const { hall_name, member_id, start_date, end_date } = params
-  return axiosInstance.post(
-    '/api/auth/vip/bbin/query_member_recent_lively' + sessionStorage.from_page,
-    {
+  const { hall_name, user_id, start_date, end_date } = params
+  return axiosGoInstance.get('/api/auth/home/member_recent_lively', {
+    params: {
       hall_name,
-      member_id,
+      user_id,
       start_date,
       end_date
     }
-  )
+  })
 }

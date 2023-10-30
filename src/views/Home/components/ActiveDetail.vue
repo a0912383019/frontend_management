@@ -75,7 +75,7 @@ const queryMemberRecentWeekLively = async (user_id) => {
   try {
     const result = await apiQueryMemberRecentWeekLively({
       hall_name: activeHall.hall_code,
-      member_id: user_id,
+      user_id,
       start_date: formatDate(lastWeekDuration.value.split('~')[0].trim()),
       end_date: formatDate(thisWeekDuration.value.split('~')[1].trim())
     })
@@ -178,7 +178,7 @@ const queryMemberRecentLively = async (user_id) => {
   try {
     const result = await apiQueryMemberRecentLively({
       hall_name: activeHall.hall_code,
-      member_id: user_id,
+      user_id,
       start_date: formatDate(lastWeekDuration.value.split('~')[0].trim()),
       end_date: formatDate(thisWeekDuration.value.split('~')[1].trim())
     })
