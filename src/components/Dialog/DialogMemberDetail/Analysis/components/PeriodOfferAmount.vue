@@ -155,7 +155,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in">
     <SectionTitle class="mb-15" :title="$t('customer_detail_info.total_bonuses')">
       <template #tooltip>
         {{ $t('common.show_top_only', { rank: 5 }) }}

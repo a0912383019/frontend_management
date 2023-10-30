@@ -122,7 +122,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in">
     <div class="member">
       <CdpMessage :messageKey="messageKey" cover bg="white" v-if="apiSuccess === false" />
       <template v-else>

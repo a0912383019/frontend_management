@@ -177,7 +177,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section margin-bottom-0">
+  <section class="cdp-section-in margin-bottom-0">
     <SectionTitle class="mb-15" :title="$t('customer_detail_info.total_bet_by_game_type')">
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" :height="221" bg="white" v-if="apiSuccess === false" />

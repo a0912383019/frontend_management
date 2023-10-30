@@ -138,7 +138,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in margin-bottom-0">
     <SectionTitle class="mb-15" :title="$t('customer_detail_info.total_bet_platforms')">
       <template #tooltip>
         {{ $t('common.show_top_only', { rank: 10 }) }}
@@ -154,4 +154,8 @@ onMounted(() => {
     </div>
   </section>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.margin-bottom-0 {
+  margin-bottom: 0;
+}
+</style>
