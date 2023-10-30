@@ -14,7 +14,7 @@ export const apiQuerySmallBoxData = (params) => {
 }
 
 //訊息通知
-export const apiQuerySmallMesNote = (params) => {
+export const apiQuerySmartMessNote = (params) => {
   const { hall_name, kind, search_date, locale } = params
   return axiosGoInstance.get('/api/auth/home/smart_message_notification', {
     params: {
@@ -27,15 +27,14 @@ export const apiQuerySmallMesNote = (params) => {
 }
 
 //訊息通知已讀
-export const apiReadSmartMesNote = (params) => {
+export const apiReadSmartMessNote = (params) => {
   const { hall_name, message_id } = params
-  return axiosInstance.post(
-    '/api/auth/home/read_smart_message_notification' + sessionStorage.from_page,
-    {
+  return axiosGoInstance.post('/api/auth/home/smart_message_notification', {
+    params: {
       hall_name,
       message_id
     }
-  )
+  })
 }
 
 //會員生命週期人數佔比
@@ -62,21 +61,15 @@ export const apiQueryLivelyChangeOverview = (params) => {
 
 //會員活躍度變化明細
 export const apiQueryLivelyChangeDetail = (params) => {
-  const {
-    hall_name,
-    search_date,
-    lively_change_ary,
-    member_lively_change_vip_tag = '10001,10003'
-  } = params
-  return axiosInstance.post(
-    '/api/auth/home/query_lively_change_detail' + sessionStorage.from_page,
-    {
+  const { hall_name, search_date, analysis_level, compare_level  } = params
+  return axiosGoInstance.get('/api/auth/home/lively_change_detail', {
+    params: {
       hall_name,
       search_date,
-      lively_change_ary,
-      member_lively_change_vip_tag
+      analysis_level,
+      compare_level
     }
-  )
+  })
 }
 
 //週活躍度
