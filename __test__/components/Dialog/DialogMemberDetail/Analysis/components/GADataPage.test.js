@@ -189,9 +189,9 @@ describe('GADataPage.vue', () => {
       }
     ]
     expect(wrapper.vm.sourceDataTableData).toStrictEqual(sourceDataTableData)
-		
-		//模擬點擊tab是否有改變
-		await wrapper.findAll('.tabs li')[1].trigger('click')
-		expect(wrapper.vm.currentTabs).toStrictEqual('sourceData')
+
+    //模擬點擊tab是否有改變
+    await wrapper.findAll('.tabs li')[1].trigger('click')
+    expect(wrapper.vm.currentTabs).toStrictEqual('sourceData')
   })
 })
