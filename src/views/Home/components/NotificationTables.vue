@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, computed, watch, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQuerySmallMesNote } from '@/api/home.js'
-import { apiReadSmartMesNote } from '@/api/home.js'
+import { apiQuerySmartMessNote } from '@/api/home.js'
+import { apiReadSmartMessNote } from '@/api/home.js'
 import { useGlobalStore } from '@/stores/global.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -110,7 +110,7 @@ const querySmallMesNote = async (kind = '0') => {
   allApiSuccess.value = false
   if (activeHall.hall_code === '') return
   try {
-    const result = await apiQuerySmallMesNote({
+    const result = await apiQuerySmartMessNote({
       hall_name: activeHall.hall_code,
       kind: kind,
       search_date: formatDateDuration(search_date),
@@ -165,7 +165,7 @@ const querySmallMesNote = async (kind = '0') => {
 //已讀
 const readSmartMesNote = async (msgId, kind) => {
   try {
-    const result = await apiReadSmartMesNote({
+    const result = await apiReadSmartMessNote({
       hall_name: activeHall.hall_code,
       message_id: msgId
     })
@@ -303,12 +303,12 @@ watch(
 )
 </script>
 <template>
-  <section class="cdp-section padding-bottom-10 h-444">
+  <section class="cdp-section h-444">
     <div class="flex flex-wrap justify-between">
       <SectionTitle class="mb-10" :title="$t('home.news')"></SectionTitle>
       <Search class="notify-search" v-model="searchText"></Search>
     </div>
-    <el-row :gutter="20" class="mb-10">
+    <el-row :gutter="20" class="mb-12">
       <el-col :span="24">
         <Tab :tabData="tabList" :activeName="currentTabs" v-model="currentTabs"></Tab>
       </el-col>
@@ -320,7 +320,7 @@ watch(
       :height="300"
       class="mt-25"
     />
-    <el-row v-else :gutter="20" class="mb-20">
+    <el-row v-else :gutter="20">
       <el-col :span="24">
         <CustomTable
           ref="refTable"
@@ -378,14 +378,6 @@ watch(
 
 .notify-search {
   top: -9px;
-}
-
-.padding-bottom-10 {
-  padding-bottom: 10px;
-}
-
-.text-underline {
-  text-decoration: underline;
 }
 
 :deep(.remove-style) {

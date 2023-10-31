@@ -106,7 +106,8 @@ const queryLivelyChangeDetail = async (livelyChangeAry) => {
     const result = await apiQueryLivelyChangeDetail({
       hall_name: activeHall.hall_code,
       search_date: formatDateDuration(weekDuration.value),
-      lively_change_ary: livelyChangeAry
+      analysis_level: livelyChangeAry[1],
+      compare_level: livelyChangeAry[0]
     })
     const { return_code } = result.data.status
 
