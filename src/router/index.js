@@ -9,7 +9,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/home',
+      redirect: '/home'
     },
     {
       path: '/example',
@@ -245,8 +245,8 @@ const router = createRouter({
       children: [
         {
           path: '/user-export-report',
-          name: 'user-export-report'
-          // component: () => import('../views/Home/Home.vue')
+          name: 'user-export-report',
+          component: () => import('../views/UserExportReport/UserExportReport.vue')
         }
       ]
     },

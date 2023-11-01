@@ -27,7 +27,9 @@ const popover = ref(null) //popover
 
 // 關閉 popover
 const closePopover = () => {
-  popover.value.hide()
+  if (popover.value && typeof popover.value.hide === 'function') {
+    popover.value.hide()
+  }
 }
 
 const dateValueStartDate = ref('')
@@ -51,8 +53,8 @@ switch (props.config) {
 }
 //如果props rangedate有值，優先使用
 if (props.rangeDate !== '') {
-  dateValueStartDate.value = props.rangeDate.split('~')[0]
-  dateValueEndDate.value = props.rangeDate.split('~')[1]
+  dateValueStartDate.value = props.rangeDate.split('~')[0].trim()
+  dateValueEndDate.value = props.rangeDate.split('~')[1].trim()
 }
 const dateValue = ref([dateValueStartDate.value, dateValueEndDate.value])
 
@@ -73,7 +75,6 @@ const disabledDate = (day) => {
   let activeDate = dayjs(day).format('YYYY-MM-DD')
   let minDate = dayjs(dateMinDate.value).format('YYYY-MM-DD')
   let maxDate = dayjs(dateMaxDate.value).format('YYYY-MM-DD')
-
   if (activeDate < minDate || activeDate > maxDate) {
     return true
   }
