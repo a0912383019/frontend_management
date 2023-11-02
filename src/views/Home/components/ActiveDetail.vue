@@ -3,7 +3,7 @@ import { ref, computed, reactive } from 'vue'
 import { tooltipDarkConfig, tooltipShared } from '@/utils/highchartsConfig.js'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
-import { formatDate, errorRespond } from '@/utils/commonUtils.js'
+import { formatDate, errorRespond, FormatNumber } from '@/utils/commonUtils.js'
 import { dayjs } from 'element-plus'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import { apiQueryMemberRecentWeekLively } from '@/api/home.js'
@@ -75,7 +75,7 @@ const queryMemberRecentWeekLively = async (user_id) => {
   try {
     const result = await apiQueryMemberRecentWeekLively({
       hall_name: activeHall.hall_code,
-      member_id: user_id,
+      user_id,
       start_date: formatDate(lastWeekDuration.value.split('~')[0].trim()),
       end_date: formatDate(thisWeekDuration.value.split('~')[1].trim())
     })
@@ -107,12 +107,12 @@ const transformMemberRecentWeekLively = (data) => {
   activeStepTableData.value = [
     {
       duration: thisWeekDuration,
-      avgLevel: data[0].avg_action_score,
+      avgLevel: FormatNumber(data[0].avg_action_score, '', 2),
       icon: iconStep(data[0].analysis_level)
     },
     {
       duration: lastWeekDuration,
-      avgLevel: data[1].avg_action_score,
+      avgLevel: FormatNumber(data[1].avg_action_score, '', 2),
       icon: iconStep(data[1].analysis_level)
     }
   ]
@@ -178,7 +178,7 @@ const queryMemberRecentLively = async (user_id) => {
   try {
     const result = await apiQueryMemberRecentLively({
       hall_name: activeHall.hall_code,
-      member_id: user_id,
+      user_id,
       start_date: formatDate(lastWeekDuration.value.split('~')[0].trim()),
       end_date: formatDate(thisWeekDuration.value.split('~')[1].trim())
     })
@@ -211,7 +211,7 @@ const transformMemberRecentLively = (data) => {
   const chartSeries = {
     name: t('member_active_level.active_level'),
     lineWidth: 2,
-    data: data.map((ele) => parseFloat(ele.action_score))
+    data: data.map((ele) => parseFloat(FormatNumber(ele.action_score, '', 3)))
   }
 
   const chartXAxis = data.map((ele) => dayjs(ele.data_date).format(t('date.format_date_rule')))
