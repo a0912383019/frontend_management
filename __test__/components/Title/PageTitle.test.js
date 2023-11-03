@@ -25,7 +25,7 @@ describe('PageTitle', () => {
       }
     })
 
-    expect(wrapper.findComponent(FontAwesomeIcon).exists()).toBe(false)
+    expect(wrapper.findComponent(CdpIcon).exists()).toBe(false)
     expect(wrapper.find('.title__name').text()).toStrictEqual('no icon')
   })
 
@@ -44,7 +44,7 @@ describe('PageTitle', () => {
       }
     })
 
-    expect(wrapper.findComponent(FontAwesomeIcon).exists()).toBe(true)
+    expect(wrapper.findComponent(CdpIcon).exists()).toBe(true)
     expect(wrapper.find('.title__name').text()).toStrictEqual('has icon')
   })
 })

@@ -52,7 +52,7 @@ watch(
 </script>
 <template>
   <section class="cdp-section">
-    <PageTitle icon="fas fa-dice" class="mb-20" :title="$t('sidebar.bbin_game_tag_analysis')" />
+    <PageTitle icon="menuGame" class="mb-20" :title="$t('sidebar.bbin_game_tag_analysis')" />
     <el-row :gutter="20" class="mb-20">
       <el-col :span="8">
         <Tab

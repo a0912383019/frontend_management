@@ -112,7 +112,7 @@ export const useDateStore = defineStore('dateStore', () => {
 
   // config_8 : 預設選取近一週
   const date_range_picker_config_8 = {
-    startDate: dayjs(LAST_DATE.value).subtract(7, 'day'), //預設起始時間
+    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(7, 'day'), //預設起始時間
     endDate: LAST_DATE, //預設結束時間
     minDate: MIN_DATE, //限制最小可選日期
     maxDate: LAST_DATE //限制最大可選日期

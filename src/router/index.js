@@ -85,8 +85,9 @@ const router = createRouter({
       children: [
         {
           path: '/registered-no-deposit-analysis',
-          name: 'registered-no-deposit-analysis'
-          // component: () => import('../views/Home/Home.vue')
+          name: 'registered-no-deposit-analysis',
+          component: () =>
+            import('../views/RegisteredNoDepositAnalysis/RegisteredNoDepositAnalysis.vue')
         }
       ]
     },
