@@ -287,20 +287,20 @@ onMounted(() => {
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="8" class="mb-10">
-        <div class="cdp-text-blue mb-5">{{ $t('data_name.ag_name') }}</div>
+      <el-col :span="8" class="mb-15">
+        <div class="cdp-text-blue mb-3">{{ $t('data_name.ag_name') }}</div>
         <el-input v-model="apiMemberData.ag_name" class="cdp-input cdp-input-disabled" readonly>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
       </el-col>
-      <el-col :span="8" class="mb-10">
-        <div class="cdp-text-blue mb-5">{{ $t('data_name.user_level') }}</div>
+      <el-col :span="8" class="mb-15">
+        <div class="cdp-text-blue mb-3">{{ $t('data_name.user_level') }}</div>
         <el-input v-model="apiMemberData.user_level" class="cdp-input cdp-input-disabled" readonly>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
       </el-col>
-      <el-col :span="8" class="mb-10">
-        <div class="cdp-text-blue mb-5">{{ $t('data_name.register_date') }}</div>
+      <el-col :span="8" class="mb-15">
+        <div class="cdp-text-blue mb-3">{{ $t('data_name.register_date') }}</div>
         <el-input
           v-model="apiMemberData.register_date"
           class="cdp-input cdp-input-disabled"
@@ -309,26 +309,26 @@ onMounted(() => {
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
       </el-col>
-      <el-col :span="8" class="mb-10">
-        <div class="cdp-text-blue mb-5">{{ $t('data_name.life_cycle') }}</div>
+      <el-col :span="8" class="mb-15">
+        <div class="cdp-text-blue mb-3">{{ $t('data_name.life_cycle') }}</div>
         <el-input v-model="apiMemberData.life_cycle" class="cdp-input cdp-input-disabled" readonly>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
       </el-col>
-      <el-col :span="8" class="mb-10" v-if="userType === system_admin">
-        <div class="cdp-text-blue mb-5">{{ $t('data_name.phone_number') }}</div>
+      <el-col :span="8" class="mb-15" v-if="userType === system_admin">
+        <div class="cdp-text-blue mb-3">{{ $t('data_name.phone_number') }}</div>
         <el-input v-model="apiMemberData.user_phone" class="cdp-input cdp-input-disabled" readonly>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
       </el-col>
-      <el-col :span="8" class="mb-10" v-if="userType === system_admin">
-        <div class="cdp-text-blue mb-5">{{ $t('data_name.email') }}</div>
+      <el-col :span="8" class="mb-15" v-if="userType === system_admin">
+        <div class="cdp-text-blue mb-3">{{ $t('data_name.email') }}</div>
         <el-input v-model="apiMemberData.user_mail" class="cdp-input cdp-input-disabled" readonly>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
       </el-col>
-      <el-col :span="24" class="mb-10">
-        <div class="cdp-text-blue mb-5">{{ $t('tags.tags') }}</div>
+      <el-col :span="24" class="mb-15">
+        <div class="cdp-text-blue mb-3">{{ $t('tags.tags') }}</div>
         <div v-show="!tagIsEdit">
           <div class="tags relative">
             <transition>
@@ -344,6 +344,7 @@ onMounted(() => {
             <CdpButton
               class="tags__button custom-bg-dark__blue"
               :name="$t('common.edit')"
+              size="sm-60"
               @click="handleTagIsEdit(true)"
             />
           </div>
@@ -355,7 +356,7 @@ onMounted(() => {
               @change="handleTagChange"
               @focus="handleTagChange"
               multiple
-              class="cdp-tag-select mr-6"
+              class="cdp-tag-select mr-20"
             >
               <el-option
                 v-for="item in tagSelectOptions"
@@ -368,6 +369,7 @@ onMounted(() => {
             <CdpButton
               class="tags__button custom-bg-dark__blue"
               :name="$t('modal.confirm')"
+              size="sm-60"
               @click="handleTagIsEdit(false)"
             />
           </div>
@@ -431,12 +433,13 @@ onMounted(() => {
 <style lang="scss" scoped>
 .tags {
   display: flex;
+  align-items: end;
   &__box {
     display: flex;
     justify-content: flex-start;
     align-content: center;
     width: 100%;
-    margin-right: 5px;
+    margin-right: 20px;
     padding: 14px 14px 8px 14px;
     border-radius: 5px;
     border: solid 1px #cfd8e6;
@@ -457,16 +460,26 @@ onMounted(() => {
     flex-shrink: 0;
   }
 }
+.cdp-input {
+  border: solid 1px rgba(207, 216, 230, 1);
+  :deep(.el-input__wrapper:hover) {
+    box-shadow: 0 0 0 0 !important;
+  }
+}
 </style>
 <style lang="scss">
 .cdp-tag-select {
   width: 100%;
   .el-tag {
     background-color: $blue;
-    color: #fff;
+    color: #404040;
     border-radius: 30px;
     .el-icon {
-      color: #fff;
+      color: #909399;
+    }
+    &.is-closable {
+      margin-top: 3px;
+      margin-bottom: 3px;
     }
   }
   &.el-select {

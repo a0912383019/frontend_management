@@ -63,81 +63,86 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div>
-    <el-row :gutter="15" class="mb-20">
-      <el-col :span="6">
-        <div class="cdp-text-blue mb-5">{{ $t('customer_detail_info.net_profit') }}</div>
-        <div class="relative">
-          <transition>
-            <BoxLoading v-show="boxIsLoading" />
-          </transition>
-          <el-input v-model="amountData.total_profit" class="cdp-input cdp-input-disabled" readonly>
-            <template #prepend>{{ currencySignText }}</template>
-            <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
-          </el-input>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="cdp-text-blue mb-5">
-          <span class="mr-8">{{ $t('customer_detail_info.net_amount') }}</span>
-          <el-tooltip
-            effect="dark"
-            :content="$t('customer_detail_info.net_amount_desc')"
-            placement="top"
-          >
-            <font-awesome-icon class="cursor-pointer" icon="fa-solid fa-info-circle" />
-          </el-tooltip>
-        </div>
-        <div class="relative">
-          <transition>
-            <BoxLoading v-show="boxIsLoading" />
-          </transition>
-          <el-input
-            v-model="amountData.withdraw_deposit_net_amount"
-            class="cdp-input cdp-input-disabled"
-            readonly
-            v-show="!boxIsLoading"
-          >
-            <template #prepend>{{ currencySignText }}</template>
-            <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
-          </el-input>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="cdp-text-blue mb-5">{{ $t('customer_detail_info.total_deposit') }}</div>
-        <div class="relative">
-          <transition>
-            <BoxLoading v-show="boxIsLoading" />
-          </transition>
-          <el-input
-            v-model="amountData.total_deposit"
-            class="cdp-input cdp-input-disabled"
-            readonly
-            v-show="!boxIsLoading"
-          >
-            <template #prepend>{{ currencySignText }}</template>
-            <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
-          </el-input>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="cdp-text-blue mb-5">{{ $t('customer_detail_info.total_withdraw') }}</div>
-        <div class="relative">
-          <transition>
-            <BoxLoading v-show="boxIsLoading" />
-          </transition>
-          <el-input
-            v-model="amountData.total_withdraw"
-            class="cdp-input cdp-input-disabled"
-            readonly
-            v-show="!boxIsLoading"
-          >
-            <template #prepend>{{ currencySignText }}</template>
-            <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
-          </el-input>
-        </div>
-      </el-col>
-    </el-row>
-  </div>
+  <el-row :gutter="15">
+    <el-col :span="6">
+      <div class="cdp-text-blue mb-3">{{ $t('customer_detail_info.net_profit') }}</div>
+      <div class="relative">
+        <transition>
+          <BoxLoading v-show="boxIsLoading" />
+        </transition>
+        <el-input v-model="amountData.total_profit" class="cdp-input cdp-input-disabled" readonly>
+          <template #prepend>{{ currencySignText }}</template>
+          <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+        </el-input>
+      </div>
+    </el-col>
+    <el-col :span="6">
+      <div class="cdp-text-blue mb-3">
+        <span class="mr-8">{{ $t('customer_detail_info.net_amount') }}</span>
+        <el-tooltip
+          effect="dark"
+          :content="$t('customer_detail_info.net_amount_desc')"
+          placement="top"
+        >
+          <font-awesome-icon class="cursor-pointer" icon="fa-solid fa-info-circle" />
+        </el-tooltip>
+      </div>
+      <div class="relative">
+        <transition>
+          <BoxLoading v-show="boxIsLoading" />
+        </transition>
+        <el-input
+          v-model="amountData.withdraw_deposit_net_amount"
+          class="cdp-input cdp-input-disabled"
+          readonly
+          v-show="!boxIsLoading"
+        >
+          <template #prepend>{{ currencySignText }}</template>
+          <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+        </el-input>
+      </div>
+    </el-col>
+    <el-col :span="6">
+      <div class="cdp-text-blue mb-3">{{ $t('customer_detail_info.total_deposit') }}</div>
+      <div class="relative">
+        <transition>
+          <BoxLoading v-show="boxIsLoading" />
+        </transition>
+        <el-input
+          v-model="amountData.total_deposit"
+          class="cdp-input cdp-input-disabled"
+          readonly
+          v-show="!boxIsLoading"
+        >
+          <template #prepend>{{ currencySignText }}</template>
+          <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+        </el-input>
+      </div>
+    </el-col>
+    <el-col :span="6">
+      <div class="cdp-text-blue mb-3">{{ $t('customer_detail_info.total_withdraw') }}</div>
+      <div class="relative">
+        <transition>
+          <BoxLoading v-show="boxIsLoading" />
+        </transition>
+        <el-input
+          v-model="amountData.total_withdraw"
+          class="cdp-input cdp-input-disabled"
+          readonly
+          v-show="!boxIsLoading"
+        >
+          <template #prepend>{{ currencySignText }}</template>
+          <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+        </el-input>
+      </div>
+    </el-col>
+  </el-row>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.cdp-input {
+  border: solid 1px rgba(207, 216, 230, 1);
+  :deep(.el-input__wrapper:hover) {
+    box-shadow: 0 0 0 0 !important;
+  }
+}
+</style>

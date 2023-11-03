@@ -145,6 +145,8 @@ onMounted(() => {
 <style lang="scss" scoped>
 .member {
   position: relative;
+  top: 50%;
+  transform: translateY(-50%);
   min-height: 255px;
   &__top {
     position: relative;
@@ -171,5 +173,8 @@ onMounted(() => {
     font-size: 16px;
     color: #212259;
   }
+}
+.cdp-section-in {
+  height: calc(100% - 20px);
 }
 </style>
