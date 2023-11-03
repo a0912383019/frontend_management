@@ -31,10 +31,10 @@ const hasSlotContent = !!useSlots().tooltip
   &__name {
     font-size: 16px;
     font-weight: 500;
-    margin-right: 10px;
+    margin-right: 5px;
   }
   &__icon {
-    font-size: 13px;
+    font-size: 18px;
     cursor: pointer;
   }
   &.small {

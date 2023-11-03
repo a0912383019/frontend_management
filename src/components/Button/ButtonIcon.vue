@@ -64,6 +64,7 @@ button {
       font-size: 12px;
       line-height: 1.5;
       border-radius: 5px;
+      height: 40px;
     }
     &__medium {
       padding: 6px 8px;
@@ -71,6 +72,7 @@ button {
       line-height: 1.5;
       border-radius: 5px;
       min-width: 120px;
+      height: 40px;
     }
     &__large {
       display: inline-flex;
@@ -82,10 +84,12 @@ button {
       border-radius: 5px;
       font-size: 14px;
       font-weight: 500;
+      height: 40px;
       &.large-120 {
         min-width: 120px;
         padding-top: 7px;
         padding-bottom: 7px;
+        height: 36px;
       }
     }
     &__default {

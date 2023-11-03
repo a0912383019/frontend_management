@@ -297,6 +297,11 @@
     padding: 20px;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
   }
+  >.el-popover__title {
+    font-size: 14px;
+    color: rgba(106, 83, 186, 1);
+    margin-bottom: 5px;
+  }
   .el-popper {
     &__arrow {
       display: none;

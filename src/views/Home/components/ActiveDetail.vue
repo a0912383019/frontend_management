@@ -108,12 +108,14 @@ const transformMemberRecentWeekLively = (data) => {
     {
       duration: thisWeekDuration,
       avgLevel: FormatNumber(data[0].avg_action_score, '', 2),
-      icon: iconStep(data[0].analysis_level)
+      icon: iconStep(data[0].analysis_level),
+      iconStepName: t('member_active_level.active_level_' + data[0].analysis_level)
     },
     {
       duration: lastWeekDuration,
       avgLevel: FormatNumber(data[1].avg_action_score, '', 2),
-      icon: iconStep(data[1].analysis_level)
+      icon: iconStep(data[1].analysis_level),
+      iconStepName: t('member_active_level.active_level_' + data[1].analysis_level)
     }
   ]
 }
@@ -271,10 +273,21 @@ defineExpose({ handleOpenDialog })
           :serverSide="false"
         >
           <template #icon="scope">
-            <font-awesome-icon
-              :class="['font-size-30', 'mt-6', 'ml-1', scope.row.icon.color]"
-              :icon="['fa-regular', scope.row.icon.icon]"
-            />
+            <el-tooltip
+              effect="dark"
+              placement="top"
+              :hide-after="0"
+            >
+              <template #content>
+                <div class="font-size-14">
+                  {{ scope.row.iconStepName }}
+                </div>
+              </template>
+              <font-awesome-icon
+                :class="['font-size-28', 'mt-6', 'ml-1', scope.row.icon.color]"
+                :icon="['fa-regular', scope.row.icon.icon]"
+              />
+            </el-tooltip>
           </template>
         </CustomTable>
         <SectionTitle

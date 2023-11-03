@@ -136,7 +136,7 @@ onMounted(() => {
         placement="bottom-end"
         :visible="popoverVisible"
         :title="$t('customer_detail_info.journey_detail_source')"
-        :width="500"
+        :width="310"
         trigger="click"
         popper-class="cdp-popover"
       >
@@ -212,10 +212,11 @@ onMounted(() => {
   padding: 5px 10px;
   margin-bottom: 20px;
   border-radius: 5px;
-  border: solid 1px #cfd8e6;
+  border: solid 1px rgba(204, 197, 225, 1);
   background-color: #fff;
   &__item {
     flex: 1;
+    min-width: calc(50%);
   }
 }
 .drop {
