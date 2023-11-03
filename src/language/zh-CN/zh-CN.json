@@ -571,6 +571,7 @@
     "deposit_span_member_detail": "存款概率区间会员明细",
     "click_for_detail": "点击上方预测存款机率显示区间明细",
     "click_above_for_detail": "点击上方长条图显示区间明细",
+    "ip_times": "次",
     "span_desc": "{{lower}}$t(common.contain_yes) ~ {{upper}}$t(common.contain, {\"context\": \"{{contain_upper}}\"})",
     "promotion_tag": "优惠标签"
   },

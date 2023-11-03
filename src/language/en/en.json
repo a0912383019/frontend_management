@@ -569,6 +569,7 @@
     "avg_first_deposit_day": "Avg days till the 1st deposit",
     "deposit_prob_span_people": "Gambler Count by Deposit Prob Predictions",
     "deposit_span_member_detail": "Details",
+    "ip_times": "次",
     "click_for_detail": "點擊上方預測存款機率顯示區間明細",
     "click_above_for_detail": "Click a bar above for more details.",
     "span_desc": "{{lower}} $t(common.contain_yes) P $t(common.contain, {\"context\": \"{{contain_upper}}\"}) {{upper}}",

@@ -161,8 +161,12 @@ onMounted(() => {
           >
           </SectionTitle>
           <div class="slider-box">
-            <div class="slider-box__tag start">0次</div>
-            <div class="slider-box__tag end">100+次</div>
+            <div class="slider-box__tag start">
+              0{{ $t('register_no_deposit_analysis.ip_times') }}
+            </div>
+            <div class="slider-box__tag end">
+              100+{{ $t('register_no_deposit_analysis.ip_times') }}
+            </div>
             <el-slider
               v-model="slideVlaue"
               range
