@@ -34,6 +34,10 @@ const buttonClass = computed(() => {
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
+  &__sm-60 {
+    width: 60px;
+    height: 34px;
+  }
   &__sm {
     width: 100px;
     height: 34px;

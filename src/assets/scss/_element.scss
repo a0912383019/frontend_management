@@ -297,6 +297,17 @@
     padding: 20px;
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
   }
+  .el-input__wrapper {
+    box-shadow: 0 0 0 1px rgba(204, 197, 225, 1) inset !important;
+  }
+  >.el-popover__title {
+    font-size: 14px;
+    color: rgba(106, 83, 186, 1);
+    margin-bottom: 5px;
+  }
+  .el-input__inner::placeholder {
+    color: rgba(106, 83, 186, 0.4);
+  }
   .el-popper {
     &__arrow {
       display: none;
