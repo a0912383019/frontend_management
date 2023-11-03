@@ -259,7 +259,7 @@ onMounted(() => {
   <section class="cdp-section">
     <div class="flex items-center justify-between mb-20">
       <!-- justify-between -->
-      <PageTitle icon="fas fa-tags" :title="$t('sidebar.bbin_customer_tag_list')" />
+      <PageTitle icon="menuTag" :title="$t('sidebar.bbin_customer_tag_list')" />
       <div class="flex">
         <ExportCSV class="mr-10" :formData="formData" :total="apiRecordsTotal" />
         <Filter :key="key" @update:filter-submit="handleFilterSubmit" />

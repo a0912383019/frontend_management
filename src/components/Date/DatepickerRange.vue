@@ -9,6 +9,7 @@ const {
   date_range_picker_config_1,
   date_range_picker_config_2,
   date_range_picker_config_7,
+  date_range_picker_config_8,
   shortcutsConfig1,
   shortcutsConfig2
 } = useDateStore()
@@ -70,6 +71,12 @@ switch (props.config) {
     dateValueEndDate.value = date_range_picker_config_7.endDate
     dateMinDate.value = date_range_picker_config_7.minDate
     dateMaxDate.value = date_range_picker_config_7.maxDate
+    break
+  case 8:
+    dateValueStartDate.value = date_range_picker_config_8.startDate
+    dateValueEndDate.value = date_range_picker_config_8.endDate
+    dateMinDate.value = date_range_picker_config_8.minDate
+    dateMaxDate.value = date_range_picker_config_8.maxDate
     break
 }
 //如果props rangedate有值，優先使用
@@ -185,10 +192,10 @@ watch(
     &.el-input__wrapper {
       position: relative;
       width: 100%;
-      height: 36px;
+      height: 38px;
       box-shadow: none;
       border-radius: 5px;
-      border: 1px solid #cfd8e6;
+      box-shadow: 0 0 0 1px #ccc5e1 inset;
       &::after {
         content: '';
         position: absolute;
@@ -209,6 +216,7 @@ watch(
     width: 70px;
     height: 32px;
     line-height: 32px;
+    color: #404040;
   }
   .el-range-separator {
     flex: none;

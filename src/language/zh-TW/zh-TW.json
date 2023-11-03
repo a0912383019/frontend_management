@@ -570,7 +570,10 @@
     "avg_first_deposit_day": "平均註冊首存天數",
     "deposit_prob_span_people": "存款機率區間人數",
     "deposit_span_member_detail": "存款機率區間會員明細",
+    "click_for_detail": "點擊上方預測存款機率顯示區間明細",
     "click_above_for_detail": "點擊上方長條圖顯示區間明細",
+    "info_text": "列表中呈現淺藍底色，代表實際存款率達{percent}以上",
+    "ip_times": "次",
     "span_desc": "{{lower}}$t(common.contain_yes) ~ {{upper}}$t(common.contain, {\"context\": \"{{contain_upper}}\"})",
     "promotion_tag": "優惠標籤"
   },

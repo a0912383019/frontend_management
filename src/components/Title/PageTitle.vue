@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 <template>
   <div class="title">
-    <font-awesome-icon class="title__icon" :icon="props.icon" v-if="props.icon" />
+    <cdp-icon class="mr-8" :name="props.icon" v-if="props.icon" />
     <div class="title__name">{{ props.title }}</div>
   </div>
 </template>

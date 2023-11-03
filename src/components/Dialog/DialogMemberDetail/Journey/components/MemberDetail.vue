@@ -134,10 +134,11 @@ onMounted(() => {
       </SectionTitle>
       <el-popover
         placement="bottom-end"
-        :visible="popoverVisible"
         :title="$t('customer_detail_info.journey_detail_source')"
         :width="310"
         trigger="click"
+        :teleported="false"
+        :hide-after="5"
         popper-class="cdp-popover"
       >
         <template #reference>
@@ -146,7 +147,6 @@ onMounted(() => {
             size="large"
             color="purple"
             :name="$t('common.advanced_filter')"
-            @click="popoverVisible = !popoverVisible"
           />
         </template>
         <div class="drop">

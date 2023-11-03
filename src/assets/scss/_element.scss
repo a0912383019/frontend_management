@@ -178,6 +178,7 @@
       font-size: 14px;
     }
     &__wrapper {
+      box-shadow: 0 0 0 1px #ccc5e1 inset;
       &:hover {
           box-shadow: 0 0 0 1px $purple inset !important;
       }
@@ -295,6 +296,7 @@
 .cdp-popover {
   &.el-popover.el-popper {
     padding: 20px;
+    border: 1px solid rgba(106, 83, 186, 0.30);
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
   }
   .el-input__wrapper {

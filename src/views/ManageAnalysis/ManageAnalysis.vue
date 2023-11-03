@@ -41,11 +41,7 @@ const currentTabComponent = computed(() => {
 </script>
 <template>
   <div>
-    <PageTitle
-      class="mb-20"
-      icon="fas fa-people-arrows"
-      :title="$t('sidebar.bbin_manage_analysis')"
-    />
+    <PageTitle class="mb-20" icon="menuManage" :title="$t('sidebar.bbin_manage_analysis')" />
     <el-row :gutter="20" class="mb-20">
       <el-col :span="13">
         <Tab

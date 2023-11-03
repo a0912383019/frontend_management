@@ -165,7 +165,7 @@ defineExpose({ goToFirstPage, showTableLoading })
           :sortable="column.sortable"
           :resizable="false"
         >
-        <template #header>
+          <template #header>
             {{ column.label }}
             <slot :name="column.prop + '-header'"></slot>
             <slot :name="column.headerSlot" v-if="column.headerSlot">
@@ -386,10 +386,12 @@ defineExpose({ goToFirstPage, showTableLoading })
 }
 .customTable2 {
   .el-table {
-    td:first-child, th:first-child {
+    td:first-child,
+    th:first-child {
       border-radius: 5px 0 0 5px;
     }
-    td:last-child, th:last-child {
+    td:last-child,
+    th:last-child {
       border-radius: 0 5px 5px 0;
     }
     th {
@@ -415,6 +417,54 @@ defineExpose({ goToFirstPage, showTableLoading })
     z-index: -1;
   }
 }
+
+.customTable3 {
+  box-shadow: none;
+  border: 1px solid #e6eaf2;
+  border-radius: 5px;
+  overflow: hidden;
+  .el-table__inner-wrapper {
+    &::before {
+      display: none;
+    }
+  }
+  .el-table {
+    font-size: 14px;
+    .el-table__cell {
+      padding-top: 7px;
+      padding-bottom: 7px;
+      border-right: 1px solid #e6eaf2;
+      color: #404040;
+    }
+    th {
+      &.el-table__cell {
+        &.is-leaf {
+          color: #404040;
+        }
+      }
+    }
+    tr {
+      th,
+      td {
+        &:not(:last-child) {
+          border-right: 1px solid #e6eaf2;
+        }
+      }
+    }
+    tbody {
+      tr {
+        &:last-child {
+          td {
+            &.el-table__cell {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .paginationBox {
   position: relative;
   display: flex;
