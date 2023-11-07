@@ -65,16 +65,20 @@ const closePopover = () => {
       </template>
       <el-row>
         <el-col :span="24" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="$t('date.date')"> </SectionTitle>
-          <DatepickerRange v-model="form.date" class="game-tag-analysis-datepicker" />
+          <SectionTitle class="cdp-text-purple mb-4" :title="$t('date.date')"> </SectionTitle>
+          <DatepickerRange
+            v-model="form.date"
+            class="game-tag-analysis-datepicker"
+            classColor="purple"
+          />
         </el-col>
         <el-col :span="24" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="$t('common.include_tags')">
+          <SectionTitle class="cdp-text-purple mb-4" :title="$t('common.include_tags')">
           </SectionTitle>
           <FilterTag v-model="form.searchTag" />
         </el-col>
         <el-col :span="24" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-10" :title="$t('common.exclude_tags')">
+          <SectionTitle class="cdp-text-purple mb-4" :title="$t('common.exclude_tags')">
           </SectionTitle>
           <FilterTag v-model="form.excludeTag" />
         </el-col>

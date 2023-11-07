@@ -190,6 +190,16 @@ const handelExportReport = async () => {
     </el-dialog>
   </div>
 </template>
+<style lang="scss" scoped>
+.cdp-input {
+  :deep(.el-input__inner) {
+    cursor: default !important;
+  }
+  :deep(.el-input__wrapper:hover) {
+    box-shadow: 0 0 0 0 !important;
+  }
+}
+</style>
 <style lang="scss">
 .customer-tag-dialog {
   max-width: 530px;

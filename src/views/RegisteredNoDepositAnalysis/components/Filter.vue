@@ -127,6 +127,7 @@ onMounted(() => {
             :config="8"
             :shortcutsConfig="1"
             class="w-full filter-datepicker"
+            classColor="purple"
           />
         </el-col>
         <el-col :span="12" class="mb-15">
@@ -138,8 +139,8 @@ onMounted(() => {
           </SectionTitle>
           <el-select
             v-model="selectDepositValue"
-            class="cdp-select w-full"
-            popper-class="cdp-select-popper"
+            class="cdp-select__purple w-full"
+            popper-class="cdp-select-popper__purple"
             filterable
             suffix-icon="CaretBottom"
             :teleported="false"
