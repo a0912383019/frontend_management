@@ -562,6 +562,7 @@
     "repeated_ip": "IP重複次數",
     "only_zalo": "Zalo帳戶過濾",
     "only_zalo_reminder": "僅列出擁有Zalo帳戶的會員",
+    "action_score": "存款機率區間",
     "action_score_overview": "存款機率區間總覽",
     "deposit_prob": "預測存款機率",
     "total_people_num": "區間總人數",

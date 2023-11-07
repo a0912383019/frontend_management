@@ -192,7 +192,7 @@ defineExpose({ goToFirstPage, showTableLoading })
         :pageSize="page.pageSize"
         :total="pageTableTotal"
         :layout="paginationLayout"
-        class="customPagination"
+        class="cdp-pagination"
         @update:currentPage="updateCurrentPage"
         @update:pageSize="updatePageSize"
       />
@@ -420,7 +420,6 @@ defineExpose({ goToFirstPage, showTableLoading })
 
 .customTable3 {
   box-shadow: none;
-  border: 1px solid #e6eaf2;
   border-radius: 5px;
   overflow: hidden;
   .el-table__inner-wrapper {
@@ -429,6 +428,7 @@ defineExpose({ goToFirstPage, showTableLoading })
     }
   }
   .el-table {
+    border: 1px solid #e6eaf2;
     font-size: 14px;
     .el-table__cell {
       padding-top: 7px;
@@ -471,7 +471,7 @@ defineExpose({ goToFirstPage, showTableLoading })
   justify-content: center;
   margin-top: 18px;
 }
-.customPagination {
+.cdp-pagination {
   &__right {
     position: absolute;
     right: 0;

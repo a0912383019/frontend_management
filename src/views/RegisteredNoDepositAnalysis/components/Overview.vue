@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { apiQueryActionScoreSpan } from '@/api/registeredNoDepositAnalysis.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { useRegisteredNoDepositAnalysis } from '@/stores/registeredNoDepositAnalysis.js'
+import { storeToRefs } from 'pinia'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -13,9 +14,11 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const deoositStore = useRegisteredNoDepositAnalysis()
-const { selectDepositValue, deatilRangeDate, ipDuplicateRange } = deoositStore
+const { selectDepositValue, deatilRangeDate, ipDuplicateRange } = storeToRefs(deoositStore)
 
 const { t } = useI18n()
+
+const emit = defineEmits(['update:detail'])
 
 const apiSuccess = ref(false) //api是否成功
 
@@ -63,31 +66,15 @@ const tableColumns = computed(() => {
   ]
 })
 
-// 轉換資料
-const transformActionScoreSpan = (data) => {
-  return data.map((item) => {
-    return {
-      deposit_prob: `${item.lower}${t('common.contain_yes')} ~ ${item.upper}${t(
-        `common.contain_${item.upper === '100%' ? 'yes' : 'no'}`
-      )}`,
-      total_people_num: item.span_count,
-      total_deposit_people_num: item.enabled_count,
-      deposit_ratio: FormatNumber(item.enabled_ratio) + '%',
-      avg_first_deposit_day: FormatNumber(item.enabled_avg_day),
-      has_bg: item.enabled_ratio >= 30 ? true : false
-    }
-  })
-}
-
 const queryActionScoreSpan = async () => {
   apiSuccess.value = false
   messageKey.value = 'shortLoading'
   try {
     const result = await apiQueryActionScoreSpan({
       hall_name: activeHall.hall_code,
-      deposit_status: selectDepositValue,
-      action_score_analysis_date: deatilRangeDate,
-      ip_duplicate_range: ipDuplicateRange
+      deposit_status: selectDepositValue.value,
+      action_score_analysis_date: deatilRangeDate.value,
+      ip_duplicate_range: ipDuplicateRange.value
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -114,6 +101,29 @@ const queryActionScoreSpan = async () => {
       messageKey.value = 'queryFailed' //更改message內容
     }
   }
+}
+
+// 轉換資料
+const transformActionScoreSpan = (data) => {
+  return data.map((item) => {
+    return {
+      lower: item.lower,
+      upper: item.upper,
+      deposit_prob: `${item.lower}${t('common.contain_yes')} ~ ${item.upper}${t(
+        `common.contain_${item.upper === '100%' ? 'yes' : 'no'}`
+      )}`,
+      total_people_num: item.span_count,
+      total_deposit_people_num: item.enabled_count,
+      deposit_ratio: FormatNumber(item.enabled_ratio) + '%',
+      avg_first_deposit_day: FormatNumber(item.enabled_avg_day),
+      has_bg: item.enabled_ratio >= 30 ? true : false
+    }
+  })
+}
+
+// 發送存款機率區間會員明細
+const handleChangeDetail = (val) => {
+  emit('update:detail', val.lower.replace('%', ';') + val.upper.replace('%', ';'))
 }
 
 onMounted(() => {
@@ -143,7 +153,11 @@ onMounted(() => {
         class="customTable3 action-score-overview-table"
       >
         <template #deposit_prob="scope">
-          <div class="cell-box deposit_prob" :class="{ bg: scope.row.has_bg }">
+          <div
+            class="cell-box deposit_prob"
+            :class="{ bg: scope.row.has_bg }"
+            @click="handleChangeDetail(scope.row)"
+          >
             {{ scope.row.deposit_prob }}
           </div>
         </template>
