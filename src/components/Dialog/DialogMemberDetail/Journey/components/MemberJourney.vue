@@ -115,12 +115,12 @@ const queryMemberJourney = async () => {
     if (return_code === '0000') {
       apiSuccess.value = true
       transformMemberJourney(result.data.result)
-    } else if (return_code !== '0001') {
-      messageKey.value = 'chartFailed'
+    } else if (return_code === '0001') {
+      messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     } else {
-      messageKey.value = 'noResult'
+      messageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }

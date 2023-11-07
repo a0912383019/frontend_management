@@ -43,6 +43,10 @@ const props = defineProps({
   teleported: {
     type: Boolean,
     default: false //是否将 date-picker 的下拉列表插入至 body 元素
+  },
+  classColor: {
+    type: String,
+    default: 'blue'
   }
 })
 
@@ -164,8 +168,8 @@ watch(
       type="daterange"
       :format="$t('date.format_date_rule')"
       :unlink-panels="false"
-      popper-class="cdp-datepicker-range-popper"
-      class="cdp-datepicker-range"
+      :popper-class="'cdp-datepicker-range-popper__' + props.classColor"
+      :class="'cdp-datepicker-range__' + props.classColor"
       range-separator="~"
       start-placeholder="Start date"
       end-placeholder="End date"
@@ -180,13 +184,13 @@ watch(
   </div>
 </template>
 <style lang="scss" scoped>
-:deep(.el-popper.el-picker__popper.cdp-datepicker-range-popper) {
+:deep(.el-popper.el-picker__popper) {
   right: 0 !important;
   inset: 80px 0 auto auto !important;
 }
 </style>
 <style lang="scss">
-.cdp-datepicker-range {
+.cdp-datepicker-range__blue {
   justify-content: flex-start;
   &.el-date-editor {
     &.el-input__wrapper {
@@ -195,7 +199,10 @@ watch(
       height: 38px;
       box-shadow: none;
       border-radius: 5px;
-      box-shadow: 0 0 0 1px #ccc5e1 inset;
+      box-shadow: 0 0 0 1px #cfd8e6 inset;
+      &:hover {
+        box-shadow: 0 0 0 1px $blue inset !important;
+      }
       &::after {
         content: '';
         position: absolute;
@@ -220,6 +227,61 @@ watch(
   }
   .el-range-separator {
     flex: none;
+  }
+  &.el-range-editor {
+    &.is-active {
+      box-shadow: 0 0 0 1px $blue inset !important;
+      &:hover {
+        box-shadow: 0 0 0 1px $blue inset !important;
+      }
+    }
+  }
+}
+.cdp-datepicker-range__purple {
+  justify-content: flex-start;
+  &.el-date-editor {
+    &.el-input__wrapper {
+      position: relative;
+      width: 100%;
+      height: 38px;
+      box-shadow: none;
+      border-radius: 5px;
+      box-shadow: 0 0 0 1px #ccc5e1 inset;
+      &:hover {
+        box-shadow: 0 0 0 1px $purple inset !important;
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        margin-top: -6px;
+        width: 12px;
+        height: 12px;
+        background-image: url('@/assets/images/time.svg');
+        background-repeat: no-repeat;
+      }
+    }
+  }
+  .el-icon {
+    display: none;
+  }
+  .el-range-input {
+    width: 70px;
+    height: 32px;
+    line-height: 32px;
+    color: #404040;
+  }
+  .el-range-separator {
+    flex: none;
+  }
+  &.el-range-editor {
+    &.is-active {
+      box-shadow: 0 0 0 1px $purple inset !important;
+      &:hover {
+        box-shadow: 0 0 0 1px $purple inset !important;
+      }
+    }
   }
 }
 </style>

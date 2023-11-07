@@ -162,13 +162,13 @@ watch(
         />
       </template>
       <el-row :gutter="15">
-        <el-col :span="12" class="mb-15">
-          <SectionTitle size="small" class="cdp-text-purple mb-10" :title="$t('data_name.ag_name')">
+        <el-col :span="12" class="mb-19">
+          <SectionTitle size="small" class="cdp-text-purple mb-4" :title="$t('data_name.ag_name')">
           </SectionTitle>
           <el-select
             v-model="form.selectAcount"
-            class="cdp-select w-full"
-            popper-class="cdp-select-popper"
+            class="cdp-select__purple w-full"
+            popper-class="cdp-select-popper__purple"
             filterable
             suffix-icon="CaretBottom"
             :teleported="false"
@@ -183,17 +183,17 @@ watch(
             />
           </el-select>
         </el-col>
-        <el-col :span="12" class="mb-15">
+        <el-col :span="12" class="mb-19">
           <SectionTitle
             size="small"
-            class="cdp-text-purple mb-10"
+            class="cdp-text-purple mb-4"
             :title="$t('data_name.user_level')"
           >
           </SectionTitle>
           <el-select
             v-model="form.selectLevel"
-            class="cdp-select w-full"
-            popper-class="cdp-select-popper"
+            class="cdp-select__purple w-full"
+            popper-class="cdp-select-popper__purple"
             filterable
             suffix-icon="CaretBottom"
             :teleported="false"
@@ -208,8 +208,8 @@ watch(
             />
           </el-select>
         </el-col>
-        <el-col :span="12" class="mb-15">
-          <div class="flex items-start mb-10">
+        <el-col :span="12" class="mb-19">
+          <div class="flex items-start mb-4">
             <el-checkbox
               v-model="form.isActivedDateCheck"
               :label="$t('data_name.active_date')"
@@ -222,12 +222,13 @@ watch(
             :shortcutsConfig="1"
             :disabled="formDisabled || !form.isActivedDateCheck"
             class="w-full filter-datepicker"
+            classColor="purple"
           />
         </el-col>
-        <el-col :span="12" class="mb-15">
+        <el-col :span="12" class="mb-19">
           <SectionTitle
             size="small"
-            class="cdp-text-purple mb-10"
+            class="cdp-text-purple mb-4"
             style="min-height: 25px"
             :title="$t('data_name.register_date')"
           >
@@ -238,12 +239,13 @@ watch(
             :shortcutsConfig="1"
             :disabled="formDisabled"
             class="w-full filter-datepicker"
+            classColor="purple"
           />
         </el-col>
-        <el-col :span="24" class="mb-15">
+        <el-col :span="24" class="mb-19">
           <SectionTitle
             size="small"
-            class="cdp-text-purple mb-10"
+            class="cdp-text-purple mb-4"
             :title="$t('data_name.member_name')"
           >
             <template #tooltip>
@@ -252,23 +254,23 @@ watch(
           </SectionTitle>
           <el-input
             v-model="form.member"
-            class="cdp-input"
+            class="cdp-input__purple"
             :placeholder="$t('common.input_member_name_search')"
           />
         </el-col>
-        <el-col :span="24" class="mb-15">
+        <el-col :span="24" class="mb-19">
           <SectionTitle
             size="small"
-            class="cdp-text-purple mb-10"
+            class="cdp-text-purple mb-4"
             :title="$t('common.include_tags')"
           >
           </SectionTitle>
           <SelectTag v-model="form.searchTag" />
         </el-col>
-        <el-col :span="24" class="mb-15">
+        <el-col :span="24" class="mb-19">
           <SectionTitle
             size="small"
-            class="cdp-text-purple mb-10"
+            class="cdp-text-purple mb-4"
             :title="$t('common.exclude_tags')"
           >
           </SectionTitle>
