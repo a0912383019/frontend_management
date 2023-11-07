@@ -461,7 +461,9 @@ onMounted(() => {
   }
 }
 .cdp-input {
-  border: solid 1px rgba(207, 216, 230, 1);
+  :deep(.el-input__inner) {
+    cursor: default !important;
+  }
   :deep(.el-input__wrapper:hover) {
     box-shadow: 0 0 0 0 !important;
   }

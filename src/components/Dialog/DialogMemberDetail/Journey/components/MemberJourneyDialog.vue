@@ -447,6 +447,10 @@ defineExpose({ dialogOpen })
     border: 1px solid #e6eaf2;
   }
 }
+:deep(.el-form-item__label) {
+  color: $blue;
+  margin-bottom: 5px !important;
+}
 </style>
 <style lang="scss">
 .journey-dialog {
