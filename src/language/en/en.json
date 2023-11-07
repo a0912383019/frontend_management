@@ -561,6 +561,7 @@
     "repeated_ip": "Repeated IP",
     "only_zalo": "Zalo Fliter",
     "only_zalo_reminder": "Only show members who have Zalo.",
+    "action_score": "存款機率區間",
     "action_score_overview": "Predict how likely a person will make the very first deposit.",
     "deposit_prob": "Deposit Prob Prediction (P)",
     "total_people_num": "Gambler Count (N)",

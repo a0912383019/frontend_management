@@ -78,6 +78,10 @@ const messageData = computed(() => {
       result['icon'] = getIcon('info')
       result['title'] = t('manage_analysis.click_number_above_to_show')
       break
+    case 'clickForDetail':
+      result['icon'] = getIcon('info')
+      result['title'] = t('register_no_deposit_analysis.click_for_detail')
+      break
     case 'working':
       result['icon'] = getIcon('gear')
       result['title'] = '開發中'

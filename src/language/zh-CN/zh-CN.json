@@ -561,6 +561,7 @@
     "repeated_ip": "IP重复次数",
     "only_zalo": "Zalo帐户过滤",
     "only_zalo_reminder": "仅列出拥有Zalo帐户的会员",
+    "action_score": "存款概率区间",
     "action_score_overview": "存款概率区间总览",
     "deposit_prob": "预测存款机率",
     "total_people_num": "区间总人数",
