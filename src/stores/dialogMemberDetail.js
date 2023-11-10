@@ -23,7 +23,6 @@ export const useDialogMemberDetailStore = defineStore(
     })
     const showMemberDialog = ref(false)
     const updateMemberData = (val) => {
-      console.log(val)
       state.memberData = val
       sessionStorage.member_data = JSON.stringify(val)
       showMemberDialog.value = true
