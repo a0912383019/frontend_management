@@ -67,9 +67,9 @@ onMounted(() => {
     <el-col :span="6">
       <div class="cdp-text-blue mb-3">{{ $t('customer_detail_info.net_profit') }}</div>
       <div class="relative">
-        <transition>
+        <!-- <transition>
           <BoxLoading v-show="boxIsLoading" />
-        </transition>
+        </transition> -->
         <el-input v-model="amountData.total_profit" class="cdp-input cdp-input-disabled" readonly>
           <template #prepend>{{ currencySignText }}</template>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
@@ -88,14 +88,13 @@ onMounted(() => {
         </el-tooltip>
       </div>
       <div class="relative">
-        <transition>
+        <!-- <transition>
           <BoxLoading v-show="boxIsLoading" />
-        </transition>
+        </transition> -->
         <el-input
           v-model="amountData.withdraw_deposit_net_amount"
           class="cdp-input cdp-input-disabled"
           readonly
-          v-show="!boxIsLoading"
         >
           <template #prepend>{{ currencySignText }}</template>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
@@ -105,14 +104,13 @@ onMounted(() => {
     <el-col :span="6">
       <div class="cdp-text-blue mb-3">{{ $t('customer_detail_info.total_deposit') }}</div>
       <div class="relative">
-        <transition>
+        <!-- <transition>
           <BoxLoading v-show="boxIsLoading" />
-        </transition>
+        </transition> -->
         <el-input
           v-model="amountData.total_deposit"
           class="cdp-input cdp-input-disabled"
           readonly
-          v-show="!boxIsLoading"
         >
           <template #prepend>{{ currencySignText }}</template>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
@@ -122,14 +120,13 @@ onMounted(() => {
     <el-col :span="6">
       <div class="cdp-text-blue mb-3">{{ $t('customer_detail_info.total_withdraw') }}</div>
       <div class="relative">
-        <transition>
+        <!-- <transition>
           <BoxLoading v-show="boxIsLoading" />
-        </transition>
+        </transition> -->
         <el-input
           v-model="amountData.total_withdraw"
           class="cdp-input cdp-input-disabled"
           readonly
-          v-show="!boxIsLoading"
         >
           <template #prepend>{{ currencySignText }}</template>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>

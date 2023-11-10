@@ -1,8 +1,7 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
-import ElementPlus from 'element-plus'
 import router from '@/router'
 import { useGlobalStore } from '@/stores/global.js'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -14,19 +13,23 @@ describe('StepConfig', () => {
   let wrapper = null
   let globalStore = null
   beforeEach(() => {
-    wrapper = mount(StepConfig, {
+    wrapper = shallowMount(StepConfig, {
       props: {
         stepIndex: 2
       },
       global: {
         plugins: [
           i18n,
-          ElementPlus,
           router,
           createTestingPinia({
             createSpy: vi.fn
           })
-        ]
+        ],
+        stubs: {
+          ElTooltip: {
+            template: '<div><slot /></div>'
+          }
+        }
       },
       components: {
         FontAwesomeIcon,
@@ -35,6 +38,7 @@ describe('StepConfig', () => {
     })
     globalStore = useGlobalStore()
   })
+
   afterEach(() => {
     wrapper.unmount()
     globalStore = null

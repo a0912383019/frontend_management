@@ -7,7 +7,7 @@ import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import {
   generateRGBColors,
-  dynamicBackgroundColors,
+  // dynamicBackgroundColors,
   FormatNumber,
   errorRespond
 } from '@/utils/commonUtils.js'
@@ -147,15 +147,15 @@ const transformLobbyGroupChart = (data) => {
 
   for (let i = 0; i < data.length; i++) {
     let color = ''
-    if (i < chart_fixed_bgColor.length) {
+    // if (i < chart_fixed_bgColor.length) {
       color = generateRGBColors(chart_fixed_bgColor[i], 0.7) // 使用定義好的顏色
-    } else {
-      color = dynamicBackgroundColors(0.7) // 隨機產生顏色
-      while (chartDataBgColor.indexOf(color) > -1) {
-        // 判斷該顏色是否已經存在
-        color = dynamicBackgroundColors(0.7) // 若顏色已存在陣列中，則隨機產生新顏色
-      }
-    }
+    // } else {
+    //   color = dynamicBackgroundColors(0.7) // 隨機產生顏色
+    //   while (chartDataBgColor.indexOf(color) > -1) {
+    //     // 判斷該顏色是否已經存在
+    //     color = dynamicBackgroundColors(0.7) // 若顏色已存在陣列中，則隨機產生新顏色
+    //   }
+    // }
     chartDataBgColor.push(color)
 
     //highcharts

@@ -1,5 +1,5 @@
 import { it, describe, expect, beforeEach, afterEach } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import ElementPlus from 'element-plus'
 import UploadFile from '@/components/Filter/UploadFile.vue'
@@ -14,7 +14,7 @@ const fileData = new File([fileContent], 'upload-demo.csv', { type: 'text/csv' }
 describe('UploadFile', () => {
   let wrapper = null
   beforeEach(() => {
-    wrapper = mount(UploadFile, {
+    wrapper = shallowMount(UploadFile, {
       global: {
         plugins: [i18n, ElementPlus]
       }

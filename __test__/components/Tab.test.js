@@ -1,6 +1,5 @@
 import { it, describe, expect, beforeEach } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { i18n } from '@/global/i18n'
+import { shallowMount } from '@vue/test-utils'
 import Tab from '@/components/Tab.vue'
 
 describe('Tab', () => {
@@ -18,13 +17,10 @@ describe('Tab', () => {
   ]
 
   beforeEach(() => {
-    wrapper = mount(Tab, {
+    wrapper = shallowMount(Tab, {
       props: {
         tabData,
         activeName: 'LifeCycleAnalysis'
-      },
-      global: {
-        plugins: [i18n]
       }
     })
   })

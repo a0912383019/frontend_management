@@ -331,9 +331,9 @@ onMounted(() => {
         <div class="cdp-text-blue mb-3">{{ $t('tags.tags') }}</div>
         <div v-show="!tagIsEdit">
           <div class="tags relative">
-            <transition>
+            <!-- <transition>
               <BoxLoading v-show="boxIsLoading" />
-            </transition>
+            </transition> -->
             <div class="tags__box">
               <ul class="tags__list">
                 <li v-for="(item, index) in tagStrList" :key="index">

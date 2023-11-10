@@ -1,26 +1,15 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { i18n } from '@/global/i18n'
+import { shallowMount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
-import router from '@/router'
 import SvgKnob from '@/components/SvgKnob.vue'
 
 describe('SvgKnob', () => {
   let wrapper = null
   beforeEach(() => {
-    wrapper = mount(SvgKnob, {
+    wrapper = shallowMount(SvgKnob, {
       props: {
         percent: 20,
         text: 'mobile'
-      },
-      global: {
-        plugins: [
-          i18n,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn
-          })
-        ]
       }
     })
   })

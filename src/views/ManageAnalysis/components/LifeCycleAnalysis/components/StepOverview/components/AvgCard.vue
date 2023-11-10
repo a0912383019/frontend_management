@@ -58,7 +58,6 @@ const cssProps = computed(() => {
   border-radius: 5px;
   color: #404040;
   background-color: #dceff2;
-  // background-color: lighten(#59b7c8, 35%);
   background-color: var(--card-bg-color);
   &__item {
     position: absolute;

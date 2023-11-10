@@ -1,11 +1,11 @@
 import { it, describe, expect, beforeEach, afterEach } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import Tag from '@/components/Filter/Tag.vue'
 
 describe('Tag', () => {
   let wrapper = null
   beforeEach(() => {
-    wrapper = mount(Tag, {
+    wrapper = shallowMount(Tag, {
       props: {
         title: '測試標題',
         color: 'blue'
