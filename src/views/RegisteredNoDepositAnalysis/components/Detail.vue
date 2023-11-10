@@ -30,6 +30,8 @@ const messageKey = ref('clickForDetail')
 //存款機率區間
 const depositProb = ref(null)
 
+const refDetailTable = ref(null)
+
 const tableData = ref([])
 const tableOrigData = ref([])
 const tableColumns = computed(() => {
@@ -110,6 +112,7 @@ const queryActionScoreDetail = async (actionScore) => {
       tableData.value = []
       tableData.value = transformActionScoreDetail(result.data.result)
       tableOrigData.value = JSON.parse(JSON.stringify(tableData.value))
+      refDetailTable.value.goToFirstPage()
     } else {
       messageKey.value = 'queryFailed'
       let failMsg = errorRespond(result.data.status)
@@ -132,13 +135,9 @@ const queryActionScoreDetail = async (actionScore) => {
 const transformActionScoreDetail = (data) => {
   return data.map((item) => {
     return {
-      user_name: item.user_name,
-      ag_name: item.ag_name,
-      register_date: item.register_date,
-      update_date: item.update_date,
+      ...item,
       action_score: FormatNumber(item.action_score * 100, '', 2) + '%',
-      deposit_status: item.enabled,
-      ip_count: item.ip_count
+      deposit_status: item.enabled
     }
   })
 }
@@ -198,6 +197,7 @@ defineExpose({ queryActionScoreDetail })
         :pageSize="10"
         :stripe="true"
         class="customTable2 registeredNoDepositAnalysisTable"
+        ref="refDetailTable"
         @sort="handleSort"
       >
         <template #user_name="scope">

@@ -158,7 +158,14 @@ onMounted(() => {
             :class="{ bg: scope.row.has_bg }"
             @click="handleChangeDetail(scope.row)"
           >
-            {{ scope.row.deposit_prob }}
+            {{
+              $t('register_no_deposit_analysis.span_desc', {
+                lower: scope.row.lower,
+                contain_yes: $t('common.contain_yes'),
+                upper: scope.row.upper,
+                contain: $t(`common.contain_${scope.row.upper === '100%' ? 'yes' : 'no'}`)
+              })
+            }}
           </div>
         </template>
         <template #total_people_num="scope">

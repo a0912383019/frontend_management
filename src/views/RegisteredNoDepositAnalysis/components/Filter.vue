@@ -6,7 +6,7 @@ import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 
-const { t } = useI18n()
+const { t, locale: i18nLocale } = useI18n()
 
 const deoositStore = useRegisteredNoDepositAnalysis()
 
@@ -162,17 +162,14 @@ onMounted(() => {
           >
           </SectionTitle>
           <div class="slider-box">
-            <div class="slider-box__tag start">
-              0{{ $t('register_no_deposit_analysis.ip_times') }}
-            </div>
-            <div class="slider-box__tag end">
-              100+{{ $t('register_no_deposit_analysis.ip_times') }}
-            </div>
+            <div class="slider-box__tag start">0{{ $t('unit.times') }}</div>
+            <div class="slider-box__tag end">100+{{ $t('unit.times') }}</div>
             <el-slider
               v-model="slideVlaue"
               range
               show-stops
               class="cdp-el-slider"
+              :class="{ en: i18nLocale === 'en' }"
               :show-tooltip="false"
               tooltip-class="filter-tooltip"
               :step="10"
@@ -215,49 +212,65 @@ onMounted(() => {
     line-height: 1;
     &.start {
       left: -11px;
-      top: -12px;
+      top: -10px;
     }
     &.end {
-      right: -14px;
-      top: -12px;
+      right: -22px;
+      top: -10px;
     }
   }
 }
 </style>
 <style lang="scss">
-.el-slider__button-wrapper {
-  &::before {
-    position: absolute;
-    top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 42px;
-    height: 19px;
-    background-image: url('@/assets/images/toolip-bg.svg');
-    background-size: 100%;
-    background-position: center bottom;
-    background-repeat: no-repeat;
-    border-radius: 4px;
-    line-height: 1.2;
-    color: #fff;
-    font-size: 12px;
-    padding: 1px 5px;
-    white-space: nowrap;
-  }
-  &:nth-of-type(2) {
-    &::before {
-      content: attr(aria-valuenow) '次';
-    }
-  }
-  &:nth-of-type(3) {
-    &::before {
-      content: attr(aria-valuenow) '次';
-    }
-  }
-}
 .cdp-el-slider {
   padding-left: 6px;
   padding-right: 6px;
+  &.en {
+    .el-slider__button-wrapper {
+      &::before {
+        height: 22px;
+      }
+      &:nth-of-type(2) {
+        &::before {
+          content: attr(aria-valuenow) ' times';
+        }
+      }
+      &:nth-of-type(3) {
+        &::before {
+          content: attr(aria-valuenow) ' times';
+        }
+      }
+    }
+  }
+  .el-slider__button-wrapper {
+    &::before {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 19px;
+      background-image: url('@/assets/images/toolip-bg.svg');
+      background-size: 100%;
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      border-radius: 4px;
+      line-height: 1.2;
+      color: #fff;
+      font-size: 12px;
+      padding: 1px 5px;
+      white-space: nowrap;
+    }
+    &:nth-of-type(2) {
+      &::before {
+        content: attr(aria-valuenow) ' 次';
+      }
+    }
+    &:nth-of-type(3) {
+      &::before {
+        content: attr(aria-valuenow) ' 次';
+      }
+    }
+  }
   .el-slider {
     &__runway {
       position: relative;
