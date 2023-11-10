@@ -161,7 +161,7 @@ onMounted(() => {
             :title="$t('register_no_deposit_analysis.repeated_ip')"
           >
           </SectionTitle>
-          <div class="slider-box">
+          <div class="slider-box" :class="{ en: i18nLocale === 'en' }">
             <div class="slider-box__tag start">0{{ $t('unit.times') }}</div>
             <div class="slider-box__tag end">100+{{ $t('unit.times') }}</div>
             <el-slider
@@ -211,12 +211,24 @@ onMounted(() => {
     font-size: 12px;
     line-height: 1;
     &.start {
-      left: -11px;
+      left: -10px;
       top: -10px;
     }
     &.end {
       right: -22px;
       top: -10px;
+    }
+  }
+  &.en {
+    .slider-box {
+      &__tag {
+        &.start {
+          left: -15px;
+        }
+        &.end {
+          right: -28px;
+        }
+      }
     }
   }
 }
@@ -227,9 +239,6 @@ onMounted(() => {
   padding-right: 6px;
   &.en {
     .el-slider__button-wrapper {
-      &::before {
-        height: 22px;
-      }
       &:nth-of-type(2) {
         &::before {
           content: attr(aria-valuenow) ' times';
@@ -248,10 +257,9 @@ onMounted(() => {
       top: -8px;
       left: 50%;
       transform: translateX(-50%);
-      height: 19px;
-      background-image: url('@/assets/images/toolip-bg.svg');
-      background-size: 100%;
-      background-position: center bottom;
+      height: 16px;
+      background-color: #f65668;
+      background-position: center top;
       background-repeat: no-repeat;
       border-radius: 4px;
       line-height: 1.2;
@@ -259,6 +267,19 @@ onMounted(() => {
       font-size: 12px;
       padding: 1px 5px;
       white-space: nowrap;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      margin-left: -3px;
+      z-index: -1;
+      width: 6px;
+      height: 6px;
+      transform: rotate(-45deg);
+      border-radius: 0 0 0 20%;
+      background-color: #f65668;
     }
     &:nth-of-type(2) {
       &::before {
@@ -317,6 +338,7 @@ onMounted(() => {
       border: none;
       background-color: #e34556;
       transform: translateY(2px);
+      transform: translateY(9px);
     }
     &__bar {
       height: 11px;
