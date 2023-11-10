@@ -1,15 +1,13 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { mount, flushPromises } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
 import { storeToRefs } from 'pinia'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import CdpIcon from '@/components/CdpIcon.vue'
 import StepOverview from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/StepOverview/StepOverview.vue'
 import FilterDate from '@/components/Filter/FilterDate.vue'
-import ExportReport from '@/components/ExportReport.vue'
+import ExportCSV from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/StepOverview/components/ExportCSV.vue'
 import AvgCard from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/StepOverview/components/AvgCard.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -18,8 +16,9 @@ import router from '@/router'
 
 describe('StepOverview', () => {
   let wrapper = null
+
   beforeEach(() => {
-    wrapper = mount(StepOverview, {
+    wrapper = shallowMount(StepOverview, {
       global: {
         plugins: [
           i18n,
@@ -29,13 +28,18 @@ describe('StepOverview', () => {
             createSpy: vi.fn
           })
         ],
-        components: {
-          FontAwesomeIcon,
-          CdpIcon
+        stubs: {
+          ElRow: {
+            template: '<div><slot /></div>'
+          },
+          ElCol: {
+            template: '<div><slot /></div>'
+          }
         }
       }
     })
   })
+
   afterEach(() => {
     wrapper.unmount()
   })
@@ -45,7 +49,7 @@ describe('StepOverview', () => {
   // 預設apiSuccess = false，預期渲染的元件
   it('Default apiSuccess = false, expected rendering components', async () => {
     expect(wrapper.findComponent(FilterDate).exists()).toBe(true)
-    expect(wrapper.findComponent(ExportReport).exists()).toBe(false)
+    expect(wrapper.findComponent(ExportCSV).exists()).toBe(false)
     expect(wrapper.findComponent(AvgCard).exists()).toBe(false)
     expect(wrapper.findComponent(SectionTitle).exists()).toBe(true)
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
@@ -130,7 +134,7 @@ describe('StepOverview', () => {
     //等待異步完成
     await flushPromises()
     expect(wrapper.findComponent(AvgCard).exists()).toBe(true)
-    expect(wrapper.findComponent(ExportReport).exists()).toBe(true)
+    expect(wrapper.findComponent(ExportCSV).exists()).toBe(true)
 
     //mock error api 403
     const error403 = new Error('Forbidden')

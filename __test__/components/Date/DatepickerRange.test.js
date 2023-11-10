@@ -1,5 +1,5 @@
 import { it, describe, expect, afterEach, vi } from 'vitest'
-import { shallowMount, mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import ElementPlus from 'element-plus'
 import { createTestingPinia } from '@pinia/testing'
@@ -16,7 +16,7 @@ describe('DatepickerRange', () => {
   })
 
   it('rangeDate', () => {
-    wrapper = mount(DatepickerRange, {
+    wrapper = shallowMount(DatepickerRange, {
       global: {
         plugins: [
           i18n,

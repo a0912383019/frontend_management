@@ -1,8 +1,7 @@
 import { it, describe, expect, beforeEach, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
 import * as module from '@/utils/commonUtils.js'
-import ElementPlus from 'element-plus'
 
 describe('GenerateTagsBadge', () => {
   let wrapper = null
@@ -38,27 +37,35 @@ describe('GenerateTagsBadge', () => {
   // 掛載元件時是否有根據tag_type的不同去切換class
   it('Switch classes according to different tag_types', async () => {
     //第一次掛載wrapper
-    wrapper = mount(GenerateTagsBadge, {
+    wrapper = shallowMount(GenerateTagsBadge, {
       props: {
         hall_name: 'esb',
         tag_code: '10001',
         badge_text_class: 'pink'
       },
       global: {
-        plugins: [ElementPlus]
+        stubs: {
+          ElTooltip: {
+            template: '<div><slot /></div>'
+          }
+        }
       }
     })
     expect(wrapper.vm.badge_class).toBe('badge badge-custom-green pink')
 
     //第二次掛載wrapper
-    wrapper = mount(GenerateTagsBadge, {
+    wrapper = shallowMount(GenerateTagsBadge, {
       props: {
         hall_name: 'esb',
         tag_code: '30004',
         badge_text_class: 'pink'
       },
       global: {
-        plugins: [ElementPlus]
+        stubs: {
+          ElTooltip: {
+            template: '<div><slot /></div>'
+          }
+        }
       }
     })
     expect(wrapper.vm.badge_class).toBe('badge badge-custom-blue pink')

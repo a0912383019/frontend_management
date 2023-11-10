@@ -1,40 +1,34 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { mount, flushPromises } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import CdpIcon from '@/components/CdpIcon.vue'
 import MemberDetails from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/MemberDetails.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
-import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import DialogMemberHistory from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/DialogMemberHistory.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
-import ElementPlus from 'element-plus'
 import router from '@/router'
 
 describe('MemberDetails', () => {
   let wrapper = null
+  const goToFirstPage = vi.fn()
   beforeEach(() => {
-    wrapper = mount(MemberDetails, {
+    wrapper = shallowMount(MemberDetails, {
       global: {
         plugins: [
           i18n,
-          ElementPlus,
           router,
           createTestingPinia({
             createSpy: vi.fn
           })
-        ],
-        components: {
-          FontAwesomeIcon,
-          CdpIcon
-        }
+        ]
       }
     })
+    wrapper.vm.$refs.refTable.goToFirstPage = goToFirstPage
   })
+
   afterEach(() => {
     wrapper.unmount()
   })
@@ -48,7 +42,6 @@ describe('MemberDetails', () => {
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
     expect(wrapper.findComponent(DialogMemberHistory).exists()).toBe(true)
     expect(wrapper.findComponent(CustomTable).exists()).toBe(true)
-    expect(wrapper.findComponent(ButtonIcon).exists()).toBe(true)
   })
 
   // 測試自定義排序，是否符合預期
@@ -534,16 +527,13 @@ describe('MemberDetails', () => {
     await flushPromises()
   })
 
-  // 表格頁碼切換到第一頁
-  it('Table page number switches to the first page', () => {
-    wrapper.vm.tableGoToFirstPage()
-  })
-
   // 觸發watch filterTimestamp
-  it('Trigger watch filterTimestamp', () => {
+  it('Trigger watch filterTimestamp', async () => {
     wrapper.vm.filterTimestamp = 123456
     expect(wrapper.vm.apiSuccess).toBe(false)
     expect(wrapper.vm.messageKey).toBe('clickNumberAboveToShow')
+    await flushPromises()
+    expect(goToFirstPage).toHaveBeenCalled()
   })
 
   // 觸發watch filterDateTimestamp
@@ -780,6 +770,7 @@ describe('MemberDetails', () => {
 
     //等待異步完成
     await flushPromises()
+    expect(goToFirstPage).toHaveBeenCalled()
   })
 
   // 觸發watch 與 mock api 是否如預期

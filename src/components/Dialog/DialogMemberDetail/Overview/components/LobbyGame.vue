@@ -8,7 +8,7 @@ import { storeToRefs } from 'pinia'
 import {
   generateRGBColors,
   errorRespond,
-  dynamicBackgroundColors,
+  // dynamicBackgroundColors,
   FormatNumber
 } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipFormatter } from '@/utils/highchartsConfig'
@@ -147,7 +147,7 @@ const queryLobbyGameChart = async () => {
 //轉換資料
 const transformLobbyGameChart = (data) => {
   clearChart()
-  let chartDataBgColor = []
+  // let chartDataBgColor = []
   for (let i = 0; i < data.length; i++) {
     if (i >= 10) {
       // 只顯示貨量前10名的遊戲
@@ -155,15 +155,15 @@ const transformLobbyGameChart = (data) => {
     }
     let label = data[i].lobby_name + '-' + data[i].game_name
     let color = ''
-    if (i < chart_fixed_bgColor.length) {
+    // if (i < chart_fixed_bgColor.length) {
       color = generateRGBColors(chart_fixed_bgColor[i], 0.7) // 使用定義好的顏色
-    } else {
-      color = dynamicBackgroundColors(0.7) // 隨機產生顏色
-      while (chartDataBgColor.indexOf(color) > -1) {
-        // 判斷該顏色是否已經存在
-        color = dynamicBackgroundColors(0.7) // 若顏色已存在陣列中，則隨機產生新顏色
-      }
-    }
+    // } else {
+    //   color = dynamicBackgroundColors(0.7) // 隨機產生顏色
+    //   while (chartDataBgColor.indexOf(color) > -1) {
+    //     // 判斷該顏色是否已經存在
+    //     color = dynamicBackgroundColors(0.7) // 若顏色已存在陣列中，則隨機產生新顏色
+    //   }
+    // }
 
     //highcharts
     chartOptions.series[0].data.push({

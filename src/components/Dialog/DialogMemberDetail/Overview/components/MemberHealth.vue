@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberHealthChart } from '@/api/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
@@ -49,7 +49,7 @@ const chartSetting = {
 }
 
 //註冊chart js
-const register_chart = () => {
+const registerChart = () => {
   let ctx = refChart.value.getContext('2d')
   chart = new Chart(ctx, chartSetting)
 }
@@ -90,9 +90,9 @@ const queryMemberHealthChart = async () => {
         hoverBorderWidth: 2,
         borderColor: chart_data_borderColor
       })
-      setTimeout(() => {
-        register_chart()
-      }, 100)
+      nextTick(() => {
+        registerChart()
+      })
     } else if (return_code === '0001') {
       apiSuccess.value = true
       memberHealthValue.value = t('common.none')

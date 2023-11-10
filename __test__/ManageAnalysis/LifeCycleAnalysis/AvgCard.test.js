@@ -1,19 +1,15 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { i18n } from '@/global/i18n'
-import { createTestingPinia } from '@pinia/testing'
-import ElementPlus from 'element-plus'
-import router from '@/router'
+import { shallowMount } from '@vue/test-utils'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import CdpIcon from '@/components/CdpIcon.vue'
 import AvgCard from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/StepOverview/components/AvgCard.vue'
 
 describe('AvgCard', () => {
   let wrapper = null
   const propsTitle = '測試標題'
   const propsPrice = '100'
+
   beforeEach(() => {
-    wrapper = mount(AvgCard, {
+    wrapper = shallowMount(AvgCard, {
       props: {
         title: propsTitle,
         price: propsPrice,
@@ -22,21 +18,13 @@ describe('AvgCard', () => {
         cardBgColor: '#dceff2'
       },
       global: {
-        plugins: [
-          i18n,
-          ElementPlus,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn
-          })
-        ],
         components: {
           FontAwesomeIcon,
-          CdpIcon
         }
       }
     })
   })
+
   afterEach(() => {
     wrapper.unmount()
   })

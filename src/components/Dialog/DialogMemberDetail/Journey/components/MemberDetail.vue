@@ -24,7 +24,7 @@ const apiSuccess = ref(false) //api是否成功
 //依照不同的messageKey產生不同的message
 const messageKey = ref('shortLoading')
 
-const popoverVisible = ref(false)
+// const popoverVisible = ref(false)
 
 const sourceCheckList = ref([1, 2, 3]) // 預設為1,2,3全選
 
@@ -119,7 +119,7 @@ const getSource = (code) => {
 }
 
 const handleClick = () => {
-  popoverVisible.value = false
+  // popoverVisible.value = false
   queryMemberJourneyDetail()
 }
 

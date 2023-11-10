@@ -1,7 +1,6 @@
 import { it, describe, expect, beforeEach } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import CdpIcon from '@/components/CdpIcon.vue'
 import ErrorText from '@/components/ErrorText.vue'
 import { library } from '@/utils/fontawsome.js'
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
@@ -13,11 +12,10 @@ describe('ErrorText', () => {
   const message = 'This is an error message'
 
   beforeEach(() => {
-    wrapper = mount(ErrorText, {
+    wrapper = shallowMount(ErrorText, {
       global: {
         components: {
-          FontAwesomeIcon,
-          CdpIcon
+          FontAwesomeIcon
         }
       },
       slots: {

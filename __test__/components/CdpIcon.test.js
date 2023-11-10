@@ -1,26 +1,14 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { i18n } from '@/global/i18n'
-import { createTestingPinia } from '@pinia/testing'
-import router from '@/router'
+import { shallowMount } from '@vue/test-utils'
 import CdpIcon from '@/components/CdpIcon.vue'
 
 describe('SvgIcon', () => {
   let wrapper = null
   beforeEach(() => {
-    wrapper = mount(CdpIcon, {
+    wrapper = shallowMount(CdpIcon, {
       props: {
         name: 'arrow',
         color: '#faa'
-      },
-      global: {
-        plugins: [
-          i18n,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn
-          })
-        ]
       }
     })
   })

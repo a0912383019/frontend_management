@@ -35,8 +35,8 @@ const messageKey = ref('shortLoading')
 const refChart = ref(null)
 let chart
 
-const chartTotal = ref(0) //圓餅圖資料總和
-const pieSliceCount = ref(0) //圓餅圖切片傯數
+// const chartTotal = ref(0) //圓餅圖資料總和
+// const pieSliceCount = ref(0) //圓餅圖切片傯數
 
 const chartSetting = {
   id: 'lobbyChart',
@@ -152,26 +152,26 @@ const transformLobbyChart = (data) => {
     }
     chart_labels.push(data[i].lobby_name)
     chart_data.push(parseFloat(data[i].total_bet_amount))
-    chartTotal.value = chartTotal.value + parseFloat(data[i].total_bet_amount)
+    // chartTotal.value = chartTotal.value + parseFloat(data[i].total_bet_amount)
 
     let color = ''
     let borderColor = ''
-    if (i < chart_fixed_bgColor.length) {
+    // if (i < chart_fixed_bgColor.length) {
       color = generateRGBColors(chart_fixed_bgColor[i], 0.7) // 使用定義好的顏色
       borderColor = color.substring(0, color.lastIndexOf(',')) + ',1)'
-    } else {
-      color = dynamicBackgroundColors(0.7) // 隨機產生顏色
-      while (chart_data_bgColor.indexOf(color) > -1) {
-        // 判斷該顏色是否已經存在
-        color = dynamicBackgroundColors(0.7) // 若顏色已存在陣列中，則隨機產生新顏色
-      }
-      borderColor = color.substring(0, color.lastIndexOf(',')) + ',1)'
-    }
+    // } else {
+    //   color = dynamicBackgroundColors(0.7) // 隨機產生顏色
+    //   while (chart_data_bgColor.indexOf(color) > -1) {
+    //     // 判斷該顏色是否已經存在
+    //     color = dynamicBackgroundColors(0.7) // 若顏色已存在陣列中，則隨機產生新顏色
+    //   }
+    //   borderColor = color.substring(0, color.lastIndexOf(',')) + ',1)'
+    // }
     chart_data_bgColor.push(color)
     chart_data_borderColor.push(borderColor)
   }
 
-  pieSliceCount.value = chart_labels.length
+  // pieSliceCount.value = chart_labels.length
   chartSetting.data.labels = []
   chartSetting.data.labels = chart_labels
   let chart_datasets = [

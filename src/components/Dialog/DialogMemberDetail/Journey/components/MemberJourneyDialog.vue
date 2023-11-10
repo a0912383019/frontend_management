@@ -154,9 +154,10 @@ const handleDelete = () => {
 // 欄位移除焦點
 const handleBlur = () => {
   if (
-    formOriginal.date !== form.date ||
+    (formOriginal.date !== form.date ||
     formOriginal.title !== form.title ||
-    formOriginal.content !== form.content
+    formOriginal.content !== form.content) &&
+    (form.date !== '' && form.title !== '' && form.content !== '')
   ) {
     submitBtnDisabled.value = false
   } else {
@@ -330,7 +331,6 @@ defineExpose({ dialogOpen })
         </div>
       </div>
     </el-dialog>
-
     <el-dialog
       v-model="submitCheckVisible"
       width="300"
@@ -371,7 +371,6 @@ defineExpose({ dialogOpen })
         </div>
       </div>
     </el-dialog>
-
     <el-dialog
       v-model="deleteVisible"
       width="300"
@@ -450,6 +449,14 @@ defineExpose({ dialogOpen })
 :deep(.el-form-item__label) {
   color: $blue;
   margin-bottom: 5px !important;
+}
+.cdp-input.cdp-input-disabled {
+  :deep(.el-input__inner) {
+    cursor: default !important;
+  }
+  :deep(.el-input__wrapper:hover) {
+    box-shadow: 0 0 0 0 !important;
+  }
 }
 </style>
 <style lang="scss">
