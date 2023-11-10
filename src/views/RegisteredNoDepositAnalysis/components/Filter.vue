@@ -6,7 +6,7 @@ import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 
-const { t } = useI18n()
+const { t, locale: i18nLocale } = useI18n()
 
 const deoositStore = useRegisteredNoDepositAnalysis()
 
@@ -161,18 +161,15 @@ onMounted(() => {
             :title="$t('register_no_deposit_analysis.repeated_ip')"
           >
           </SectionTitle>
-          <div class="slider-box">
-            <div class="slider-box__tag start">
-              0{{ $t('register_no_deposit_analysis.ip_times') }}
-            </div>
-            <div class="slider-box__tag end">
-              100+{{ $t('register_no_deposit_analysis.ip_times') }}
-            </div>
+          <div class="slider-box" :class="{ en: i18nLocale === 'en' }">
+            <div class="slider-box__tag start">0{{ $t('unit.times') }}</div>
+            <div class="slider-box__tag end">100+{{ $t('unit.times') }}</div>
             <el-slider
               v-model="slideVlaue"
               range
               show-stops
               class="cdp-el-slider"
+              :class="{ en: i18nLocale === 'en' }"
               :show-tooltip="false"
               tooltip-class="filter-tooltip"
               :step="10"
@@ -214,50 +211,87 @@ onMounted(() => {
     font-size: 12px;
     line-height: 1;
     &.start {
-      left: -11px;
-      top: -12px;
+      left: -10px;
+      top: -10px;
     }
     &.end {
-      right: -14px;
-      top: -12px;
+      right: -22px;
+      top: -10px;
+    }
+  }
+  &.en {
+    .slider-box {
+      &__tag {
+        &.start {
+          left: -15px;
+        }
+        &.end {
+          right: -28px;
+        }
+      }
     }
   }
 }
 </style>
 <style lang="scss">
-.el-slider__button-wrapper {
-  &::before {
-    position: absolute;
-    top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 42px;
-    height: 19px;
-    background-image: url('@/assets/images/toolip-bg.svg');
-    background-size: 100%;
-    background-position: center bottom;
-    background-repeat: no-repeat;
-    border-radius: 4px;
-    line-height: 1.2;
-    color: #fff;
-    font-size: 12px;
-    padding: 1px 5px;
-    white-space: nowrap;
-  }
-  &:nth-of-type(2) {
-    &::before {
-      content: attr(aria-valuenow) '次';
-    }
-  }
-  &:nth-of-type(3) {
-    &::before {
-      content: attr(aria-valuenow) '次';
-    }
-  }
-}
 .cdp-el-slider {
   padding-left: 6px;
   padding-right: 6px;
+  &.en {
+    .el-slider__button-wrapper {
+      &:nth-of-type(2) {
+        &::before {
+          content: attr(aria-valuenow) ' times';
+        }
+      }
+      &:nth-of-type(3) {
+        &::before {
+          content: attr(aria-valuenow) ' times';
+        }
+      }
+    }
+  }
+  .el-slider__button-wrapper {
+    &::before {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 16px;
+      background-color: #f65668;
+      background-position: center top;
+      background-repeat: no-repeat;
+      border-radius: 4px;
+      line-height: 1.2;
+      color: #fff;
+      font-size: 12px;
+      padding: 1px 5px;
+      white-space: nowrap;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      margin-left: -3px;
+      z-index: -1;
+      width: 6px;
+      height: 6px;
+      transform: rotate(-45deg);
+      border-radius: 0 0 0 20%;
+      background-color: #f65668;
+    }
+    &:nth-of-type(2) {
+      &::before {
+        content: attr(aria-valuenow) ' 次';
+      }
+    }
+    &:nth-of-type(3) {
+      &::before {
+        content: attr(aria-valuenow) ' 次';
+      }
+    }
+  }
   .el-slider {
     &__runway {
       position: relative;
@@ -304,6 +338,7 @@ onMounted(() => {
       border: none;
       background-color: #e34556;
       transform: translateY(2px);
+      transform: translateY(9px);
     }
     &__bar {
       height: 11px;
