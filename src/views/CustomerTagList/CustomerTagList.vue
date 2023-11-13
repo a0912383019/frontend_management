@@ -6,7 +6,12 @@ import { useGlobalStore } from '@/stores/global.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
-import { findHallIdMappingKey, checkTagUsage, formatDateDuration } from '@/utils/commonUtils.js'
+import {
+  findHallIdMappingKey,
+  checkTagUsage,
+  formatDateDuration,
+  getSessionStorageEntity
+} from '@/utils/commonUtils.js'
 import { ElNotification } from 'element-plus'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -31,6 +36,9 @@ const { updateMemberData } = dialogMemberDetailStore
 const apiSuccess = ref(false) //api是否成功
 
 const refCustomTable = ref(null) //table ref
+const refContent = ref(null)
+const defineTagsWidth = 46 // 定義標籤欄位寬度百分比
+const tagsColumnWidth = ref(0)
 
 //依照不同的messageKey產生不同的message
 const messageKey = ref('loading')
@@ -40,6 +48,8 @@ const apiDraw = ref(1) //第幾頁
 const apiStart = ref(0) //起始筆數
 const apiLength = ref(10) //一頁幾筆
 const apiRecordsTotal = ref(0) //資料總數
+
+const canvas = ref(null)
 
 const tableColumns = computed(() => {
   return [
@@ -77,7 +87,7 @@ const tableColumns = computed(() => {
       </div>
       `,
       align: 'left',
-      minWidth: '46%'
+      minWidth: defineTagsWidth + '%'
     },
     {
       label: t('data_name.register_date'),
@@ -179,12 +189,17 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
 
 // 轉換資料
 const transformListMemberTags = (data) => {
+  tagsColumnWidth.value = refContent.value.offsetWidth * (defineTagsWidth / 100) * 2 // 取得標籤欄位內容總寬，預設顯示兩行所以 * 2
+  const tag_description_dict =
+    getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
   let result = []
+  let tagWidth = 0
   data.map((item, index) => {
     let tempObj = {
       ...item,
       index,
       tag_name_str: [],
+      tag_transfrom_obj: [],
       tag_show: false,
       tag_button_show: false, // 按鈕是否顯示
       register_date: dayjs(item.register_date).format(t('date.format_datetime_rule')),
@@ -204,14 +219,55 @@ const transformListMemberTags = (data) => {
       }
     }
 
-    // 如果標籤數量大於12，按鈕才會顯示
-    if (tempObj['tag_name_str'].length > 12) {
-      tempObj['tag_button_show'] = true
-    }
+    // 將 6 開頭的風控標籤移動到最前面
+    tempObj['tag_name_str'] = move6ToStart(tempObj['tag_name_str'])
 
+    tempObj['tag_name_str'].forEach((item) => {
+      let obj = {}
+      obj['code'] = item
+      obj['name'] = tag_description_dict[item]['tag_name']
+      obj['width'] = getTextWidth(obj['name'])
+      tagWidth = tagWidth + obj['width']
+      if (tagsColumnWidth.value - tagWidth > obj['width']) {
+        obj['hide'] = false
+      } else {
+        obj['hide'] = true
+        tempObj['tag_button_show'] = true
+      }
+      tempObj['tag_transfrom_obj'].push(obj)
+    })
     result.push(tempObj)
+    tagWidth = 0
   })
   return result
+}
+
+// 將 6 開頭的風控標籤移動到最前面
+const move6ToStart = (val) => {
+  // 取得6開頭的標籤
+  const isSix = val.filter((item) => item.startsWith('6'))
+
+  // 取得不為6開頭的標籤
+  const other = val.filter((item) => !item.startsWith('6'))
+
+  // 陣列合併
+  const result = isSix.concat(other)
+  return result
+}
+
+// 取得文字總寬
+const getTextWidth = (val) => {
+  const text = val
+  const context = canvas.value.getContext('2d')
+  const tagPadding = 16 // left + right
+  const tagMarginRight = 5
+
+  // 設定字體大小及字體
+  context.font = '13px Noto Sans TC'
+
+  // 取得字串總寬 + padding + margin
+  const charWidths = context.measureText(text).width + tagPadding + tagMarginRight
+  return Math.floor(charWidths)
 }
 
 //頁碼切換執行的內容
@@ -257,7 +313,8 @@ onMounted(() => {
 </script>
 <template>
   <section class="cdp-section">
-    <div class="flex items-center justify-between mb-20">
+    <canvas ref="canvas" style="display: none"></canvas>
+    <div class="flex items-center justify-between mb-20" ref="refContent">
       <!-- justify-between -->
       <PageTitle icon="menuTag" :title="$t('sidebar.bbin_customer_tag_list')" />
       <div class="flex">
@@ -287,12 +344,12 @@ onMounted(() => {
         <template #tag_name_str="scope">
           <div class="tags">
             <ul class="tags__list" :class="{ allShow: scope.row.tag_show }">
-              <template v-for="(item, index) in scope.row.tag_name_str" :key="item">
-                <li :class="{ hide: index > 11 }">
+              <template v-for="item in scope.row.tag_transfrom_obj" :key="item">
+                <li :class="{ hide: item.hide }">
                   <GenerateTagsBadge
                     :key="key"
                     :hall_name="activeHall.hall_code"
-                    :tag_code="item"
+                    :tag_code="item.code"
                   />
                 </li>
               </template>
@@ -303,7 +360,7 @@ onMounted(() => {
               >
                 <el-tooltip
                   effect="dark"
-                  :content="scope.row.tag_show ? t('tags.hide_some_tag') : t('tags.open_all_tag')"
+                  :content="scope.row.tag_show ? $t('tags.hide_some_tag') : $t('tags.open_all_tag')"
                   placement="top"
                   :hide-after="0"
                 >
