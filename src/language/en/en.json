@@ -254,7 +254,8 @@
     "modify": "Modify",
     "close": "Close",
     "add": "Add",
-    "update": "Update"
+    "update": "Update",
+    "restore_data": "恢復異動前"
   },
 
   "msg": {

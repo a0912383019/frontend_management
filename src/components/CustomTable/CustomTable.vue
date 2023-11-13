@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, reactive } from 'vue'
-import LoadingAnimation from '@/components/Loading/LoadingAnimation.vue'
+import LoadingBox from '@/components/Loading/LoadingBox.vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
 import TotalPagination from '@/components/Pagination/TotalPagination.vue'
 const props = defineProps({
@@ -213,7 +213,7 @@ defineExpose({ goToFirstPage, showTableLoading })
     </div>
     <transition>
       <div class="table-loading" v-show="showTableLoading">
-        <LoadingAnimation color="blue" />
+        <LoadingBox color="blue" />
       </div>
     </transition>
   </div>

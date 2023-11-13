@@ -108,7 +108,7 @@ const queryTagsGameRank = async () => {
       transformTagsGameRank(result.data.result)
     } else if (return_code === '0001') {
       apiSuccess.value = false
-      messageKey.value = 'noResults'
+      messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     } else {

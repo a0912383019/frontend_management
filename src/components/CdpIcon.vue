@@ -1,9 +1,3 @@
-<template>
-  <svg :class="svgClass" v-bind="$attrs" :style="{ color: color }">
-    <use :xlink:href="iconName" />
-  </svg>
-</template>
-
 <script setup>
 import { computed } from 'vue'
 
@@ -26,7 +20,11 @@ const svgClass = computed(() => {
   return 'svg-icon'
 })
 </script>
-
+<template>
+  <svg :class="svgClass" v-bind="$attrs" :style="{ color: color }">
+    <use :xlink:href="iconName" />
+  </svg>
+</template>
 <style lang="scss">
 .svg-icon {
   width: 1em;

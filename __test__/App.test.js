@@ -4,7 +4,7 @@ import { i18n } from '@/global/i18n'
 import App from '@/App.vue'
 import { createTestingPinia } from '@pinia/testing'
 import { ElConfigProvider } from 'element-plus'
-import Loading from '@/components/Loading/Loading.vue'
+import LoadingBox from '@/components/Loading/LoadingBox.vue'
 import router from '@/router'
 
 describe('App.vue', () => {
@@ -19,8 +19,8 @@ describe('App.vue', () => {
     expect(wrapper.findComponent(ElConfigProvider).exists()).toBe(true)
   })
 
-  // Loading 元件是否存在於畫面上
-  it('Whether the Loading component exists on the screen', () => {
-    expect(wrapper.findComponent(Loading).exists()).toBe(true)
+  // LoadingBox 元件是否存在於畫面上
+  it('Whether the LoadingBox component exists on the screen', () => {
+    expect(wrapper.findComponent(LoadingBox).exists()).toBe(true)
   })
 })

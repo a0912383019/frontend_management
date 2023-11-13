@@ -254,7 +254,8 @@
     "modify": "修改",
     "close": "关闭",
     "add": "添加",
-    "update": "升级"
+    "update": "升级",
+    "restore_data": "恢复异动前"
   },
 
   "msg": {

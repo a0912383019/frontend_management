@@ -4,7 +4,7 @@ import { i18n } from '@/global/i18n'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import CdpIcon from '@/components/CdpIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
-import LoadingAnimation from '@/components/Loading/LoadingAnimation.vue'
+import LoadingBox from '@/components/Loading/LoadingBox.vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
 import TotalPagination from '@/components/Pagination/TotalPagination.vue'
 import ElementPlus from 'element-plus'
@@ -172,7 +172,7 @@ describe('CustomTable', () => {
 
   // 確認組件是否存在
   it('expect component', async () => {
-    expect(wrapper.findComponent(LoadingAnimation).exists()).toBe(true)
+    expect(wrapper.findComponent(LoadingBox).exists()).toBe(true)
     expect(wrapper.findComponent(CustomPagination).exists()).toBe(true)
     expect(wrapper.findComponent(TotalPagination).exists()).toBe(true)
   })

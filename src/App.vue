@@ -7,7 +7,7 @@ import en from 'element-plus/es/locale/lang/en'
 import zhTw from 'element-plus/es/locale/lang/zh-tw'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { useI18n } from 'vue-i18n'
-import Loading from '@/components/Loading/Loading.vue'
+import LoadingBox from '@/components/Loading/LoadingBox.vue'
 
 const stores = useGlobalStore()
 const { locale } = useI18n()
@@ -29,5 +29,21 @@ const language = computed(() => {
   <el-config-provider :locale="language">
     <RouterView />
   </el-config-provider>
-  <Loading :isLoading="stores.isLoading" />
+  <div class="loading" v-show="stores.isLoading">
+    <LoadingBox />
+  </div>
 </template>
+<style lang="scss" scoped>
+.loading {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(#000000, 0.8);
+}
+</style>
