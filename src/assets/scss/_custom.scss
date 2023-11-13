@@ -374,6 +374,11 @@
   background-color: rgba(207, 216, 230, 0.2);
 }
 
+.custom-bg-light__grey {
+  color: rgba(141, 141, 141, 1);
+  background-color: rgba(241, 241, 241, 0.8);
+}
+
 .custom-bg-disable {
   color: #8d8d8d;
   background-color: #f4f4f4;
@@ -437,6 +442,11 @@
   color: #8d8d8d;
   background-color: #dfdfdf;
   cursor: not-allowed;
+}
+
+.custom-bg-light__grey:hover {
+  color: rgba(141, 141, 141, 1);
+  background-color: rgba(223, 223, 223, 0.8);
 }
 
 .custom-bg-disable:hover {

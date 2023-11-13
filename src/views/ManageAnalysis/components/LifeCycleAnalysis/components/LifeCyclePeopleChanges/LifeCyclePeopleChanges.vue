@@ -214,12 +214,6 @@ const handleClick = (data) => {
   emit('queryStepTrendAnalysis')
 }
 
-//按了進階篩選內的篩選按鈕
-// const handleQueryFilter = () => {
-//   query_life_cycle_analysis()
-//   selectRow.value = null
-// }
-
 watch(
   () => activeFile.value,
   () => {

@@ -6,7 +6,6 @@ import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import { getHallCurrencySign, FormatNumber } from '@/utils/commonUtils.js'
-import BoxLoading from '@/components/Loading/BoxLoading.vue'
 
 const { t } = useI18n()
 
@@ -67,9 +66,6 @@ onMounted(() => {
     <el-col :span="6">
       <div class="cdp-text-blue mb-3">{{ $t('customer_detail_info.net_profit') }}</div>
       <div class="relative">
-        <!-- <transition>
-          <BoxLoading v-show="boxIsLoading" />
-        </transition> -->
         <el-input v-model="amountData.total_profit" class="cdp-input cdp-input-disabled" readonly>
           <template #prepend>{{ currencySignText }}</template>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
@@ -88,9 +84,6 @@ onMounted(() => {
         </el-tooltip>
       </div>
       <div class="relative">
-        <!-- <transition>
-          <BoxLoading v-show="boxIsLoading" />
-        </transition> -->
         <el-input
           v-model="amountData.withdraw_deposit_net_amount"
           class="cdp-input cdp-input-disabled"
@@ -104,9 +97,6 @@ onMounted(() => {
     <el-col :span="6">
       <div class="cdp-text-blue mb-3">{{ $t('customer_detail_info.total_deposit') }}</div>
       <div class="relative">
-        <!-- <transition>
-          <BoxLoading v-show="boxIsLoading" />
-        </transition> -->
         <el-input
           v-model="amountData.total_deposit"
           class="cdp-input cdp-input-disabled"
@@ -120,9 +110,6 @@ onMounted(() => {
     <el-col :span="6">
       <div class="cdp-text-blue mb-3">{{ $t('customer_detail_info.total_withdraw') }}</div>
       <div class="relative">
-        <!-- <transition>
-          <BoxLoading v-show="boxIsLoading" />
-        </transition> -->
         <el-input
           v-model="amountData.total_withdraw"
           class="cdp-input cdp-input-disabled"

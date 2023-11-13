@@ -19,7 +19,7 @@ import { system_admin } from '@/../public/js/system_config.js'
 import { dayjs, ElNotification } from 'element-plus'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
-import BoxLoading from '@/components/Loading/BoxLoading.vue'
+import ConfirmBox from '@/components/ConfirmBox.vue'
 
 const { t } = useI18n()
 const globalStore = useGlobalStore()
@@ -113,6 +113,25 @@ const handleTagIsEdit = (status) => {
     tagInnerDialogVisible.value = true
     transformConfirmTagsText()
   }
+}
+
+//點擊取消彈出確認框
+const confirmBoxVisible = ref(false)
+const cancelTagEdit = () => {
+  confirmBoxVisible.value = true
+}
+
+//確定取消，恢復成異動前
+const handleCancel = () => {
+  confirmBoxVisible.value = false
+  tagIsEdit.value = false
+  tagSelectValue.value = originalSelects.value
+}
+
+//確認異動，送出編輯內容
+const handleConfirm = () => {
+  confirmBoxVisible.value = false
+  handleTagIsEdit(false)
 }
 
 const tagInnerDialogVisible = ref(false) //inner dialog開啟狀態
@@ -214,6 +233,7 @@ const handleTagChange = () => {
   }
 }
 
+const originalSelects = ref([])
 // 取得包含標籤
 const get_include_tags = (hasTags) => {
   hasTags.forEach((item) => {
@@ -226,6 +246,7 @@ const get_include_tags = (hasTags) => {
         includeTagsText.value = tagDict[item]['tag_name']
       }
       //下拉選單塞入預設值
+      originalSelects.value.push(item)
       tagSelectValue.value.push(item)
     }
   })
@@ -331,9 +352,6 @@ onMounted(() => {
         <div class="cdp-text-blue mb-3">{{ $t('tags.tags') }}</div>
         <div v-show="!tagIsEdit">
           <div class="tags relative">
-            <!-- <transition>
-              <BoxLoading v-show="boxIsLoading" />
-            </transition> -->
             <div class="tags__box">
               <ul class="tags__list">
                 <li v-for="(item, index) in tagStrList" :key="index">
@@ -350,7 +368,7 @@ onMounted(() => {
           </div>
         </div>
         <div v-show="tagIsEdit">
-          <div class="tags">
+          <div class="tags minH-80">
             <el-select
               v-model="tagSelectValue"
               @change="handleTagChange"
@@ -366,16 +384,35 @@ onMounted(() => {
                 :disabled="item.disabled"
               />
             </el-select>
-            <CdpButton
-              class="tags__button custom-bg-dark__blue"
-              :name="$t('modal.confirm')"
-              size="sm-60"
-              @click="handleTagIsEdit(false)"
-            />
+            <div>
+              <div class="mb-12">
+                <CdpButton
+                  class="tags__button custom-bg-light__grey"
+                  :name="$t('modal.cancel')"
+                  size="sm-60"
+                  @click="cancelTagEdit()"
+                />
+              </div>
+              <div>
+                <CdpButton
+                  class="tags__button custom-bg-dark__blue"
+                  :name="$t('modal.confirm')"
+                  size="sm-60"
+                  @click="handleTagIsEdit(false)"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </el-col>
     </el-row>
+    <ConfirmBox
+      name="notSaved"
+      :confirmBoxVisible="confirmBoxVisible"
+      @cancel="handleCancel"
+      @confirm="handleConfirm"
+      class="top30per"
+    ></ConfirmBox>
     <el-dialog
       v-model="tagInnerDialogVisible"
       width="300"
@@ -460,6 +497,11 @@ onMounted(() => {
     flex-shrink: 0;
   }
 }
+.minH-80 {
+  :deep(.el-input__wrapper) {
+    min-height: 80px !important;
+  }
+}
 .cdp-input {
   :deep(.el-input__inner) {
     cursor: default !important;
@@ -480,8 +522,8 @@ onMounted(() => {
       color: #909399;
     }
     &.is-closable {
-      margin-top: 3px;
-      margin-bottom: 3px;
+      margin-top: 4px;
+      margin-bottom: 4px;
     }
   }
   &.el-select {
@@ -499,5 +541,8 @@ onMounted(() => {
       padding-bottom: 5px;
     }
   }
+}
+.top30per {
+  top: 15%;
 }
 </style>
