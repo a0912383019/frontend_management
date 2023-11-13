@@ -1,6 +1,8 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import LoadingBox from '@/components/Loading/LoadingBox.vue'
+
 const props = defineProps({
   messageKey: {
     type: String,
@@ -29,9 +31,6 @@ const getIcon = (key) => {
       break
     case 'info':
       result = 'fa-solid fa-circle-info'
-      break
-    case 'gear':
-      result = 'fa-solid fa-gear'
       break
     default:
       result = 'fa-solid fa-triangle-exclamation'
@@ -62,10 +61,6 @@ const messageData = computed(() => {
       result['icon'] = getIcon('warning')
       result['title'] = t('msg.chart_failed')
       break
-    case 'noResults':
-      result['icon'] = getIcon('warning')
-      result['title'] = t('msg.no_results')
-      break
     case 'queryFailed':
       result['icon'] = getIcon('warning')
       result['title'] = t('msg.query_failed')
@@ -82,10 +77,6 @@ const messageData = computed(() => {
       result['icon'] = getIcon('info')
       result['title'] = t('register_no_deposit_analysis.click_for_detail')
       break
-    case 'working':
-      result['icon'] = getIcon('gear')
-      result['title'] = '開發中'
-      break
   }
   return result
 })
@@ -97,14 +88,22 @@ const messageStyle = computed(() => {
 })
 </script>
 <template>
-  <div class="message" :class="[{ cover: props.cover }, props.bg]" :style="messageStyle">
+  <div
+    class="message"
+    :class="[
+      { cover: props.cover },
+      props.bg,
+      { red: props.messageKey !== 'loading' && props.messageKey !== 'shortLoading' }
+    ]"
+    :style="messageStyle"
+  >
     <div
-      class="message__icon"
-      :class="{
-        loading: props.messageKey === 'loading' || props.messageKey === 'shortLoading',
-        gear: props.messageKey === 'working'
-      }"
+      class="loading-container"
+      v-if="props.messageKey === 'loading' || props.messageKey === 'shortLoading'"
     >
+      <LoadingBox color="blue" size="sm"></LoadingBox>
+    </div>
+    <div class="message__icon" v-else>
       <font-awesome-icon :icon="messageData['icon']" />
     </div>
     <div class="message__title">{{ messageData['title'] }}</div>
@@ -124,7 +123,7 @@ const messageStyle = computed(() => {
   min-height: 100px;
   padding: 20px;
   margin-bottom: 30px;
-  color: #dc3545;
+  color: rgba(79, 132, 207, 1);
   border-radius: 5px;
   background-color: #f9fafc;
   &.white {
@@ -137,11 +136,6 @@ const messageStyle = computed(() => {
         animation: rotate360 2s infinite linear;
       }
     }
-    &.gear {
-      svg {
-        animation: rotate360 01s infinite linear;
-      }
-    }
   }
   &.cover {
     position: absolute;
@@ -150,5 +144,12 @@ const messageStyle = computed(() => {
     right: 0;
     bottom: 0;
   }
+}
+.loading-container {
+  margin-right: 6px;
+  margin-top: 4px;
+}
+.red {
+  color: #dc3545;
 }
 </style>
