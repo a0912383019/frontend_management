@@ -21,14 +21,14 @@ const modalText = computed(() => {
   if (props.name === 'delete') {
     return {
       title: t('modal.delete'),
-      text: t('確認刪除該筆記錄？'),
+      text: t('modal.are_you_sure_to_delete'),
       leftBtn: t('modal.cancel')
     }
   } else if (props.name === 'notSaved') {
     return {
       title: t('modal.not_yet_saved'),
-      text: t('是否要儲存異動內容？'),
-      leftBtn: t('恢復異動前')
+      text: t('modal.do_you_want_to_save_changes'),
+      leftBtn: t('modal.restore_data')
     }
   }
 })

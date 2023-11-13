@@ -11,10 +11,6 @@ const props = defineProps({
     default: 'lg'
   }
 })
-
-// const colorClass = computed(() => {
-//   return props.color
-// })
 </script>
 <template>
   <span class="loader" :class="[props.size, props.color]"></span>
