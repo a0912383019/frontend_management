@@ -119,34 +119,16 @@ const querySmallMesNote = async (kind = '0') => {
     const { return_code } = result.data.status
 
     if (return_code === '0001') {
-      allMessageKey.value = 'noResult'
+      allApiSuccess.value = true
+      apiIsCalled.value[Number(kind)] = true
+      tableData.value = []
+      tableDatas[Number(kind)] = tableData.value
     } else if (return_code === '0000') {
       allApiSuccess.value = true
       //整理及地圖對應的資料
       transformQuerySmallMesNote(result.data.result)
-      switch (kind) {
-        case '0':
-          apiIsCalled.value[0] = true
-          tableDatas[0] = tableData.value
-          break
-        case '1':
-          apiIsCalled.value[1] = true
-          tableDatas[1] = tableData.value
-          break
-        case '2':
-          apiIsCalled.value[2] = true
-          tableDatas[2] = tableData.value
-          break
-        case '3':
-          apiIsCalled.value[3] = true
-          tableDatas[3] = tableData.value
-          break
-        case '4':
-          apiIsCalled.value[4] = true
-          tableDatas[4] = tableData.value
-          break
-      }
-      handleSearch(kind)
+      apiIsCalled.value[Number(kind)] = true
+      tableDatas[Number(kind)] = tableData.value
     } else {
       allMessageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)

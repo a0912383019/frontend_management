@@ -1,13 +1,10 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { apiQueryProfitWithdrawDepositAmount } from '@/api/dialogMemberDetail.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import { getHallCurrencySign, FormatNumber } from '@/utils/commonUtils.js'
-
-const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -22,11 +19,9 @@ const amountData = reactive({
   total_withdraw: '' //總出款金額
 })
 const currencySignText = ref('')
-const boxIsLoading = ref(true)
 
 //取得會員時間區間內實際損益與出入款總金額
 const queryProfitWithdrawDepositAmount = async () => {
-  boxIsLoading.value = true //顯示loading
   try {
     const result = await apiQueryProfitWithdrawDepositAmount({
       search_date: dialogMemberDetailRangeDate.value,
@@ -42,15 +37,12 @@ const queryProfitWithdrawDepositAmount = async () => {
       amountData['total_withdraw'] = FormatNumber(total_withdraw)
       amountData['withdraw_deposit_net_amount'] = FormatNumber(withdraw_deposit_net_amount)
       currencySignText.value = getHallCurrencySign('BBIN', activeHall.hall_code)
-      boxIsLoading.value = false //載入完成 移除loading
+    } else {
+      let failMsg = errorRespond(result.data.status)
+      console.log(failMsg)
     }
   } catch (error) {
-    console.log(error)
-    boxIsLoading.value = true //顯示loading
-    amountData['total_deposit'] = ''
-    amountData['total_profit'] = ''
-    amountData['total_withdraw'] = ''
-    amountData['withdraw_deposit_net_amount'] = ''
+    console.error(error)
     if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     }
@@ -97,11 +89,7 @@ onMounted(() => {
     <el-col :span="6">
       <div class="cdp-text-blue mb-3">{{ $t('customer_detail_info.total_deposit') }}</div>
       <div class="relative">
-        <el-input
-          v-model="amountData.total_deposit"
-          class="cdp-input cdp-input-disabled"
-          readonly
-        >
+        <el-input v-model="amountData.total_deposit" class="cdp-input cdp-input-disabled" readonly>
           <template #prepend>{{ currencySignText }}</template>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
@@ -110,11 +98,7 @@ onMounted(() => {
     <el-col :span="6">
       <div class="cdp-text-blue mb-3">{{ $t('customer_detail_info.total_withdraw') }}</div>
       <div class="relative">
-        <el-input
-          v-model="amountData.total_withdraw"
-          class="cdp-input cdp-input-disabled"
-          readonly
-        >
+        <el-input v-model="amountData.total_withdraw" class="cdp-input cdp-input-disabled" readonly>
           <template #prepend>{{ currencySignText }}</template>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>

@@ -12,6 +12,7 @@ import { useSidebarStore } from '@/stores/sidebar.js'
 describe('HeaderBar', () => {
   let wrapper = null
   let sidebarStore = null
+  const toggleSidebarOpen = vi.fn()
 
   beforeEach(() => {
     wrapper = shallowMount(HeaderBar, {
@@ -27,6 +28,7 @@ describe('HeaderBar', () => {
       }
     })
     sidebarStore = useSidebarStore()
+    sidebarStore.toggleSidebarOpen = toggleSidebarOpen
   })
 
   afterEach(() => {
@@ -44,6 +46,6 @@ describe('HeaderBar', () => {
     expect(wrapper.vm.times).toBe(123)
 
     await wrapper.find('.m_menu_button').trigger('click')
-    expect(sidebarStore.toggleSidebarOpen).toHaveBeenCalled()
+    expect(toggleSidebarOpen).toHaveBeenCalled()
   })
 })
