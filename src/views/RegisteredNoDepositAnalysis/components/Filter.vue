@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted, nextTick } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRegisteredNoDepositAnalysis } from '@/stores/registeredNoDepositAnalysis.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
@@ -21,21 +21,23 @@ const updatedTimeDate = ref('')
 // 目前存款狀態選取值
 const selectDepositValue = ref(deoositStore.selectDepositValue) // 預設 all
 // 目前存款狀態 options
-const selectDepositOptions = ref([
-  {
-    value: 'all',
-    label: t('common.select_all'),
-    selected: true
-  },
-  {
-    value: 0,
-    label: t('register_no_deposit_analysis.not_deposit')
-  },
-  {
-    value: 1,
-    label: t('register_no_deposit_analysis.deposited')
-  }
-])
+const selectDepositOptions = computed(() => {
+  return [
+    {
+      value: 'all',
+      label: t('common.select_all'),
+      selected: true
+    },
+    {
+      value: 0,
+      label: t('register_no_deposit_analysis.not_deposit')
+    },
+    {
+      value: 1,
+      label: t('register_no_deposit_analysis.deposited')
+    }
+  ]
+})
 
 // 送出
 const handleSubmitClick = () => {
@@ -74,6 +76,8 @@ const marks = reactive({
   100: '100'
 })
 
+const isMax = ref(false)
+
 // 数据改变时触发（使用鼠标拖曳时，活动过程实时触发）
 const handleSliderInput = (val) => {
   if (val[1] === 100) {
@@ -82,6 +86,11 @@ const handleSliderInput = (val) => {
         .querySelectorAll('.el-slider__button-wrapper')[1]
         .setAttribute('aria-valuenow', '100+')
     })
+  }
+  if (val[1] >= 90) {
+    isMax.value = true
+  } else {
+    isMax.value = false
   }
 }
 
@@ -161,7 +170,7 @@ onMounted(() => {
             :title="$t('register_no_deposit_analysis.repeated_ip')"
           >
           </SectionTitle>
-          <div class="slider-box" :class="{ en: i18nLocale === 'en' }">
+          <div class="slider-box" :class="{ en: i18nLocale === 'en', isMax: isMax }">
             <div class="slider-box__tag start">0{{ $t('unit.times') }}</div>
             <div class="slider-box__tag end">100+{{ $t('unit.times') }}</div>
             <el-slider
@@ -211,11 +220,11 @@ onMounted(() => {
     font-size: 12px;
     line-height: 1;
     &.start {
-      left: -10px;
+      left: -2px;
       top: -10px;
     }
     &.end {
-      right: -22px;
+      right: -11px;
       top: -10px;
     }
   }
@@ -223,10 +232,19 @@ onMounted(() => {
     .slider-box {
       &__tag {
         &.start {
-          left: -15px;
+          left: -12px;
         }
         &.end {
-          right: -28px;
+          right: -17px;
+        }
+      }
+    }
+    &.isMax {
+      .slider-box {
+        &__tag {
+          &.end {
+            opacity: 0;
+          }
         }
       }
     }
@@ -235,8 +253,8 @@ onMounted(() => {
 </style>
 <style lang="scss">
 .cdp-el-slider {
-  padding-left: 6px;
-  padding-right: 6px;
+  padding-left: 12px;
+  padding-right: 12px;
   &.en {
     .el-slider__button-wrapper {
       &:nth-of-type(2) {
@@ -265,8 +283,9 @@ onMounted(() => {
       line-height: 1.2;
       color: #fff;
       font-size: 12px;
-      padding: 1px 5px;
+      padding: 1px 3px;
       white-space: nowrap;
+      letter-spacing: -0.5px;
     }
     &::after {
       content: '';
