@@ -14,7 +14,7 @@ const {
   shortcutsConfig2
 } = useDateStore()
 
-const { t } = useI18n()
+const { t, locale: i18nLocale } = useI18n()
 
 const props = defineProps({
   modelValue: {
@@ -51,6 +51,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue'])
+
+const key = ref(0)
 
 const dateValueStartDate = ref('')
 const dateValueEndDate = ref('')
@@ -160,11 +162,17 @@ watch(
     }
   }
 )
+
+// 語系切換重置key
+watch(i18nLocale, () => {
+  key.value = Date.now()
+})
 </script>
 <template>
   <div>
     <el-date-picker
       v-model="dateValue"
+      :key="key"
       type="daterange"
       :format="$t('date.format_date_rule')"
       :unlink-panels="false"
