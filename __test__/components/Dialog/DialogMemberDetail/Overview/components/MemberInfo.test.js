@@ -1,4 +1,437 @@
-import { describe } from 'vitest'
+import { it, describe, expect, vi, afterEach, beforeEach } from 'vitest'
+import { flushPromises, shallowMount } from '@vue/test-utils'
+import { i18n } from '@/global/i18n'
+import { createTestingPinia } from '@pinia/testing'
+import axiosGoInstance from '@/api/axiosGoInstance.js'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import MemberInfo from '@/components/Dialog/DialogMemberDetail/Overview/components/MemberInfo.vue'
+import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
+import CdpButton from '@/components/Button/CdpButton.vue'
+import ConfirmBox from '@/components/ConfirmBox.vue'
+import router from '@/router'
+import ElementPlus from 'element-plus'
 
-describe.skip('skipped suite', () => {
+describe('MemberInfo.vue', () => {
+  let wrapper = null
+
+  beforeEach(() => {
+    //只mock getHallCurrencySign，因爲無法初始化hall_code
+    vi.mock('@/utils/commonUtils.js', async () => {
+      const actual = await vi.importActual('@/utils/commonUtils.js')
+      const getHallCurrencySign = vi.fn()
+      getHallCurrencySign.mockReturnValue('¥')
+
+      //模擬檢查標籤是否禁用
+      const checkTagUsage = vi.fn()
+      checkTagUsage.mockReturnValue(true)
+
+      //模擬產生標籤
+      const generateTagMultiSelect = vi.fn()
+      generateTagMultiSelect.mockReturnValue({
+        10000: {
+          tag_type: 1,
+          tag_name: '測試',
+          tag_description: '測試敘述',
+          tag_category: 1,
+          sort_index: 1000000,
+          tag_enabled: true,
+          mutual_tags_code: '',
+          tag_key: '10000'
+        },
+        10001: {
+          tag_type: 1,
+          tag_name: 'VIP客',
+          tag_description: '人工定義為高價值會員',
+          tag_category: 1,
+          sort_index: 1000001,
+          tag_enabled: true,
+          mutual_tags_code: '',
+          tag_key: '10001'
+        },
+        10002: {
+          tag_type: 1,
+          tag_name: '退場VIP',
+          tag_description: '人工定義為「曾經」是高價值會員',
+          tag_category: 1,
+          sort_index: 1000002,
+          tag_enabled: true,
+          mutual_tags_code: '',
+          tag_key: '10002'
+        },
+        10003: {
+          tag_type: 1,
+          tag_name: '深耕客',
+          tag_description: '人工定義為「有潛力開發」為高價值的會員',
+          tag_category: 1,
+          sort_index: 1000004,
+          tag_enabled: true,
+          mutual_tags_code: '',
+          tag_key: '10003'
+        },
+        10004: {
+          tag_type: 1,
+          tag_name: '退場深耕客',
+          tag_description: '人工定義為「曾經有潛力開發」為高價值的會員',
+          tag_category: 1,
+          sort_index: 1000005,
+          tag_enabled: true,
+          mutual_tags_code: '10000',
+          tag_key: '10004'
+        },
+        10005: {
+          tag_type: 1,
+          tag_name: '套利客',
+          tag_description: '人工定義為套利客',
+          tag_category: 1,
+          sort_index: 1000006,
+          tag_enabled: true,
+          mutual_tags_code: '',
+          tag_key: '10005'
+        },
+        10007: {
+          tag_type: 1,
+          tag_name: '疑似套利客',
+          tag_description: '人工定義為疑似套利客',
+          tag_category: 1,
+          sort_index: 1000007,
+          tag_enabled: true,
+          mutual_tags_code: '',
+          tag_key: '10007'
+        }
+      })
+      return {
+        ...actual, //包括原始模組中的其他方法
+        getHallCurrencySign, //覆蓋函數
+        checkTagUsage,
+        generateTagMultiSelect
+      }
+    })
+
+    const user_info = {
+      user_type: 9
+    }
+    sessionStorage.setItem('user_info', JSON.stringify(user_info))
+    const system_config = {
+      tags_config: {
+        esb: {
+          10000: {
+            tag_type: 1,
+            tag_name: '測試',
+            tag_description: '測試敘述',
+            tag_category: 1,
+            sort_index: 1000000,
+            tag_enabled: true,
+            mutual_tags_code: ''
+          },
+          10001: {
+            tag_type: 1,
+            tag_name: 'VIP客',
+            tag_description: '人工定義為高價值會員',
+            tag_category: 1,
+            sort_index: 1000001,
+            tag_enabled: true,
+            mutual_tags_code: ''
+          },
+          10002: {
+            tag_type: 1,
+            tag_name: '退場VIP',
+            tag_description: '人工定義為「曾經」是高價值會員',
+            tag_category: 1,
+            sort_index: 1000002,
+            tag_enabled: true,
+            mutual_tags_code: '',
+            tag_key: '10002'
+          },
+          10003: {
+            tag_type: 1,
+            tag_name: '深耕客',
+            tag_description: '人工定義為「有潛力開發」為高價值的會員',
+            tag_category: 1,
+            sort_index: 1000004,
+            tag_enabled: true,
+            mutual_tags_code: '',
+            tag_key: '10003'
+          },
+          10004: {
+            tag_type: 1,
+            tag_name: '退場深耕客',
+            tag_description: '人工定義為「曾經有潛力開發」為高價值的會員',
+            tag_category: 1,
+            sort_index: 1000005,
+            tag_enabled: true,
+            mutual_tags_code: '10000',
+            tag_key: '10004'
+          },
+          10005: {
+            tag_type: 1,
+            tag_name: '套利客',
+            tag_description: '人工定義為套利客',
+            tag_category: 1,
+            sort_index: 1000006,
+            tag_enabled: true,
+            mutual_tags_code: '',
+            tag_key: '10005'
+          },
+          10007: {
+            tag_type: 1,
+            tag_name: '疑似套利客',
+            tag_description: '人工定義為疑似套利客',
+            tag_category: 1,
+            sort_index: 1000007,
+            tag_enabled: true,
+            mutual_tags_code: '',
+            tag_key: '10007'
+          },
+          30004: {
+            tag_type: 3,
+            tag_name: '贏了會衝',
+            tag_description: '近15個實動日，當日贏後下次會賭更大會員',
+            tag_category: 1,
+            sort_index: 3000004,
+            tag_enabled: true,
+            mutual_tags_code: '30005,30006,30007'
+          }
+        }
+      }
+    }
+    sessionStorage.setItem('system_config', JSON.stringify(system_config))
+
+    const result1 = {
+      status: {
+        return_code: '0000',
+        message: 'success'
+      },
+      result: {
+        hall_id: 3820698,
+        domain_id: 0,
+        ag_name: 'dsball',
+        user_name: 'kleinsh82',
+        user_phone: '15250014111',
+        register_date: '2010-05-19 23:40:36',
+        user_mail: 'kleinsh@icloud.com',
+        tag_str: '10001,10003,10005,10007',
+        user_level_id: 20254,
+        user_level: '超級VIP'
+      }
+    }
+    const result2 = {
+      result: {
+        this_day_step: 4,
+        data_date: '2023-11-12'
+      },
+      status: {
+        return_code: '0000',
+        message: 'success'
+      }
+    }
+    vi.spyOn(axiosGoInstance, 'get').mockImplementation((url) => {
+      switch (url) {
+        case '/api/auth/member/member_info':
+          return Promise.resolve({ data: result1 })
+        case '/api/auth/manage/member_step_detail_by_date':
+          return Promise.resolve({ data: result2 })
+        default:
+          return error
+      }
+    })
+    const result3 = {
+      data: {
+        status: {
+          return_code: '0000',
+          message: 'success'
+        }
+      }
+    }
+    vi.spyOn(axiosGoInstance, 'put').mockResolvedValue(result3)
+    wrapper = shallowMount(MemberInfo, {
+      global: {
+        plugins: [
+          i18n,
+          ElementPlus,
+          router,
+          createTestingPinia({
+            createSpy: vi.fn
+          })
+        ],
+        components: {
+          FontAwesomeIcon
+        },
+        stubs: {
+          ElRow: {
+            template: '<div><slot /></div>'
+          },
+          ElCol: {
+            template: '<div><slot /></div>'
+          }
+        }
+      }
+    })
+  })
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
+  it('Expected components render correctly, mock api 0000', async () => {
+    //等待異步完成
+    await flushPromises()
+
+    expect(wrapper.findComponent(GenerateTagsBadge).exists()).toBe(true)
+    //mock api回傳的tag_str有4個
+    expect(wrapper.findAllComponents(GenerateTagsBadge)).toHaveLength(4)
+    expect(wrapper.findComponent(CdpButton).exists()).toBe(true)
+    expect(wrapper.findComponent(ConfirmBox).exists()).toBe(true)
+    const apiMemberData = {
+      user_name: 'kleinsh82',
+      ag_name: 'dsball',
+      user_level: '超級VIP',
+      register_date: '2010/05/19 23:40:36',
+      user_phone: '15250014111',
+      user_mail: 'kleinsh@icloud.com',
+      life_cycle: '即將流失回頭期'
+    }
+    expect(wrapper.vm.apiMemberData).toStrictEqual(apiMemberData)
+
+    const tagSelectOptions = [
+      {
+        label: '測試',
+        value: '10000',
+        disabled: false,
+        tag_type: 1,
+        tag_name: '測試',
+        tag_description: '測試敘述',
+        tag_category: 1,
+        sort_index: 1000000,
+        tag_enabled: true,
+        mutual_tags_code: '',
+        tag_key: '10000'
+      },
+      {
+        label: 'VIP客',
+        value: '10001',
+        disabled: false,
+        tag_type: 1,
+        tag_name: 'VIP客',
+        tag_description: '人工定義為高價值會員',
+        tag_category: 1,
+        sort_index: 1000001,
+        tag_enabled: true,
+        mutual_tags_code: '',
+        tag_key: '10001'
+      },
+      {
+        label: '退場VIP',
+        value: '10002',
+        disabled: false,
+        tag_type: 1,
+        tag_name: '退場VIP',
+        tag_description: '人工定義為「曾經」是高價值會員',
+        tag_category: 1,
+        sort_index: 1000002,
+        tag_enabled: true,
+        mutual_tags_code: '',
+        tag_key: '10002'
+      },
+      {
+        label: '深耕客',
+        value: '10003',
+        disabled: false,
+        tag_type: 1,
+        tag_name: '深耕客',
+        tag_description: '人工定義為「有潛力開發」為高價值的會員',
+        tag_category: 1,
+        sort_index: 1000004,
+        tag_enabled: true,
+        mutual_tags_code: '',
+        tag_key: '10003'
+      },
+      {
+        label: '退場深耕客',
+        value: '10004',
+        disabled: false,
+        tag_type: 1,
+        tag_name: '退場深耕客',
+        tag_description: '人工定義為「曾經有潛力開發」為高價值的會員',
+        tag_category: 1,
+        sort_index: 1000005,
+        tag_enabled: true,
+        mutual_tags_code: '10000',
+        tag_key: '10004'
+      },
+      {
+        label: '套利客',
+        value: '10005',
+        disabled: false,
+        tag_type: 1,
+        tag_name: '套利客',
+        tag_description: '人工定義為套利客',
+        tag_category: 1,
+        sort_index: 1000006,
+        tag_enabled: true,
+        mutual_tags_code: '',
+        tag_key: '10005'
+      },
+      {
+        label: '疑似套利客',
+        value: '10007',
+        disabled: false,
+        tag_type: 1,
+        tag_name: '疑似套利客',
+        tag_description: '人工定義為疑似套利客',
+        tag_category: 1,
+        sort_index: 1000007,
+        tag_enabled: true,
+        mutual_tags_code: '',
+        tag_key: '10007'
+      }
+    ]
+    expect(wrapper.vm.tagSelectOptions).toStrictEqual(tagSelectOptions)
+    const originalTag = ['10001', '10003', '10005', '10007']
+    expect(wrapper.vm.originalSelects).toStrictEqual(originalTag)
+    expect(wrapper.vm.tagSelectValue).toStrictEqual(originalTag)
+
+    wrapper.vm.activeHall.hall_code = 'esb'
+
+    //模擬編輯更改tag
+    async function edit() {
+      wrapper.vm.handleTagIsEdit(true)
+      wrapper.vm.tagSelectValue = ['10001', '10002', '10004']
+      wrapper.findComponent({ name: 'el-select' }).trigger('change')
+    }
+
+    //編輯>取消>確定取消
+    await edit()
+    expect(wrapper.vm.tagIsEdit).toBe(true)
+    const newTagSelectOptions = [...tagSelectOptions]
+    //10004標籤跟10000互斥，所以10000的標籤應該被disabled
+    newTagSelectOptions[0].disabled = true
+    expect(wrapper.vm.tagSelectOptions).toStrictEqual(newTagSelectOptions)
+    //取消
+    expect(wrapper.vm.confirmBoxVisible).toBe(false)
+    wrapper.vm.cancelTagEdit()
+    expect(wrapper.vm.confirmBoxVisible).toBe(true)
+    //確定取消
+    wrapper.vm.handleCancel()
+    expect(wrapper.vm.confirmBoxVisible).toBe(false)
+    expect(wrapper.vm.tagIsEdit).toBe(false)
+    //恢復成異動前的標籤
+    expect(wrapper.vm.tagSelectValue).toStrictEqual(originalTag)
+
+    //編輯>取消>確認>修改
+    await edit()
+    wrapper.vm.cancelTagEdit() //取消
+    wrapper.vm.handleConfirm() //確認，觸發handleTagIsEdit(false)，觸發transformConfirmTagsText
+    expect(wrapper.vm.confirmBoxVisible).toBe(false)
+    expect(wrapper.vm.tagInnerDialogVisible).toBe(true)
+    expect(wrapper.vm.confirmTagsText).toStrictEqual('VIP客、退場VIP、退場深耕客')
+    wrapper.vm.handleInnerTagIsEdit('modify') //修改
+    expect(wrapper.vm.tagInnerDialogVisible).toBe(false)
+
+    //確認>確定送出
+    wrapper.vm.handleTagIsEdit(false)
+    expect(wrapper.vm.tagInnerDialogVisible).toBe(true)
+    wrapper.vm.handleInnerTagIsEdit('confirm')
+    await flushPromises()
+    expect(wrapper.vm.tagIsEdit).toBe(false)
+  })
 })

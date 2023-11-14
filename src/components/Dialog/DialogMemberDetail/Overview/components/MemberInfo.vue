@@ -30,13 +30,10 @@ const dialogMemberDetailStore = useDialogMemberDetailStore()
 
 const apiMemberData = reactive({}) //存放api資料
 
-const boxIsLoading = ref(true)
-
 const userType = ref(getSessionStorageEntity('user_info').user_type)
 
 //取得會員基本資料
 const queryMemberInfo = async () => {
-  boxIsLoading.value = true //顯示loading
   try {
     const result = await apiQueryMemberInfo({
       hall_name: activeHall.hall_code,
@@ -53,14 +50,12 @@ const queryMemberInfo = async () => {
       apiMemberData.user_phone = user_phone
       apiMemberData.user_mail = user_mail
       transformMemberInfoTagStr(tag_str) //處理標籤
-      boxIsLoading.value = false //載入完成 移除loading
     } else if (return_code === '0001') {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
   } catch (error) {
     console.error(error)
-    boxIsLoading.value = true //顯示loading
     if (error.response.status === 403) {
       ElNotification({
         title: t('msg.no_permission'),
@@ -411,7 +406,7 @@ onMounted(() => {
       :confirmBoxVisible="confirmBoxVisible"
       @cancel="handleCancel"
       @confirm="handleConfirm"
-      class="top30per"
+      class="top15per"
     ></ConfirmBox>
     <el-dialog
       v-model="tagInnerDialogVisible"
@@ -542,7 +537,7 @@ onMounted(() => {
     }
   }
 }
-.top30per {
+.top15per {
   top: 15%;
 }
 </style>
