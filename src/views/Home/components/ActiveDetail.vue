@@ -81,16 +81,21 @@ const queryMemberRecentWeekLively = async (user_id) => {
     })
     const { return_code } = result.data.status
 
-    if (return_code === '0001') {
-      weekMessageKey.value = 'noResult'
-    } else if (return_code === '0000' && result.data.result.length !== 0) {
+    if (return_code === '0000') {
       weekApiSuccess.value = true
-      //整理table對應的資料
-      transformMemberRecentWeekLively(result.data.result)
+      if (result.data.result.length !== 0) {
+        //整理table對應的資料
+        transformMemberRecentWeekLively(result.data.result)
+      }
     } else {
-      weekMessageKey.value = 'chartFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        weekMessageKey.value = 'noResult'
+      } else {
+        weekMessageKey.value = 'chartFailed'
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     }
   } catch (error) {
     console.error(error)
@@ -186,16 +191,21 @@ const queryMemberRecentLively = async (user_id) => {
     })
     const { return_code } = result.data.status
 
-    if (return_code === '0001') {
-      dayMessageKey.value = 'noResult'
-    } else if (return_code === '0000' && result.data.result.length !== 0) {
+    if (return_code === '0000') {
       dayApiSuccess.value = true
-      //整理table對應的資料
-      transformMemberRecentLively(result.data.result)
+      if (result.data.result.length !== 0) {
+        //整理table對應的資料
+        transformMemberRecentLively(result.data.result)
+      }
     } else {
-      dayMessageKey.value = 'chartFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        dayMessageKey.value = 'noResult'
+      } else {
+        dayMessageKey.value = 'chartFailed'
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     }
   } catch (error) {
     console.error(error)
@@ -273,11 +283,7 @@ defineExpose({ handleOpenDialog })
           :serverSide="false"
         >
           <template #icon="scope">
-            <el-tooltip
-              effect="dark"
-              placement="top"
-              :hide-after="0"
-            >
+            <el-tooltip effect="dark" placement="top" :hide-after="0">
               <template #content>
                 <div class="font-size-14">
                   {{ scope.row.iconStepName }}
