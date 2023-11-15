@@ -319,13 +319,13 @@ watch(
         >
           <template #content="scope">
             <span v-for="(item, idx) in scope.row.contentCut" :key="idx">
-              <a
+              <div
                 v-if="item.match(/(.*?)@(.*?)/)"
-                class="cdp-link-click inline"
+                class="cdp-link-click"
                 @click="updateMemberData(transformUser(item))"
               >
                 {{ transformUser(item).user_name }}
-              </a>
+              </div>
               <span v-else>{{ item }}</span>
             </span>
           </template>
