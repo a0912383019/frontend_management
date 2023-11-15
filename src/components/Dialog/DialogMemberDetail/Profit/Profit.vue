@@ -21,10 +21,10 @@ watch([() => dialogMemberDetailStore.nowTag, () => dialogMemberDetailStore.timeS
     <MemberPayoffHallProfit :key="key" />
     <DepositAndWithdraw :key="key" />
     <el-row :gutter="20">
-      <el-col :span="12">
+      <el-col :span="12" class="mb-20">
         <TotalBetPlatforms :key="key" />
       </el-col>
-      <el-col :span="12">
+      <el-col :span="12" class="mb-20">
         <TotalPayoffPlatforms :key="key" />
       </el-col>
     </el-row>

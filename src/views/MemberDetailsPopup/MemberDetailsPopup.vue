@@ -13,7 +13,7 @@ const { t } = useI18n()
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
 
-const memberData = JSON.parse(sessionStorage.member_data)
+// const memberData = JSON.parse(sessionStorage.member_data)
 
 //當前顯示的tab
 const currentTabs = ref('Overview')
@@ -68,21 +68,21 @@ const updateTimestamp = (data) => {
   dialogMemberDetailStore.dialogMemberDetailRangeDate = data['rangeDate']
 }
 
-onMounted(() => {
-  document.addEventListener('contextmenu', (event) => {
-    event.preventDefault()
-  })
+// onMounted(() => {
+//   document.addEventListener('contextmenu', (event) => {
+//     event.preventDefault()
+//   })
 
-  document.addEventListener('selectstart', (event) => {
-    event.preventDefault()
-  })
-})
+//   document.addEventListener('selectstart', (event) => {
+//     event.preventDefault()
+//   })
+// })
 </script>
 <template>
   <div class="content">
     <div class="content__member-title">
       {{ $t('customer_detail_info.member_name') }}
-      <div class="underline font-bold">{{ memberData.user_name }}</div>
+      <div class="underline font-bold">{{ dialogMemberDetailStore.state.memberData.user_name }}</div>
     </div>
     <el-row :gutter="20" class="mb-20">
       <el-col :span="12">
@@ -111,6 +111,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .content {
   padding: 20px;
+  padding-bottom: 0px;
   border-left-color: #f4f6f9;
   &__member-title {
     display: flex;
