@@ -38,10 +38,6 @@ const dialogVisible = ref(false)
 //dialog close callback
 const handleClose = () => {
   refUploadFile.value.dialogClose()
-  //關閉dialog，如果沒有上傳檔案則關閉使用者匯入名單switch
-  if (filePath.value === null) {
-    switchValue.value = false
-  }
   switchValue.value = false
 }
 

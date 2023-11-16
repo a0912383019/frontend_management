@@ -198,14 +198,6 @@ onMounted(() => {
   align-items: center;
   color: $blue;
   font-size: 14px;
-  &::before {
-    content: '';
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
-    border: 1px solid rgba(79, 132, 207, 0.3);
-    background: rgba(107, 207, 223, 0.1);
-  }
 }
 .deposit_prob {
   font-size: 14px;

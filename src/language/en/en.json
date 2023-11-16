@@ -573,6 +573,7 @@
     "deposit_span_member_detail": "Details",
     "click_for_detail": "點擊上方預測存款機率顯示區間明細",
     "click_above_for_detail": "Click a bar above for more details.",
+    "info_text": "*列表中呈現淺藍底色，代表實際存款率達{percent}以上",
     "span_desc": "{lower}{contain_yes} P {contain}{upper}",
     "promotion_tag": "Promotion Tag"
   },
