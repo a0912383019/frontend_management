@@ -183,10 +183,15 @@ defineExpose({ queryActionScoreDetail })
         </template>
       </SectionTitle>
       <div class="cdp-text-blue" v-if="apiSuccess === true">
-        *{{ $t('register_no_deposit_analysis.action_score') }} {{ depositProb[0] }}%{{
-          $t('common.contain_yes')
+        *{{ $t('register_no_deposit_analysis.action_score') }}
+        {{
+          $t('register_no_deposit_analysis.span_desc', {
+            lower: depositProb[0],
+            contain_yes: $t('common.contain_yes'),
+            upper: depositProb[1],
+            contain: $t(`common.contain_${depositProb[1] === '100' ? 'yes' : 'no'}`)
+          })
         }}
-        ~ {{ depositProb[1] }}%{{ $t(`common.contain_${depositProb[1] === '100' ? 'yes' : 'no'}`) }}
       </div>
     </div>
     <CdpMessage :messageKey="messageKey" v-show="apiSuccess === false" />

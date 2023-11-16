@@ -20,28 +20,26 @@ watch([() => dialogMemberDetailStore.nowTag, () => dialogMemberDetailStore.timeS
 })
 </script>
 <template>
-  <div>
-    <el-row :gutter="15">
-      <el-col :xs="24" :sm="24" :lg="5">
-        <MemberHealth />
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="19">
-        <section class="cdp-section-in">
-          <MemberInfo />
-          <MemberAmount :key="key" />
-        </section>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="24">
-        <MemberPeriodBetAmount :key="key" />
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="24">
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="24" :lg="8"><LobbyGroup :key="key" /></el-col>
-          <el-col :xs="24" :sm="24" :lg="8"><Lobby :key="key" /></el-col>
-          <el-col :xs="24" :sm="24" :lg="8"><LobbyGame :key="key" /></el-col>
-        </el-row>
-      </el-col>
-    </el-row>
-  </div>
+  <el-row :gutter="15">
+    <el-col :xs="24" :sm="24" :lg="5">
+      <MemberHealth />
+    </el-col>
+    <el-col :xs="24" :sm="24" :lg="19">
+      <section class="cdp-section-in">
+        <MemberInfo />
+        <MemberAmount :key="key" />
+      </section>
+    </el-col>
+    <el-col :xs="24" :sm="24" :lg="24">
+      <MemberPeriodBetAmount :key="key" />
+    </el-col>
+    <el-col :xs="24" :sm="24" :lg="24">
+      <el-row :gutter="20">
+        <el-col :xs="24" :sm="24" :lg="8" class="mb-20"><LobbyGroup :key="key" /></el-col>
+        <el-col :xs="24" :sm="24" :lg="8" class="mb-20"><Lobby :key="key" /></el-col>
+        <el-col :xs="24" :sm="24" :lg="8" class="mb-20"><LobbyGame :key="key" /></el-col>
+      </el-row>
+    </el-col>
+  </el-row>
 </template>
 <style lang="scss" scoped></style>

@@ -36,7 +36,7 @@ watch([() => dialogMemberDetailStore.nowTag, () => dialogMemberDetailStore.timeS
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :span="24">
+      <el-col :span="24" class="mb-20">
         <GADataPage :key="key" />
       </el-col>
     </el-row>

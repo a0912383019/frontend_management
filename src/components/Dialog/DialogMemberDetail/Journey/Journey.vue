@@ -19,8 +19,8 @@ watch([() => dialogMemberDetailStore.nowTag, () => dialogMemberDetailStore.timeS
   <div>
     <MemberJourney :key="key" />
     <el-row :gutter="20">
-      <el-col :span="14"><MemberDetail :key="key" /></el-col>
-      <el-col :span="10">
+      <el-col :span="14" class="mb-20"><MemberDetail :key="key" /></el-col>
+      <el-col :span="10" class="mb-20">
         <MemberLifeCycleHistory :key="key" />
       </el-col>
     </el-row>

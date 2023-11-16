@@ -160,6 +160,7 @@ defineExpose({ handleOpenDialog })
 .cdp-dialog {
   &__component {
     padding: 20px;
+    padding-bottom: 0;
     background-color: #fff;
   }
   &__header {
