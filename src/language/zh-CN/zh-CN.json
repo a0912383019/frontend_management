@@ -573,6 +573,7 @@
     "deposit_span_member_detail": "存款概率区间会员明细",
     "click_for_detail": "点击上方预测存款机率显示区间明细",
     "click_above_for_detail": "点击上方长条图显示区间明细",
+    "info_text": "*列表中呈现浅蓝底色，代表实际存款率达{percent}以上",
     "span_desc": "{lower}{contain_yes} ~ {upper}{contain}",
     "promotion_tag": "优惠标签"
   },

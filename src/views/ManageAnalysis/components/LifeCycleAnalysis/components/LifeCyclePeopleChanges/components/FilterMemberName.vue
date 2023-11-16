@@ -110,7 +110,11 @@ watch(route, () => {
           <ImportCSV v-model="useCustomList" :csvType="1" @update:success="handleCsvSuccess" />
         </div>
         <div class="drop__item">
-          <el-switch v-model="fuzzySearch" :active-text="$t('common.fuzzy_search')" class="mr-10" />
+          <el-switch
+            v-model="fuzzySearch"
+            :active-text="$t('common.fuzzy_search')"
+            class="mr-10 cdp-switch"
+          />
           <el-tooltip
             class="box-item"
             effect="dark"
