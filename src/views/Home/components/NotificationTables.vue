@@ -13,6 +13,9 @@ import Tab from '@/components/Tab.vue'
 import dayjs from 'dayjs'
 import { formatDateDuration, errorRespond } from '@/utils/commonUtils.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
+import { useDateStore } from '@/stores/dateConfig.js'
+
+const { date_range_picker_config_8 } = useDateStore()
 
 const { t, locale: i18nLocale } = useI18n()
 
@@ -99,11 +102,11 @@ const tableColumns = computed(() => {
   ]
 })
 
-const search_date =
-  dayjs().subtract(8, 'day').startOf('day').format(t('date.format_date_rule')) +
-  '~' +
-  dayjs().subtract(1, 'day').startOf('day').format(t('date.format_date_rule'))
-
+const searchDate = ref(
+  dayjs(date_range_picker_config_8.startDate).format(t('date.format_date_rule')) +
+    '~' +
+    dayjs(date_range_picker_config_8.endDate).format(t('date.format_date_rule'))
+)
 //取得資料
 const querySmallMesNote = async (kind = '0') => {
   allMessageKey.value = 'shortLoading'
@@ -113,7 +116,7 @@ const querySmallMesNote = async (kind = '0') => {
     const result = await apiQuerySmartMessNote({
       hall_name: activeHall.hall_code,
       kind: kind,
-      search_date: formatDateDuration(search_date),
+      search_date: formatDateDuration(searchDate.value),
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
