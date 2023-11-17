@@ -28,21 +28,23 @@ const dayMessageKey = ref('shortLoading')
 
 const userName = ref('')
 
-const lastWeekDuration = computed(() => {
-  return (
-    dayjs().subtract(15, 'day').startOf('day').format(t('date.format_date_rule')) +
-    ' ~ ' +
-    dayjs().subtract(9, 'day').startOf('day').format(t('date.format_date_rule'))
-  )
+const props = defineProps({
+  lastDate: {
+    type: String
+  }
 })
 
-const thisWeekDuration = computed(() => {
-  return (
-    dayjs().subtract(8, 'day').startOf('day').format(t('date.format_date_rule')) +
-    ' ~ ' +
-    dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
-  )
-})
+const lastWeekDuration = ref(
+  dayjs(props.lastDate).subtract(13, 'day').format(t('date.format_date_rule')) +
+    '~' +
+    dayjs(props.lastDate).subtract(7, 'day').format(t('date.format_date_rule'))
+)
+
+const thisWeekDuration = ref(
+  dayjs(props.lastDate).subtract(6, 'day').format(t('date.format_date_rule')) +
+    '~' +
+    dayjs(props.lastDate).format(t('date.format_date_rule'))
+)
 
 const activeStepTableData = ref([])
 //頁面點擊排名欄位

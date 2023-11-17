@@ -205,6 +205,7 @@ export const useDateStore = defineStore('dateStore', () => {
   }
 
   return {
+    LAST_DATE,
     date_range_picker_config_1,
     date_range_picker_config_2,
     date_range_picker_config_3,

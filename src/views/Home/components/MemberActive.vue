@@ -9,6 +9,9 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import MemberActiveDetail from './MemberActiveDetail.vue'
 import { apiQueryLivelyChangeOverview } from '@/api/home.js'
 import { iconStep } from '@/../public/js/system_config.js'
+import { useDateStore } from '@/stores/dateConfig.js'
+
+const { LAST_DATE } = useDateStore()
 
 const { t } = useI18n()
 
@@ -21,21 +24,17 @@ const apiSuccess = ref(false)
 //依照不同的messageKey產生不同的message
 const messageKey = ref('shortLoading')
 
-const lastWeekDuration = computed(() => {
-  return (
-    dayjs().subtract(15, 'day').startOf('day').format(t('date.format_date_rule')) +
-    ' ~ ' +
-    dayjs().subtract(9, 'day').startOf('day').format(t('date.format_date_rule'))
-  )
-})
+const lastWeekDuration = ref(
+  dayjs(LAST_DATE).subtract(13, 'day').format(t('date.format_date_rule')) +
+    '~' +
+    dayjs(LAST_DATE).subtract(7, 'day').format(t('date.format_date_rule'))
+)
 
-const thisWeekDuration = computed(() => {
-  return (
-    dayjs().subtract(8, 'day').startOf('day').format(t('date.format_date_rule')) +
-    ' ~ ' +
-    dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
-  )
-})
+const thisWeekDuration = ref(
+  dayjs(LAST_DATE).subtract(6, 'day').format(t('date.format_date_rule')) +
+    '~' +
+    dayjs(LAST_DATE).format(t('date.format_date_rule'))
+)
 
 const activityStep = computed(() => {
   let activityStep = [
@@ -165,7 +164,7 @@ const showActivityStepDetail = (lastWeek, thisWeek) => {
         </div>
       </template>
     </SectionTitle>
-    <MemberActiveDetail ref="activityStepDetail"></MemberActiveDetail>
+    <MemberActiveDetail ref="activityStepDetail" :lastDate="LAST_DATE"></MemberActiveDetail>
     <el-row :gutter="20">
       <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" class="mt-25" />
       <el-col v-else :span="8" v-for="(item, idx) in activityStep" :key="idx" class="mt-20">

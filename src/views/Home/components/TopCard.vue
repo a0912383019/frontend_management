@@ -10,29 +10,28 @@ import {
   errorRespond,
   addNumberColor
 } from '@/utils/commonUtils.js'
-import dayjs from 'dayjs'
+import { dayjs } from 'element-plus'
 import PercentWithIcon from '@/components/PercentWithIcon.vue'
+import { useDateStore } from '@/stores/dateConfig.js'
+
+const { LAST_DATE } = useDateStore()
 
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const monthDuration = computed(() => {
-  return (
-    dayjs().subtract(31, 'day').startOf('day').format(t('date.format_date_rule')) +
+const monthDuration = ref(
+  dayjs(LAST_DATE).subtract(29, 'day').format(t('date.format_date_rule')) +
     '~' +
-    dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
-  )
-})
+    dayjs(LAST_DATE).format(t('date.format_date_rule'))
+)
 
-const weekDuration = computed(() => {
-  return (
-    dayjs().subtract(8, 'day').startOf('day').format(t('date.format_date_rule')) +
+const weekDuration = ref(
+  dayjs(LAST_DATE).subtract(6, 'day').format(t('date.format_date_rule')) +
     '~' +
-    dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
-  )
-})
+    dayjs(LAST_DATE).format(t('date.format_date_rule'))
+)
 
 const topCardTitle = computed(() => {
   return [
