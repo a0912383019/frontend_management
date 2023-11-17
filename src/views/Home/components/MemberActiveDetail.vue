@@ -34,7 +34,7 @@ const messageKey = ref('shortLoading')
 
 const props = defineProps({
   lastDate: {
-    type: String,
+    type: String
   }
 })
 
