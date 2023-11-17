@@ -105,7 +105,7 @@ describe('DialogMemberDetail.vue', () => {
 
     wrapper.vm.openNewWindow()
     await wrapper.vm.$nextTick()
-    expect(global.open).toBeCalled()
+    expect(window.open).toBeCalled()
     expect(window.open).toHaveBeenCalledWith(
       '/member-details-popup',
       '_blank',
