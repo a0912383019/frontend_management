@@ -1,13 +1,13 @@
 import { ref, reactive, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
+import { i18n } from '@/global/i18n'
 
 export const useGlobalStore = defineStore(
   'global',
   () => {
-    const { t } = useI18n()
+    const { t } = i18n.global
     const router = useRouter()
     //loading顯示狀態
     const isLoading = ref(false)

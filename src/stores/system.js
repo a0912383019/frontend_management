@@ -2,12 +2,12 @@ import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import { apiLogout } from '@/api/system.js'
 import { ElNotification } from 'element-plus'
-import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
+import { i18n } from '@/global/i18n'
 
 export const useSystemStore = defineStore('system', () => {
   const globalStore = useGlobalStore()
-  const { t } = useI18n()
+  const { t } = i18n.global
   const router = useRouter()
   async function storeLogout() {
     globalStore.isLoading = true
