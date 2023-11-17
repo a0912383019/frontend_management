@@ -157,20 +157,14 @@ const doAutoLogoutCounter = () => {
     if (timeoutMin.value >= 0) {
       if (timeoutSec.value > 0) {
         timeoutSec.value--
-        timeoutSecText.value = timeoutZero(timeoutSec.value)
-        if (timeoutSec.value == 0) {
-          timeoutMin.value--
-          if (timeoutMin.value >= 0) {
-            timeoutMinText.value = timeoutZero(timeoutMin.value)
-          }
-        }
       } else {
         timeoutSec.value = 59
-        timeoutSecText.value = timeoutZero(timeoutSec.value)
+        timeoutMin.value--
         if (timeoutMin.value >= 0) {
-          timeoutMinText.value = timeoutZero(timeoutMin)
+          timeoutMinText.value = timeoutZero(timeoutMin.value)
         }
       }
+      timeoutSecText.value = timeoutZero(timeoutSec.value)
     } else {
       systemStore.storeLogout()
       resetTimer()

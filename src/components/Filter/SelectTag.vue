@@ -3,7 +3,7 @@ import { ref, reactive, watch, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { findRootHall, getSessionStorageEntity, checkTagUsage } from '@/utils/commonUtils.js'
-import SelectTagDropdown from './SelectTagDropdown.vue'
+import SelectTagDropdown from '@/components/Filter/SelectTagDropdown.vue'
 import { dayjs } from 'element-plus'
 const { t } = useI18n()
 
@@ -371,7 +371,7 @@ watch(
   display: flex;
   flex-wrap: wrap;
   border: 1px solid #ccc5e1;
-  &__input::placeholder{
+  &__input {
     padding-left: 10px;
   }
   border-radius: 5px;
@@ -385,12 +385,12 @@ watch(
     &__tag {
       display: inline-flex;
       align-items: center;
+      padding-left: 10px;
       &__item {
         display: inline-flex;
         align-items: center;
         padding: 3px 10px;
         border-radius: 20px;
-        margin-right: 10px;
         margin-top: 5px;
         margin-bottom: 5px;
         background-color: $purple;
@@ -427,6 +427,7 @@ watch(
     }
     &__text {
       display: flex;
+      padding-left: 10px;
       &__item {
         &.isActive {
           color: $red-dark;

@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useGameTagAnalysis } from '@/stores/gameTagAnalysis.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import FilterTag from '@/components/Filter/FilterTag.vue'
+import SelectTag from '@/components/Filter/SelectTag.vue'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 
 const { t } = useI18n()
@@ -75,12 +75,12 @@ const closePopover = () => {
         <el-col :span="24" class="mb-15">
           <SectionTitle class="cdp-text-purple mb-4" :title="$t('common.include_tags')">
           </SectionTitle>
-          <FilterTag v-model="form.searchTag" />
+          <SelectTag v-model="form.searchTag" />
         </el-col>
         <el-col :span="24" class="mb-15">
           <SectionTitle class="cdp-text-purple mb-4" :title="$t('common.exclude_tags')">
           </SectionTitle>
-          <FilterTag v-model="form.excludeTag" />
+          <SelectTag v-model="form.excludeTag" />
         </el-col>
         <el-col class="flex justify-end">
           <ButtonIcon
