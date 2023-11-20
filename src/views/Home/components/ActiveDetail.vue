@@ -193,12 +193,9 @@ const queryMemberRecentLively = async (user_id) => {
     })
     const { return_code } = result.data.status
 
-    if (return_code === '0000') {
+    if (return_code === '0000' && result.data.result.length !== 0) {
       dayApiSuccess.value = true
-      if (result.data.result.length !== 0) {
-        //整理table對應的資料
-        transformMemberRecentLively(result.data.result)
-      }
+      transformMemberRecentLively(result.data.result)
     } else {
       const { error_code } = result.data.status
       if (error_code === '210400000') {
