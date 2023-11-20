@@ -115,7 +115,7 @@ const queryLifeCycleAnalysisOverviewTbl = async (customUserList) => {
       apiTableResult.value = result.data.result //存放取得的api資料
       //資料處理
       transformLifeCycleAnalysisOverviewTbl(result.data.result)
-    } else if (return_code === '9999') {
+    } else {
       apiTableResult.value = []
       tableData.value = []
       tableTotalPeopleNum.value = 0

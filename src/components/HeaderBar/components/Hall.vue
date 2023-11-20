@@ -227,7 +227,6 @@ const refresh = (is_need_close_loading = true) => {
           // 若api回應401 http error code，導至登入頁
           sessionStorage.clear()
           localStorage.clear()
-          sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
           router.push({ name: 'Login' })
           let failMsg = `${error.response.status} : ${error.response.data.message}`
           return Promise.reject(failMsg) //表示Promise物件執行失敗，拒絕後續的程式執行
@@ -295,7 +294,6 @@ const getSystemConfig = () => {
         // 若api回應401 http error code，導至登入頁
         sessionStorage.clear()
         localStorage.clear()
-        sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新的資料
         router.push({ name: 'Login' })
       } else {
         ElNotification({
@@ -316,7 +314,6 @@ const initPageNext = () => {
     // 清除所有sessionStorage與localStorage
     sessionStorage.clear()
     localStorage.clear()
-    sessionStorage.access_token = '9999' // 9999表示token有誤，需重新登入取得新token
     router.push({ name: 'Login' })
   }
 }
