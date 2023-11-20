@@ -17,7 +17,7 @@ import {
 import { dayjs } from 'element-plus'
 import { useDateStore } from '@/stores/dateConfig.js'
 
-const { date_range_picker_config_1 } = useDateStore()
+const { LAST_DATE } = useDateStore()
 
 const { t, locale: i18nLocale } = useI18n()
 
@@ -30,9 +30,9 @@ const apiSuccess = ref(true) //api是否成功
 const messageKey = ref('shortLoading')
 
 const stepDataDuration = ref(
-  dayjs(date_range_picker_config_1.startDate).format(t('date.format_date_rule')) +
+  dayjs(LAST_DATE).subtract(29, 'day').format(t('date.format_date_rule')) +
     '~' +
-    dayjs(date_range_picker_config_1.endDate).format(t('date.format_date_rule'))
+    dayjs(LAST_DATE).format(t('date.format_date_rule'))
 )
 
 const chartOptions = reactive({
@@ -170,7 +170,7 @@ watch(
     <SectionTitle class="mb-15" :title="$t('home.member_life_cycles')">
       <template #tooltip>
         <div class="font-size-14">
-          {{ $t('home.excluding_who_did_not_bet_for_the_last_month') }}
+          {{ $t('home.excluding_who_did_not_bet_for_the_last_30_days') }}
           <br />
           {{ $t('date.statistical_time_period') + stepDataDuration }}
         </div>

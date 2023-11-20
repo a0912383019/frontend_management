@@ -39,7 +39,7 @@ describe('useSystemStore', () => {
     await systemStore.storeLogout()
     expect(globalStore.isLoading).toBe(false)
     expect(apiLogout).toBeCalled()
-    expect(useRouter().push).toBeCalled()
+    expect(useRouter().push).toHaveBeenCalledWith({ name: 'Login' })
     expect(sessionStorageMock.clear).toHaveBeenCalled()
     expect(localStorageMock.clear).toHaveBeenCalled()
   })
