@@ -1,4 +1,4 @@
-import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
+import { it, describe, expect, vi, afterEach } from 'vitest'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import TopCard from '@/views/Home/components/TopCard.vue'
@@ -22,7 +22,7 @@ describe('TopCard.vue', () => {
   }
   useDateStore.mockReturnValue(mockLastDate)
 
-  //只mock getHallCurrencySign，因爲無法初始化hall_code
+  //mock getHallCurrencySign
   vi.mock('@/utils/commonUtils.js', async () => {
     const actual = await vi.importActual('@/utils/commonUtils.js')
     const getHallCurrencySign = vi.fn()
