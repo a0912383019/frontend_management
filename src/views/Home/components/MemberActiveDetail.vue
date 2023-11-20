@@ -32,13 +32,17 @@ const apiSuccess = ref(false)
 //依照不同的messageKey產生不同的message
 const messageKey = ref('shortLoading')
 
-const weekDuration = computed(() => {
-  return (
-    dayjs().subtract(8, 'day').startOf('day').format(t('date.format_date_rule')) +
-    ' ~ ' +
-    dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
-  )
+const props = defineProps({
+  lastDate: {
+    type: String
+  }
 })
+
+const weekDuration = ref(
+  dayjs(props.lastDate).subtract(6, 'day').format(t('date.format_date_rule')) +
+    '~' +
+    dayjs(props.lastDate).format(t('date.format_date_rule'))
+)
 
 const refActiveDetail = ref(null) //活躍度明細
 
@@ -281,7 +285,7 @@ const handleActiveDetailClick = (user) => {
       </div>
     </el-dialog>
   </div>
-  <ActiveDetail ref="refActiveDetail" />
+  <ActiveDetail ref="refActiveDetail" :lastDate="props.lastDate"/>
 </template>
 <style lang="scss" scoped>
 .cdp-dialog {

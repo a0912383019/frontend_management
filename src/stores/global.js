@@ -10,7 +10,7 @@ export const useGlobalStore = defineStore(
     const { t } = i18n.global
     //loading顯示狀態
     const isLoading = ref(false)
-
+    
     const storeHandleApiError = () => {
       const router = useRouter()
       //當api錯誤時，會執行的內容

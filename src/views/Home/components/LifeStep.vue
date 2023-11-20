@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive, watch, computed } from 'vue'
+import { ref, onMounted, reactive, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryLatestLifeCycleSummary } from '@/api/home.js'
 import { useGlobalStore } from '@/stores/global.js'
@@ -15,6 +15,9 @@ import {
   generateRGBColors
 } from '@/utils/commonUtils.js'
 import { dayjs } from 'element-plus'
+import { useDateStore } from '@/stores/dateConfig.js'
+
+const { date_range_picker_config_1 } = useDateStore()
 
 const { t, locale: i18nLocale } = useI18n()
 
@@ -26,13 +29,11 @@ const apiSuccess = ref(true) //api是否成功
 //依照不同的messageKey產生不同的message
 const messageKey = ref('shortLoading')
 
-const stepDataDuration = computed(() => {
-  return (
-    dayjs().subtract(31, 'day').startOf('day').format(t('date.format_date_rule')) +
+const stepDataDuration = ref(
+  dayjs(date_range_picker_config_1.startDate).format(t('date.format_date_rule')) +
     '~' +
-    dayjs().subtract(2, 'day').startOf('day').format(t('date.format_date_rule'))
-  )
-})
+    dayjs(date_range_picker_config_1.endDate).format(t('date.format_date_rule'))
+)
 
 const chartOptions = reactive({
   chart: {
@@ -106,16 +107,23 @@ const queryLatestLifeCycleSummary = async () => {
     })
     const { return_code } = result.data.status
 
-    if (return_code === '0001') {
-      messageKey.value = 'noResult'
-    } else if (return_code === '0000' && result.data.result.length !== 0) {
-      apiSuccess.value = true
-      //整理table對應的資料
-      transformLifeCycleData(result.data.result)
+    if (return_code === '0000') {
+      if (result.data.result.length !== 0) {
+        apiSuccess.value = true
+        //整理table對應的資料
+        transformLifeCycleData(result.data.result)
+      } else {
+        messageKey.value = 'noResult'
+      }
     } else {
-      messageKey.value = 'chartFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        messageKey.value = 'noResult'
+      } else {
+        messageKey.value = 'chartFailed'
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     }
   } catch (error) {
     console.error(error)
