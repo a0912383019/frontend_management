@@ -1,8 +1,7 @@
-import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
+import { it, describe, expect, vi, afterEach } from 'vitest'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import TopCard from '@/views/Home/components/TopCard.vue'
-import { createTestingPinia } from '@pinia/testing'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
 import router from '@/router'
 import { useDateStore } from '@/stores/dateConfig.js'
@@ -22,7 +21,7 @@ describe('TopCard.vue', () => {
   }
   useDateStore.mockReturnValue(mockLastDate)
 
-  //只mock getHallCurrencySign，因爲無法初始化hall_code
+  //mock getHallCurrencySign
   vi.mock('@/utils/commonUtils.js', async () => {
     const actual = await vi.importActual('@/utils/commonUtils.js')
     const getHallCurrencySign = vi.fn()
@@ -50,10 +49,7 @@ describe('TopCard.vue', () => {
       global: {
         plugins: [
           i18n,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn
-          })
+          router
         ],
         components: {
           FontAwesomeIcon
@@ -147,10 +143,7 @@ describe('TopCard.vue', () => {
       global: {
         plugins: [
           i18n,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn
-          })
+          router
         ],
         components: {
           FontAwesomeIcon

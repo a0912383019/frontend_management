@@ -8,11 +8,11 @@ export const useGlobalStore = defineStore(
   'global',
   () => {
     const { t } = i18n.global
-    const router = useRouter()
     //loading顯示狀態
     const isLoading = ref(false)
-
+    
     const storeHandleApiError = () => {
+      const router = useRouter()
       //當api錯誤時，會執行的內容
       // 清除所有sessionStorage與localStorage
       sessionStorage.clear()
