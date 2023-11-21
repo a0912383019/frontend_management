@@ -1,5 +1,5 @@
 import { it, describe, expect, afterEach, vi, beforeEach } from 'vitest'
-import { shallowMount, flushPromises } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { i18n } from '@/global/i18n'
 import ElementPlus from 'element-plus'
@@ -14,12 +14,9 @@ describe('CustomerTagList', () => {
   let wrapper = null
   let spy
 
-  //讓console.error不要洗版
-  // vi.spyOn(console, 'error').mockImplementation(() => {})
-
   beforeEach(() => {
     spy = vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
-    //模擬第一次與第二次呼叫getSessionStorageEntity
+    //模擬呼叫getSessionStorageEntity
     module.getSessionStorageEntity.mockReturnValueOnce({
       tags_config: {
         esb: {
@@ -32,7 +29,6 @@ describe('CustomerTagList', () => {
       }
     })
 
-    //只mock getHallCurrencySign，因爲無法初始化hall_code
     vi.mock('@/utils/commonUtils.js', async () => {
       const actual = await vi.importActual('@/utils/commonUtils.js')
 
