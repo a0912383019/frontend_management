@@ -51,6 +51,9 @@ const apiRecordsTotal = ref(0) //資料總數
 
 const canvas = ref(null)
 
+const tag_description_dict =
+  getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+
 const tableColumns = computed(() => {
   return [
     {
@@ -151,6 +154,7 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
       start: apiStart.value,
       user_level_id: formData['selectLevel'] //會員層級
     })
+
     const { return_code } = result.data.status
     if (return_code === '0000') {
       if (searchType !== 'page') {
@@ -167,15 +171,18 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
       tableData.value = []
       tableData.value = transformListMemberTags(result.data.result.data)
       apiRecordsTotal.value = result.data.result.records_total
-    } else if (return_code === '0001') {
-      apiRecordsTotal.value = 0
-      messageKey.value = 'noResult'
     } else {
-      apiRecordsTotal.value = 0
-      messageKey.value = 'queryFailed'
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        apiRecordsTotal.value = 0
+        messageKey.value = 'noResult'
+      } else {
+        apiRecordsTotal.value = 0
+        messageKey.value = 'queryFailed'
+      }
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     apiSuccess.value = false //取得資料失敗
     if (error.response.status === 403) {
       messageKey.value = 'noPermission' //更改message內容
@@ -190,10 +197,9 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
 // 轉換資料
 const transformListMemberTags = (data) => {
   tagsColumnWidth.value = refContent.value.offsetWidth * (defineTagsWidth / 100) * 2 // 取得標籤欄位內容總寬，預設顯示兩行所以 * 2
-  const tag_description_dict =
-    getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
   let result = []
   let tagWidth = 0
+
   data.map((item, index) => {
     let tempObj = {
       ...item,
@@ -210,6 +216,7 @@ const transformListMemberTags = (data) => {
       hall_id: item.hall_id,
       domain_id: item.domain_id
     })
+
     let tag_str_ary = item.tag_str ? item.tag_str.split(',') : []
 
     for (let i = 0; i < tag_str_ary.length; i++) {
@@ -218,7 +225,6 @@ const transformListMemberTags = (data) => {
         tempObj['tag_name_str'].push(tag_str_ary[i])
       }
     }
-
     // 將 6 開頭的風控標籤移動到最前面
     tempObj['tag_name_str'] = move6ToStart(tempObj['tag_name_str'])
 
@@ -226,6 +232,7 @@ const transformListMemberTags = (data) => {
       let obj = {}
       obj['code'] = item
       obj['name'] = tag_description_dict[item]['tag_name']
+
       obj['width'] = getTextWidth(obj['name'])
       tagWidth = tagWidth + obj['width']
       if (tagsColumnWidth.value - tagWidth > obj['width']) {

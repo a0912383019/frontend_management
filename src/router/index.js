@@ -293,7 +293,7 @@ router.beforeEach((to, from, next) => {
   let isLogin = false
   if (sessionStorageUserInfo !== '') {
     const accessToken = sessionStorage.access_token
-    if (accessToken === undefined || accessToken === '9999') {
+    if (accessToken === undefined) {
       isLogin = false
     } else {
       isLogin = true
