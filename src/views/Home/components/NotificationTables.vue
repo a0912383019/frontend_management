@@ -33,15 +33,6 @@ const allMessageKey = ref('shortLoading')
 
 const searchText = ref('')
 
-const apiIsCalled = ref([false, false, false, false, false])
-const tableDatas = reactive({
-  0: [],
-  1: [],
-  2: [],
-  3: [],
-  4: []
-})
-
 //當前顯示的tab
 const currentTabs = ref('all')
 const refTable = ref(null) // ref table
@@ -108,14 +99,14 @@ const searchDate = ref(
     dayjs(date_range_picker_config_8.endDate).format(t('date.format_date_rule'))
 )
 //取得資料
-const querySmallMesNote = async (kind = '0') => {
+const querySmallMesNote = async () => {
   allMessageKey.value = 'shortLoading'
   allApiSuccess.value = false
   if (activeHall.hall_code === '') return
   try {
     const result = await apiQuerySmartMessNote({
       hall_name: activeHall.hall_code,
-      kind: kind,
+      kind: '0',
       search_date: formatDateDuration(searchDate.value),
       locale: i18nLocale.value
     })
@@ -123,15 +114,12 @@ const querySmallMesNote = async (kind = '0') => {
 
     if (return_code === '0001') {
       allApiSuccess.value = true
-      apiIsCalled.value[Number(kind)] = true
       tableData.value = []
-      tableDatas[Number(kind)] = tableData.value
     } else if (return_code === '0000') {
       allApiSuccess.value = true
       //整理及地圖對應的資料
-      transformQuerySmallMesNote(result.data.result)
-      apiIsCalled.value[Number(kind)] = true
-      tableDatas[Number(kind)] = tableData.value
+      classifyGroup(result.data.result)
+      tableData.value = tableAll[currentKind.value]
     } else {
       allMessageKey.value = 'chartFailed'
       let failMsg = errorRespond(result.data.status)
@@ -144,6 +132,62 @@ const querySmallMesNote = async (kind = '0') => {
     } else {
       allMessageKey.value = 'chartFailed'
     }
+  }
+}
+
+const tableAll = reactive({
+  0: [],
+  1: [],
+  2: [],
+  3: [],
+  4: []
+})
+
+const classifyGroup = (data) => {
+  Object.keys(tableAll).forEach((key) => {
+    tableAll[key] = []
+  })
+
+  data.forEach((ele) => {
+    let result = dataTransform(ele)
+    tableAll[0].push(result)
+    switch (ele.kind) {
+      case '1':
+        tableAll[1].push(result)
+        break
+      case '2':
+        tableAll[2].push(result)
+        break
+      case '3':
+        tableAll[3].push(result)
+        break
+      case '4':
+        tableAll[4].push(result)
+        break
+    }
+  })
+}
+
+const dataTransform = (ele) => {
+  const contentCut = ele.content.split('#')
+  //給搜尋的值，原始值跟頁面呈現不一樣
+  const displayContent = contentCut
+    .map((ele) => {
+      let newString = ele
+      if (ele.match(/(.*?)@(.*?)/)) {
+        newString = ele.split('@')[0]
+      }
+      return newString
+    })
+    .reduce((acc, val) => acc + val.trim(), '')
+
+  return {
+    category: tabList.value[ele.kind].label,
+    content: displayContent,
+    date: dayjs(ele.created_time).format(t('date.format_date_rule')),
+    msgId: ele.message_id,
+    contentCut: contentCut,
+    kind: ele.kind
   }
 }
 
@@ -183,41 +227,13 @@ const readSmartMesNote = async (msgId, kind) => {
       })
     }
   }
-  querySmallMesNote(kind)
-}
-
-const transformQuerySmallMesNote = (data) => {
-  tableData.value = data.map((ele) => {
-    //給v-for的值
-    const contentCut = ele.content.split('#')
-    //給搜尋的值，原始值跟頁面呈現不一樣
-    const displayContent = contentCut
-      .map((ele) => {
-        let newString = ele
-        if (ele.match(/(.*?)@(.*?)/)) {
-          newString = ele.split('@')[0]
-        }
-        return newString
-      })
-      .reduce((acc, val) => acc + val.trim(), '')
-
-    return {
-      category: tabList.value[ele.kind].label,
-      content: displayContent,
-      date: dayjs(ele.created_time).format(t('date.format_date_rule')),
-      msgId: ele.message_id,
-      contentCut: contentCut,
-      kind: ele.kind
-    }
-  })
+  querySmallMesNote()
 }
 
 const msgCheck = (event, msgId, msgKind) => {
   event.target.closest('.el-table__row').classList.add('remove-style')
   const tabNameArr = tabList.value.map((ele) => ele.name)
   const tabKind = tabNameArr.indexOf(currentTabs.value)
-  apiIsCalled.value[0] = false
-  apiIsCalled.value[Number(msgKind)] = false
   readSmartMesNote(msgId, tabKind.toString())
 }
 
@@ -232,7 +248,7 @@ const transformUser = (val) => {
 const filtered = ref(false)
 const tableDataLength = ref(0)
 const handleSearch = (kind) => {
-  const convertTableDatas = JSON.parse(JSON.stringify(tableDatas))
+  const convertTableDatas = JSON.parse(JSON.stringify(tableAll))
   let handleSearchText = searchText.value.toLowerCase()
 
   if (handleSearchText !== '') {
@@ -259,25 +275,20 @@ onMounted(() => {
 const currentKind = computed(() => {
   const tabNameArr = tabList.value.map((ele) => ele.name)
   const kind = tabNameArr.indexOf(currentTabs.value)
-  return kind.toString()
+  return kind
 })
 
 watch(
   () => i18nLocale.value,
   () => {
-    apiIsCalled.value = apiIsCalled.value.map(() => false)
-    querySmallMesNote(currentKind.value)
+    querySmallMesNote()
   }
 )
 
 watch([() => currentTabs.value], () => {
   searchText.value = ''
   refTable.value.goToFirstPage()
-  if (!apiIsCalled.value[currentKind.value]) {
-    querySmallMesNote(currentKind.value)
-  } else {
-    tableData.value = tableDatas[currentKind.value]
-  }
+  tableData.value = tableAll[currentKind.value]
 })
 
 watch(
