@@ -1,5 +1,6 @@
-import { it, describe, expect, beforeEach, afterEach } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { it, describe, expect, beforeEach, afterEach, vi } from 'vitest'
+import { shallowMount } from '@vue/test-utils'
+import { createTestingPinia } from '@pinia/testing'
 import ElementPlus from 'element-plus'
 import router from '@/router'
 import ExportDialog from '@/components/ExportDialog.vue'
@@ -15,9 +16,16 @@ describe('ExportDialog', () => {
     }
     sessionStorage.setItem('user_info', JSON.stringify(user_info))
     sessionStorage.setItem('access_token', JSON.stringify('awdedwaefjihiu'))
-    wrapper = mount(ExportDialog, {
+    wrapper = shallowMount(ExportDialog, {
       global: {
-        plugins: [i18n, ElementPlus, router],
+        plugins: [
+          i18n,
+          ElementPlus,
+          router,
+          createTestingPinia({
+            createSpy: vi.fn
+          })
+        ],
         components: {
           FontAwesomeIcon,
           CdpIcon
@@ -28,6 +36,7 @@ describe('ExportDialog', () => {
       }
     })
   })
+
   afterEach(() => {
     wrapper.unmount()
   })

@@ -4,9 +4,9 @@ import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { formatDateDuration, errorRespond } from '@/utils/commonUtils.js'
 import CdpMessage from '@/components/CdpMessage.vue'
-import dayjs from 'dayjs'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import MemberActiveDetail from './MemberActiveDetail.vue'
+import dayjs from 'dayjs'
 import { apiQueryLivelyChangeOverview } from '@/api/home.js'
 import { iconStep } from '@/../public/js/system_config.js'
 import { useDateStore } from '@/stores/dateConfig.js'
@@ -102,6 +102,7 @@ const queryLivelyChangeOverview = async () => {
   messageKey.value = 'shortLoading'
   apiSuccess.value = false
   if (activeHall.hall_code === '') return
+  const noData = Array.from({ length: 6 }, () => Array.from({ length: 6 }, () => 0))
   try {
     const result = await apiQueryLivelyChangeOverview({
       hall_name: activeHall.hall_code,
@@ -109,16 +110,23 @@ const queryLivelyChangeOverview = async () => {
     })
     const { return_code } = result.data.status
 
-    if (return_code === '0001') {
-      messageKey.value = 'noResult'
-    } else if (return_code === '0000' && result.data.result.length !== 0) {
+    if (return_code === '0000') {
       apiSuccess.value = true
-      //整理table對應的資料
-      transformLivelyChangeOverview(result.data.result)
+      if (result.data.result.length !== 0) {
+        //整理table對應的資料
+        transformLivelyChangeOverview(result.data.result)
+      } else {
+        transformLivelyChangeOverview(noData)
+      }
     } else {
-      messageKey.value = 'chartFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        transformLivelyChangeOverview(noData)
+      } else {
+        messageKey.value = 'chartFailed'
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     }
   } catch (error) {
     console.error(error)

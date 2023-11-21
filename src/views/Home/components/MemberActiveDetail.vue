@@ -34,7 +34,7 @@ const messageKey = ref('shortLoading')
 
 const props = defineProps({
   lastDate: {
-    type: String
+    type: Object
   }
 })
 
@@ -115,16 +115,23 @@ const queryLivelyChangeDetail = async (livelyChangeAry) => {
     })
     const { return_code } = result.data.status
 
-    if (return_code === '0001') {
-      messageKey.value = 'noResult'
-    } else if (return_code === '0000' && result.data.result.length !== 0) {
-      apiSuccess.value = true
-      //整理table對應的資料
-      transformLivelyChangeDetail(result.data.result)
+    if (return_code === '0000') {
+      if (result.data.result.length !== 0) {
+        apiSuccess.value = true
+        //整理table對應的資料
+        transformLivelyChangeDetail(result.data.result)
+      } else {
+        messageKey.value = 'noResult'
+      }
     } else {
-      messageKey.value = 'chartFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        messageKey.value = 'noResult'
+      } else {
+        messageKey.value = 'chartFailed'
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     }
   } catch (error) {
     console.error(error)
@@ -285,7 +292,7 @@ const handleActiveDetailClick = (user) => {
       </div>
     </el-dialog>
   </div>
-  <ActiveDetail ref="refActiveDetail" :lastDate="props.lastDate"/>
+  <ActiveDetail ref="refActiveDetail" :lastDate="props.lastDate" />
 </template>
 <style lang="scss" scoped>
 .cdp-dialog {

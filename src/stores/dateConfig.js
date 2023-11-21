@@ -2,7 +2,6 @@ import { reactive, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
-import { useRoute } from 'vue-router'
 import { getSessionStorageEntity } from '@/utils/commonUtils'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
@@ -11,8 +10,6 @@ dayjs.extend(timezone)
 dayjs.tz.setDefault('Asia/Taipei')
 
 export const useDateStore = defineStore('dateStore', () => {
-  const route = useRoute()
-
   const getServerTime = () => {
     if (sessionStorage.getItem('system_config') !== null) {
       // server回傳的美東時間，由API system_config 取得
@@ -45,13 +42,6 @@ export const useDateStore = defineStore('dateStore', () => {
         ? dayjs(FRONTEND_TIME.value).subtract(1, 'day')
         : dayjs(FRONTEND_TIME.value).subtract(2, 'day')
   }
-
-  // 切換路由更新最新時間
-  watch(route, () => {
-    if (route.name !== 'Login' && sessionStorage.getItem('system_config') !== null) {
-      updateDate()
-    }
-  })
 
   // config_1 : 預設選取近1個月 (原：1, 5, 9, 10, 11)
   const date_range_picker_config_1 = reactive({
@@ -206,6 +196,7 @@ export const useDateStore = defineStore('dateStore', () => {
 
   return {
     LAST_DATE,
+    updateDate,
     date_range_picker_config_1,
     date_range_picker_config_2,
     date_range_picker_config_3,

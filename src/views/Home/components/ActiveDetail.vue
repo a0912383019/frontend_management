@@ -30,7 +30,7 @@ const userName = ref('')
 
 const props = defineProps({
   lastDate: {
-    type: String
+    type: Object
   }
 })
 
