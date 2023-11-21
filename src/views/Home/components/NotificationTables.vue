@@ -63,6 +63,7 @@ const tabList = computed(() => {
   ]
 })
 
+//當前table資料
 const tableData = ref([])
 //頁面點擊排名欄位
 const tableColumns = computed(() => {
@@ -98,6 +99,7 @@ const searchDate = ref(
     '~' +
     dayjs(date_range_picker_config_8.endDate).format(t('date.format_date_rule'))
 )
+
 //取得資料
 const querySmallMesNote = async () => {
   allMessageKey.value = 'shortLoading'
@@ -112,18 +114,25 @@ const querySmallMesNote = async () => {
     })
     const { return_code } = result.data.status
 
-    if (return_code === '0001') {
+    if (return_code === '0000') {
       allApiSuccess.value = true
-      tableData.value = []
-    } else if (return_code === '0000') {
-      allApiSuccess.value = true
-      //整理及地圖對應的資料
-      classifyGroup(result.data.result)
+      if (result.data.result.length !== 0) {
+        //整理及地圖對應的資料
+        classifyGroup(result.data.result)
+      } else {
+        classifyGroup([])
+      }
       tableData.value = tableAll[currentKind.value]
     } else {
-      allMessageKey.value = 'chartFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        allApiSuccess.value = true
+        classifyGroup([])
+      } else {
+        allMessageKey.value = 'chartFailed'
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     }
   } catch (error) {
     console.error(error)
@@ -192,7 +201,7 @@ const dataTransform = (ele) => {
 }
 
 //已讀
-const readSmartMesNote = async (msgId, kind) => {
+const readSmartMesNote = async (msgId) => {
   try {
     const result = await apiReadSmartMessNote({
       hall_name: activeHall.hall_code,
@@ -230,11 +239,9 @@ const readSmartMesNote = async (msgId, kind) => {
   querySmallMesNote()
 }
 
-const msgCheck = (event, msgId, msgKind) => {
+const msgCheck = (event, msgId) => {
   event.target.closest('.el-table__row').classList.add('remove-style')
-  const tabNameArr = tabList.value.map((ele) => ele.name)
-  const tabKind = tabNameArr.indexOf(currentTabs.value)
-  readSmartMesNote(msgId, tabKind.toString())
+  readSmartMesNote(msgId)
 }
 
 //雙#裡的字串拆成name跟id
@@ -287,7 +294,9 @@ watch(
 
 watch([() => currentTabs.value], () => {
   searchText.value = ''
-  refTable.value.goToFirstPage()
+  if (refTable.value) {
+    refTable.value.goToFirstPage()
+  }
   tableData.value = tableAll[currentKind.value]
 })
 
@@ -344,10 +353,7 @@ watch(
             </span>
           </template>
           <template #read="scope">
-            <el-checkbox
-              @click.once="msgCheck($event, scope.row.msgId, scope.row.kind)"
-              size="large"
-            />
+            <el-checkbox @click.once="msgCheck($event, scope.row.msgId)" size="large" />
           </template>
         </CustomTable>
       </el-col>
