@@ -8,8 +8,8 @@ import { i18n } from '@/global/i18n'
 export const useSystemStore = defineStore('system', () => {
   const globalStore = useGlobalStore()
   const { t } = i18n.global
+  const router = useRouter()
   async function storeLogout() {
-    const router = useRouter()
     globalStore.isLoading = true
     try {
       await apiLogout()
