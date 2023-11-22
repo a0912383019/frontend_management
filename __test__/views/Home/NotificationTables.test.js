@@ -16,7 +16,8 @@ describe('NotificationTables.vue', () => {
   globalStore = useGlobalStore(pinia)
   dateStore = useDateStore(pinia)
 
-  dateStore.LAST_DATE = dayjs(1513823919228)
+  dateStore.date_range_picker_config_8.startDate = dayjs(1513823919228).add(1, 'day').subtract(7, 'day')
+  dateStore.date_range_picker_config_8.endDate = dayjs(1513823919228)
 
   afterEach(() => {
     wrapper = null
@@ -48,7 +49,7 @@ describe('NotificationTables.vue', () => {
       { label: '日期', prop: 'date', minWidth: 110, align: 'center' },
       { label: '已讀', prop: 'read', align: 'center' }
     ]
-    expect(wrapper.vm.searchDate).toStrictEqual('2023/11/14~2017/12/21')
+    expect(wrapper.vm.searchDate).toStrictEqual('2017/12/15~2017/12/21')
     expect(wrapper.vm.tableColumns).toStrictEqual(tableColumns)
 
     //測試transformUser function
