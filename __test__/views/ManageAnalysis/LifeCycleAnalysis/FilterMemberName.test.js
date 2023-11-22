@@ -74,9 +74,10 @@ describe('FilterMemberName', () => {
   })
 
   // 測試 updateFilterTimestamp
-  it('test updateFilterTimestamp', () => {
+  it('test updateFilterTimestamp', async () => {
     let time = new Date().getTime()
     wrapper.vm.updateFilterTimestamp()
+    await wrapper.vm.$nextTick()
     expect(manageAnalysisStore.filterTimestamp).toBe(time)
   })
 
