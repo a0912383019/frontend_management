@@ -47,10 +47,7 @@ describe('TopCard.vue', () => {
     useGlobalStore.mockReturnValue(mockActiveHall)
     wrapper = shallowMount(TopCard, {
       global: {
-        plugins: [
-          i18n,
-          router
-        ],
+        plugins: [i18n],
         components: {
           FontAwesomeIcon
         },
@@ -141,10 +138,7 @@ describe('TopCard.vue', () => {
     useGlobalStore.mockReturnValue(mockActiveHall)
     wrapper = shallowMount(TopCard, {
       global: {
-        plugins: [
-          i18n,
-          router
-        ],
+        plugins: [i18n],
         components: {
           FontAwesomeIcon
         },

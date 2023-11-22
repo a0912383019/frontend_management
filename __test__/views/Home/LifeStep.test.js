@@ -6,11 +6,10 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { createTestingPinia } from '@pinia/testing'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
-import router from '@/router'
 import { useDateStore } from '@/stores/dateConfig.js'
+import { useGlobalStore } from '@/stores/global.js'
 import { dayjs } from 'element-plus'
 import HighchartsVue from 'highcharts-vue'
-import { useGlobalStore } from '@/stores/global.js'
 
 describe('LifeStep.vue', () => {
   let wrapper = null
@@ -119,7 +118,7 @@ describe('LifeStep.vue', () => {
     }
     wrapper = shallowMount(LifeStep, {
       global: {
-        plugins: [HighchartsVue, i18n, router]
+        plugins: [HighchartsVue, i18n]
       }
     })
     //等待異步完成

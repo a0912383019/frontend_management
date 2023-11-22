@@ -8,7 +8,6 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpIcon from '@/components/CdpIcon.vue'
 import MemberActiveDetail from '@/views/Home/components/MemberActiveDetail.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
-import router from '@/router'
 import { dayjs } from 'element-plus'
 import { useDateStore } from '@/stores/dateConfig.js'
 import { useGlobalStore } from '@/stores/global.js'
@@ -33,7 +32,7 @@ describe('MemberActive.vue', () => {
     }
     wrapper = shallowMount(MemberActive, {
       global: {
-        plugins: [i18n, router],
+        plugins: [i18n],
         components: {
           FontAwesomeIcon,
           CdpIcon
@@ -81,7 +80,7 @@ describe('MemberActive.vue', () => {
     vi.spyOn(axiosGoInstance, 'get').mockResolvedValue(result)
     wrapper = shallowMount(MemberActive, {
       global: {
-        plugins: [i18n, router],
+        plugins: [i18n],
         components: {
           FontAwesomeIcon,
           CdpIcon
