@@ -3,10 +3,10 @@ import { shallowMount, flushPromises } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import TopCard from '@/views/Home/components/TopCard.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
-import router from '@/router'
 import { useDateStore } from '@/stores/dateConfig.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { dayjs } from 'element-plus'
 
 describe('TopCard.vue', () => {
   let wrapper = null
@@ -17,7 +17,7 @@ describe('TopCard.vue', () => {
     useDateStore: vi.fn()
   }))
   const mockLastDate = {
-    LAST_DATE: 1513823919228
+    LAST_DATE: dayjs(1513823919228)
   }
   useDateStore.mockReturnValue(mockLastDate)
 
