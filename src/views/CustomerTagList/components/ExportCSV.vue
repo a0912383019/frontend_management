@@ -84,22 +84,26 @@ const handelExportReport = async () => {
     })
     globalStore.isLoading = false
     const { return_code } = result.data.status
+
     if (return_code === '0000') {
       window.location.href = result.data.result.url
-    } else if (return_code === '0001') {
-      ElNotification({
-        title: t('msg.no_results'),
-        type: 'error'
-      })
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
     } else {
-      ElNotification({
-        title: t('msg.query_failed'),
-        type: 'error'
-      })
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        ElNotification({
+          title: t('msg.no_results'),
+          type: 'error'
+        })
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      } else {
+        ElNotification({
+          title: t('msg.query_failed'),
+          type: 'error'
+        })
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     }
   } catch (error) {
     // 失敗需關閉loading

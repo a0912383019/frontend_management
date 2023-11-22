@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import dayjs from 'dayjs'
+import { dayjs } from 'element-plus'
 import { apiQueryLifeCycleAnalysisOverview } from '@/api/manageAnalysis.js'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'

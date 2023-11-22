@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import dayjs from 'dayjs'
+import { dayjs } from 'element-plus'
 import { useDateStore } from '@/stores/dateConfig.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import { formatDateDuration } from '@/utils/commonUtils.js'

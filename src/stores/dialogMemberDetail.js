@@ -1,7 +1,7 @@
 //Dialog：會員明細資料
 import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
-import dayjs from 'dayjs'
+import { dayjs } from 'element-plus'
 import { useDateStore } from '@/stores/dateConfig.js'
 import { formatDateDuration } from '@/utils/commonUtils.js'
 

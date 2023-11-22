@@ -6,7 +6,7 @@ import { apiQueryMemberStepDetail } from '@/api/global.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
 import { generateRGBColors, errorRespond } from '@/utils/commonUtils.js'
-import dayjs from 'dayjs'
+import { dayjs } from 'element-plus'
 import Chart from 'chart.js/auto'
 import 'chartjs-adapter-dayjs-3'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -190,9 +190,7 @@ const transformMemberStepDetail = (data) => {
         data: [
           [
             data[i].data_date,
-            i + 1 === data.length
-              ? chartXLabels[chartXLabels.length - 1]
-              : data[i + 1].data_date
+            i + 1 === data.length ? chartXLabels[chartXLabels.length - 1] : data[i + 1].data_date
           ]
         ]
       }
