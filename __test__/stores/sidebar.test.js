@@ -7,7 +7,6 @@ describe('useSystemStore', () => {
   let spy
 
   beforeEach(() => {
-    vi.mock('vue-router')
     setActivePinia(createPinia())
 
     spy = vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
