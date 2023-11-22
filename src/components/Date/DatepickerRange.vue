@@ -228,7 +228,7 @@ watch(i18nLocale, () => {
     display: none;
   }
   .el-range-input {
-    width: 70px;
+    width: 75px;
     height: 32px;
     line-height: 32px;
     color: #404040;

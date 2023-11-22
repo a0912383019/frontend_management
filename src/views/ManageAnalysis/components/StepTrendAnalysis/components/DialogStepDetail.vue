@@ -13,7 +13,7 @@ import {
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import StepConfig from '@/components/StepConfig.vue'
-import dayjs from 'dayjs'
+import { dayjs } from 'element-plus'
 
 const { t } = useI18n()
 

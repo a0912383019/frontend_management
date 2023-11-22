@@ -1,7 +1,7 @@
 //單元：會員經營分析
 import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
-import dayjs from 'dayjs'
+import { dayjs } from 'element-plus'
 import { useDateStore } from '@/stores/dateConfig.js'
 import { formatDateDuration } from '@/utils/commonUtils.js'
 

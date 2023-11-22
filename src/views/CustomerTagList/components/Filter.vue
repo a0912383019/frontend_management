@@ -23,7 +23,7 @@ const popoverVisible = ref(false)
 const emit = defineEmits(['update:filter-submit'])
 
 // 代理帳號 options
-const selectAcountOptions = ref([
+const selectAccountOptions = ref([
   {
     value: '',
     label: t('common.select_all'),
@@ -95,7 +95,7 @@ const transformAgNameUserLevel = (data) => {
   let { ag_name, user_level } = data
   // 代理帳號
   ag_name.forEach((item) => {
-    selectAcountOptions.value.push({
+    selectAccountOptions.value.push({
       value: item,
       label: item
     })
@@ -150,7 +150,7 @@ watch(
       :width="600"
       trigger="click"
       :teleported="false"
-      popper-class="cdp-popover"
+      popper-class="cdp-popover unit-test-filter"
     >
       <template #reference>
         <ButtonIcon
@@ -175,7 +175,7 @@ watch(
             :disabled="formDisabled"
           >
             <el-option
-              v-for="item in selectAcountOptions"
+              v-for="item in selectAccountOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
