@@ -224,6 +224,12 @@ describe('MemberInfo.vue', () => {
         message: 'success'
       }
     }
+    const error = {
+      return_code: '9999',
+      message: 'Unexpected error.',
+      error_code: '210400001',
+      errors: 'Unexpected error.'
+    }
     vi.spyOn(axiosGoInstance, 'get').mockImplementation((url) => {
       switch (url) {
         case '/api/auth/member/member_info':

@@ -5,9 +5,9 @@ import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { formatDate, errorRespond, FormatNumber } from '@/utils/commonUtils.js'
 import { dayjs } from 'element-plus'
-import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import { apiQueryMemberRecentWeekLively } from '@/api/home.js'
 import { apiQueryMemberRecentLively } from '@/api/home.js'
+import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { iconStep } from '@/../public/js/system_config.js'
@@ -47,7 +47,7 @@ const thisWeekDuration = ref(
 )
 
 const activeStepTableData = ref([])
-//頁面點擊排名欄位
+//週活躍度
 const activeStepTableColumns = computed(() => {
   return [
     {

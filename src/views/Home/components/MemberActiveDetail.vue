@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useGlobalStore } from '@/stores/global.js'
 import {
   formatDateDuration,
   FormatNumber,
@@ -11,10 +10,11 @@ import {
 import { dayjs } from 'element-plus'
 import CurrencySignText from '@/components/CurrencySignText.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
-import { apiQueryLivelyChangeDetail } from '@/api/home.js'
 import ActiveDetail from './ActiveDetail.vue'
-import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import CdpMessage from '@/components/CdpMessage.vue'
+import { apiQueryLivelyChangeDetail } from '@/api/home.js'
+import { useGlobalStore } from '@/stores/global.js'
+import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { iconStep } from '@/../public/js/system_config.js'
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
