@@ -14,7 +14,6 @@ describe('Home.vue', () => {
     wrapper = shallowMount(Home, {
       global: {
         plugins: [
-          // router,
           createTestingPinia({
             createSpy: vi.fn
           })
