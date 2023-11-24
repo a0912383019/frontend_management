@@ -21,7 +21,7 @@ describe('LifeStep.vue', () => {
     LAST_DATE,
     date_range_picker_config_1: {
       startDate: dayjs(LAST_DATE).add(1, 'day').subtract(1, 'month'), //預設起始時間
-      endDate: LAST_DATE //預設結束時間
+      endDate: dayjs(LAST_DATE) //預設結束時間
     }
   }
   useDateStore.mockReturnValue(mockLastDate)

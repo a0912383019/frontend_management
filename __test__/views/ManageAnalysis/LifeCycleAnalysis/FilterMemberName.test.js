@@ -1,5 +1,5 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
 import ElementPlus from 'element-plus'
@@ -74,9 +74,10 @@ describe('FilterMemberName', () => {
   })
 
   // 測試 updateFilterTimestamp
-  it('test updateFilterTimestamp', () => {
+  it('test updateFilterTimestamp', async () => {
     let time = new Date().getTime()
     wrapper.vm.updateFilterTimestamp()
+    await flushPromises()
     expect(manageAnalysisStore.filterTimestamp).toBe(time)
   })
 
