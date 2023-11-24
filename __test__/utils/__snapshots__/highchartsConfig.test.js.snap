@@ -1,0 +1,99 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tooltip Utils > should format shared tooltip using tooltipShared 1`] = `
+"
+    <div style=\\"
+      padding: 6px 10px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.8)
+    \\">
+    <div class=\\"font-bold mb-3\\">2323/11/11</div>
+    <div class=\\"flex flex-col\\">
+  
+    <div class=\\"flex\\">
+      <div class=\\"mr-4 mt-4\\" style=\\"
+        width: 10px;
+        height: 10px;
+        background-color: rgba(245,105,84,1);
+    
+      \\"></div>
+      <div>
+        活躍期：
+        ¥
+        1
+      </div>
+    </div>
+    </div></div>"
+`;
+
+exports[`Tooltip Utils > should format single shared tooltip using tooltipSingleShared 1`] = `
+"
+    <div style=\\"
+      padding: 6px 10px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.8);
+    \\">
+    <div class=\\"flex flex-col\\">
+  
+    <div class=\\"flex\\">
+      <div class=\\"mr-4 mt-4\\" style=\\"
+        width: 10px;
+        height: 10px;
+        background-color: rgba(245,105,84,1);
+        border: 0px solid #FFF;
+      \\"></div>
+      <div>
+        New BB體育-足球：
+        ¥
+        49,662,271
+      </div>
+    </div>
+    </div></div>"
+`;
+
+exports[`Tooltip Utils > should format tooltip using tooltipFormatter 1`] = `
+"
+    <div style=\\"
+      padding: 6px 10px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.8)
+    \\">
+      <div class=\\"flex\\">
+        <div class=\\"mr-4 mt-4\\" style=\\"
+          width: 10px;
+          height: 10px;
+          background-color: rgb(255, 0, 0,0.9);
+          border: 0px solid #FFF;
+        \\"></div>
+        <div>
+          food：¥200
+        </div>
+      </div>
+    </div>
+  "
+`;
+
+exports[`Tooltip Utils > should format tooltip with added sign using tooltipAddSign 1`] = `
+"
+    <div style=\\"
+      padding: 6px 10px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.8)
+    \\">
+    <div class=\\"font-bold mb-3\\">2323/11/11</div>
+    <div class=\\"flex flex-col\\">
+  
+    <div class=\\"flex\\">
+      <div class=\\"mr-4 mt-4\\" style=\\"
+        width: 10px;
+        height: 10px;
+        background-color: rgba(245,105,84,1);
+      \\"></div>
+      <div>
+        活躍期：
+        1
+        @
+      </div>
+    </div>
+    </div></div>"
+`;
