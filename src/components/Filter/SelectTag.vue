@@ -19,7 +19,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 // 創建不重複的class name
-const dropClass = 'dropClass' + dayjs() + Math.floor(Math.random() * 10)
+const dropClass = ref('dropClass' + dayjs() + Math.floor(Math.random() * 10))
 
 // 已選標籤列表
 const currentTagAry = ref([])
@@ -205,7 +205,7 @@ const handleTagDelete = ({ index }) => {
 // 點擊空白區域關閉dropdown
 const handleDocumentClick = (e) => {
   clearTagInputValue()
-  if (e.target.closest(`.${dropClass}`)) {
+  if (e.target.closest(`.${dropClass.value}`)) {
     isDropShow.value = true
   } else {
     isDropShow.value = false
@@ -343,7 +343,7 @@ watch(
         :lists="selectTypeLists"
         :tagTitle="$t('tags.type')"
         :operator="isOperatorShow"
-        v-show="tagTextAry.length === 0 && isDropShow === true"
+        v-show="tagTextAry && tagTextAry.length === 0 && isDropShow === true"
         @update:tagtext="handleTagAddText"
       />
       <SelectTagDropdown
@@ -352,7 +352,7 @@ watch(
         :lists="selectCategoryLists"
         :tagTitle="$t('tags.category')"
         :operator="false"
-        v-show="tagTextAry.length === 1 && isDropShow === true"
+        v-show="tagTextAry && tagTextAry.length === 1 && isDropShow === true"
         @update:tagtext="handleTagAddText"
       />
       <SelectTagDropdown
@@ -360,7 +360,7 @@ watch(
         :class="dropClass"
         :tagTitle="$t('tags.select_tag')"
         :operator="false"
-        v-show="tagTextAry.length === 2 && isDropShow === true"
+        v-show="tagTextAry && tagTextAry.length === 2 && isDropShow === true"
         @update:tagtext="handleTagAddText"
       />
     </div>
