@@ -197,7 +197,6 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
 // 轉換資料
 const transformListMemberTags = (data) => {
   tagsColumnWidth.value = (refContent.value.offsetWidth * (defineTagsWidth / 100) - 48) * 2 // 取得標籤欄位內容總寬，預設顯示兩行所以 * 2
-  console.log(refContent.value.offsetWidth, tagsColumnWidth.value)
   let result = []
   let tagWidth = 0
 
