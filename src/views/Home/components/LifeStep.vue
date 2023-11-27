@@ -108,7 +108,7 @@ const queryLatestLifeCycleSummary = async () => {
     const { return_code } = result.data.status
 
     if (return_code === '0000') {
-      if (result.data.result.length !== 0) {
+      if (result.data.result && result.data.result.length !== 0) {
         apiSuccess.value = true
         //整理table對應的資料
         transformLifeCycleData(result.data.result)

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, watch, computed } from 'vue'
-import { findRootHall, findParentKey, getSessionStorageEntity } from '@/utils/commonUtils'
+import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -87,7 +87,8 @@ const transformTagsConfig = () => {
     tagsData[item] = []
   })
 
-  let tagsConfigData = tagsConfig[findParentKey(activeHall.hall_code)]
+  // let tagsConfigData = tagsConfig[findParentKey(activeHall.hall_code)]
+  let tagsConfigData = tagsConfig[activeHall.hall_code]
   if (tagsConfigData !== undefined) {
     Object.entries(tagsConfigData).forEach((key) => {
       let value = key[1]

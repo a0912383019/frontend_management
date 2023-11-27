@@ -13,11 +13,10 @@ const currencyObj = reactive({ currency: '', currencySign: '', currencySignText:
 
 //產生幣別i18n資料
 const setCurrencyText = () => {
-  currencyObj['currency'] = getCurrencySignText('BBIN', activeHall.hall_code)['currency']
-  currencyObj['currencySign'] = getCurrencySignText('BBIN', activeHall.hall_code)['currencySign']
-  currencyObj['currencySignText'] = getCurrencySignText('BBIN', activeHall.hall_code)[
-    'currencySignText'
-  ]
+  const currencyData = getCurrencySignText('BBIN', activeHall.hall_code)
+  currencyObj['currency'] = currencyData['currency']
+  currencyObj['currencySign'] = currencyData['currencySign']
+  currencyObj['currencySignText'] = currencyData['currencySignText']
   isReady.value = true
 }
 
