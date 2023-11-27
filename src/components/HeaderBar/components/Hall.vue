@@ -5,7 +5,7 @@ import {
   logout_counter_min,
   logout_counter_sec
 } from '@/../public/js/system_config.js'
-import { findRootHall, getSessionStorageEntity, findParentKey } from '@/utils/commonUtils'
+import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
 import { ElNotification } from 'element-plus'
 import { useSystemStore } from '@/stores/system.js'
 import { useGlobalStore } from '@/stores/global.js'
@@ -262,7 +262,8 @@ const getSystemConfig = () => {
   const getConfig = () => {
     return new Promise((resolve, reject) => {
       apiGetSystemConfig({
-        hall_name: findParentKey(globalStore.activeHall.hall_code),
+        // hall_name: findParentKey(globalStore.activeHall.hall_code),
+        hall_name: globalStore.activeHall.hall_code,
         locale: i18nLocale.value
       })
         .then((result) => {
@@ -412,7 +413,6 @@ watch(
               :name="$t('nav.reset')"
               icon="history"
               size="small"
-              color="green"
               class="hallbox__counter__button font-semibold"
               :disabled="isDisabledResetBtn"
               @click="resetCounter"
@@ -522,6 +522,12 @@ watch(
     &__button {
       flex-shrink: 0;
       margin-left: 4px;
+      height: 26px !important;
+      > :first-child {
+        margin-right: 2px !important;
+        height: 13px !important;
+        transform: scaleX(-1)
+      }
     }
   }
 }
