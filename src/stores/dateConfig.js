@@ -3,20 +3,12 @@ import { defineStore } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { dayjs } from 'element-plus'
 import { getSessionStorageEntity } from '@/utils/commonUtils'
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
-dayjs.extend(utc)
-dayjs.extend(timezone)
-dayjs.tz.setDefault('Asia/Taipei')
 
 export const useDateStore = defineStore('dateStore', () => {
   const getServerTime = () => {
     if (sessionStorage.getItem('system_config') !== null) {
       // server回傳的美東時間，由API system_config 取得
       return dayjs(getSessionStorageEntity('system_config')['server_time'])
-    } else {
-      // 若api還沒回傳先使用client端的美東時間當作預設
-      return dayjs().tz('America/New_York').format('YYYY-MM-DD HH:mm:ss')
     }
   }
 

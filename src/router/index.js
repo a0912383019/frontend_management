@@ -288,7 +288,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const dateStore = useDateStore()
   const sessionStorageUserInfo = sessionStorage.user_info
   //將from page寫入window內
   sessionStorage.from_page = `?fromPage=${to.meta.fromPage}`
@@ -307,6 +306,7 @@ router.beforeEach((to, from, next) => {
     next({ name: 'Login' })
   }
   if (to.name !== 'Login' && sessionStorage.getItem('system_config') !== null) {
+    const dateStore = useDateStore()
     dateStore.updateDate()
   }
 })

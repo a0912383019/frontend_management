@@ -5,33 +5,34 @@ import TopCard from './components/TopCard.vue'
 import NotificationTables from './components/NotificationTables.vue'
 import LifeStep from './components/LifeStep.vue'
 import MemberActive from './components/MemberActive.vue'
+import { storeToRefs } from 'pinia'
 
 const globalStore = useGlobalStore()
+const { systemConfigIsOk } = storeToRefs(globalStore)
 const key = ref('')
-watch(
-  () => globalStore.activeHall.hall_code,
-  () => {
-    key.value = globalStore.activeHall.hall_code
-  }
-)
+watch([() => systemConfigIsOk.value], () => {
+  key.value = systemConfigIsOk.value
+})
 </script>
 <template>
-  <section class="cdp-section">
-    <TopCard :key="key"></TopCard>
-  </section>
-  <el-row :gutter="20">
-    <el-col :span="14">
-      <NotificationTables :key="key"></NotificationTables>
-    </el-col>
-    <el-col :span="10">
-      <LifeStep :key="key"></LifeStep>
-    </el-col>
-  </el-row>
-  <el-row>
-    <el-col :span="24">
-      <MemberActive :key="key"></MemberActive>
-    </el-col>
-  </el-row>
+  <div v-if="key !== ''">
+    <section class="cdp-section">
+      <TopCard :key="key"></TopCard>
+    </section>
+    <el-row :gutter="20">
+      <el-col :span="14">
+        <NotificationTables :key="key"></NotificationTables>
+      </el-col>
+      <el-col :span="10">
+        <LifeStep :key="key"></LifeStep>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
+        <MemberActive :key="key"></MemberActive>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 <style lang="scss" scoped>
 .mainArea__container {
