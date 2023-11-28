@@ -35,14 +35,18 @@ describe('Home.vue', () => {
   })
 
   it('Expected components render correctly', async () => {
+    expect(wrapper.findComponent(TopCard).exists()).toBe(false)
+    expect(wrapper.findComponent(NotificationTables).exists()).toBe(false)
+    expect(wrapper.findComponent(LifeStep).exists()).toBe(false)
+    expect(wrapper.findComponent(MemberActive).exists()).toBe(false)
+
+    //測試重新搜尋
+    wrapper.vm.systemConfigIsOk = 35353
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.key).toStrictEqual(35353)
     expect(wrapper.findComponent(TopCard).exists()).toBe(true)
     expect(wrapper.findComponent(NotificationTables).exists()).toBe(true)
     expect(wrapper.findComponent(LifeStep).exists()).toBe(true)
     expect(wrapper.findComponent(MemberActive).exists()).toBe(true)
-
-    //測試重新搜尋
-    wrapper.vm.globalStore.activeHall.hall_code = 'esb'
-    await wrapper.vm.$nextTick()
-    expect(wrapper.vm.key).toStrictEqual('esb')
   })
 })
