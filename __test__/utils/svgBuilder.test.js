@@ -1,5 +1,4 @@
-// import { readFileSync, readdirSync } from 'fs'
-import { it, describe, expect, vi, beforeEach } from 'vitest'
+import { it, describe, expect, vi } from 'vitest'
 import { findSvgFile, svgBuilder } from '@/utils/svgBuilder.js'
 import fs from 'fs'
 
@@ -16,8 +15,6 @@ describe('svgBuilder', () => {
       findSvgFile
     }
   })
-
-  beforeEach(() => {})
 
   it('findSvgFile', () => {
     const svgData =
