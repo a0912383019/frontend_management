@@ -1,6 +1,6 @@
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useI18n } from 'vue-i18n'
+import { i18n } from '@/global/i18n'
 import { dayjs } from 'element-plus'
 import { getSessionStorageEntity } from '@/utils/commonUtils'
 
@@ -36,73 +36,88 @@ export const useDateStore = defineStore('dateStore', () => {
   }
 
   // config_1 : 預設選取近1個月 (原：1, 5, 9, 10, 11)
-  const date_range_picker_config_1 = reactive({
-    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(1, 'month'), //預設起始時間
-    endDate: LAST_DATE, //預設結束時間
-    minDate: MIN_DATE, //限制最小可選日期
-    maxDate: LAST_DATE //限制最大可選日期
+  const date_range_picker_config_1 = computed(() => {
+    return {
+      startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(1, 'month'), //預設起始時間
+      endDate: LAST_DATE.value, //預設結束時間
+      minDate: MIN_DATE, //限制最小可選日期
+      maxDate: LAST_DATE.value //限制最大可選日期
+    }
   })
 
   // config_2 : 預設選取近20年
-  const date_range_picker_config_2 = reactive({
-    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(3, 'month'), //預設起始時間
-    endDate: LAST_DATE, //預設結束時間
-    minDate: dayjs(LAST_DATE.value).subtract(20, 'year'), //限制最小可選日期
-    maxDate: LAST_DATE //限制最大可選日期
+  const date_range_picker_config_2 = computed(() => {
+    return {
+      startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(3, 'month'), //預設起始時間
+      endDate: LAST_DATE.value, //預設結束時間
+      minDate: dayjs(LAST_DATE.value).subtract(20, 'year'), //限制最小可選日期
+      maxDate: LAST_DATE.value //限制最大可選日期
+    }
   })
 
   // config_3 : 預設選取未來2週
-  const date_range_picker_config_3 = reactive({
-    startDate: dayjs(LAST_DATE.value), //預設起始時間
-    endDate: dayjs(LAST_DATE.value).add(14, 'day'), //預設結束時間
-    minDate: MIN_DATE, //限制最小可選日期
-    maxDate: dayjs(LAST_DATE.value).add(1, 'year') //限制最大可選日期
+  const date_range_picker_config_3 = computed(() => {
+    return {
+      startDate: LAST_DATE.value, //預設起始時間
+      endDate: dayjs(LAST_DATE.value).add(14, 'day'), //預設結束時間
+      minDate: MIN_DATE, //限制最小可選日期
+      maxDate: dayjs(LAST_DATE.value).add(1, 'year') //限制最大可選日期
+    }
   })
 
   // config_4 : 單日期模式，預設選前2日
-  const date_range_picker_config_4 = reactive({
-    singleDatePicker: true, //是否為單日期模式
-    // startDate: dayjs(LAST_DATE.value).subtract(2, 'day'), //預設起始時間
-    endDate: LAST_DATE, //預設結束時間
-    minDate: MIN_DATE, //限制最小可選日期
-    maxDate: LAST_DATE //限制最大可選日期
+  const date_range_picker_config_4 = computed(() => {
+    return {
+      singleDatePicker: true, //是否為單日期模式
+      endDate: LAST_DATE.value, //預設結束時間
+      minDate: MIN_DATE, //限制最小可選日期
+      maxDate: LAST_DATE.value //限制最大可選日期
+    }
   })
 
   // config_5 : 預設選取前後一個月，最早可選至20年前，最晚可選至一年後
-  const date_range_picker_config_5 = reactive({
-    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(1, 'month'), //預設起始時間
-    endDate: dayjs(LAST_DATE.value).add(1, 'month'), //預設結束時間
-    minDate: MIN_DATE, //限制最小可選日期
-    maxDate: dayjs(LAST_DATE.value).add(1, 'year') //限制最大可選日期
+  const date_range_picker_config_5 = computed(() => {
+    return {
+      startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(1, 'month'), //預設起始時間
+      endDate: dayjs(LAST_DATE.value).add(1, 'month'), //預設結束時間
+      minDate: MIN_DATE, //限制最小可選日期
+      maxDate: dayjs(LAST_DATE.value).add(1, 'year') //限制最大可選日期
+    }
   })
 
   // config_6 : 預設選取近2個月
-  const date_range_picker_config_6 = reactive({
-    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(2, 'month'), //預設起始時間
-    endDate: LAST_DATE, //預設結束時間
-    minDate: MIN_DATE, //限制最小可選日期
-    maxDate: LAST_DATE //限制最大可選日期
+  const date_range_picker_config_6 = computed(() => {
+    return {
+      startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(2, 'month'), //預設起始時間
+      endDate: LAST_DATE.value, //預設結束時間
+      minDate: MIN_DATE, //限制最小可選日期
+      maxDate: LAST_DATE.value //限制最大可選日期
+    }
   })
 
   // config_7 : 預設選取近3個月
-  const date_range_picker_config_7 = reactive({
-    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(3, 'month'), //預設起始時間
-    endDate: LAST_DATE, //預設結束時間
-    minDate: MIN_DATE, //限制最小可選日期
-    maxDate: LAST_DATE //限制最大可選日期
+  const date_range_picker_config_7 = computed(() => {
+    return {
+      startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(3, 'month'), //預設起始時間
+      endDate: LAST_DATE.value, //預設結束時間
+      minDate: MIN_DATE, //限制最小可選日期
+      maxDate: LAST_DATE.value //限制最大可選日期
+    }
   })
 
   // config_8 : 預設選取近一週
-  const date_range_picker_config_8 = reactive({
-    startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(7, 'day'), //預設起始時間
-    endDate: LAST_DATE, //預設結束時間
-    minDate: MIN_DATE, //限制最小可選日期
-    maxDate: LAST_DATE //限制最大可選日期
+  const date_range_picker_config_8 = computed(() => {
+    return {
+      startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(7, 'day'), //預設起始時間
+      endDate: LAST_DATE.value, //預設結束時間
+      minDate: MIN_DATE, //限制最小可選日期
+      maxDate: LAST_DATE.value //限制最大可選日期
+    }
   })
 
   // 近1週、近2週、近1個月、近2個月、近3個月
   const shortcutsConfig1 = () => {
-    const { t } = useI18n()
+    const { t } = i18n.global
     return [
       {
         text: t('date_range_picker.last_week'),
@@ -139,7 +154,7 @@ export const useDateStore = defineStore('dateStore', () => {
 
   // 近1週、近2週、近1個月、近1年、近3年、近5年、近20年
   const shortcutsConfig2 = () => {
-    const { t } = useI18n()
+    const { t } = i18n.global
     return [
       {
         text: t('date_range_picker.last_week'),

@@ -6,7 +6,7 @@ import NotificationTables from '@/views/Home/components/NotificationTables.vue'
 import { useDateStore } from '@/stores/dateConfig.js'
 import { useGlobalStore } from '@/stores/global.js'
 import ElementPlus, { dayjs } from 'element-plus'
-import { apiQuerySmartMessNote, apiReadSmartMessNote } from '@/api/home.js'
+import axiosGoInstance from '@/api/axiosGoInstance.js'
 
 describe('NotificationTables.vue', () => {
   let wrapper = null
@@ -16,7 +16,9 @@ describe('NotificationTables.vue', () => {
   globalStore = useGlobalStore(pinia)
   dateStore = useDateStore(pinia)
 
-  dateStore.date_range_picker_config_8.startDate = dayjs(1513823919228).add(1, 'day').subtract(7, 'day')
+  dateStore.date_range_picker_config_8.startDate = dayjs(1513823919228)
+    .add(1, 'day')
+    .subtract(7, 'day')
   dateStore.date_range_picker_config_8.endDate = dayjs(1513823919228)
 
   afterEach(() => {
@@ -63,10 +65,6 @@ describe('NotificationTables.vue', () => {
   })
 
   it('Is triggering watch and mock api as expected?', async () => {
-    vi.mock('@/api/home.js', () => ({
-      apiQuerySmartMessNote: vi.fn(),
-      apiReadSmartMessNote: vi.fn()
-    }))
     const getResult = {
       data: {
         status: {
@@ -131,7 +129,7 @@ describe('NotificationTables.vue', () => {
         ]
       }
     }
-    apiQuerySmartMessNote.mockImplementation(() => Promise.resolve(getResult))
+    const spyGet = vi.spyOn(axiosGoInstance, 'get').mockResolvedValue(getResult)
 
     const putResult = {
       data: {
@@ -141,7 +139,7 @@ describe('NotificationTables.vue', () => {
         }
       }
     }
-    apiReadSmartMessNote.mockImplementation(() => Promise.resolve(putResult))
+    const spyPut = vi.spyOn(axiosGoInstance, 'put').mockResolvedValue(putResult)
 
     globalStore.activeHall = {
       hall_name: 'esb',
@@ -162,7 +160,7 @@ describe('NotificationTables.vue', () => {
     })
     //等待異步完成
     await flushPromises()
-    expect(apiQuerySmartMessNote).toHaveBeenCalledTimes(1)
+    expect(spyGet).toHaveBeenCalledTimes(1)
 
     const tableAll = {
       0: [
@@ -334,11 +332,11 @@ describe('NotificationTables.vue', () => {
 
     //等待異步完成
     await flushPromises()
-    expect(apiReadSmartMessNote).toHaveBeenCalledWith({
+    expect(spyPut).toHaveBeenCalledWith('/api/auth/home/smart_message_notification', {
       hall_name: wrapper.vm.activeHall.hall_code,
       message_id: 1942
     })
-    expect(apiQuerySmartMessNote).toHaveBeenCalledTimes(2)
+    expect(spyGet).toHaveBeenCalledTimes(2)
 
     //觸發搜尋watch
     wrapper.vm.searchText = 'junejuneclub'
@@ -357,6 +355,6 @@ describe('NotificationTables.vue', () => {
     //觸發切換語系watch
     wrapper.vm.i18nLocale = 'en'
     await flushPromises()
-    expect(apiQuerySmartMessNote).toHaveBeenCalledTimes(3)
+    expect(spyGet).toHaveBeenCalledTimes(3)
   })
 })

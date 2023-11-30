@@ -1,18 +1,19 @@
 <script setup>
-import { watch, ref } from 'vue'
+import { watch, ref, onMounted } from 'vue'
 import { useGlobalStore } from '@/stores/global.js'
 import TopCard from './components/TopCard.vue'
 import NotificationTables from './components/NotificationTables.vue'
 import LifeStep from './components/LifeStep.vue'
 import MemberActive from './components/MemberActive.vue'
-import { storeToRefs } from 'pinia'
 
 const globalStore = useGlobalStore()
-const { systemConfigIsOk } = storeToRefs(globalStore)
 const key = ref('')
-watch([() => systemConfigIsOk.value], () => {
-  key.value = systemConfigIsOk.value
-})
+watch(
+  () => globalStore.systemConfigIsOk,
+  () => {
+    key.value = globalStore.systemConfigIsOk
+  }
+)
 </script>
 <template>
   <div v-if="key !== ''">
