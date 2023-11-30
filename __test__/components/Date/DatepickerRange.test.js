@@ -41,16 +41,16 @@ describe('DatepickerRange', () => {
       ' ~ ' +
       dateStore.date_range_picker_config_1.endDate.format('YYYY-MM-DD')
     expect(wrapper.emitted('update:modelValue')[0][0]).toBe(modelValue)
-    expect(wrapper.vm.dateValueStartDate).toBe(dateStore.date_range_picker_config_1.startDate)
-    expect(wrapper.vm.dateValueEndDate).toBe(dateStore.date_range_picker_config_1.endDate)
+    expect(wrapper.vm.dateValueStartDate).toStrictEqual(dateStore.date_range_picker_config_1.startDate)
+    expect(wrapper.vm.dateValueEndDate).toStrictEqual(dateStore.date_range_picker_config_1.endDate)
 
     const dateValue = [
       dateStore.date_range_picker_config_1.startDate,
       dateStore.date_range_picker_config_1.endDate
     ]
     expect(wrapper.vm.dateValue).toStrictEqual(dateValue)
-    expect(wrapper.vm.dateMinDate).toBe(dateStore.date_range_picker_config_1.minDate)
-    expect(wrapper.vm.dateMaxDate).toBe(dateStore.date_range_picker_config_1.maxDate)
+    expect(wrapper.vm.dateMinDate).toStrictEqual(dateStore.date_range_picker_config_1.minDate)
+    expect(wrapper.vm.dateMaxDate).toStrictEqual(dateStore.date_range_picker_config_1.maxDate)
     expect(wrapper.vm.shortcuts).toBe(dateStore.shortcutsConfig1())
     expect(wrapper.vm.selectDate).toStrictEqual(dateValue)
   })
@@ -79,8 +79,8 @@ describe('DatepickerRange', () => {
     expect(wrapper.vm.dateValue).toStrictEqual(['2023-09-07 ', ' 2023-10-04'])
     expect(wrapper.emitted('update:modelValue')).toBeTruthy()
     expect(wrapper.emitted('update:modelValue')[0][0]).toBe('2023-09-07 ~ 2023-10-04')
-    expect(wrapper.vm.dateMinDate).toBe(dateStore.date_range_picker_config_7.minDate)
-    expect(wrapper.vm.dateMaxDate).toBe(dateStore.date_range_picker_config_7.maxDate)
+    expect(wrapper.vm.dateMinDate).toStrictEqual(dateStore.date_range_picker_config_7.minDate)
+    expect(wrapper.vm.dateMaxDate).toStrictEqual(dateStore.date_range_picker_config_7.maxDate)
     expect(wrapper.vm.shortcuts).toBe(dateStore.shortcutsConfig2())
     expect(wrapper.vm.selectDate).toStrictEqual(['2023-09-07 ', ' 2023-10-04'])
 
