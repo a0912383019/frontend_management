@@ -67,7 +67,7 @@ const googleLoginCallback = (response) => {
       })
     })
     .catch((err) => {
-      console.log('error>>', err)
+      console.error(err)
       globalStore.isLoading = false
       shake()
     })
@@ -87,7 +87,8 @@ const handleLogin = async ({ credential }) => {
     ])
     const { return_code: phpReturnCode } = phpResponse.data.status
     const { return_code: goReturnCode } = goResponse.data.status
-    if (Storage !== undefined) {
+
+    if (typeof Storage !== 'undefined') {
       //判斷瀏覽器是否有支援web storage
       if (phpReturnCode === '0000' && goReturnCode === '0000') {
         const { token_type: phpTokenType, access_token: phpAccessToken } = phpResponse.data
@@ -122,7 +123,7 @@ const handleLogin = async ({ credential }) => {
       throw new Error()
     }
   } catch (error) {
-    console.log('error', error)
+    console.log(error)
     const { status, statusText } = error.response
     if (status === 401) {
       if (statusText === 'Unauthorized') {
