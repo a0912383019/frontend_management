@@ -9,17 +9,12 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Login from '@/views/Login.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
 import axiosInstance from '@/api/axiosInstance.js'
-import { apiLogin, apiGoLogin } from '@/api/system.js'
 
 describe('Login', () => {
   let wrapper = null
 
   const pinia = createTestingPinia({ createSpy: vi.fn })
   const globalStore = useGlobalStore(pinia)
-  // globalStore.activeHall = {
-  //   hall_name: 'esb',
-  //   hall_code: 'esb'
-  // }
 
   beforeEach(() => {
     wrapper = shallowMount(Login, {
