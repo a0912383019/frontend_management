@@ -121,7 +121,6 @@ const queryTagsGamePayoffRank = async (order, filterData) => {
       if (result.data.result.length !== 0) {
         apiSuccess.value = true
         //整理table對應的資料
-        chartStretch()
         transformTagsGamePayoffRank(order, result.data.result)
       } else {
         messageKey.value = 'noResult'
@@ -195,17 +194,19 @@ const transformTagsGamePayoffRank = (order, data) => {
 }
 
 onMounted(() => {
+  chartStretch()
   queryTagsGamePayoffRank('ASC', filterFormData.value)
   queryTagsGamePayoffRank('DESC', filterFormData.value)
 })
 
 watch([() => filterTimestamp.value, i18nLocale], () => {
+  chartStretch()
   queryTagsGamePayoffRank('ASC', filterFormData.value)
   queryTagsGamePayoffRank('DESC', filterFormData.value)
 })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in">
     <SectionTitle class="mb-10" :title="$t('game_tag_analysis.game_payoff_rank_positive20')">
       <template #tooltip>
         <div class="font-size-14">
@@ -221,7 +222,7 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
     />
     <highcharts v-else :options="pChartOptions"></highcharts>
   </section>
-  <section class="cdp-section mb-0">
+  <section class="cdp-section-in mb-0">
     <SectionTitle class="mb-10" :title="$t('game_tag_analysis.game_payoff_rank_negative20')">
       <template #tooltip>
         <div class="font-size-14">
@@ -240,6 +241,6 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
 </template>
 <style lang="scss" scoped>
 .mb-0 {
-  margin-bottom: 0px;
+  margin-bottom: 0px !important;
 }
 </style>
