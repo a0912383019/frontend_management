@@ -183,7 +183,7 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
 })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in mb-0">
     <SectionTitle class="mb-15" :title="$t('game_tag_analysis.game_bet_amount_rank')">
       <template #tooltip>
         {{ $t('common.show_top_only', { rank: 20 }) }}
@@ -204,5 +204,9 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
 
 :deep(.dataLabelsBg) {
   padding: 3px 5px;
+}
+
+.mb-0 {
+  margin-bottom: 0px !important;
 }
 </style>

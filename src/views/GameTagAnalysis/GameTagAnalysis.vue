@@ -51,7 +51,7 @@ watch(
 )
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section mb-0">
     <PageTitle icon="menuGame" class="mb-20" :title="$t('sidebar.bbin_game_tag_analysis')" />
     <el-row :gutter="20" class="mb-20">
       <el-col :span="8">
@@ -77,5 +77,9 @@ watch(
 .tabs-game-tag-analysis {
   width: 100%;
   max-width: 445px;
+}
+
+.mb-0 {
+  margin-bottom: 0px !important;
 }
 </style>
