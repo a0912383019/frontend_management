@@ -99,9 +99,9 @@ export const tooltipSingleShared = ({ data, hallCode, tooltipIconBorder = false 
   for (let i = 0; i < data.length; i++) {
     result += `
     <div class="flex">
-      <div class="mr-4 mt-4" style="
-        width: 10px;
-        height: 10px;
+      <div class="mr-3 mt-3" style="
+        width: 12px;
+        height: 12px;
         background-color: ${data[i].color};
         border: ${Number(tooltipIconBorder)}px solid #FFF;
       "></div>

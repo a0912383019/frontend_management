@@ -128,6 +128,7 @@ const querySmallMesNote = async () => {
       if (error_code === '210400000') {
         allApiSuccess.value = true
         classifyGroup([])
+        tableData.value = tableAll[currentKind.value]
       } else {
         allMessageKey.value = 'chartFailed'
         let failMsg = errorRespond(result.data.status)
