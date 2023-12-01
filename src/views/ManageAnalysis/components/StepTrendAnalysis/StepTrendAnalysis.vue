@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, nextTick } from 'vue'
 import { useGlobalStore } from '@/stores/global.js'
 import LifeCycleStepProfitOverview from './components/LifeCycleStepProfitOverview.vue'
 import DailyLifeCycleStepPeople from './components/DailyLifeCycleStepPeople.vue'
@@ -11,8 +11,10 @@ const { activeHall } = globalStore
 
 onMounted(() => {
   if (activeHall.hall_code !== '' && activeHall.hall_code !== undefined) {
-    life.value.query_step_trend_analysis_overview_tbl()
-    daily.value.query_step_total_people()
+    nextTick(() => {
+      life.value.query_step_trend_analysis_overview_tbl()
+      daily.value.query_step_total_people()
+    })
   }
 })
 

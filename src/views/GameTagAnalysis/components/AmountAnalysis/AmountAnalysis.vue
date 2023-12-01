@@ -97,7 +97,7 @@ const queryTagsGameRank = async () => {
   try {
     const result = await apiQueryTagsGameRank({
       hall_name: activeHall.hall_code,
-      tag_game_analysis_date: gameTagAnalysisStore['filterFormData']['date'],
+      search_date: gameTagAnalysisStore['filterFormData']['date'],
       search_tag: gameTagAnalysisStore['filterFormData']['searchTag'],
       exclude_tag: gameTagAnalysisStore['filterFormData']['excludeTag'],
       locale: i18nLocale.value
@@ -106,16 +106,15 @@ const queryTagsGameRank = async () => {
     if (return_code === '0000') {
       apiSuccess.value = true
       transformTagsGameRank(result.data.result)
-    } else if (return_code === '0001') {
-      apiSuccess.value = false
-      messageKey.value = 'noResult'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
     } else {
-      apiSuccess.value = false
-      messageKey.value = 'chartFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        messageKey.value = 'noResult'
+      } else {
+        messageKey.value = 'chartFailed'
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     }
   } catch (error) {
     console.error(error)
