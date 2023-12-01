@@ -10,9 +10,12 @@ import { storeToRefs } from 'pinia'
 const globalStore = useGlobalStore()
 const { systemConfigIsOk } = storeToRefs(globalStore)
 const key = ref('')
-watch([() => systemConfigIsOk.value], () => {
-  key.value = systemConfigIsOk.value
-})
+watch(
+  () => systemConfigIsOk.value,
+  () => {
+    key.value = systemConfigIsOk.value
+  }
+)
 </script>
 <template>
   <div v-if="key !== ''">

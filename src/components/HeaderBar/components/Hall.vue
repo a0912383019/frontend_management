@@ -184,9 +184,9 @@ const resetCounter = (is_need_close_loading = true) => {
           sidebarStore.generateSidebarMenu() // 更新sidebar item
           ElNotification.closeAll() //關閉所有ElNotification
           if (redirect_home) {
-            globalStore.isLoading = false // 關閉loading視窗
             updateTime()
           }
+          globalStore.isLoading = false
           return redirect_home
         }
       })
@@ -194,7 +194,7 @@ const resetCounter = (is_need_close_loading = true) => {
   })
 }
 
-const refresh = (is_need_close_loading = true) => {
+const refresh = () => {
   if (typeof counter.value !== 'undefined') {
     isDisabledResetBtn.value = true //將重新計時按鈕disabled
     globalStore.isLoading = true // 顯示Loading視窗
@@ -240,13 +240,6 @@ const refresh = (is_need_close_loading = true) => {
         clearInterval(counter.value)
         doAutoLogoutCounter()
         isDisabledResetBtn.value = false //將重新計時按鈕enabled
-        //  若沒有導回首頁且is_need_close_loading = true才關閉loading視窗
-        if (is_need_close_loading) {
-          setTimeout(function () {
-            // 等待0.1秒後才關閉loading視窗
-            globalStore.isLoading = false // 關閉loading視窗
-          }, 100)
-        }
         return true
       })
       .catch((error) => {
@@ -378,8 +371,8 @@ watch(
 //監聽廳主切換
 watch(
   () => globalStore.activeHall.hall_code,
-  () => {
-    if (route.path === '/home') {
+  (now, before) => {
+    if (route.path === '/home' && before !== '') {
       initPageNext()
     }
   }
@@ -526,7 +519,7 @@ watch(
       > :first-child {
         margin-right: 2px !important;
         height: 13px !important;
-        transform: scaleX(-1)
+        transform: scaleX(-1);
       }
     }
   }
