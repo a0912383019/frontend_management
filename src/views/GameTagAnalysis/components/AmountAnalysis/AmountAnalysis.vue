@@ -12,7 +12,8 @@ import {
   generateRGBColors,
   errorRespond,
   dynamicBackgroundColors,
-  FormatNumber
+  FormatNumber,
+  trimBack
 } from '@/utils/commonUtils.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { tooltipDarkConfig, tooltipSingleShared } from '@/utils/highchartsConfig.js'
@@ -23,7 +24,7 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const gameTagAnalysisStore = useGameTagAnalysis()
-const { filterTimestamp } = storeToRefs(gameTagAnalysisStore)
+const { filterFormData, filterTimestamp } = storeToRefs(gameTagAnalysisStore)
 
 //api是否成功
 const apiSuccess = ref(false)
@@ -97,9 +98,9 @@ const queryTagsGameRank = async () => {
   try {
     const result = await apiQueryTagsGameRank({
       hall_name: activeHall.hall_code,
-      search_date: gameTagAnalysisStore['filterFormData']['date'],
-      search_tag: gameTagAnalysisStore['filterFormData']['searchTag'],
-      exclude_tag: gameTagAnalysisStore['filterFormData']['excludeTag'],
+      search_date: filterFormData.value.date,
+      search_tag: trimBack(filterFormData.value.searchTag),
+      exclude_tag: trimBack(filterFormData.value.excludeTag),
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status

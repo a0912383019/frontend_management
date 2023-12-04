@@ -376,7 +376,7 @@ watch(
   }
   border-radius: 5px;
   &__input:hover {
-    box-shadow: 0 0 0 1px $purple inset !important;
+    box-shadow: 0 0 0 1px $purple !important;
   }
   &__box {
     display: flex;

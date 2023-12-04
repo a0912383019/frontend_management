@@ -5,7 +5,7 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { tooltipDarkConfig, tooltipSingleShared } from '@/utils/highchartsConfig.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { useGlobalStore } from '@/stores/global.js'
-import { FormatNumber, errorRespond, generateRGBColors } from '@/utils/commonUtils.js'
+import { FormatNumber, errorRespond, generateRGBColors, trimBack } from '@/utils/commonUtils.js'
 import { apiQueryTagsGamePayoffRank } from '@/api/gameTagAnalysis.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { useGameTagAnalysis } from '@/stores/gameTagAnalysis.js'
@@ -103,15 +103,15 @@ const nChartOptions = reactive({
 })
 
 //取得資料
-const queryTagsGamePayoffRank = async (order, filterData) => {
+const queryTagsGamePayoffRank = async (order) => {
   messageKey.value = 'shortLoading'
   apiSuccess.value = false
   try {
     const result = await apiQueryTagsGamePayoffRank({
       hall_name: activeHall.hall_code,
-      search_date: filterData.date,
-      search_tag: filterData.searchTag,
-      exclude_tag: filterData.excludeTag,
+      search_date: filterFormData.value.date,
+      search_tag: trimBack(filterFormData.value.searchTag),
+      exclude_tag: trimBack(filterFormData.value.excludeTag),
       order: order,
       locale: i18nLocale.value
     })
@@ -195,14 +195,14 @@ const transformTagsGamePayoffRank = (order, data) => {
 
 onMounted(() => {
   chartStretch()
-  queryTagsGamePayoffRank('ASC', filterFormData.value)
-  queryTagsGamePayoffRank('DESC', filterFormData.value)
+  queryTagsGamePayoffRank('ASC')
+  queryTagsGamePayoffRank('DESC')
 })
 
 watch([() => filterTimestamp.value, i18nLocale], () => {
   chartStretch()
-  queryTagsGamePayoffRank('ASC', filterFormData.value)
-  queryTagsGamePayoffRank('DESC', filterFormData.value)
+  queryTagsGamePayoffRank('ASC')
+  queryTagsGamePayoffRank('DESC')
 })
 </script>
 <template>

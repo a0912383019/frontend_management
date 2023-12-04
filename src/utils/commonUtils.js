@@ -328,3 +328,16 @@ export function findHallIdMappingKey(
   }
   return key
 }
+
+/**
+ * 篩選標籤的時候如果最後的tag是or將其去除
+ * @param {string} data 
+ * @returns 
+ */
+export function trimBack(data) {
+  let newData = data
+  if(data.substring(data.length - 1) === ';') {
+    newData = data.substring(0, data.length -1)
+  }
+  return newData
+}
