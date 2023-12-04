@@ -180,7 +180,7 @@
     &__wrapper {
       box-shadow: 0 0 0 1px #CFD8E6 inset;
       &:hover {
-          box-shadow: 0 0 0 1px $blue inset !important;
+          box-shadow: 0 0 0 1px $blue !important;
       }
     }
   }
@@ -189,14 +189,14 @@
       &.is-focus >{
         .el-input {
           &__wrapper {
-            box-shadow: 0 0 0 1px $blue inset!important;
+            box-shadow: 0 0 0 1px $blue !important;
           }
         }
       }
       .el-input {
         &__wrapper {
           &.is-focus {
-            box-shadow: 0 0 0 1px $blue inset!important;
+            box-shadow: 0 0 0 1px $blue !important;
           }
         }
       }
@@ -222,7 +222,7 @@
     &__wrapper {
       box-shadow: 0 0 0 1px #ccc5e1 inset;
       &:hover {
-          box-shadow: 0 0 0 1px $purple inset !important;
+          box-shadow: 0 0 0 1px $purple !important;
       }
     }
   }
@@ -231,14 +231,14 @@
       &.is-focus >{
         .el-input {
           &__wrapper {
-            box-shadow: 0 0 0 1px $purple inset!important;
+            box-shadow: 0 0 0 1px $purple !important;
           }
         }
       }
       .el-input {
         &__wrapper {
           &.is-focus {
-            box-shadow: 0 0 0 1px $purple inset!important;
+            box-shadow: 0 0 0 1px $purple !important;
           }
         }
       }
@@ -377,7 +377,7 @@
     &__wrapper {
       box-shadow: 0 0 0 1px rgba(204, 197, 225, 1) inset !important;
       &:hover {
-        box-shadow: 0 0 0 1px rgba(106, 83, 186, 1) inset !important;
+        box-shadow: 0 0 0 1px rgba(106, 83, 186, 1) !important;
       }
     }
   }
@@ -408,7 +408,7 @@
       box-shadow: none !important;
       background: none;
       &:hover {
-        box-shadow: 0 0 0 1px $purple inset !important;
+        box-shadow: 0 0 0 1px $purple !important;
       }
       &.is-focus {
         box-shadow: none;
@@ -469,7 +469,7 @@
       box-shadow: none;
       background: none;
       &:hover {
-        box-shadow: 0 0 0 1px $blue inset !important;
+        box-shadow: 0 0 0 1px $blue !important;
       }
       &.is-focus {
         box-shadow: none;
@@ -524,7 +524,7 @@
       height: 120px;
       resize: none;
       &:hover {
-        box-shadow: 0 0 0 1px #4F84CF inset !important;
+        box-shadow: 0 0 0 1px #4F84CF !important;
       }
       &:focus {
         box-shadow: none;
