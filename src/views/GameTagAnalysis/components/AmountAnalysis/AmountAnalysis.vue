@@ -155,13 +155,6 @@ const transformTagsGameRank = (data) => {
     if (i < chart_fixed_bgColor.length) {
       bgColor = generateRGBColors(chart_fixed_bgColor[i], 0.7) // 使用定義好的顏色
       borderColor = bgColor.substring(0, bgColor.lastIndexOf(',')) + ',1)'
-    } else {
-      bgColor = dynamicBackgroundColors(0.7) // 隨機產生顏色
-      while (chartDataBgColor.indexOf(bgColor) > -1) {
-        // 判斷該顏色是否已經存在
-        bgColor = dynamicBackgroundColors(0.7) // 若顏色已存在陣列中，則隨機產生新顏色
-      }
-      borderColor = bgColor.substring(0, bgColor.lastIndexOf(',')) + ',1)'
     }
     chartDataBgColor.push(bgColor)
     chartOptions.series[0].data.push({
