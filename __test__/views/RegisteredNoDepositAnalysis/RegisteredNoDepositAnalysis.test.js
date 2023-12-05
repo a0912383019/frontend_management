@@ -31,6 +31,7 @@ describe('RegisteredNoDepositAnalysis', () => {
 
   it('handleSubmit', async () => {
     // mock function
+    wrapper.vm.$refs.refDetail.tableGoToFirstPage = vi.fn()
     wrapper.vm.$refs.refDetail.queryActionScoreDetail = vi.fn()
 
     // 模擬new Date().getTime()
@@ -50,6 +51,9 @@ describe('RegisteredNoDepositAnalysis', () => {
     // 執行 handleGetDetail
     wrapper.vm.handleGetDetail()
     await wrapper.vm.$nextTick()
+
+    // 驗證 tableGoToFirstPage 是否執行
+    expect(wrapper.vm.$refs.refDetail.tableGoToFirstPage).toHaveBeenCalled()
 
     // 驗證 queryActionScoreDetail 是否執行
     expect(wrapper.vm.$refs.refDetail.queryActionScoreDetail).toHaveBeenCalled()
