@@ -51,7 +51,6 @@ const upadteCurrentSort = (data) => {
 
 //頁碼切換執行的內容
 const updateCurrentPage = (data) => {
-  console.log('updateCurrentPage', data)
   apiDraw.value = data
   apiStart.value = apiDraw.value * apiLength.value - apiLength.value
   queryActionScoreDetail(actionScoreData.value)
