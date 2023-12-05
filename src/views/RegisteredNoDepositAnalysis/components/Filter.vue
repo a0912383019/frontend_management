@@ -29,11 +29,11 @@ const selectDepositOptions = computed(() => {
       selected: true
     },
     {
-      value: 0,
+      value: false,
       label: t('register_no_deposit_analysis.not_deposit')
     },
     {
-      value: 1,
+      value: true,
       label: t('register_no_deposit_analysis.deposited')
     }
   ]

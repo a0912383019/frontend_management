@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryActionScoreDetail } from '@/api/registeredNoDepositAnalysis.js'
 import { useGlobalStore } from '@/stores/global.js'
@@ -9,7 +9,7 @@ import { storeToRefs } from 'pinia'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
-import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
+import { FormatNumber } from '@/utils/commonUtils.js'
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -26,6 +26,35 @@ const apiSuccess = ref(false) //api是否成功
 
 //依照不同的messageKey產生不同的message
 const messageKey = ref('clickForDetail')
+
+const actionScoreData = ref('')
+
+// 會員明細表格
+const apiDraw = ref(1) //第幾頁
+const apiStart = ref(0) //起始筆數
+const apiLength = ref(15) //一頁幾筆
+const apiRecordsTotal = ref(0) //資料總數
+
+//會員明細表格排序規則
+const querySortRule = reactive({
+  sort: 'action_score',
+  order: 'DESC'
+})
+
+//自定義排序執行的內容
+const upadteCurrentSort = (data) => {
+  let order = data['order'] == 'descending' ? 'DESC' : 'ASC'
+  querySortRule['sort'] = data['prop']
+  querySortRule['order'] = order
+  queryActionScoreDetail(actionScoreData.value)
+}
+
+//頁碼切換執行的內容
+const updateCurrentPage = (data) => {
+  apiDraw.value = data
+  apiStart.value = apiDraw.value * apiLength.value - apiLength.value
+  queryActionScoreDetail(actionScoreData.value)
+}
 
 //存款機率區間
 const depositProb = ref(null)
@@ -97,26 +126,36 @@ const queryActionScoreDetail = async (actionScore) => {
     return false
   }
   messageKey.value = 'shortLoading'
+  actionScoreData.value = actionScore
   depositProb.value = actionScore.split(';')
   try {
     const result = await apiQueryActionScoreDetail({
-      hall_name: activeHall.hall_code,
       action_score_analysis_date: deatilRangeDate.value,
+      action_score_span: actionScore,
       deposit_status: selectDepositValue.value,
+      hall_name: activeHall.hall_code,
       ip_duplicate_range: ipDuplicateRange.value,
-      barChart_action_score_click_span_hide: actionScore
+      length: apiLength.value,
+      order: querySortRule.order,
+      sort: querySortRule.sort,
+      start: apiStart.value
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true
+      apiRecordsTotal.value = result.data.result.records_total
       tableData.value = []
-      tableData.value = transformActionScoreDetail(result.data.result)
+      tableData.value = transformActionScoreDetail(result.data.result.data)
       tableOrigData.value = JSON.parse(JSON.stringify(tableData.value))
-      refDetailTable.value.goToFirstPage()
     } else {
-      messageKey.value = 'queryFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        apiRecordsTotal.value = 0
+        messageKey.value = 'noResult'
+      } else {
+        apiRecordsTotal.value = 0
+        messageKey.value = 'queryFailed'
+      }
     }
   } catch (error) {
     console.error(error)
@@ -137,42 +176,18 @@ const transformActionScoreDetail = (data) => {
     return {
       ...item,
       action_score: FormatNumber(item.action_score * 100, '', 2) + '%',
-      deposit_status: item.enabled
+      deposit_status: item.deposit_status
     }
   })
 }
 
-//sort
-const handleSort = (data) => {
-  tableData.value = JSON.parse(JSON.stringify(tableOrigData.value))
-  if (data.order === 'descending') {
-    tableData.value.sort((x, y) => {
-      const xValue = sortGetValue(x[data.prop])
-      const yValue = sortGetValue(y[data.prop])
-      return yValue - xValue
-    })
-  }
-  if (data.order === 'ascending') {
-    tableData.value.sort((x, y) => {
-      const xValue = sortGetValue(x[data.prop])
-      const yValue = sortGetValue(y[data.prop])
-      return xValue - yValue
-    })
-  }
+//表格頁碼切換到第一頁
+const tableGoToFirstPage = () => {
+  apiStart.value = 0
+  refDetailTable.value.goToFirstPage()
 }
 
-// 整理排序欄位數值
-const sortGetValue = (value) => {
-  if (typeof value === 'string' && value.includes('%')) {
-    return parseFloat(value.replace('%', ''))
-  } else if (typeof value === 'boolean') {
-    return value ? 1 : 0
-  } else {
-    return value
-  }
-}
-
-defineExpose({ queryActionScoreDetail })
+defineExpose({ queryActionScoreDetail, tableGoToFirstPage })
 </script>
 <template>
   <div class="cdp-section-in">
@@ -195,15 +210,19 @@ defineExpose({ queryActionScoreDetail })
       </div>
     </div>
     <CdpMessage :messageKey="messageKey" v-show="apiSuccess === false" />
-    <div v-show="apiSuccess === true">
+    <div v-show="apiSuccess">
       <CustomTable
+        :serverSide="true"
         :tableData="tableData"
         :tableColumns="tableColumns"
-        :pageSize="10"
-        :stripe="true"
-        class="customTable2 registeredNoDepositAnalysisTable"
+        :pageSize="apiLength"
+        :tableTotal="apiRecordsTotal"
+        :defaultSort="{ prop: 'action_score', order: 'descending' }"
+        stripe
         ref="refDetailTable"
-        @sort="handleSort"
+        class="customTable2 registeredNoDepositAnalysisTable"
+        @sort="upadteCurrentSort"
+        @update:currentPage="updateCurrentPage"
       >
         <template #user_name="scope">
           <div class="cdp-link-click" @click="updateMemberData(scope.row)">

@@ -123,7 +123,7 @@ const transformActionScoreSpan = (data) => {
 
 // 發送存款機率區間會員明細
 const handleChangeDetail = (val) => {
-  emit('update:detail', val.lower.replace('%', ';') + val.upper.replace('%', ';'))
+  emit('update:detail', val.lower.replace('%', ';') + val.upper.replace('%', ''))
 }
 
 onMounted(() => {

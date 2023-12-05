@@ -17,6 +17,7 @@ const handleSubmit = () => {
 
 // 存款機率區間會員明細
 const handleGetDetail = (val) => {
+  refDetail.value.tableGoToFirstPage()
   refDetail.value.queryActionScoreDetail(val)
 }
 </script>
