@@ -145,10 +145,6 @@ const transformTagsGameRank = (data) => {
   ]
   let chartDataBgColor = []
   for (let i = 0; i < data.length; i++) {
-    if (i >= 20) {
-      // 只列出前20名
-      break
-    }
     chartOptions.xAxis.categories.push(data[i].lobby_name + '-' + data[i].game_name)
     let bgColor = ''
     let borderColor = ''
