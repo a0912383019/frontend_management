@@ -20,10 +20,12 @@ const gameTagAnalysisStore = useGameTagAnalysis()
 const { filterFormData, filterTimestamp } = storeToRefs(gameTagAnalysisStore)
 
 //api是否成功
-const apiSuccess = ref(false)
+const pApiSuccess = ref(false)
+const nApiSuccess = ref(false)
 
 //依照不同的messageKey產生不同的message
-const messageKey = ref('shortLoading')
+const pMessageKey = ref('shortLoading')
+const nMessageKey = ref('shortLoading')
 
 const chartOptions = {
   chart: {
@@ -104,8 +106,13 @@ const nChartOptions = reactive({
 
 //取得資料
 const queryTagsGamePayoffRank = async (order) => {
-  messageKey.value = 'shortLoading'
-  apiSuccess.value = false
+  if (order === 'ASC') {
+    pMessageKey.value = 'shortLoading'
+    pApiSuccess.value = false
+  } else if (order == 'DESC') {
+    nMessageKey.value = 'shortLoading'
+    nApiSuccess.value = false
+  }
   try {
     const result = await apiQueryTagsGamePayoffRank({
       hall_name: activeHall.hall_code,
@@ -119,18 +126,34 @@ const queryTagsGamePayoffRank = async (order) => {
 
     if (return_code === '0000') {
       if (result.data.result.length !== 0) {
-        apiSuccess.value = true
+        if (order === 'ASC') {
+          pApiSuccess.value = true
+        } else if (order == 'DESC') {
+          nApiSuccess.value = true
+        }
         //整理table對應的資料
         transformTagsGamePayoffRank(order, result.data.result)
       } else {
-        messageKey.value = 'noResult'
+        if (order === 'ASC') {
+          pMessageKey.value = 'noResult'
+        } else if (order == 'DESC') {
+          nMessageKey.value = 'noResult'
+        }
       }
     } else {
       const { error_code } = result.data.status
       if (error_code === '210400000') {
-        messageKey.value = 'noResult'
+        if (order === 'ASC') {
+          pMessageKey.value = 'noResult'
+        } else if (order == 'DESC') {
+          nMessageKey.value = 'noResult'
+        }
       } else {
-        messageKey.value = 'chartFailed'
+        if (order === 'ASC') {
+          pMessageKey.value = 'chartFailed'
+        } else if (order == 'DESC') {
+          nMessageKey.value = 'chartFailed'
+        }
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
       }
@@ -215,9 +238,9 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
       </template>
     </SectionTitle>
     <CdpMessage
-      :messageKey="messageKey"
+      :messageKey="pMessageKey"
       bg="white"
-      v-if="apiSuccess === false"
+      v-if="pApiSuccess === false"
       class="mt-25 font-size-16"
     />
     <highcharts v-else :options="pChartOptions"></highcharts>
@@ -231,9 +254,9 @@ watch([() => filterTimestamp.value, i18nLocale], () => {
       </template>
     </SectionTitle>
     <CdpMessage
-      :messageKey="messageKey"
+      :messageKey="nMessageKey"
       bg="white"
-      v-if="apiSuccess === false"
+      v-if="nApiSuccess === false"
       class="mt-25 font-size-16"
     />
     <highcharts v-else :options="nChartOptions"></highcharts>

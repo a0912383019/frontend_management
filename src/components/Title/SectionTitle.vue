@@ -19,7 +19,7 @@ const hasSlotContent = !!useSlots().tooltip
     <div class="title__name">{{ props.title }}</div>
     <el-tooltip effect="dark" placement="top" v-if="hasSlotContent">
       <template #content><slot name="tooltip"></slot></template>
-      <font-awesome-icon class="title__icon" icon="fa-solid fa-circle-info" />
+      <font-awesome-icon class="title__icon" icon="fa-circle-info" />
     </el-tooltip>
   </div>
 </template>
