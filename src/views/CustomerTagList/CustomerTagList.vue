@@ -10,7 +10,8 @@ import {
   findHallIdMappingKey,
   checkTagUsage,
   formatDateDuration,
-  getSessionStorageEntity
+  getSessionStorageEntity,
+  trimBack
 } from '@/utils/commonUtils.js'
 import { ElNotification } from 'element-plus'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
@@ -150,7 +151,7 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
       records_total: apiRecordsTotal.value, // 前端頁面目前資料總數，0 or 不帶api都會重新拿取總資料數，如果有帶api就不會重拿，會回傳前端傳的數值
       search_date: formData['registerDate'], //註冊日期
       search_name: formData['member'], //會員名稱
-      search_tag: formData['searchTag'], //包含標籤
+      search_tag: trimBack(formData['searchTag']), //包含標籤
       start: apiStart.value,
       user_level_id: formData['selectLevel'] //會員層級
     })
@@ -319,7 +320,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section mb-0">
     <canvas ref="canvas" style="display: none"></canvas>
     <div class="flex items-center justify-between mb-20" ref="refContent">
       <!-- justify-between -->
@@ -400,6 +401,10 @@ onMounted(() => {
   </section>
 </template>
 <style lang="scss" scoped>
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
 .tags {
   display: flex;
   width: 100%;
@@ -408,7 +413,6 @@ onMounted(() => {
     flex-wrap: wrap;
     list-style-type: none;
     padding: 0;
-    // max-height: 56px;
     overflow: hidden;
     li {
       margin-right: 5px;
