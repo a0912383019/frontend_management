@@ -41,14 +41,6 @@ const currentTabComponent = computed(() => {
   }
   return result
 })
-
-// 監聽頁籤變動，關閉Filter popover
-watch(
-  () => currentTabs.value,
-  () => {
-    refFilter.value.popoverVisible = false
-  }
-)
 </script>
 <template>
   <section class="cdp-section mb-0">
