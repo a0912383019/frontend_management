@@ -1,15 +1,14 @@
 <script setup>
 import { reactive, ref, onMounted, nextTick } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { useGameTagAnalysis } from '@/stores/gameTagAnalysis.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import SelectTag from '@/components/Filter/SelectTag.vue'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
-
-const { t } = useI18n()
+import { storeToRefs } from 'pinia'
 
 const gameTagAnalysisStore = useGameTagAnalysis()
+const { filterFormData, filterTimestamp } = storeToRefs(gameTagAnalysisStore)
 
 // 資料
 const form = reactive({
@@ -19,23 +18,23 @@ const form = reactive({
 })
 
 const updateFilterTimestamp = () => {
-  gameTagAnalysisStore.filterTimestamp = new Date().getTime()
+  filterTimestamp.value = new Date().getTime()
 }
 
 // 篩選
 const handleSubmitClick = () => {
   updateFilterTimestamp()
-  gameTagAnalysisStore['filterFormData']['date'] = form['date']
-  gameTagAnalysisStore['filterFormData']['searchTag'] = form['searchTag']
-  gameTagAnalysisStore['filterFormData']['excludeTag'] = form['excludeTag']
+  filterFormData.value.date = form['date']
+  filterFormData.value.searchTag = form['searchTag']
+  filterFormData.value.excludeTag = form['excludeTag']
   closePopover()
 }
 
 onMounted(() => {
   nextTick(() => {
-    gameTagAnalysisStore['filterFormData']['date'] = form['date']
-    gameTagAnalysisStore['filterFormData']['searchTag'] = form['searchTag']
-    gameTagAnalysisStore['filterFormData']['excludeTag'] = form['excludeTag']
+    filterFormData.value.date = form['date']
+    filterFormData.value.searchTag = form['searchTag']
+    filterFormData.value.excludeTag = form['excludeTag']
   })
 })
 
@@ -65,7 +64,7 @@ const closePopover = () => {
       </template>
       <el-row>
         <el-col :span="24" class="mb-15">
-          <SectionTitle class="cdp-text-purple mb-4" :title="$t('date.date')"> </SectionTitle>
+          <SectionTitle class="cdp-text-purple mb-4" :title="$t('date.date')"></SectionTitle>
           <DatepickerRange
             v-model="form.date"
             class="game-tag-analysis-datepicker"
