@@ -20,6 +20,7 @@ import { dayjs, ElNotification } from 'element-plus'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
+import LoadingBox from '@/components/Loading/LoadingBox.vue'
 
 const { t } = useI18n()
 const globalStore = useGlobalStore()
@@ -32,8 +33,11 @@ const apiMemberData = reactive({}) //存放api資料
 
 const userType = ref(getSessionStorageEntity('user_info').user_type)
 
+const apiSuccess = ref(false)
+
 //取得會員基本資料
 const queryMemberInfo = async () => {
+  apiSuccess.value = false
   try {
     const result = await apiQueryMemberInfo({
       hall_name: activeHall.hall_code,
@@ -50,7 +54,9 @@ const queryMemberInfo = async () => {
       apiMemberData.user_phone = user_phone
       apiMemberData.user_mail = user_mail
       transformMemberInfoTagStr(tag_str) //處理標籤
+      apiSuccess.value = true
     } else if (return_code === '0001') {
+      apiSuccess.value = true
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
@@ -152,6 +158,7 @@ const transformConfirmTagsText = () => {
 }
 
 const updateMemberTagsEnable = async () => {
+  apiSuccess.value = false
   try {
     const result = await apiUpdateMemberTagsEnable({
       hall_name: activeHall.hall_code,
@@ -168,8 +175,11 @@ const updateMemberTagsEnable = async () => {
         type: 'success'
       })
       tagIsEdit.value = false // 將標籤切回一般狀態顯示
+    } else {
+      apiSuccess.value = true
     }
   } catch (error) {
+    apiSuccess.value = true
     console.error(error)
     if (error.response.status === 403) {
       ElNotification({
@@ -345,7 +355,10 @@ onMounted(() => {
       </el-col>
       <el-col :span="24" class="mb-15">
         <div class="cdp-text-blue mb-3">{{ $t('tags.tags') }}</div>
-        <div v-show="!tagIsEdit">
+        <div class="loading-tag" v-show="!apiSuccess">
+          <LoadingBox size="md" color="blue" />
+        </div>
+        <div v-show="!tagIsEdit && apiSuccess">
           <div class="tags relative">
             <div class="tags__box">
               <ul class="tags__list">
@@ -362,7 +375,7 @@ onMounted(() => {
             />
           </div>
         </div>
-        <div v-show="tagIsEdit">
+        <div v-show="tagIsEdit && apiSuccess">
           <div class="tags minH-80">
             <el-select
               v-model="tagSelectValue"
@@ -463,6 +476,10 @@ onMounted(() => {
   </div>
 </template>
 <style lang="scss" scoped>
+.loading-tag {
+  width: 20px;
+  margin: 10px auto;
+}
 .tags {
   display: flex;
   align-items: end;
