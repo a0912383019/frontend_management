@@ -53,11 +53,11 @@ const queryMemberInfo = async () => {
       apiMemberData.register_date = dayjs(register_date).format(t('date.format_datetime_rule'))
       apiMemberData.user_phone = user_phone
       apiMemberData.user_mail = user_mail
-      apiSuccess.value = true
       transformMemberInfoTagStr(tag_str) //處理標籤
-    } else if (return_code === '0001') {
       apiSuccess.value = true
+    } else if (return_code === '0001') {
       transformMemberInfoTagStr() //處理標籤
+      apiSuccess.value = true
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
