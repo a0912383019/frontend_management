@@ -53,10 +53,11 @@ const queryMemberInfo = async () => {
       apiMemberData.register_date = dayjs(register_date).format(t('date.format_datetime_rule'))
       apiMemberData.user_phone = user_phone
       apiMemberData.user_mail = user_mail
-      transformMemberInfoTagStr(tag_str) //處理標籤
       apiSuccess.value = true
+      transformMemberInfoTagStr(tag_str) //處理標籤
     } else if (return_code === '0001') {
       apiSuccess.value = true
+      transformMemberInfoTagStr() //處理標籤
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
@@ -485,6 +486,7 @@ onMounted(() => {
   align-items: end;
   &__box {
     display: flex;
+    min-height: 35px !important;
     justify-content: flex-start;
     align-content: center;
     width: 100%;
