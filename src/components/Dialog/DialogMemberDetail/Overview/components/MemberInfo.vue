@@ -56,6 +56,7 @@ const queryMemberInfo = async () => {
       transformMemberInfoTagStr(tag_str) //處理標籤
       apiSuccess.value = true
     } else if (return_code === '0001') {
+      transformMemberInfoTagStr() //處理標籤
       apiSuccess.value = true
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
@@ -485,6 +486,7 @@ onMounted(() => {
   align-items: end;
   &__box {
     display: flex;
+    min-height: 35px !important;
     justify-content: flex-start;
     align-content: center;
     width: 100%;
