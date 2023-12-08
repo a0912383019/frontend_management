@@ -1,18 +1,16 @@
-import axiosInstance from './axiosInstance.js'
 import axiosGoInstance from './axiosGoInstance.js'
 
 //存款機率區間總覽
 export const apiQueryActionScoreSpan = (params) => {
   const { hall_name, deposit_status, action_score_analysis_date, ip_duplicate_range } = params
-  return axiosInstance.post(
-    '/api/auth/registered_no_deposit/bbin/query_action_score_span' + sessionStorage.from_page,
-    {
+  return axiosGoInstance.get('/api/auth/deposit_probability/action_score_span', {
+    params: {
       hall_name,
       deposit_status,
       action_score_analysis_date,
       ip_duplicate_range
     }
-  )
+  })
 }
 
 //存款機率區間會員明細
