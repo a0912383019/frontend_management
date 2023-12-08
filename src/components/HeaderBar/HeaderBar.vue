@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSidebarStore } from '@/stores/sidebar.js'
 import Tags from '@/components/HeaderBar/components/Tags.vue'
@@ -9,10 +8,6 @@ import Account from '@/components/HeaderBar/components/Account.vue'
 
 const sidebarStore = useSidebarStore()
 const { isSidebarClose } = storeToRefs(sidebarStore)
-const times = ref(null)
-const updateTimes = (data) => {
-  times.value = data
-}
 </script>
 <template>
   <header :class="{ isClose: isSidebarClose }">
@@ -20,8 +15,8 @@ const updateTimes = (data) => {
       <font-awesome-icon icon="fa-solid fa-bars" />
     </button>
     <ul class="list">
-      <li class="list__tag"><Tags :times="times" /></li>
-      <li class="list__hall"><Hall @time="updateTimes" /></li>
+      <li class="list__tag"><Tags /></li>
+      <li class="list__hall"><Hall /></li>
       <li class="list__account"><Account /></li>
       <li class="list__lang"><Language /></li>
     </ul>

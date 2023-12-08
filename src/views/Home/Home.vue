@@ -9,7 +9,9 @@ import { storeToRefs } from 'pinia'
 
 const globalStore = useGlobalStore()
 const { systemConfigIsOk } = storeToRefs(globalStore)
-const key = ref('')
+
+const key = ref(systemConfigIsOk.value)
+
 watch(
   () => systemConfigIsOk.value,
   () => {
@@ -18,7 +20,7 @@ watch(
 )
 </script>
 <template>
-  <div v-if="key !== ''">
+  <div v-if="key !== 0">
     <section class="cdp-section">
       <TopCard :key="key"></TopCard>
     </section>

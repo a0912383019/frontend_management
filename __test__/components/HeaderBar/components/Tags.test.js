@@ -124,7 +124,10 @@ describe('Tags', () => {
     expect(wrapper.vm.dialogTableVisible).toBe(false)
 
     wrapper.vm.activeHall.hall_code = 'esb'
-    await wrapper.setProps({ times: 5002 })
+
+    wrapper.vm.systemConfigIsOk = 1234
+    await wrapper.vm.$nextTick()
+    //  wrapper.setProps({ times: 5002 })
     expect(wrapper.vm.tagsConfig).toStrictEqual(system_config.tags_config)
 
     //初始資料是否正確

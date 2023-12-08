@@ -42,9 +42,6 @@ describe('HeaderBar', () => {
     expect(wrapper.findComponent(Language).exists()).toBe(true)
     expect(wrapper.findComponent(Account).exists()).toBe(true)
 
-    await wrapper.findComponent(Hall).vm.$emit('time', 123)
-    expect(wrapper.vm.times).toBe(123)
-
     await wrapper.find('.m_menu_button').trigger('click')
     expect(toggleSidebarOpen).toHaveBeenCalled()
   })

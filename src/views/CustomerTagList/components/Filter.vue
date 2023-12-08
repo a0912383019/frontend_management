@@ -165,23 +165,16 @@ watch(
         <el-col :span="12" class="mb-19">
           <SectionTitle size="small" class="cdp-text-purple mb-4" :title="$t('data_name.ag_name')">
           </SectionTitle>
-          <el-select
+          <el-select-v2
             v-model="form.selectAcount"
-            class="cdp-select__purple w-full"
+            class="cdp-select-v2 w-full"
             popper-class="cdp-select-popper__purple"
             filterable
             suffix-icon="CaretBottom"
             :teleported="false"
             :disabled="formDisabled"
-          >
-            <el-option
-              v-for="item in selectAccountOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-              :selected="item.selected"
-            />
-          </el-select>
+            :options="selectAccountOptions"
+          />
         </el-col>
         <el-col :span="12" class="mb-19">
           <SectionTitle

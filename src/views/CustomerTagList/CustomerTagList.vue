@@ -307,7 +307,7 @@ const handleFilterSubmit = (data) => {
   queryListMemberTags({ filterType: true })
 }
 
-const key = ref(0)
+const key = ref(systemConfigIsOk.value)
 watch(
   () => systemConfigIsOk.value,
   () => {

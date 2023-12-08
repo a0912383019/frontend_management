@@ -1,8 +1,9 @@
 <script setup>
-import { ref, reactive, watch, computed } from 'vue'
+import { ref, reactive, watch, computed, onMounted } from 'vue'
 import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
+import { storeToRefs } from 'pinia'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import Tab from '@/components/Tab.vue'
 import Search from '@/components/Search.vue'
@@ -10,15 +11,10 @@ import Search from '@/components/Search.vue'
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
+const { systemConfigIsOk } = storeToRefs(globalStore)
 const { activeHall } = globalStore
 
 const dialogTableVisible = ref(false) //dialog開啟狀態
-
-const props = defineProps({
-  times: {
-    type: Number
-  }
-})
 
 const tableColumns = computed(() => {
   return [
@@ -39,6 +35,8 @@ const tableColumns = computed(() => {
 const currentTabs = ref('all') //當前顯示的tabs
 
 const refTable = ref(null) // ref table
+
+const key = ref(systemConfigIsOk.value)
 
 // tab 資料
 const tabData = computed(() => {
@@ -187,19 +185,28 @@ const handleCloseDialog = () => {
   searchText.value = ''
 }
 
-watch(
-  () => props.times,
-  () => {
-    //當Hall.vue處理完後會更新時間，監聽到異動後，這邊會才會執行
+onMounted(() => {
+  if (sessionStorage.system_config !== undefined) {
     tagsConfig = getTagsConfig()
     transformTagsConfig()
+  }
+})
+
+watch(
+  () => systemConfigIsOk.value,
+  () => {
+    if (systemConfigIsOk.value !== 0) {
+      tagsConfig = getTagsConfig()
+      transformTagsConfig()
+      key.value = systemConfigIsOk.value
+    }
   }
 )
 
 watch(
   () => activeHall.hall_code,
   (newVal, oldVal) => {
-    if (oldVal !== '') {
+    if (oldVal !== '' && sessionStorage.system_config !== undefined) {
       tagsConfig = getTagsConfig()
       transformTagsConfig()
     }
@@ -227,7 +234,7 @@ watch(
 )
 </script>
 <template>
-  <div class="flex">
+  <div class="flex" v-if="key !== 0">
     <div class="tag-btn" @click.prevent="handleOpenDialog">
       <div class="tag-btn__icon">
         <font-awesome-icon icon="fa-solid fa-book" />

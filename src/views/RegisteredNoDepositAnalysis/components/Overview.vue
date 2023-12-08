@@ -82,10 +82,12 @@ const queryActionScoreSpan = async () => {
       tableData.value = []
       tableData.value = transformActionScoreSpan(result.data.result)
     } else if (return_code === '0001') {
+      apiSuccess.value = false
       messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     } else {
+      apiSuccess.value = false
       messageKey.value = 'queryFailed'
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
