@@ -1,4 +1,4 @@
-import router from '@/router'
+import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import { ElNotification } from 'element-plus'
 import { useGlobalStore } from '@/stores/global.js'
@@ -10,6 +10,7 @@ import { hall_config_dict } from '@/../public/js/system_config.js'
 import { errorRespond, getSessionStorageEntity } from '@/utils/commonUtils.js'
 
 export const useSystemStore = defineStore('system', () => {
+  const router = useRouter()
   const globalStore = useGlobalStore()
   const sidebarStore = useSidebarStore()
   const { t, locale: i18nLocale } = i18n.global
