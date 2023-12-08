@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '@/layout/Main.vue'
 import { useDateStore } from '@/stores/dateConfig.js'
+import { useSystemStore } from '@/stores/system.js'
 
 //不用登入即可觀看的頁面
 const whiteList = ['/login']
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -305,9 +306,18 @@ router.beforeEach((to, from, next) => {
   } else {
     next({ name: 'Login' })
   }
+
   if (to.name !== 'Login' && sessionStorage.getItem('system_config') !== null) {
     const dateStore = useDateStore()
     dateStore.updateDate()
+  }
+})
+
+router.afterEach((to) => {
+  if (to.name !== 'Login') {
+    // call system_config api
+    const systemStore = useSystemStore()
+    systemStore.storeGetSystemConfig()
   }
 })
 
