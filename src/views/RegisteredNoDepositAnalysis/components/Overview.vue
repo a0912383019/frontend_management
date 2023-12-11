@@ -8,7 +8,7 @@ import { storeToRefs } from 'pinia'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
+import { errorRespond } from '@/utils/commonUtils.js'
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -81,16 +81,19 @@ const queryActionScoreSpan = async () => {
       apiSuccess.value = true
       tableData.value = []
       tableData.value = transformActionScoreSpan(result.data.result)
-    } else if (return_code === '0001') {
-      apiSuccess.value = false
-      messageKey.value = 'noResult'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
     } else {
+      const { error_code } = result.data.status
       apiSuccess.value = false
-      messageKey.value = 'queryFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      if (error_code === '210400000') {
+        messageKey.value = 'noResult'
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      } else {
+        apiSuccess.value = false
+        messageKey.value = 'queryFailed'
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     }
   } catch (error) {
     console.error(error)
@@ -109,16 +112,16 @@ const queryActionScoreSpan = async () => {
 const transformActionScoreSpan = (data) => {
   return data.map((item) => {
     return {
-      lower: item.lower,
-      upper: item.upper,
+      lower: item.lower + '%',
+      upper: item.upper + '%',
       deposit_prob: `${item.lower}${t('common.contain_yes')} ~ ${item.upper}${t(
-        `common.contain_${item.upper === '100%' ? 'yes' : 'no'}`
+        `common.contain_${item.upper === '100' ? 'yes' : 'no'}`
       )}`,
       total_people_num: item.span_count,
-      total_deposit_people_num: item.enabled_count,
-      deposit_ratio: FormatNumber(item.enabled_ratio) + '%',
-      avg_first_deposit_day: FormatNumber(item.enabled_avg_day),
-      has_bg: item.enabled_ratio >= 30 ? true : false
+      total_deposit_people_num: item.deposited_count,
+      deposit_ratio: parseFloat(item.deposited_ratio) + '%',
+      avg_first_deposit_day: parseFloat(item.deposited_total_day),
+      has_bg: item.deposited_ratio >= 30 ? true : false
     }
   })
 }
