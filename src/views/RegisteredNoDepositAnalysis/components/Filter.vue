@@ -98,7 +98,6 @@ const handleSliderInput = (val) => {
 
 onMounted(() => {
   if (slideVlaue.value[1] === 100) {
-    console.log('asd')
     nextTick(() => {
       setAttributeValue()
     })
@@ -165,7 +164,6 @@ onMounted(() => {
           </el-select>
         </el-col>
         <el-col :span="24">
-          {{ slideVlaue.join(';') }}
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-18"
