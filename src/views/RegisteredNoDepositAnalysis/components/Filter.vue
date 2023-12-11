@@ -1,14 +1,14 @@
 <script setup>
 import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRegisteredNoDepositAnalysis } from '@/stores/registeredNoDepositAnalysis.js'
+import { useRegisteredNoDepositAnalysisStore } from '@/stores/registeredNoDepositAnalysis.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 
 const { t, locale: i18nLocale } = useI18n()
 
-const deoositStore = useRegisteredNoDepositAnalysis()
+const deoositStore = useRegisteredNoDepositAnalysisStore()
 
 //popover 開啟狀態
 const popoverVisible = ref(true)
@@ -78,13 +78,15 @@ const marks = reactive({
 
 const isMax = ref(false)
 
+const setAttributeValue = () => {
+  document.querySelectorAll('.el-slider__button-wrapper')[1].setAttribute('aria-valuenow', '100+')
+}
+
 // 数据改变时触发（使用鼠标拖曳时，活动过程实时触发）
 const handleSliderInput = (val) => {
   if (val[1] === 100) {
     nextTick(() => {
-      document
-        .querySelectorAll('.el-slider__button-wrapper')[1]
-        .setAttribute('aria-valuenow', '100+')
+      setAttributeValue()
     })
   }
   if (val[1] >= 90) {
@@ -96,10 +98,9 @@ const handleSliderInput = (val) => {
 
 onMounted(() => {
   if (slideVlaue.value[1] === 100) {
+    console.log('asd')
     nextTick(() => {
-      document
-        .querySelectorAll('.el-slider__button-wrapper')[1]
-        .setAttribute('aria-valuenow', '100+')
+      setAttributeValue()
     })
   }
 })
@@ -164,6 +165,7 @@ onMounted(() => {
           </el-select>
         </el-col>
         <el-col :span="24">
+          {{ slideVlaue.join(';') }}
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-18"

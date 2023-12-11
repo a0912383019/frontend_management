@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryActionScoreSpan } from '@/api/registeredNoDepositAnalysis.js'
 import { useGlobalStore } from '@/stores/global.js'
-import { useRegisteredNoDepositAnalysis } from '@/stores/registeredNoDepositAnalysis.js'
+import { useRegisteredNoDepositAnalysisStore } from '@/stores/registeredNoDepositAnalysis.js'
 import { storeToRefs } from 'pinia'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -13,7 +13,7 @@ import { errorRespond } from '@/utils/commonUtils.js'
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const deoositStore = useRegisteredNoDepositAnalysis()
+const deoositStore = useRegisteredNoDepositAnalysisStore()
 const { selectDepositValue, deatilRangeDate, ipDuplicateRange } = storeToRefs(deoositStore)
 
 const { t } = useI18n()
