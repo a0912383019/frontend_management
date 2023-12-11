@@ -3,7 +3,7 @@ import { ref, reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryActionScoreDetail } from '@/api/registeredNoDepositAnalysis.js'
 import { useGlobalStore } from '@/stores/global.js'
-import { useRegisteredNoDepositAnalysis } from '@/stores/registeredNoDepositAnalysis.js'
+import { useRegisteredNoDepositAnalysisStore } from '@/stores/registeredNoDepositAnalysis.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { storeToRefs } from 'pinia'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -14,7 +14,7 @@ import { roundDecimal } from '@/utils/commonUtils.js'
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const deoositStore = useRegisteredNoDepositAnalysis()
+const deoositStore = useRegisteredNoDepositAnalysisStore()
 const { selectDepositValue, deatilRangeDate, ipDuplicateRange } = storeToRefs(deoositStore)
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
