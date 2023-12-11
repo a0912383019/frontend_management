@@ -21,112 +21,98 @@ describe('Overview', () => {
     }
 
     let result = {
-      result: [
-        {
-          lower: '10',
-          upper: '20',
-          span_count: 19,
-          deposited_total_day: 0,
-          deposited_count: 0,
-          deposited_ratio: '0',
-          deposited_avg_day: '-'
-        },
-        {
-          lower: '20',
-          upper: '30',
-          span_count: 16,
-          deposited_total_day: 0,
-          deposited_count: 0,
-          deposited_ratio: '0',
-          deposited_avg_day: '-'
-        },
-        {
-          lower: '30',
-          upper: '40',
-          span_count: 8,
-          deposited_total_day: 5657,
-          deposited_count: 1,
-          deposited_ratio: '12.5000',
-          deposited_avg_day: '5657.0000'
-        },
-        {
-          lower: '40',
-          upper: '50',
-          span_count: 4,
-          deposited_total_day: 10957,
-          deposited_count: 2,
-          deposited_ratio: '50.0000',
-          deposited_avg_day: '5478.5000'
-        },
-        {
-          lower: '50',
-          upper: '60',
-          span_count: 8,
-          deposited_total_day: 21663,
-          deposited_count: 4,
-          deposited_ratio: '50.0000',
-          deposited_avg_day: '5415.7500'
-        },
-        {
-          lower: '60',
-          upper: '70',
-          span_count: 4,
-          deposited_total_day: 5441,
-          deposited_count: 1,
-          deposited_ratio: '25.0000',
-          deposited_avg_day: '5441.0000'
-        },
-        {
-          lower: '70',
-          upper: '80',
-          span_count: 1,
-          deposited_total_day: 0,
-          deposited_count: 0,
-          deposited_ratio: '0',
-          deposited_avg_day: '-'
-        },
-        {
-          lower: '80',
-          upper: '90',
-          span_count: 1,
-          deposited_total_day: 5449,
-          deposited_count: 1,
-          deposited_ratio: '100.0000',
-          deposited_avg_day: '5449.0000'
-        },
-        {
-          lower: '90',
-          upper: '100',
-          span_count: 1,
-          deposited_total_day: 5448,
-          deposited_count: 1,
-          deposited_ratio: '100.0000',
-          deposited_avg_day: '5448.0000'
+      data: {
+        result: [
+          {
+            lower: '10',
+            upper: '20',
+            span_count: 19,
+            deposited_total_day: 0,
+            deposited_count: 0,
+            deposited_ratio: '0',
+            deposited_avg_day: '-'
+          },
+          {
+            lower: '20',
+            upper: '30',
+            span_count: 16,
+            deposited_total_day: 0,
+            deposited_count: 0,
+            deposited_ratio: '0',
+            deposited_avg_day: '-'
+          },
+          {
+            lower: '30',
+            upper: '40',
+            span_count: 8,
+            deposited_total_day: 5657,
+            deposited_count: 1,
+            deposited_ratio: '12.5000',
+            deposited_avg_day: '5657.0000'
+          },
+          {
+            lower: '40',
+            upper: '50',
+            span_count: 4,
+            deposited_total_day: 10957,
+            deposited_count: 2,
+            deposited_ratio: '50.0000',
+            deposited_avg_day: '5478.5000'
+          },
+          {
+            lower: '50',
+            upper: '60',
+            span_count: 8,
+            deposited_total_day: 21663,
+            deposited_count: 4,
+            deposited_ratio: '50.0000',
+            deposited_avg_day: '5415.7500'
+          },
+          {
+            lower: '60',
+            upper: '70',
+            span_count: 4,
+            deposited_total_day: 5441,
+            deposited_count: 1,
+            deposited_ratio: '25.0000',
+            deposited_avg_day: '5441.0000'
+          },
+          {
+            lower: '70',
+            upper: '80',
+            span_count: 1,
+            deposited_total_day: 0,
+            deposited_count: 0,
+            deposited_ratio: '0',
+            deposited_avg_day: '-'
+          },
+          {
+            lower: '80',
+            upper: '90',
+            span_count: 1,
+            deposited_total_day: 5449,
+            deposited_count: 1,
+            deposited_ratio: '100.0000',
+            deposited_avg_day: '5449.0000'
+          },
+          {
+            lower: '90',
+            upper: '100',
+            span_count: 1,
+            deposited_total_day: 5448,
+            deposited_count: 1,
+            deposited_ratio: '100.0000',
+            deposited_avg_day: '5448.0000'
+          }
+        ],
+        status: {
+          return_code: '0000',
+          message: 'success'
         }
-      ],
-      status: {
-        return_code: '0000',
-        message: 'success'
       }
     }
 
     vi.spyOn(axiosGoInstance, 'get').mockResolvedValue(result)
-
-    const error = {
-      return_code: '9999',
-      message: 'Unexpected error.',
-      error_code: '210400001',
-      errors: 'Unexpected error.'
-    }
-
-    vi.spyOn(axiosGoInstance, 'get').mockImplementation((url) => {
-      switch (url) {
-        case '/api/auth/deposit_probability/action_score_span':
-          return Promise.resolve({ data: result })
-        default:
-          return error
-      }
-    })
 
     wrapper = shallowMount(Overview, {
       global: {
