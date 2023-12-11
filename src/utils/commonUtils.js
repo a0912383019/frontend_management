@@ -72,7 +72,7 @@ export function errorRespond(error) {
  * @param {int} precision 小數點後四捨五入的位數
  * @returns {string}
  */
-export function roundDecimal(val, precision) {
+export function roundDecimal(val, precision = 2) {
   if (parseFloat(val)) {
     if (val < 0) {
       val = 0 - val
@@ -331,13 +331,13 @@ export function findHallIdMappingKey(
 
 /**
  * 篩選標籤的時候如果最後的tag是or將其去除
- * @param {string} data 
- * @returns 
+ * @param {string} data
+ * @returns
  */
 export function trimBack(data) {
   let newData = data
-  if(data.substring(data.length - 1) === ';') {
-    newData = data.substring(0, data.length -1)
+  if (data.substring(data.length - 1) === ';') {
+    newData = data.substring(0, data.length - 1)
   }
   return newData
 }
