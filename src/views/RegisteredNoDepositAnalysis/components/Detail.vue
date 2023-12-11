@@ -9,7 +9,7 @@ import { storeToRefs } from 'pinia'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
-import { FormatNumber } from '@/utils/commonUtils.js'
+import { roundDecimal } from '@/utils/commonUtils.js'
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -175,7 +175,7 @@ const transformActionScoreDetail = (data) => {
   return data.map((item) => {
     return {
       ...item,
-      action_score: FormatNumber(item.action_score * 100, '', 2) + '%',
+      action_score: roundDecimal(item.action_score) + '%',
       deposit_status: item.deposit_status
     }
   })
