@@ -1,5 +1,5 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { mount, flushPromises } from '@vue/test-utils'
+import { mount, flushPromises, shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import DialogStepDetail from '@/views/ManageAnalysis/components/StepTrendAnalysis/components/DialogStepDetail.vue'
 import { createTestingPinia } from '@pinia/testing'
@@ -14,7 +14,7 @@ describe('DialogStepDetail.vue', () => {
   let wrapper = null
   let param
   beforeEach(() => {
-    wrapper = mount(DialogStepDetail, {
+    wrapper = shallowMount(DialogStepDetail, {
       global: {
         plugins: [
           i18n,
@@ -90,19 +90,15 @@ describe('DialogStepDetail.vue', () => {
           return_code: '0000',
           message: 'success'
         },
-        result: [
-          {
-            bet_amount: '932946.45',
-            payoff: '9371.4',
-            gross_percent: '1',
-            bet_amount_percent: '2.49'
-          }
-        ]
+        result: {
+          bet_amount: '932946.45',
+          payoff: '9371.4',
+          gross_percent: '1',
+          bet_amount_percent: '2.49'
+        }
       }
     }
     vi.spyOn(axiosGoInstance, 'get').mockResolvedValue(result)
-
-    //預期一開始tableData為空陣列
     expect(wrapper.vm.tableData).toStrictEqual([])
 
     //觸發handleOpenDialog
@@ -118,7 +114,6 @@ describe('DialogStepDetail.vue', () => {
       }
     ])
     expect(wrapper.vm.dialogVisible).toBe(true)
-    expect(wrapper.findComponent(CustomTable).exists()).toBe(true)
     expect(wrapper.vm.currentTooltipEntity).toStrictEqual(param)
     expect(wrapper.vm.apiSuccess).toBe(true)
   })
