@@ -302,7 +302,15 @@ router.beforeEach((to, from, next) => {
     }
   }
   if (isLogin || whiteList.includes(to.path)) {
-    next()
+    if (to.name !== 'Login') {
+      // call system_config api
+      const systemStore = useSystemStore()
+      systemStore.storeGetSystemConfig().then(()=>{
+        next()
+      })
+    } else {
+      next()
+    }
   } else {
     next({ name: 'Login' })
   }
@@ -310,14 +318,6 @@ router.beforeEach((to, from, next) => {
   if (to.name !== 'Login' && sessionStorage.getItem('system_config') !== null) {
     const dateStore = useDateStore()
     dateStore.updateDate()
-  }
-})
-
-router.afterEach((to) => {
-  if (to.name !== 'Login') {
-    // call system_config api
-    const systemStore = useSystemStore()
-    systemStore.storeGetSystemConfig()
   }
 })
 

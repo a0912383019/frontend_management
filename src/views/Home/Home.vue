@@ -20,7 +20,7 @@ watch(
 )
 </script>
 <template>
-  <div v-if="key !== 0">
+  <div>
     <section class="cdp-section">
       <TopCard :key="key"></TopCard>
     </section>
