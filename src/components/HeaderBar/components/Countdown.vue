@@ -113,12 +113,14 @@ const handleVisibilityChange = () => {
 }
 
 // 重新計時
-const restartTimer = (type) => {
-  if (type) {
-    storeGetSystemConfig()
-  }
+const restartTimer = async (type) => {
   isDisabledResetBtn.value = true //將重新計時按鈕disabled
-  storeRefreshToken()
+  if (type) {
+    await storeGetSystemConfig()
+    setCountDownTimer()
+  }
+  await storeRefreshToken()
+  isDisabledResetBtn.value = false
 }
 
 //監聽廳主切換
@@ -136,23 +138,6 @@ watch(
   () => i18nLocale.value,
   () => {
     restartTimer(true)
-  }
-)
-
-// 監聽route.path，換頁後執行的內容
-watch(
-  () => route.path,
-  () => {
-    restartTimer()
-  }
-)
-
-watch(
-  () => systemConfigIsOk.value,
-  () => {
-    clearInterval(counter.value)
-    setCountDownTimer()
-    isDisabledResetBtn.value = false //將重新計時按鈕enabled
   }
 )
 

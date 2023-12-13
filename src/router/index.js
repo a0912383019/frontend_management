@@ -305,6 +305,7 @@ router.beforeEach(async (to, from, next) => {
     if (to.name !== 'Login') {
       const systemStore = useSystemStore()
       await systemStore.storeGetSystemConfig(0)
+      systemStore.storeRefreshToken()
       next()
     } else {
       next()

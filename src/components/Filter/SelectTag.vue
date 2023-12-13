@@ -5,6 +5,10 @@ import { useGlobalStore } from '@/stores/global.js'
 import { findRootHall, getSessionStorageEntity, checkTagUsage } from '@/utils/commonUtils.js'
 import SelectTagDropdown from '@/components/Filter/SelectTagDropdown.vue'
 import { dayjs } from 'element-plus'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
@@ -89,23 +93,28 @@ const tagsConfig = getSessionStorageEntity('system_config').tags_config[activeHa
 const tagsConfigTransformData = reactive({})
 // 轉換資料，優化tagsConfig
 const transformTagsConfig = () => {
-  Object.entries(tagsConfig).forEach((item) => {
-    if (!tagsConfigTransformData[item[1]['tag_category']]) {
-      tagsConfigTransformData[item[1]['tag_category']] = {}
-    }
-
-    if (!tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']]) {
-      tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']] = []
-    }
-    if (checkTagUsage(activeHall.hall_code, item[0])) {
-      let tempObj = {
-        ...item[1],
-        value: item[0],
-        label: item[1]['tag_name']
+  try {
+    Object.entries(tagsConfig).forEach((item) => {
+      if (!tagsConfigTransformData[item[1]['tag_category']]) {
+        tagsConfigTransformData[item[1]['tag_category']] = {}
       }
-      tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']].push(tempObj)
-    }
-  })
+  
+      if (!tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']]) {
+        tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']] = []
+      }
+      if (checkTagUsage(activeHall.hall_code, item[0])) {
+        let tempObj = {
+          ...item[1],
+          value: item[0],
+          label: item[1]['tag_name']
+        }
+        tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']].push(tempObj)
+      }
+    })
+  } catch (err) {
+    console.log(err)
+    router.push({ path: '/home' })
+  }
 }
 const changeGenerateTagLists = () => {
   selectTagLists.value = []
