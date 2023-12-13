@@ -1,5 +1,5 @@
 <script setup>
-import { watch, ref, onUnmounted } from 'vue'
+import { watch, ref } from 'vue'
 import { useGlobalStore } from '@/stores/global.js'
 import TopCard from './components/TopCard.vue'
 import NotificationTables from './components/NotificationTables.vue'
