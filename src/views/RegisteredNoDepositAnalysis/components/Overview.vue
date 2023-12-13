@@ -8,7 +8,7 @@ import { storeToRefs } from 'pinia'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import { errorRespond } from '@/utils/commonUtils.js'
+import { FormatNumber, roundDecimal, errorRespond } from '@/utils/commonUtils.js'
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -119,8 +119,8 @@ const transformActionScoreSpan = (data) => {
       )}`,
       total_people_num: item.span_count,
       total_deposit_people_num: item.deposited_count,
-      deposit_ratio: parseFloat(item.deposited_ratio) + '%',
-      avg_first_deposit_day: parseFloat(item.deposited_total_day),
+      deposit_ratio: roundDecimal(item.deposited_ratio) + '%',
+      avg_first_deposit_day: FormatNumber(item.deposited_avg_day),
       has_bg: item.deposited_ratio >= 30 ? true : false
     }
   })
