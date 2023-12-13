@@ -1,5 +1,5 @@
 <script setup>
-import { watch, ref } from 'vue'
+import { watch, ref, onUnmounted } from 'vue'
 import { useGlobalStore } from '@/stores/global.js'
 import TopCard from './components/TopCard.vue'
 import NotificationTables from './components/NotificationTables.vue'
@@ -15,7 +15,9 @@ const key = ref(systemConfigIsOk.value)
 watch(
   () => systemConfigIsOk.value,
   () => {
-    key.value = systemConfigIsOk.value
+    if (systemConfigIsOk.value !== 0){
+      key.value = systemConfigIsOk.value
+    }
   }
 )
 </script>

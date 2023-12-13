@@ -36,7 +36,7 @@ export const useSystemStore = defineStore('system', () => {
   }
 
   // call system config
-  const storeGetSystemConfig = async () => {
+  const storeGetSystemConfig = async (fromRoute = 1) => {
     globalStore.isLoading = true // 顯示Loading視窗
 
     // global hall_code 為空，從sessionStorage user_info中取得資料中的第一個廳別
@@ -56,7 +56,11 @@ export const useSystemStore = defineStore('system', () => {
       globalStore.isLoading = false
       if (return_code === '0000') {
         sessionStorage.setItem('system_config', JSON.stringify(result.data.result))
-        globalStore.systemConfigIsOk = Math.floor(Math.random() * 1000)
+        if (fromRoute === 0) {
+          globalStore.systemConfigIsOk = 0
+        } else {
+          globalStore.systemConfigIsOk = Math.floor(Math.random() * 1000)
+        }
         sidebarStore.generateSidebarMenu() // 更新sidebar item
         ElNotification.closeAll() //關閉所有ElNotification
         return true
