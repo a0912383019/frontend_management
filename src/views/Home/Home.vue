@@ -15,12 +15,14 @@ const key = ref(systemConfigIsOk.value)
 watch(
   () => systemConfigIsOk.value,
   () => {
-    key.value = systemConfigIsOk.value
+    if (systemConfigIsOk.value !== 0) {
+      key.value = systemConfigIsOk.value
+    }
   }
 )
 </script>
 <template>
-  <div v-if="key !== 0">
+  <div>
     <section class="cdp-section">
       <TopCard :key="key"></TopCard>
     </section>

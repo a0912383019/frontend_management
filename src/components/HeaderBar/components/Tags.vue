@@ -186,10 +186,8 @@ const handleCloseDialog = () => {
 }
 
 onMounted(() => {
-  if (sessionStorage.system_config !== undefined) {
-    tagsConfig = getTagsConfig()
-    transformTagsConfig()
-  }
+  tagsConfig = getTagsConfig()
+  transformTagsConfig()
 })
 
 watch(
@@ -234,7 +232,7 @@ watch(
 )
 </script>
 <template>
-  <div class="flex" v-if="key !== 0">
+  <div class="flex">
     <div class="tag-btn" @click.prevent="handleOpenDialog">
       <div class="tag-btn__icon">
         <font-awesome-icon icon="fa-solid fa-book" />
