@@ -15,7 +15,9 @@ const key = ref(systemConfigIsOk.value)
 watch(
   () => systemConfigIsOk.value,
   () => {
-    key.value = systemConfigIsOk.value
+    if (systemConfigIsOk.value !== 0) {
+      key.value = systemConfigIsOk.value
+    }
   }
 )
 </script>
