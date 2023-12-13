@@ -288,7 +288,7 @@ export const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const sessionStorageUserInfo = sessionStorage.user_info
   //將from page寫入window內
   sessionStorage.from_page = `?fromPage=${to.meta.fromPage}`
@@ -302,7 +302,13 @@ router.beforeEach((to, from, next) => {
     }
   }
   if (isLogin || whiteList.includes(to.path)) {
-    next()
+    if (to.name !== 'Login') {
+      const systemStore = useSystemStore()
+      await systemStore.storeGetSystemConfig(0)
+      next()
+    } else {
+      next()
+    }
   } else {
     next({ name: 'Login' })
   }
@@ -312,19 +318,5 @@ router.beforeEach((to, from, next) => {
     dateStore.updateDate()
   }
 })
-
-router.beforeResolve((to, from, next) => {
-  if (to.name !== 'Login') {
-    // call system_config api
-    beforeRouteEnterHandler().then(() => {
-      next()
-    })
-  }
-})
-
-const beforeRouteEnterHandler = async () => {
-  const systemStore = useSystemStore()
-  await systemStore.storeGetSystemConfig(0)
-}
 
 export default router
