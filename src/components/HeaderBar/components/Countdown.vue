@@ -115,11 +115,12 @@ const handleVisibilityChange = () => {
 // 重新計時
 const restartTimer = async (type) => {
   isDisabledResetBtn.value = true //將重新計時按鈕disabled
+  clearInterval(counter.value)
   if (type) {
     await storeGetSystemConfig()
-    setCountDownTimer()
+    await storeRefreshToken()
   }
-  await storeRefreshToken()
+  setCountDownTimer()
   isDisabledResetBtn.value = false
 }
 
@@ -138,6 +139,14 @@ watch(
   () => i18nLocale.value,
   () => {
     restartTimer(true)
+  }
+)
+
+// 監聽route.path，換頁後執行的內容
+watch(
+  () => route.path,
+  () => {
+    restartTimer()
   }
 )
 
