@@ -201,9 +201,9 @@ defineExpose({ queryActionScoreDetail, tableGoToFirstPage })
         *{{ $t('register_no_deposit_analysis.action_score') }}
         {{
           $t('register_no_deposit_analysis.span_desc', {
-            lower: depositProb[0],
+            lower: depositProb[0] + '%',
             contain_yes: $t('common.contain_yes'),
-            upper: depositProb[1],
+            upper: depositProb[1] + '%',
             contain: $t(`common.contain_${depositProb[1] === '100' ? 'yes' : 'no'}`)
           })
         }}
