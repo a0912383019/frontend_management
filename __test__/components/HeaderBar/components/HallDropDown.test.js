@@ -1,5 +1,5 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { shallowMount } from '@vue/test-utils'
+import { shallowMount, flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { useGlobalStore } from '@/stores/global.js'
 import { i18n } from '@/global/i18n'
@@ -104,13 +104,12 @@ describe('HallDropDown', () => {
 
   it('checkActiveHall function', async () => {
     wrapper.vm.hallDropdownList = dropDownList
-    globalStore.activeHall.hall_name = 'Esball'
-    await wrapper.vm.$nextTick()
     let cahckResult = await wrapper.vm.checkActiveHall()
     expect(cahckResult).toBe(0)
   })
 
   it('generateHeaderHallDropdown function', async () => {
+    await flushPromises()
     expect(globalStore.activeHall.hall_name).toBe('Esball')
     expect(globalStore.activeHall.hall_code).toBe('esx')
     expect(wrapper.vm.hallDropdownList).toStrictEqual(dropDownList)
