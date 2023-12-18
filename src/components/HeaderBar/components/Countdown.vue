@@ -37,7 +37,7 @@ const resetTimer = () => {
   timeoutSecText.value = 59
   timeoutMin.value = 59
   timeoutSec.value = 59
-  // ElNotification.closeAll() //關閉所有ElNotification
+  ElNotification.closeAll() //關閉所有ElNotification
 }
 
 // 倒數計時函數
@@ -124,7 +124,6 @@ const restartTimer = async (type) => {
 watch(
   () => globalStore.activeHall.hall_code,
   () => {
-    // console.log('hall_code Change')
     if (sessionStorage.system_config !== undefined) {
       restartTimer(true)
     }
