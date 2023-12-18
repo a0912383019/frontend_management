@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HallToggle > html 1`] = `
+"<div data-v-ceb91e77=\\"\\" class=\\"hallToggle\\"><span data-v-ceb91e77=\\"\\" class=\\"hallToggle__hallicon\\"><font-awesome-icon-stub data-v-ceb91e77=\\"\\" icon=\\"fa-home\\" border=\\"false\\" fixedwidth=\\"false\\" flip=\\"false\\" listitem=\\"false\\" pulse=\\"false\\" swapopacity=\\"false\\" spin=\\"false\\" symbol=\\"false\\" inverse=\\"false\\" bounce=\\"false\\" shake=\\"false\\" beat=\\"false\\" fade=\\"false\\" beatfade=\\"false\\" flash=\\"false\\" spinpulse=\\"false\\" spinreverse=\\"false\\"></font-awesome-icon-stub></span>
+  <div data-v-ceb91e77=\\"\\" class=\\"hallToggle__name\\">Esball(esx) </div>
+  <div data-v-ceb91e77=\\"\\" class=\\"hallToggle__dropbox\\">
+    <div data-v-ceb91e77=\\"\\" class=\\"hallToggle__arrow\\">
+      <font-awesome-icon-stub data-v-ceb91e77=\\"\\" icon=\\"fa-solid fa-angle-down\\" border=\\"false\\" fixedwidth=\\"false\\" flip=\\"false\\" listitem=\\"false\\" pulse=\\"false\\" swapopacity=\\"false\\" spin=\\"false\\" symbol=\\"false\\" inverse=\\"false\\" bounce=\\"false\\" shake=\\"false\\" beat=\\"false\\" fade=\\"false\\" beatfade=\\"false\\" flash=\\"false\\" spinpulse=\\"false\\" spinreverse=\\"false\\" class=\\"font-size-14\\"></font-awesome-icon-stub>
+    </div>
+  </div>
+</div>"
+`;

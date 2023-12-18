@@ -4,7 +4,6 @@ import { logout_counter_min, logout_counter_sec } from '@/../public/js/system_co
 import { ElNotification } from 'element-plus'
 import { useSystemStore } from '@/stores/system.js'
 import { useGlobalStore } from '@/stores/global.js'
-import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
@@ -13,7 +12,6 @@ const { t, locale: i18nLocale } = useI18n()
 const globalStore = useGlobalStore()
 const systemStore = useSystemStore()
 const { storeGetSystemConfig, storeRefreshToken } = systemStore
-const { systemConfigIsOk } = storeToRefs(globalStore)
 const route = useRoute()
 
 const countdownInterval = ref(1000) // 每秒倒數
@@ -73,7 +71,6 @@ const setCountDownTimer = () => {
             icon: 'history',
             size: 'small',
             onClick() {
-              console.log('isClick')
               restartTimer(true)
             }
           })
@@ -86,7 +83,6 @@ const setCountDownTimer = () => {
       countDown()
     } else {
       systemStore.storeLogout()
-      restartTimer()
       clearInterval(counter.value)
     }
   }, countdownInterval.value)
@@ -114,8 +110,8 @@ const handleVisibilityChange = () => {
 
 // 重新計時
 const restartTimer = async (type) => {
-  isDisabledResetBtn.value = true //將重新計時按鈕disabled
   clearInterval(counter.value)
+  isDisabledResetBtn.value = true //將重新計時按鈕disabled
   if (type) {
     await storeGetSystemConfig()
     await storeRefreshToken()
@@ -146,7 +142,9 @@ watch(
 watch(
   () => route.path,
   () => {
-    restartTimer()
+    if (route.path !== '/login') {
+      restartTimer()
+    }
   }
 )
 
@@ -157,6 +155,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('visibilitychange', handleVisibilityChange)
+  clearInterval(counter.value)
 })
 </script>
 <template>

@@ -3,10 +3,12 @@ import { ref, onMounted } from 'vue'
 import { hall_config_dict } from '@/../public/js/system_config.js'
 import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
 import { useGlobalStore } from '@/stores/global.js'
+import { useSystemStore } from '@/stores/system.js'
 import { useSidebarStore } from '@/stores/sidebar.js'
 import { useRouter } from 'vue-router'
 
 const globalStore = useGlobalStore()
+const systemStore = useSystemStore()
 const sidebarStore = useSidebarStore()
 const router = useRouter()
 
@@ -36,7 +38,6 @@ const generateHeaderHallDropdown = () => {
     hallDropdownList.value[i]['is_active'] = false
   }
 
-  //若目前無選取的廳別，則預設選取第一個廳別
   let hasHall = checkActiveHall()
   //若有選取，檢查選取的廳別有無在下拉選項內
   if (hasHall !== -1) {
@@ -44,6 +45,8 @@ const generateHeaderHallDropdown = () => {
     hallDropdownList.value[hasHall]['is_active'] = true
     globalStore.activeHall.hall_name = hall_name
     globalStore.activeHall.hall_code = hall_code
+  } else {
+    systemStore.storeLogout()
   }
 }
 
