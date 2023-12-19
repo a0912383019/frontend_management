@@ -31,13 +31,12 @@ const timeoutZero = (value) => {
   return value < 10 ? '0' + value : value
 }
 
-//重置時間
+// 重置時間
 const resetTimer = () => {
   timeoutMinText.value = 59
   timeoutSecText.value = 59
   timeoutMin.value = 59
   timeoutSec.value = 59
-  ElNotification.closeAll() //關閉所有ElNotification
 }
 
 // 倒數計時函數
@@ -59,9 +58,9 @@ const setCountDownTimer = () => {
   resetTimer()
   timeoutMinText.value = timeoutZero(timeoutMin.value)
   timeoutSecText.value = timeoutZero(timeoutSec.value)
-  sessionStorage.start_timer = new Date().getTime() //設定起始時間
+  sessionStorage.start_timer = new Date().getTime() // 設定起始時間
   counter.value = setInterval(() => {
-    //  若倒數時間小於設定時間，跳出提醒
+    // 若倒數時間小於設定時間，跳出提醒
     if (timeoutMin.value === logout_counter_min && timeoutSec.value === logout_counter_sec) {
       ElNotification({
         message: h('div', null, [
@@ -118,9 +117,10 @@ const restartTimer = async (type) => {
   }
   setCountDownTimer()
   isDisabledResetBtn.value = false
+  ElNotification.closeAll()
 }
 
-//監聽廳主切換
+// 監聽廳主切換
 watch(
   () => globalStore.activeHall.hall_code,
   () => {
@@ -130,7 +130,7 @@ watch(
   }
 )
 
-//監聽語系切換
+// 監聽語系切換
 watch(
   () => i18nLocale.value,
   () => {

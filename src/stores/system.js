@@ -56,10 +56,8 @@ export const useSystemStore = defineStore('system', () => {
       globalStore.isLoading = false
       if (return_code === '0000') {
         sessionStorage.setItem('system_config', JSON.stringify(result.data.result))
-        globalStore.systemConfigIsOk =
-          fromRoute === 0 ? 0 : Math.floor(Math.random() * 1000)
+        globalStore.systemConfigIsOk = fromRoute === 0 ? 0 : Math.floor(Math.random() * 1000)
         sidebarStore.generateSidebarMenu() // 更新sidebar item
-        ElNotification.closeAll() //關閉所有ElNotification
         return true
       } else {
         let failMsg = errorRespond(result.data.status)
