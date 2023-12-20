@@ -105,6 +105,7 @@ describe('HallDropDown', () => {
   it('checkActiveHall function', async () => {
     wrapper.vm.hallDropdownList = dropDownList
     let cahckResult = await wrapper.vm.checkActiveHall()
+    await flushPromises()
     expect(cahckResult).toBe(0)
   })
 
@@ -191,6 +192,7 @@ describe('HallDropDown', () => {
       }
     ]
     await wrapper.vm.changeHeaderHall(changeHallObj)
+    await flushPromises()
     expect(globalStore.activeHall.hall_name).toBe('Esball')
     expect(globalStore.activeHall.hall_code).toBe('esx')
     expect(wrapper.vm.hallDropdownList).toStrictEqual(result)
