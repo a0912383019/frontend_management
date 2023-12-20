@@ -277,7 +277,36 @@ describe('Tags', () => {
         }
       ],
       type4: [],
-      type5: []
+      type5: [],
+      type6: [
+        {
+          mutual_tags_code: '',
+          sort_index: 6011000,
+          tag_category: 1,
+          tag_description: 'AI 判定有對打嫌疑玩百家樂視訊的會員',
+          tag_enabled: true,
+          tag_name: '百家樂視訊疑似對打客',
+          tag_type: 6
+        },
+        {
+          mutual_tags_code: '',
+          sort_index: 6021000,
+          tag_category: 1,
+          tag_description: 'AI 判定有對打嫌疑玩龍虎鬥視訊的會員',
+          tag_enabled: true,
+          tag_name: '龍虎鬥視訊疑似對打客',
+          tag_type: 6
+        },
+        {
+          mutual_tags_code: '',
+          sort_index: 6031000,
+          tag_category: 1,
+          tag_description: 'AI 判定有對打嫌疑玩骰寶視訊的會員',
+          tag_enabled: true,
+          tag_name: '骰寶視訊疑似對打客',
+          tag_type: 6
+        }
+      ]
     }
     expect(wrapper.vm.tagsData).toStrictEqual(tagConfigEsb)
     expect(wrapper.vm.tableData).toStrictEqual(tagConfigEsb['all'])
@@ -424,7 +453,8 @@ describe('Tags', () => {
           tag_enabled: true,
           mutual_tags_code: ''
         }
-      ]
+      ],
+      type6: []
     }
     wrapper.vm.activeHall.hall_code = 'bmw'
     await wrapper.vm.$nextTick()
