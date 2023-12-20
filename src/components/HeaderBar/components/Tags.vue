@@ -60,6 +60,10 @@ const tabData = computed(() => {
     {
       label: t('tags.type_5'),
       name: 'type5'
+    },
+    {
+      label: t('tags.type_6'),
+      name: 'type6'
     }
   ]
 })
@@ -70,7 +74,8 @@ const tagsData = reactive({
   type1: [],
   type3: [],
   type4: [],
-  type5: []
+  type5: [],
+  type6: []
 })
 let tagsDataOriginal = reactive({})
 
@@ -101,6 +106,8 @@ const transformTagsConfig = () => {
           tagsData['type4'].push(value)
         } else if (value.tag_type === 5) {
           tagsData['type5'].push(value)
+        } else if (value.tag_type === 6) {
+          tagsData['type6'].push(value)
         }
       }
     })
