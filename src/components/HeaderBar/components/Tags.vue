@@ -8,7 +8,7 @@ import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import Tab from '@/components/Tab.vue'
 import Search from '@/components/Search.vue'
 
-const { t } = useI18n()
+const { t, locale: i18nLocale } = useI18n()
 
 const globalStore = useGlobalStore()
 const { systemConfigIsOk } = storeToRefs(globalStore)
@@ -259,6 +259,7 @@ watch(
         :activeName="currentTabs"
         v-model="currentTabs"
         class="cdp-dialog__tab"
+        :class="{ en: i18nLocale === 'en' }"
       ></Tab>
       <div class="cdp-dialog__content">
         <div class="cdp-dialog__tablebox">
@@ -302,6 +303,11 @@ watch(
 .cdp-dialog {
   &__tab {
     margin-bottom: 15px;
+    &.en {
+      :deep(.tabs__item) {
+        font-size: 14px;
+      }
+    }
   }
   &__content {
     border-radius: 5px;
