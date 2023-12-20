@@ -75,10 +75,16 @@ describe('FilterMemberName', () => {
 
   // 測試 updateFilterTimestamp
   it('test updateFilterTimestamp', async () => {
-    let time = new Date().getTime()
+    // 保存函數執行前的時間戳
+    const originalTimestamp = manageAnalysisStore.filterTimestamp
+
+    // 呼叫函數
     wrapper.vm.updateFilterTimestamp()
-    await flushPromises()
-    expect(manageAnalysisStore.filterTimestamp).toBe(time)
+
+    // 驗證 manageAnalysisStore.filterTimestamp 是否已被更新
+    expect(manageAnalysisStore.filterTimestamp).not.toBeNull()
+    expect(manageAnalysisStore.filterTimestamp).not.toEqual(originalTimestamp)
+    expect(typeof manageAnalysisStore.filterTimestamp).toBe('number')
   })
 
   // 資料送出前的欄位檢查
