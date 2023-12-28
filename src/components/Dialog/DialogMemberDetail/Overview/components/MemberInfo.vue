@@ -368,12 +368,12 @@ onMounted(() => {
                 </li>
               </ul>
             </div>
-            <CdpButton
+            <!-- <CdpButton
               class="tags__button custom-bg-dark__blue"
               :name="$t('common.edit')"
               size="sm-60"
               @click="handleTagIsEdit(true)"
-            />
+            /> -->
           </div>
         </div>
         <div v-show="tagIsEdit && apiSuccess">
@@ -490,7 +490,6 @@ onMounted(() => {
     justify-content: flex-start;
     align-content: center;
     width: 100%;
-    margin-right: 20px;
     padding: 14px 14px 8px 14px;
     border-radius: 5px;
     border: solid 1px #cfd8e6;

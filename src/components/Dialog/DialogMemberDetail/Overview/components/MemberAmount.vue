@@ -4,7 +4,7 @@ import { apiQueryProfitWithdrawDepositAmount } from '@/api/dialogMemberDetail.js
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
-import { getHallCurrencySign, FormatNumber } from '@/utils/commonUtils.js'
+import { getHallCurrencySign, FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
