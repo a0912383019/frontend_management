@@ -191,10 +191,6 @@ describe('Tags', () => {
           tag_name: '週次'
         },
         {
-          tag_description: '會員近15個實動日，遊玩『00:00 至 23:00』時段(每小時計算)總下注最多者',
-          tag_name: '時段'
-        },
-        {
           tag_description: '最後存款日之當日平均單筆存款金額超過xx萬，範圍1萬至20萬',
           tag_name: '最後平均單筆存款'
         },
@@ -249,10 +245,6 @@ describe('Tags', () => {
         {
           tag_description: '會員近15個實動日，遊玩『週一 至 週日』週次總下注最多者',
           tag_name: '週次'
-        },
-        {
-          tag_description: '會員近15個實動日，遊玩『00:00 至 23:00』時段(每小時計算)總下注最多者',
-          tag_name: '時段'
         },
         {
           tag_description: '最後存款日之當日平均單筆存款金額超過xx萬，範圍1萬至20萬',
@@ -381,10 +373,6 @@ describe('Tags', () => {
           tag_description: '會員近15個實動日，遊玩『週一 至 週日』週次總下注最多者'
         },
         {
-          tag_name: '時段',
-          tag_description: '會員近15個實動日，遊玩『00:00 至 23:00』時段(每小時計算)總下注最多者'
-        },
-        {
           tag_name: '最後平均單筆存款',
           tag_description: '最後存款日之當日平均單筆存款金額超過xx萬，範圍1萬至20萬'
         },
@@ -408,10 +396,6 @@ describe('Tags', () => {
         {
           tag_name: '週次',
           tag_description: '會員近15個實動日，遊玩『週一 至 週日』週次總下注最多者'
-        },
-        {
-          tag_name: '時段',
-          tag_description: '會員近15個實動日，遊玩『00:00 至 23:00』時段(每小時計算)總下注最多者'
         },
         {
           tag_name: '最後平均單筆存款',

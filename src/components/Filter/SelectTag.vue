@@ -73,6 +73,10 @@ const changeGenerateCategoryLists = () => {
     })
     if (selectTypeValue.value === 3) {
       for (let i = 2; i <= 9; i++) {
+        // 時段標籤下架，下拉選單不顯示時段
+        if (i === 3) {
+          continue
+        }
         // 若為XBB廳別才加入category = 8標籤
         if (i === 8 && findRootHall(activeHall.hall_code) !== 'XBB') {
           continue
@@ -98,7 +102,7 @@ const transformTagsConfig = () => {
       if (!tagsConfigTransformData[item[1]['tag_category']]) {
         tagsConfigTransformData[item[1]['tag_category']] = {}
       }
-  
+
       if (!tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']]) {
         tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']] = []
       }
