@@ -402,7 +402,6 @@ describe('SelectTag', () => {
     const result2 = [
       { value: 1, label: '一般' },
       { value: 2, label: '週次' },
-      { value: 3, label: '時段' },
       { value: 4, label: '最後平均單筆存款' },
       { value: 5, label: '最大投注金額' },
       { value: 6, label: '有效投注下降幅度' },
@@ -601,10 +600,6 @@ describe('SelectTag', () => {
       {
         value: 2,
         label: '週次'
-      },
-      {
-        value: 3,
-        label: '時段'
       },
       {
         value: 4,
