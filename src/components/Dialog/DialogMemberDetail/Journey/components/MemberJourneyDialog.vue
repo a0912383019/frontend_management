@@ -124,7 +124,7 @@ const handleCheckSubmit = (formEl) => {
 
 // 送出
 const handleSubmit = (type) => {
-  if (form.title !== '' && form.content !== '') {
+  if ((form.title !== '' && form.content !== '') || type === 'delete') {
     updateCustomFlag(type)
       .then(() => {
         clearForm()
@@ -253,13 +253,13 @@ defineExpose({ dialogOpen })
               {
                 required: true,
                 message: $t('customer_detail_info.blank_flag_title_error_msg'),
-                trigger: 'blur'
+                trigger: 'change'
               },
               {
                 max: 8,
                 required: true,
                 message: $t('customer_detail_info.flag_title_length_limit_error_msg'),
-                trigger: 'blur'
+                trigger: 'change'
               }
             ]"
             prop="title"
@@ -267,7 +267,7 @@ defineExpose({ dialogOpen })
             <el-input
               v-model="form.title"
               :placeholder="$t('customer_detail_info.input_flag_title')"
-              @blur="handleBlur"
+              @input="handleBlur"
               class="cdp-input"
             />
           </el-form-item>
@@ -277,13 +277,13 @@ defineExpose({ dialogOpen })
               {
                 required: true,
                 message: $t('customer_detail_info.blank_flag_content_error_msg'),
-                trigger: 'blur'
+                trigger: 'change'
               },
               {
                 max: 800,
                 required: true,
                 message: $t('customer_detail_info.flag_content_length_limit_error_msg'),
-                trigger: 'blur'
+                trigger: 'change'
               }
             ]"
             prop="content"
@@ -292,7 +292,7 @@ defineExpose({ dialogOpen })
               v-model="form.content"
               type="textarea"
               :placeholder="$t('customer_detail_info.input_flag_content')"
-              @blur="handleBlur"
+              @input="handleBlur"
               class="cdp-textarea"
             />
           </el-form-item>
