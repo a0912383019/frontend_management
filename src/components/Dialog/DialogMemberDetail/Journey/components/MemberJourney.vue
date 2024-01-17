@@ -38,7 +38,8 @@ const chartOptions = reactive({
     enabled: false
   },
   chart: {
-    height: 500
+    height: 500,
+    marginTop: 15
   },
   xAxis: {
     plotBands: [],
