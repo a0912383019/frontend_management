@@ -147,7 +147,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
   &__content {
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: calc(100vh - 60px);
+    max-height: calc(100vh - 140px);
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 30px;
