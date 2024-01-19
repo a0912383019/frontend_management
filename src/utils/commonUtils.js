@@ -1,5 +1,4 @@
 import { hall_config_dict, chart_fixed_bgColor } from '@/../public/js/system_config.js'
-import { dayjs } from 'element-plus'
 
 /**
  * 取得儲存在sessionStorage中的JSON物件

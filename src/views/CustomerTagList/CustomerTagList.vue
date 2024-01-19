@@ -7,7 +7,6 @@ import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
 import {
-  findHallIdMappingKey,
   checkTagUsage,
   formatDateDuration,
   getSessionStorageEntity,
@@ -212,17 +211,12 @@ const transformListMemberTags = (data) => {
       register_date: dayjs(item.register_date).format(t('date.format_datetime_rule')),
       operation: item.operation
     }
-    // 處理tag_name_str
-    let hall_name = findHallIdMappingKey(['BBIN'], {
-      hall_id: item.hall_id,
-      domain_id: item.domain_id
-    })
 
     let tag_str_ary = item.tag_str ? item.tag_str.split(',') : []
 
     for (let i = 0; i < tag_str_ary.length; i++) {
       //  若標籤代碼禁用，則跳過不顯示
-      if (checkTagUsage(hall_name, tag_str_ary[i])) {
+      if (checkTagUsage(activeHall.hall_code, tag_str_ary[i])) {
         tempObj['tag_name_str'].push(tag_str_ary[i])
       }
     }
@@ -259,8 +253,7 @@ const move6ToStart = (val) => {
   const other = val.filter((item) => !item.startsWith('6'))
 
   // 陣列合併
-  const result = isSix.concat(other)
-  return result
+  return isSix.concat(other)
 }
 
 // 取得文字總寬
