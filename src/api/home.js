@@ -48,7 +48,7 @@ export const apiQueryLatestLifeCycleSummary = (params) => {
 //會員活躍度變化統計
 export const apiQueryLivelyChangeOverview = (params) => {
   const { hall_name, search_date } = params
-  return axiosGoInstance.get('/api/auth/home/lively_change_overview', {
+  return axiosGoInstance.get('/api/auth/vip/lively_change_overview', {
     params: {
       hall_name,
       search_date
@@ -59,7 +59,7 @@ export const apiQueryLivelyChangeOverview = (params) => {
 //會員活躍度變化明細
 export const apiQueryLivelyChangeDetail = (params) => {
   const { hall_name, search_date, analysis_level, compare_level } = params
-  return axiosGoInstance.get('/api/auth/home/lively_change_detail', {
+  return axiosGoInstance.get('/api/auth/vip/lively_change_detail', {
     params: {
       hall_name,
       search_date,
@@ -72,7 +72,7 @@ export const apiQueryLivelyChangeDetail = (params) => {
 //週活躍度
 export const apiQueryMemberRecentWeekLively = (params) => {
   const { hall_name, user_id, start_date, end_date } = params
-  return axiosGoInstance.get('/api/auth/home/member_recent_week_lively', {
+  return axiosGoInstance.get('/api/auth/vip/member_recent_week_lively', {
     params: {
       hall_name,
       user_id,
@@ -86,7 +86,7 @@ export const apiQueryMemberRecentWeekLively = (params) => {
 
 export const apiQueryMemberRecentLively = (params) => {
   const { hall_name, user_id, start_date, end_date } = params
-  return axiosGoInstance.get('/api/auth/home/member_recent_lively', {
+  return axiosGoInstance.get('/api/auth/vip/member_recent_lively', {
     params: {
       hall_name,
       user_id,
