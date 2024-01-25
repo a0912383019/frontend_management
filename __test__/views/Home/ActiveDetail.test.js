@@ -114,9 +114,9 @@ describe('ActiveDetail.vue', () => {
     }
     vi.spyOn(axiosGoInstance, 'get').mockImplementation((url) => {
       switch (url) {
-        case '/api/auth/home/member_recent_week_lively':
+        case '/api/auth/vip/member_recent_week_lively':
           return Promise.resolve({ data: result1 })
-        case '/api/auth/home/member_recent_lively':
+        case '/api/auth/vip/member_recent_lively':
           return Promise.resolve({ data: result2 })
         default:
           return error
@@ -175,24 +175,28 @@ describe('ActiveDetail.vue', () => {
         name: '活躍度',
         lineWidth: 2,
         data: [
-          0.231, 0.216, 0.192,
-          0.192, 0.192, 0.237,
-          0.483, 0.695, 0.783,
-           0.72,  0.56, 0.487,
-          0.446, 0.313
+          0.231, 0.216, 0.192, 0.192, 0.192, 0.237, 0.483, 0.695, 0.783, 0.72, 0.56, 0.487, 0.446,
+          0.313
         ]
       }
     ]
     expect(wrapper.vm.chartOptions.series).toStrictEqual(series)
 
     const xAxis = [
-      '2023/11/07', '2023/11/08',
-      '2023/11/09', '2023/11/10',
-      '2023/11/11', '2023/11/12',
-      '2023/11/13', '2023/11/14',
-      '2023/11/15', '2023/11/16',
-      '2023/11/17', '2023/11/18',
-      '2023/11/19', '2023/11/20'
+      '2023/11/07',
+      '2023/11/08',
+      '2023/11/09',
+      '2023/11/10',
+      '2023/11/11',
+      '2023/11/12',
+      '2023/11/13',
+      '2023/11/14',
+      '2023/11/15',
+      '2023/11/16',
+      '2023/11/17',
+      '2023/11/18',
+      '2023/11/19',
+      '2023/11/20'
     ]
     expect(wrapper.vm.chartOptions.xAxis.categories).toStrictEqual(xAxis)
   })
