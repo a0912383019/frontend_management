@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { formatDateDuration, errorRespond } from '@/utils/commonUtils.js'
@@ -8,7 +8,6 @@ import { dayjs } from 'element-plus'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import MemberActiveDetail from './MemberActiveDetail.vue'
 import { apiQueryLivelyChangeOverview } from '@/api/home.js'
-import { iconStep } from '@/../public/js/system_config.js'
 import { useDateStore } from '@/stores/dateConfig.js'
 
 const { LAST_DATE } = useDateStore()
@@ -16,7 +15,7 @@ const { LAST_DATE } = useDateStore()
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
-const { activeHall } = globalStore
+const { activeHall, activityStep } = globalStore
 
 //api是否成功
 const apiSuccess = ref(false)
@@ -35,65 +34,6 @@ const thisWeekDuration = ref(
     '~' +
     dayjs(LAST_DATE).format(t('date.format_date_rule'))
 )
-
-const activityStep = computed(() => {
-  let activityStep = [
-    {
-      title: t('member_active_level.active_level_5'),
-      icon: iconStep(5).icon,
-      bgColor: 'cdp-bg-cadmium__orange-1',
-      iconColor: iconStep(5).color,
-      icons: []
-    },
-    {
-      title: t('member_active_level.active_level_4'),
-      icon: iconStep(4).icon,
-      bgColor: 'cdp-bg-glaucous-1',
-      iconColor: iconStep(4).color,
-      icons: []
-    },
-    {
-      title: t('member_active_level.active_level_3'),
-      icon: iconStep(3).icon,
-      bgColor: 'cdp-bg-forest__green__crayola-1',
-      iconColor: iconStep(3).color,
-      icons: []
-    },
-    {
-      title: t('member_active_level.active_level_2'),
-      icon: iconStep(2).icon,
-      bgColor: 'cdp-bg-indian__red-1',
-      iconColor: iconStep(2).color,
-      icons: []
-    },
-    {
-      title: t('member_active_level.active_level_1'),
-      icon: iconStep(1).icon,
-      bgColor: 'cdp-bg-amethyst-1',
-      iconColor: iconStep(1).color,
-      icons: []
-    },
-    {
-      title: t('member_active_level.active_level_0'),
-      icon: iconStep(0).icon,
-      bgColor: 'cdp-bg-light__slate__gray-1',
-      iconColor: iconStep(0).color,
-      icons: []
-    }
-  ]
-
-  let icons = activityStep.map((ele) => {
-    return {
-      icon: ele.icon,
-      iconColor: ele.iconColor
-    }
-  })
-  activityStep.forEach((ele, idx) => {
-    ele.icons = icons
-  })
-
-  return activityStep
-})
 
 let refPeople = ref([])
 

@@ -1,14 +1,11 @@
 <script setup>
 import { ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 
 import ImportCSV from '@/components/Filter/ImportCSV.vue'
-
-const { t } = useI18n()
 
 const route = useRoute()
 

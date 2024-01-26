@@ -21,6 +21,10 @@ const props = defineProps({
     type: String,
     default: 'default'
   },
+  hoverShadow: {
+    type: Boolean,
+    default: false
+  },
   bg: {
     type: Boolean,
     default: true
@@ -31,6 +35,7 @@ const buttonClass = computed(() => {
   let className = ''
   className += `button__${props.size} `
   className += `button__${props.color}`
+  if (props.hoverShadow) className += ` button__hoverShadow`
   if (props.bg === false) className += ` button__nobg`
   return className
 })
@@ -54,9 +59,9 @@ button {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   &:disabled {
-    background-color: #f6f7fa !important;
-    border-color: #f6f7fa !important;
-    color: #c0ccdf !important;
+    background-color: $disabled !important;
+    border-color: $disabled !important;
+    color: #fff !important;
   }
   &.button {
     &__small {
@@ -64,53 +69,53 @@ button {
       font-size: 12px;
       line-height: 1.5;
       border-radius: 5px;
-      height: 40px;
+      min-height: 40px;
     }
     &__medium {
       padding: 6px 8px;
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.5;
       border-radius: 5px;
       min-width: 120px;
-      height: 40px;
+      min-height: 34px;
     }
     &__large {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-width: 140px;
-      padding: 10px 15px;
+      padding: 9px 15px;
       background-color: #56419f;
       border-radius: 5px;
       font-size: 14px;
       font-weight: 500;
-      height: 40px;
+      min-height: 40px;
       &.large-120 {
         min-width: 120px;
         padding-top: 7px;
         padding-bottom: 7px;
-        height: 36px;
+        min-height: 36px;
       }
     }
     &__default {
-      background-color: #5eb7c8;
-      border-color: #5eb7c8;
+      background-color: $turquoise;
+      border-color: $turquoise;
     }
     &__purple {
-      background-color: #6a53ba;
-      border-color: #6a53ba;
+      background-color: $purple;
+      border-color: $purple;
       &-light {
         background-color: #7882a7;
         border-color: #7882a7;
       }
     }
     &__red {
-      background-color: #e06672;
-      border-color: #e06672;
+      background-color: $red;
+      border-color: $red;
     }
     &__blue {
-      background-color: #4f84cf;
-      border-color: #4f84cf;
+      background-color: $blue;
+      border-color: $blue;
     }
     &__white {
       background-color: #f4f4f4;
@@ -126,22 +131,22 @@ button {
       color: #8d8d8d;
     }
     &__nobg {
-      background-color: transparent;
+      background-color: #fff !important;
       &.button {
         &__default {
-          color: #5eb7c8;
+          color: $turquoise;
         }
         &__purple {
-          color: #6a53ba;
+          color: $purple;
           &-light {
             color: #7882a7;
           }
         }
         &__red {
-          color: #e06672;
+          color: $red;
         }
         &__blue {
-          color: #4f84cf;
+          color: $blue;
         }
         &__white {
           color: #f4f4f4;
@@ -154,28 +159,55 @@ button {
         }
       }
     }
+    &__hoverShadow {
+      &:hover {
+        &.button {
+          &__default {
+            box-shadow: 3px 3px 0px 0px $turquoise-hover;
+          }
+          &__purple {
+            box-shadow: 3px 3px 0px 0px $purple-hover;
+            &-light {
+              box-shadow: 3px 3px 0px 0px #646c8b;
+            }
+          }
+          &__red {
+            box-shadow: 3px 3px 0px 0px $red-hover;
+          }
+          &__blue {
+            box-shadow: 3px 3px 0px 0px $blue-hover;
+          }
+          &__white {
+            box-shadow: 3px 3px 0px 0px #dfdfdf;
+          }
+          &__gray {
+            box-shadow: 3px 3px 0px 0px #dfdfdf;
+          }
+        }
+      }
+    }
   }
   &:hover {
     &.button {
       &__default {
-        background-color: #4aa5b6;
-        border-color: #4aa5b6;
+        background-color: $turquoise-hover;
+        border-color: $turquoise-hover;
       }
       &__purple {
-        background-color: #56419f;
-        border-color: #56419f;
+        background-color: $purple-hover;
+        border-color: $purple-hover;
         &-light {
           background-color: #646c8b;
           border-color: #646c8b;
         }
       }
       &__red {
-        background-color: #c75660;
-        border-color: #c75660;
+        background-color: $red-hover;
+        border-color: $red-hover;
       }
       &__blue {
-        background-color: #3a6db5;
-        border-color: #3a6db5;
+        background-color: $blue-hover;
+        border-color: $blue-hover;
       }
       &__white {
         background-color: #dfdfdf;
@@ -184,39 +216,6 @@ button {
       &__gray {
         background-color: #dfdfdf;
         border-color: #dfdfdf;
-      }
-      &__nobg {
-        background-color: transparent;
-        &.button {
-          &__default {
-            border-color: #4aa5b6;
-            color: #4aa5b6;
-          }
-          &__purple {
-            border-color: #56419f;
-            color: #56419f;
-            &-light {
-              border-color: #646c8b;
-              color: #646c8b;
-            }
-          }
-          &__red {
-            border-color: #c75660;
-            color: #c75660;
-          }
-          &__blue {
-            border-color: #3a6db5;
-            color: #3a6db5;
-          }
-          &__white {
-            border-color: #dfdfdf;
-            color: #dfdfdf;
-          }
-          &__gray {
-            border-color: #dfdfdf;
-            color: #8d8d8d;
-          }
-        }
       }
     }
   }

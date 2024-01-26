@@ -155,9 +155,11 @@ const handleDelete = () => {
 const handleBlur = () => {
   if (
     (formOriginal.date !== form.date ||
-    formOriginal.title !== form.title ||
-    formOriginal.content !== form.content) &&
-    (form.date !== '' && form.title !== '' && form.content !== '')
+      formOriginal.title !== form.title ||
+      formOriginal.content !== form.content) &&
+    form.date !== '' &&
+    form.title !== '' &&
+    form.content !== ''
   ) {
     submitBtnDisabled.value = false
   } else {
@@ -238,8 +240,8 @@ defineExpose({ dialogOpen })
               :format="$t('date.format_date_rule')"
               :value-format="$t('date.format_date_rule')"
               :disabled="dialogType === 'edit' ? true : false"
-              popper-class="cdp-datepicker-single"
-              class="cdp-datepicker-single-input full"
+              popper-class="cdp-datepicker-single-popper cdp-datepicker-single-popper__blue"
+              class="cdp-datepicker-single full"
               :clearable="false"
               :editable="false"
               @blur="handleBlur"

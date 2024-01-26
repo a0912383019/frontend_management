@@ -40,7 +40,7 @@ const currentTabComponent = computed(() => {
 })
 </script>
 <template>
-  <div>
+  <section class="cdp-section mb-0">
     <PageTitle class="mb-20" icon="menuManage" :title="$t('sidebar.bbin_manage_analysis')" />
     <el-row :gutter="20" class="mb-20">
       <el-col :span="13">
@@ -56,7 +56,7 @@ const currentTabComponent = computed(() => {
     <keep-alive>
       <component :is="currentTabComponent"></component>
     </keep-alive>
-  </div>
+  </section>
 </template>
 <style lang="scss" scoped>
 .tabs-manage-analysis {

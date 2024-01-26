@@ -106,5 +106,201 @@ describe('useSystemStore', () => {
       }
     }
     expect(globalStore.tableConfig).toStrictEqual(tableConfig)
+
+    const activityStep = [
+      {
+        title: '非常活躍',
+        icon: 'fa-grin-stars',
+        bgColor: 'cdp-bg-cadmium__orange-1',
+        iconColor: 'cdp-text-cadmium__orange',
+        icons: [
+          {
+            icon: 'fa-grin-stars',
+            iconColor: 'cdp-text-cadmium__orange'
+          },
+          {
+            icon: 'fa-grin-beam',
+            iconColor: 'cdp-text-glaucous'
+          },
+          {
+            icon: 'fa-smile',
+            iconColor: 'cdp-text-forest__green__crayola'
+          },
+          {
+            icon: 'fa-face-meh',
+            iconColor: 'cdp-text-indian__red'
+          },
+          {
+            icon: 'fa-frown',
+            iconColor: 'cdp-text-amethyst'
+          },
+          {
+            icon: 'fa-dizzy',
+            iconColor: 'cdp-text-light__slate__gray'
+          }
+        ]
+      },
+      {
+        title: '很活躍',
+        icon: 'fa-grin-beam',
+        bgColor: 'cdp-bg-glaucous-1',
+        iconColor: 'cdp-text-glaucous',
+        icons: [
+          {
+            icon: 'fa-grin-stars',
+            iconColor: 'cdp-text-cadmium__orange'
+          },
+          {
+            icon: 'fa-grin-beam',
+            iconColor: 'cdp-text-glaucous'
+          },
+          {
+            icon: 'fa-smile',
+            iconColor: 'cdp-text-forest__green__crayola'
+          },
+          {
+            icon: 'fa-face-meh',
+            iconColor: 'cdp-text-indian__red'
+          },
+          {
+            icon: 'fa-frown',
+            iconColor: 'cdp-text-amethyst'
+          },
+          {
+            icon: 'fa-dizzy',
+            iconColor: 'cdp-text-light__slate__gray'
+          }
+        ]
+      },
+      {
+        title: '一般',
+        icon: 'fa-smile',
+        bgColor: 'cdp-bg-forest__green__crayola-1',
+        iconColor: 'cdp-text-forest__green__crayola',
+        icons: [
+          {
+            icon: 'fa-grin-stars',
+            iconColor: 'cdp-text-cadmium__orange'
+          },
+          {
+            icon: 'fa-grin-beam',
+            iconColor: 'cdp-text-glaucous'
+          },
+          {
+            icon: 'fa-smile',
+            iconColor: 'cdp-text-forest__green__crayola'
+          },
+          {
+            icon: 'fa-face-meh',
+            iconColor: 'cdp-text-indian__red'
+          },
+          {
+            icon: 'fa-frown',
+            iconColor: 'cdp-text-amethyst'
+          },
+          {
+            icon: 'fa-dizzy',
+            iconColor: 'cdp-text-light__slate__gray'
+          }
+        ]
+      },
+      {
+        title: '活躍下滑',
+        icon: 'fa-face-meh',
+        bgColor: 'cdp-bg-indian__red-1',
+        iconColor: 'cdp-text-indian__red',
+        icons: [
+          {
+            icon: 'fa-grin-stars',
+            iconColor: 'cdp-text-cadmium__orange'
+          },
+          {
+            icon: 'fa-grin-beam',
+            iconColor: 'cdp-text-glaucous'
+          },
+          {
+            icon: 'fa-smile',
+            iconColor: 'cdp-text-forest__green__crayola'
+          },
+          {
+            icon: 'fa-face-meh',
+            iconColor: 'cdp-text-indian__red'
+          },
+          {
+            icon: 'fa-frown',
+            iconColor: 'cdp-text-amethyst'
+          },
+          {
+            icon: 'fa-dizzy',
+            iconColor: 'cdp-text-light__slate__gray'
+          }
+        ]
+      },
+      {
+        title: '即將流失',
+        icon: 'fa-frown',
+        bgColor: 'cdp-bg-amethyst-1',
+        iconColor: 'cdp-text-amethyst',
+        icons: [
+          {
+            icon: 'fa-grin-stars',
+            iconColor: 'cdp-text-cadmium__orange'
+          },
+          {
+            icon: 'fa-grin-beam',
+            iconColor: 'cdp-text-glaucous'
+          },
+          {
+            icon: 'fa-smile',
+            iconColor: 'cdp-text-forest__green__crayola'
+          },
+          {
+            icon: 'fa-face-meh',
+            iconColor: 'cdp-text-indian__red'
+          },
+          {
+            icon: 'fa-frown',
+            iconColor: 'cdp-text-amethyst'
+          },
+          {
+            icon: 'fa-dizzy',
+            iconColor: 'cdp-text-light__slate__gray'
+          }
+        ]
+      },
+      {
+        title: '已流失',
+        icon: 'fa-dizzy',
+        bgColor: 'cdp-bg-light__slate__gray-1',
+        iconColor: 'cdp-text-light__slate__gray',
+        icons: [
+          {
+            icon: 'fa-grin-stars',
+            iconColor: 'cdp-text-cadmium__orange'
+          },
+          {
+            icon: 'fa-grin-beam',
+            iconColor: 'cdp-text-glaucous'
+          },
+          {
+            icon: 'fa-smile',
+            iconColor: 'cdp-text-forest__green__crayola'
+          },
+          {
+            icon: 'fa-face-meh',
+            iconColor: 'cdp-text-indian__red'
+          },
+          {
+            icon: 'fa-frown',
+            iconColor: 'cdp-text-amethyst'
+          },
+          {
+            icon: 'fa-dizzy',
+            iconColor: 'cdp-text-light__slate__gray'
+          }
+        ]
+      }
+    ]
+    expect(globalStore.activityStep).toStrictEqual(activityStep)
   })
 })

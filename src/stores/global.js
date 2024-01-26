@@ -1,16 +1,16 @@
 import { ref, reactive, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
-import { RFM_NAPL_step_config } from '@/../public/js/system_config.js'
+import { RFM_NAPL_step_config, iconStep } from '@/../public/js/system_config.js'
 import { i18n } from '@/global/i18n'
 
 export const useGlobalStore = defineStore(
   'global',
   () => {
     const { t } = i18n.global
-    //loading顯示狀態
+    // loading顯示狀態
     const isLoading = ref(false)
-    
+
     const storeHandleApiError = () => {
       const router = useRouter()
       //當api錯誤時，會執行的內容
@@ -20,13 +20,13 @@ export const useGlobalStore = defineStore(
       router.push({ name: 'Login' })
     }
 
-    //當前選取的廳別
+    // 當前選取的廳別
     const activeHall = reactive({
       hall_name: '',
       hall_code: ''
     })
 
-    //lobby_group
+    // lobby_group
     const lobbyGroupConfig = computed(() => {
       const config = {}
       config['live'] = t('lobby_group.live')
@@ -38,7 +38,7 @@ export const useGlobalStore = defineStore(
       return config
     })
 
-    //階段資料config
+    // 階段資料config
     const tableConfig = computed(() => {
       const config = RFM_NAPL_step_config
       config[null]['step_name'] = t('member_life_cycles.unclassified')
@@ -61,6 +61,66 @@ export const useGlobalStore = defineStore(
       return config
     })
 
+    // 活躍度總覽
+    const activityStep = computed(() => {
+      let activityStep = [
+        {
+          title: t('member_active_level.active_level_5'),
+          icon: iconStep(5).icon,
+          bgColor: 'cdp-bg-cadmium__orange-1',
+          iconColor: iconStep(5).color,
+          icons: []
+        },
+        {
+          title: t('member_active_level.active_level_4'),
+          icon: iconStep(4).icon,
+          bgColor: 'cdp-bg-glaucous-1',
+          iconColor: iconStep(4).color,
+          icons: []
+        },
+        {
+          title: t('member_active_level.active_level_3'),
+          icon: iconStep(3).icon,
+          bgColor: 'cdp-bg-forest__green__crayola-1',
+          iconColor: iconStep(3).color,
+          icons: []
+        },
+        {
+          title: t('member_active_level.active_level_2'),
+          icon: iconStep(2).icon,
+          bgColor: 'cdp-bg-indian__red-1',
+          iconColor: iconStep(2).color,
+          icons: []
+        },
+        {
+          title: t('member_active_level.active_level_1'),
+          icon: iconStep(1).icon,
+          bgColor: 'cdp-bg-amethyst-1',
+          iconColor: iconStep(1).color,
+          icons: []
+        },
+        {
+          title: t('member_active_level.active_level_0'),
+          icon: iconStep(0).icon,
+          bgColor: 'cdp-bg-light__slate__gray-1',
+          iconColor: iconStep(0).color,
+          icons: []
+        }
+      ]
+
+      let icons = activityStep.map((ele) => {
+        return {
+          icon: ele.icon,
+          iconColor: ele.iconColor
+        }
+      })
+      activityStep.forEach((ele) => {
+        ele.icons = icons
+      })
+
+      return activityStep
+    })
+
     const systemConfigIsOk = ref(0)
 
     return {
@@ -69,7 +129,8 @@ export const useGlobalStore = defineStore(
       activeHall,
       lobbyGroupConfig,
       tableConfig,
-      systemConfigIsOk
+      systemConfigIsOk,
+      activityStep
     }
   },
   {
