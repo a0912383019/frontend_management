@@ -72,7 +72,6 @@ const handleClick = () => {
     filterData['searchTag'] = '10001,10003'
     key.value = Math.floor(Math.random() * 10000)
   }
-  console.log(key.value)
   livelyAnalysisFilter['member'] = filterData['member']
   livelyAnalysisFilter['date'] = filterData['date']
   livelyAnalysisFilter['custom'] = filterData['custom']
