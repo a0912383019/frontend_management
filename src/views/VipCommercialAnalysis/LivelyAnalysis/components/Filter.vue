@@ -59,18 +59,27 @@ const selectTypeLists = ref([
   }
 ])
 
+// 紀錄 key
+const key = ref(0)
+
 // csv 上傳成功
 const handleCsvSuccess = () => {}
 
 // 確認篩選
 const handleClick = () => {
+  if (filterData['searchTag'] === '') {
+    // 如果 searchTag 為空，要搜尋全部，且重置 SelectTagSingle 組件，恢復選擇全部選項
+    filterData['searchTag'] = '10001,10003'
+    key.value = Math.floor(Math.random() * 10000)
+  }
+  console.log(key.value)
   livelyAnalysisFilter['member'] = filterData['member']
   livelyAnalysisFilter['date'] = filterData['date']
   livelyAnalysisFilter['custom'] = filterData['custom']
   livelyAnalysisFilter['searchTag'] = filterData['searchTag']
   livelyAnalysisFilter['fuzzySearch'] = filterData['fuzzySearch']
   emit('update:filter')
-  closePopover()
+  // closePopover()
 }
 </script>
 <template>
@@ -120,7 +129,7 @@ const handleClick = () => {
               :title="$t('common.include_tags')"
             >
             </SectionTitle>
-            <SelectTagSingle :lists="selectTypeLists" v-model="filterData.searchTag" />
+            <SelectTagSingle :key="key" :lists="selectTypeLists" v-model="filterData.searchTag" />
           </div>
         </div>
         <div class="drop__footer">
