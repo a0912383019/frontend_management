@@ -104,8 +104,8 @@ export const router = createRouter({
       children: [
         {
           path: '/vip-commercial-analysis',
-          name: 'vip-commercial-analysis'
-          // component: () => import('../views/Home/Home.vue')
+          name: 'vip-commercial-analysis',
+          component: () => import('../views/VipCommercialAnalysis/VipCommercialAnalysis.vue')
         }
       ]
     },

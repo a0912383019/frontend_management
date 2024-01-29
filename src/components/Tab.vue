@@ -92,6 +92,7 @@ const handleTabChange = (data) => {
     border-radius: 5px;
     min-height: 40px;
     font-size: 16px;
+    font-weight: 500;
     color: #7d818f;
     text-align: center;
     transition: all 0.3s ease-in-out;

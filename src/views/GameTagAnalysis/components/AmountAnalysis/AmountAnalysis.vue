@@ -8,13 +8,7 @@ import { apiQueryTagsGameRank } from '@/api/gameTagAnalysis.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { ElNotification } from 'element-plus'
-import {
-  generateRGBColors,
-  errorRespond,
-  dynamicBackgroundColors,
-  FormatNumber,
-  trimBack
-} from '@/utils/commonUtils.js'
+import { generateRGBColors, errorRespond, FormatNumber, trimBack } from '@/utils/commonUtils.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { tooltipDarkConfig, tooltipSingleShared } from '@/utils/highchartsConfig.js'
 

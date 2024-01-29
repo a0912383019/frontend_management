@@ -10,8 +10,9 @@ import { apiQueryTagsGamePayoffRank } from '@/api/gameTagAnalysis.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import { useGameTagAnalysis } from '@/stores/gameTagAnalysis.js'
 import { storeToRefs } from 'pinia'
+import { ElNotification } from 'element-plus'
 
-const { locale: i18nLocale } = useI18n()
+const { t, locale: i18nLocale } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -197,6 +198,7 @@ const transformTagsGamePayoffRank = (order, data) => {
       xAxis.push(data[i].lobby_name + '-' + data[i].game_name)
     }
   }
+  console.log(order, data)
   if (order === 'DESC') {
     nChartOptions.series[0].data = []
     nChartOptions.xAxis.categories = []

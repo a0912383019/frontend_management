@@ -5,7 +5,8 @@ const props = defineProps({
     type: Array
   },
   tagTitle: {
-    type: String
+    type: String,
+    default: ''
   },
   operator: {
     //運算子
@@ -25,9 +26,10 @@ const handleTagAddText = (data) => {
       <div class="drop__title">{{ $t('tags.operator_math') }}</div>
       <div class="drop__item" @click="handleTagAddText({ value: 'OR', label: 'OR' })">OR</div>
     </div>
-    <div class="drop__title">{{ props.tagTitle }}</div>
+    <div class="drop__title" v-show="props.tagTitle">{{ props.tagTitle }}</div>
     <div
       class="drop__item"
+      :class="{ disabled: item.disabled }"
       v-for="(item, index) in props.lists"
       :key="index"
       @click="handleTagAddText(item)"
@@ -69,6 +71,10 @@ const handleTagAddText = (data) => {
     padding: 5px 10px;
     cursor: pointer;
     transition: all 0.5s ease-in-out;
+    &.disabled {
+      background-color: #eee;
+      pointer-events: none;
+    }
     &:hover {
       background: rgba(106, 83, 186, 0.06);
       color: $purple;

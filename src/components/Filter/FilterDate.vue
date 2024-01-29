@@ -140,7 +140,7 @@ watch(
             v-model="dateValue"
             type="daterange"
             :unlink-panels="false"
-            popper-class="cdp-datepicker-range-popper__purple"
+            popper-class="cdp-datepicker-range-popper cdp-datepicker-range-popper__purple"
             range-separator="~"
             start-placeholder="Start date"
             end-placeholder="End date"

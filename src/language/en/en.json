@@ -579,6 +579,7 @@
   },
 
   "vip_commercial_analysis": {
+    "all": "All",
     "include_day_of_week": "Day of Week including",
     "select_included_day_of_week": "Click and Pick...",
     "monday": "Mon",
@@ -592,7 +593,7 @@
     "beginning_month": "Beginning Month",
     "end_month": "End Month",
     "query_period_not_exceed_months": "The query period shall not exceed six months.",
-    "no_vip_warning": "You have not set the VIP related tags for the hall【{{hall_name}}】, please go to【$t(sidebar.custom_tags_setting)】to set.",
+    "no_vip_warning": "You have not set the VIP related tags for the hall【{hall_name}】, please go to【$t(sidebar.custom_tags_setting)】to set.",
     "backstage_vip": "Backstage VIP",
 
     "lively_analysis": "Activity Breakdown",
