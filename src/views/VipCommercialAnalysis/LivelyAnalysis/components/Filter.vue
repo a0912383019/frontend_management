@@ -78,7 +78,7 @@ const handleClick = () => {
   livelyAnalysisFilter['searchTag'] = filterData['searchTag']
   livelyAnalysisFilter['fuzzySearch'] = filterData['fuzzySearch']
   emit('update:filter')
-  // closePopover()
+  closePopover()
 }
 </script>
 <template>
