@@ -235,7 +235,7 @@ defineExpose({ queryMemberLivelyList, apiSuccess, messageKey })
               {{ $t('date.click_icon_display_last_days_data', { days: 90 }) }}
               <br />
               {{ $t('member_active_level.changes') + $t('date.last_week') }}
-              <cdp-icon name="doubleArrowDown" />
+              <cdp-icon class="iconInTooltip header" name="doubleArrowDown" />
               {{ $t('date.this_week') }}
             </div>
           </template>
@@ -309,5 +309,9 @@ defineExpose({ queryMemberLivelyList, apiSuccess, messageKey })
 }
 :deep(.iconInTooltip) {
   transform: rotate(270deg);
+  &.header {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 }
 </style>
