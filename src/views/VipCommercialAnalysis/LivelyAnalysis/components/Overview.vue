@@ -105,7 +105,7 @@ const queryLivelyAnalysisOverview = async () => {
       lively_analysis_vip_tag: livelyAnalysisFilter['searchTag'],
       search_name: livelyAnalysisFilter['member'],
       fuzzy_search: livelyAnalysisFilter['fuzzySearch'],
-      use_custom_list: livelyAnalysisFilter['custom']
+      use_custom_list: livelyAnalysisFilter['use_custom_list']
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {

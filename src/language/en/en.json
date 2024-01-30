@@ -1,4 +1,7 @@
 {
+  "global": {
+    "click_number_above_to_show": "Pick & Click a number above"
+  },
   "date": {
     "date": "Date",
     "format_date": "{{- date, en_date}}",
@@ -543,7 +546,6 @@
     "today_minus": "Leaving Today",
     "life_cycle_step_overview": "Overview",
     "member_details": "Details",
-    "click_number_above_to_show": "Pick & Click a number above",
     "life_cycle_history": "History",
     "member_life_cycle_history": "History",
 
@@ -604,7 +606,6 @@
     "this_week_decrease_people_num": "Leaving this week",
     "last_week_active_level": "Last Week Active Level",
     "this_week_active_level": "This Week Active Level",
-    "click_number_above_to_show": "Pick & Click a number above",
 
     "active_time_analysis": "Intraday Activity",
     "active_time_people_num": "Active VIPs within a day",

@@ -12,6 +12,7 @@ export const useVipCommercialAnalysisStore = defineStore('vipCommercialAnalysis'
     date: dayjs(date_range_picker_config_4['endDate']).format('YYYY-MM-DD'),
     custom: false,
     searchTag: '10001,10003',
+    custom_user_list: [],
     fuzzySearch: false
   })
 

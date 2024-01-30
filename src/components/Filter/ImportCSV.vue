@@ -91,7 +91,7 @@ const handleUseCustomSwitchChange = (type) => {
 }
 </script>
 <template>
-  <div>
+  <div class="box">
     <el-switch
       v-model="switchValue"
       @change="handleUseCustomSwitchChange"
@@ -130,6 +130,12 @@ const handleUseCustomSwitchChange = (type) => {
     </el-dialog>
   </div>
 </template>
+<style lang="scss" scoped>
+.box {
+  display: flex;
+  align-items: center;
+}
+</style>
 <style lang="scss">
 .cdp-dialog-filer-file {
   &.el-dialog {

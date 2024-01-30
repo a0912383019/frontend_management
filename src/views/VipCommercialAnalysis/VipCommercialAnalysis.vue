@@ -56,11 +56,7 @@ const currentTabComponent = computed(() => {
 </script>
 <template>
   <section class="cdp-section mb-0">
-    <PageTitle
-      class="mb-20"
-      icon="menuManage"
-      :title="$t('sidebar.bbin_vip_commercial_analysis')"
-    />
+    <PageTitle class="mb-20" icon="menuVIP" :title="$t('sidebar.bbin_vip_commercial_analysis')" />
     <el-row :gutter="20" class="mb-15">
       <el-col :span="19">
         <Tab :tabData="tabData" :activeName="currentTabs" v-model="currentTabs"></Tab>
