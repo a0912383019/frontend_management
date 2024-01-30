@@ -82,10 +82,12 @@ button {
 
 .cdp-section {
   padding: 20px;
-  margin-bottom: 20px;
   border: 1px solid rgba(230, 234, 242, 1);
   border-radius: 5px;
   background-color: #fff;
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
 }
 
 .cdp-section-in {
