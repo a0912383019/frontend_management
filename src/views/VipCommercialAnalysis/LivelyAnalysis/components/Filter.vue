@@ -34,6 +34,7 @@ const filterData = reactive({
   date: '',
   custom: false,
   searchTag: '10001,10003',
+  custom_user_list: [],
   fuzzySearch: false
 })
 
@@ -63,7 +64,10 @@ const selectTypeLists = ref([
 const key = ref(0)
 
 // csv 上傳成功
-const handleCsvSuccess = () => {}
+const handleCsvSuccess = (data) => {
+  filterData['custom_user_list'] = data
+  handleClick()
+}
 
 // 確認篩選
 const handleClick = () => {
@@ -72,11 +76,12 @@ const handleClick = () => {
     filterData['searchTag'] = '10001,10003'
     key.value = Math.floor(Math.random() * 10000)
   }
-  livelyAnalysisFilter['member'] = filterData['member']
   livelyAnalysisFilter['date'] = filterData['date']
+  livelyAnalysisFilter['member'] = filterData['member']
   livelyAnalysisFilter['custom'] = filterData['custom']
   livelyAnalysisFilter['searchTag'] = filterData['searchTag']
   livelyAnalysisFilter['fuzzySearch'] = filterData['fuzzySearch']
+  livelyAnalysisFilter['custom_user_list'] = filterData['custom_user_list']
   emit('update:filter')
   closePopover()
 }
@@ -170,6 +175,8 @@ const handleClick = () => {
     display: flex;
     justify-content: flex-end;
     &__item {
+      display: flex;
+      align-items: center;
       &:not(:last-child) {
         margin-right: 20px;
       }

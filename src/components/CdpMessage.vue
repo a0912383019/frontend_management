@@ -71,7 +71,7 @@ const messageData = computed(() => {
       break
     case 'clickNumberAboveToShow':
       result['icon'] = getIcon('info')
-      result['title'] = t('manage_analysis.click_number_above_to_show')
+      result['title'] = t('global.click_number_above_to_show')
       break
     case 'clickForDetail':
       result['icon'] = getIcon('info')

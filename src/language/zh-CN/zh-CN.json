@@ -1,4 +1,7 @@
 {
+  "global": {
+    "click_number_above_to_show": "点击上方总览表格数值显示明细"
+  },
   "date": {
     "date": "日期",
     "format_date": "{{- date, zh_date}}",
@@ -543,7 +546,6 @@
     "today_minus": "本日减少",
     "life_cycle_step_overview": "阶段总览",
     "member_details": "会员明细",
-    "click_number_above_to_show": "点击上方总览表格数值显示明细",
     "life_cycle_history": "历程记录",
     "member_life_cycle_history": "会员阶段历程记录",
 
@@ -603,7 +605,6 @@
     "this_week_decrease_people_num": "本周减少",
     "last_week_active_level": "上周活跃度等级",
     "this_week_active_level": "本周活跃度等级",
-    "click_number_above_to_show": "点击上方数值显示明细",
 
     "active_time_analysis": "活跃时段分析",
     "active_time_people_num": "活跃时段人数",

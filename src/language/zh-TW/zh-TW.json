@@ -1,4 +1,7 @@
 {
+  "global": {
+    "click_number_above_to_show": "點擊上方總覽表格數值顯示明細"
+  },
   "date": {
     "date": "日期",
     "format_date": "{{- date, zh_date}}",
@@ -544,7 +547,6 @@
     "today_minus": "本日減少",
     "life_cycle_step_overview": "階段總覽",
     "member_details": "會員明細",
-    "click_number_above_to_show": "點擊上方總覽表格數值顯示明細",
     "life_cycle_history": "歷程記錄",
     "member_life_cycle_history": "會員階段歷程記錄",
 
@@ -605,7 +607,6 @@
     "this_week_decrease_people_num": "本週減少",
     "last_week_active_level": "上週活躍度等級",
     "this_week_active_level": "本週活躍度等級",
-    "click_number_above_to_show": "點擊上方數值顯示明細",
 
     "active_time_analysis": "活躍時段分析",
     "active_time_people_num": "活躍時段人數",
