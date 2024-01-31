@@ -68,30 +68,3 @@ export const apiQueryLivelyChangeDetail = (params) => {
     }
   })
 }
-
-//週活躍度
-export const apiQueryMemberRecentWeekLively = (params) => {
-  const { hall_name, user_id, start_date, end_date } = params
-  return axiosGoInstance.get('/api/auth/vip/member_recent_week_lively', {
-    params: {
-      hall_name,
-      user_id,
-      start_date,
-      end_date
-    }
-  })
-}
-
-//日活躍度
-
-export const apiQueryMemberRecentLively = (params) => {
-  const { hall_name, user_id, start_date, end_date } = params
-  return axiosGoInstance.get('/api/auth/vip/member_recent_lively', {
-    params: {
-      hall_name,
-      user_id,
-      start_date,
-      end_date
-    }
-  })
-}

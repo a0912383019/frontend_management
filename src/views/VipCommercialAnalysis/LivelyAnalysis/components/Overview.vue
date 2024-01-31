@@ -3,9 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { dayjs, ElNotification } from 'element-plus'
-import { useDateStore } from '@/stores/dateConfig.js'
-import { useGlobalStore } from '@/stores/global.js'
-import { useVipCommercialAnalysisStore } from '@/stores/vipCommercialAnalysis.js'
+import { useDateStore, useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiQueryLivelyAnalysisOverview } from '@/api/vipCommercialAnalysis.js'
 import { addNumberColor, FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -80,17 +78,19 @@ const tableColumns = computed(() => {
 // 依照不同的messageKey產生不同的message
 const messageKey = ref('loading')
 
-const today = dayjs(date_range_picker_config_4['endDate']).format(t('date.format_date_rule'))
+const today = computed(() => {
+  return dayjs(livelyAnalysisFilter['date']).format(t('date.format_date_rule'))
+})
 
 // tooltip顯示對應日期
 const tooltipDate = computed(() => {
   return {
     lastWeekData: `
-    ${dayjs(today).subtract(13, 'day').format(t('date.format_date_rule'))} ~
-    ${dayjs(today).subtract(7, 'day').format(t('date.format_date_rule'))}`,
+    ${dayjs(today.value).subtract(13, 'day').format(t('date.format_date_rule'))} ~
+    ${dayjs(today.value).subtract(7, 'day').format(t('date.format_date_rule'))}`,
     thisWeekData: `
-      ${dayjs(today).subtract(6, 'day').format(t('date.format_date_rule'))} ~
-      ${today}`
+      ${dayjs(today.value).subtract(6, 'day').format(t('date.format_date_rule'))} ~
+      ${today.value}`
   }
 })
 
