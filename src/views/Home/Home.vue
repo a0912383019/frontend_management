@@ -26,7 +26,7 @@ watch(
     <section class="cdp-section">
       <TopCard :key="key"></TopCard>
     </section>
-    <el-row :gutter="20">
+    <el-row :gutter="20" class="mb-20">
       <el-col :span="14">
         <NotificationTables :key="key"></NotificationTables>
       </el-col>

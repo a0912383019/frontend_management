@@ -2,10 +2,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { dayjs, ElNotification } from 'element-plus'
-import { useDateStore } from '@/stores/dateConfig.js'
-import { useGlobalStore } from '@/stores/global.js'
-import { useVipCommercialAnalysisStore } from '@/stores/vipCommercialAnalysis.js'
-import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
+import { useGlobalStore, useVipCommercialAnalysisStore, useDialogMemberDetailStore } from '@/stores'
 import { apiQueryMemberLivelyList } from '@/api/vipCommercialAnalysis.js'
 import { FormatNumber, addNumberColor, errorRespond } from '@/utils/commonUtils.js'
 import { iconStep } from '@/../public/js/system_config.js'
@@ -13,11 +10,10 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
+import ActiveDetail from './ActiveDetail.vue'
 import ExportCSV from './ExportCSV.vue'
 
 const { t } = useI18n()
-
-const { date_range_picker_config_4 } = useDateStore()
 
 const vipStore = useVipCommercialAnalysisStore()
 const { livelyAnalysisFilter } = vipStore
@@ -94,17 +90,19 @@ const tableColumns = computed(() => {
 // 依照不同的messageKey產生不同的message
 const messageKey = ref('clickNumberAboveToShow')
 
-const today = dayjs(date_range_picker_config_4['endDate']).format(t('date.format_date_rule'))
+const today = computed(() => {
+  return dayjs(livelyAnalysisFilter['date']).format(t('date.format_date_rule'))
+})
 
 // tooltip顯示對應日期
 const tooltipDate = computed(() => {
   return {
     lastWeekData: `
-    ${dayjs(today).subtract(13, 'day').format(t('date.format_date_rule'))} ~
-    ${dayjs(today).subtract(7, 'day').format(t('date.format_date_rule'))}`,
+    ${dayjs(today.value).subtract(13, 'day').format(t('date.format_date_rule'))} ~
+    ${dayjs(today.value).subtract(7, 'day').format(t('date.format_date_rule'))}`,
     thisWeekData: `
-      ${dayjs(today).subtract(6, 'day').format(t('date.format_date_rule'))} ~
-      ${today}`
+      ${dayjs(today.value).subtract(6, 'day').format(t('date.format_date_rule'))} ~
+      ${today.value}`
   }
 })
 
@@ -196,6 +194,12 @@ const handleSort = ({ prop, order }) => {
   }
 }
 
+const refActiveDetail = ref(null)
+
+const handleActiveDetailClick = (user) => {
+  refActiveDetail.value.handleOpenDialog(user)
+}
+
 defineExpose({ queryMemberLivelyList, apiSuccess, messageKey })
 </script>
 <template>
@@ -272,7 +276,7 @@ defineExpose({ queryMemberLivelyList, apiSuccess, messageKey })
 
       <!-- 活躍度 -->
       <template #activeLevel="scope">
-        <div class="activeStepBtn" @click="handleActiveDetailClick(scope.row.user)">
+        <div class="activeStepBtn cursor-pointer" @click="handleActiveDetailClick(scope.row.user)">
           <font-awesome-icon
             :class="['font-size-30', scope.row.lastWeekIcon.color]"
             :icon="['fa-regular', scope.row.lastWeekIcon.icon]"
@@ -289,6 +293,7 @@ defineExpose({ queryMemberLivelyList, apiSuccess, messageKey })
         </div>
       </template>
     </CustomTable>
+    <ActiveDetail ref="refActiveDetail" />
   </section>
 </template>
 <style lang="scss" scoped>
