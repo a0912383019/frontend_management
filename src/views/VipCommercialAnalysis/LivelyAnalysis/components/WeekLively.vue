@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ElNotification } from 'element-plus'
+import { dayjs, ElNotification } from 'element-plus'
 import { useGlobalStore } from '@/stores'
 import { apiQueryMemberRecentWeekLively } from '@/api/global.js'
 import { errorRespond } from '@/utils/commonUtils.js'
@@ -26,7 +26,7 @@ const tableData = ref([])
 const apiSuccess = ref(false)
 
 // 依照不同的messageKey產生不同的message
-const messageKey = ref('loading')
+const messageKey = ref('shortLoading')
 
 // 表格表頭
 const tableColumns = computed(() => {
@@ -49,7 +49,7 @@ const tableColumns = computed(() => {
 // 取得api資料
 const queryMemberRecentWeekLively = async () => {
   apiSuccess.value = false
-  messageKey.value = 'loading'
+  messageKey.value = 'shortLoading'
   try {
     const result = await apiQueryMemberRecentWeekLively({
       hall_name: activeHall.hall_code,
@@ -89,11 +89,21 @@ const queryMemberRecentWeekLively = async () => {
   }
 }
 
+// 轉換日期
+const formatI18nDate = (date) => {
+  let format = date.split('~')
+  return (
+    dayjs(format[0]).format(t('date.format_date_rule')) +
+    ' ~ ' +
+    dayjs(format[1]).format(t('date.format_date_rule'))
+  )
+}
+
 // 整理資料
 const transformMemberRecentWeekLively = (data) => {
   let transformData = data.map((item) => {
     return {
-      duration: item.analysis_date,
+      duration: formatI18nDate(item.analysis_date),
       avgLevel: item.analysis_level,
       score: item.avg_action_score,
       icon: iconStep(item.analysis_level),
