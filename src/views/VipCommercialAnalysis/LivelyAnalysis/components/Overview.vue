@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { dayjs, ElNotification } from 'element-plus'
-import { useDateStore, useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
+import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiQueryLivelyAnalysisOverview } from '@/api/vipCommercialAnalysis.js'
 import { addNumberColor, FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -18,8 +18,6 @@ const { activeHall } = globalStore
 const { activityStep } = storeToRefs(globalStore)
 
 const { t } = useI18n()
-
-const { date_range_picker_config_4 } = useDateStore()
 
 const emit = defineEmits(['update:detail_api'])
 
