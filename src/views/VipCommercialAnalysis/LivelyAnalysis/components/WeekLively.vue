@@ -73,18 +73,10 @@ const queryMemberRecentWeekLively = async () => {
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
+    if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      ElNotification({
-        title: t('msg.update_failed'),
-        type: 'error'
-      })
+      messageKey.value = 'queryFailed'
     }
   }
 }

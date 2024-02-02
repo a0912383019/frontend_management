@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { dayjs, ElNotification } from 'element-plus'
+import { dayjs } from 'element-plus'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiQueryLivelyAnalysisOverview } from '@/api/vipCommercialAnalysis.js'
 import { addNumberColor, FormatNumber, errorRespond } from '@/utils/commonUtils.js'
@@ -122,18 +122,10 @@ const queryLivelyAnalysisOverview = async () => {
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
+    if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      ElNotification({
-        title: t('msg.update_failed'),
-        type: 'error'
-      })
+      messageKey.value = 'queryFailed'
     }
   }
 }
