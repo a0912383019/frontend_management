@@ -597,6 +597,8 @@
     "end_month": "結束月份",
     "query_period_not_exceed_months": "查詢區間不得超過六個月",
     "no_vip_warning": "您尚未設定廳別【{hall_name}】的VIP相關標籤，請先至【{sidebar}】設定。",
+    "no_vip_warning2": "您尚未設定廳別【{hall_name}】的VIP相關標籤，請先聯絡CDP管理員設定標籤。",
+    "not_set": "尚未設定",
     "backstage_vip": "管端VIP",
 
     "lively_analysis": "活躍度分析",

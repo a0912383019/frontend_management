@@ -56,6 +56,8 @@ const selectTypeLists = ref([
     disabled: true
   }
 ])
+// 儲存初始資料
+const originalSelectTypeLists = JSON.parse(JSON.stringify(selectTypeLists.value))
 
 // 紀錄 key
 const key = ref(0)
@@ -72,6 +74,8 @@ const handleClick = () => {
     // 如果 searchTag 為空，要搜尋全部，且重置 SelectTagSingle 組件，恢復選擇全部選項
     filterData['searchTag'] = '10001,10003'
     key.value = Math.floor(Math.random() * 10000)
+    // 恢復為預設值
+    selectTypeLists.value = originalSelectTypeLists
   }
   livelyAnalysisFilter['date'] = filterData['date']
   livelyAnalysisFilter['member'] = filterData['member']
