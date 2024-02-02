@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { dayjs, ElNotification } from 'element-plus'
+import { dayjs } from 'element-plus'
 import { useGlobalStore } from '@/stores'
 import { apiQueryMemberRecentWeekLively } from '@/api/global.js'
 import { errorRespond } from '@/utils/commonUtils.js'
