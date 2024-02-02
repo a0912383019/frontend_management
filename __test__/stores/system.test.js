@@ -1,9 +1,14 @@
 import { it, describe, expect, vi, beforeEach } from 'vitest'
-import { useSystemStore } from '@/stores/system.js'
 import { setActivePinia, createPinia } from 'pinia'
-import { useGlobalStore } from '@/stores/global.js'
+import {
+  useSystemStore,
+  useGlobalStore,
+  useVipCommercialAnalysisStore,
+  useDateStore
+} from '@/stores'
 import { useRouter } from 'vue-router'
 import { apiLogout } from '@/api/system.js'
+import { dayjs } from 'element-plus'
 
 describe('useSystemStore', () => {
   beforeEach(() => {
@@ -12,6 +17,18 @@ describe('useSystemStore', () => {
     useRouter.mockReturnValue({
       push: vi.fn()
     })
+
+    // mock date
+    vi.mock('@/stores/dateConfig.js', () => ({
+      useDateStore: vi.fn()
+    }))
+    const mockLastDate = {
+      date_range_picker_config_4: {
+        startDate: dayjs(1513823919228),
+        endDate: dayjs(1513823919228)
+      }
+    }
+    useDateStore.mockReturnValue(mockLastDate)
   })
 
   it('calls apiLogout and clears storage on storeLogout', async () => {
@@ -31,6 +48,11 @@ describe('useSystemStore', () => {
     // 取得 store 實例
     const globalStore = useGlobalStore()
     const systemStore = useSystemStore()
+    const vipCommercialAnalysisStore = useVipCommercialAnalysisStore()
+
+    // mock resetState function
+    const resetStateMock = vi.fn()
+    vipCommercialAnalysisStore.resetState = resetStateMock
 
     //先改變globalStore.isLoading的值，之後確認是否有改變
     globalStore.isLoading = true
@@ -39,6 +61,7 @@ describe('useSystemStore', () => {
     await systemStore.storeLogout()
     expect(globalStore.isLoading).toBe(false)
     expect(apiLogout).toBeCalled()
+    expect(resetStateMock).toHaveBeenCalled()
     expect(useRouter().push).toHaveBeenCalledWith({ name: 'Login' })
     expect(sessionStorageMock.clear).toHaveBeenCalled()
     expect(localStorageMock.clear).toHaveBeenCalled()
