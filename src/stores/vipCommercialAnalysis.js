@@ -16,7 +16,13 @@ export const useVipCommercialAnalysisStore = defineStore('vipCommercialAnalysis'
     fuzzySearch: false
   })
 
+  // 重置資料
+  const resetState = () => {
+    livelyAnalysisFilter['date'] = dayjs(date_range_picker_config_4['endDate']).format('YYYY-MM-DD')
+  }
+
   return {
-    livelyAnalysisFilter
+    livelyAnalysisFilter,
+    resetState
   }
 })

@@ -1,8 +1,7 @@
 import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import { ElNotification } from 'element-plus'
-import { useGlobalStore } from '@/stores/global.js'
-import { useSidebarStore } from '@/stores/sidebar.js'
+import { useGlobalStore, useSidebarStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiLogout } from '@/api/system.js'
 import { apiRefresh, apiGoRefresh, apiGetSystemConfig } from '@/api/system.js'
 import { i18n } from '@/global/i18n'
@@ -13,6 +12,7 @@ export const useSystemStore = defineStore('system', () => {
   const router = useRouter()
   const globalStore = useGlobalStore()
   const sidebarStore = useSidebarStore()
+  const vipCommercialAnalysisStore = useVipCommercialAnalysisStore()
   const { t, locale: i18nLocale } = i18n.global
 
   const storeLogout = async () => {
@@ -24,6 +24,10 @@ export const useSystemStore = defineStore('system', () => {
     } finally {
       router.push({ name: 'Login' })
       globalStore.isLoading = false
+
+      // 登出後，讓 pinia 資料回覆預設值
+      vipCommercialAnalysisStore.resetState()
+
       // 不管logout的ajax成功或失敗，都清除所有sessionStorage與localStorage
       sessionStorage.clear()
       localStorage.clear()

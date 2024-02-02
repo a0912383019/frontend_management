@@ -25,8 +25,6 @@ const closePopover = () => {
   popover.value.hide()
 }
 
-const useCustomList = ref('') // 手動匯入名單
-
 // filter 欄位資料
 const filterData = reactive({
   member: '',
@@ -137,7 +135,11 @@ const handleClick = () => {
         </div>
         <div class="drop__footer">
           <div class="drop__footer__item">
-            <ImportCSV v-model="useCustomList" :csvType="1" @update:success="handleCsvSuccess" />
+            <ImportCSV
+              v-model="filterData['custom']"
+              :csvType="1"
+              @update:success="handleCsvSuccess"
+            />
           </div>
           <div class="drop__footer__item">
             <el-switch
