@@ -32,7 +32,7 @@ const handelCancel = () => {
         <div class="inner-dialog__icon">
           <cdp-icon name="dialogNotice" />
         </div>
-        <div class="inner-dialog__title">尚未設定</div>
+        <div class="inner-dialog__title">{{ $t('vip_commercial_analysis.not_set') }}</div>
         <div class="inner-dialog__text">
           {{ $t('vip_commercial_analysis.no_vip_warning2', { hall_name: activeHall.hall_name }) }}
         </div>
