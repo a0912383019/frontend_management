@@ -64,9 +64,9 @@ describe('TotalPayoffPlatforms.vue', () => {
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(false)
     const categories = ['皇冠體育', 'AG視訊', 'TP彩票']
     const data = [
-      { color: 'rgb(245,105,84,0.7)', y: -19814.68 },
-      { color: 'rgb(0,166,90,0.7)', y: -115150 },
-      { color: 'rgb(243,156,18,0.7)', y: 247771 }
+      { color: 'rgb(245,105,84,0.7)', y: 19814.68 },
+      { color: 'rgb(0,166,90,0.7)', y: 115150 },
+      { color: 'rgb(243,156,18,0.7)', y: -247771 }
     ]
     expect(wrapper.vm.chartOptions.xAxis.categories).toStrictEqual(categories)
     expect(wrapper.vm.chartOptions.series[0].data).toStrictEqual(data)

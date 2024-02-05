@@ -121,7 +121,7 @@ const transformMemberPeriodPlatformPayoff = (data) => {
     }
     let seriesData = {
       color: bgColor[i],
-      y: parseFloat(0 - data[i].total_payoff)
+      y: parseFloat(data[i].total_payoff)
     }
     chartOptions.xAxis.categories.push(data[i].lobby_name)
     chartOptions.series[0]['data'].push(seriesData)
