@@ -121,11 +121,11 @@ const transform_step_trend_analysis_overview_tbl = (data) => {
     tempObj['bet_amount'] = FormatNumber(data[i].bet_amount) //貨量
     tempObj['bet_amount_percent'] = FormatNumber(data[i].bet_amount_percent) + '%' //獲量佔比
     tempObj['payoff'] = addNumberColor(
-      FormatNumber((0 - data[i].payoff).toString()),
+      FormatNumber(data[i].payoff.toString()),
       'cdp-text-candypink'
     ) //損益
     tempObj['gross_percent'] = addNumberColor(
-      FormatNumber((0 - data[i].gross_percent).toString()) + '%',
+      FormatNumber(data[i].gross_percent.toString()) + '%',
       'cdp-text-candypink'
     ) //獲利率
     ary.push(tempObj)
@@ -156,11 +156,11 @@ watch(
 defineExpose({ query_step_trend_analysis_overview_tbl })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in">
     <div class="section-top-filter">
       <FilterDate @update:timestamp="updateTimestamp" />
     </div>
-    <div class="cdp-section__top">
+    <div class="cdp-section-in__top">
       <SectionTitle
         class="mb-15"
         :title="$t('manage_analysis.life_cycle_step_profit_overview')"
@@ -174,6 +174,7 @@ defineExpose({ query_step_trend_analysis_overview_tbl })
       :tableColumns="tableColumns"
       :hasPagination="false"
       border
+      class="step-trend-analysis-overview-table"
       v-if="apiSuccess === true"
     >
       <template #step_name="scope">
@@ -191,7 +192,13 @@ defineExpose({ query_step_trend_analysis_overview_tbl })
   </section>
 </template>
 <style lang="scss" scoped>
-.cdp-section {
+.step-trend-analysis-overview-table {
+  .cdp-link-box {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+.cdp-section-in {
   position: relative;
   .section-top-filter {
     position: absolute;

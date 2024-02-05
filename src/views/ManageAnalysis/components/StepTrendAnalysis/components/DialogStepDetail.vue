@@ -114,8 +114,8 @@ const transform_step_detail_tbl = (data) => {
   const hallCurrencySign = getHallCurrencySign('BBIN', activeHall.hall_code)
   tempObj['bet_amount'] = FormatNumber(data.bet_amount, hallCurrencySign)
   tempObj['bet_amount_percent'] = FormatNumber(data.bet_amount_percent) + ' %'
-  tempObj['payoff'] = addNumberColor(FormatNumber((0 - data.payoff).toString(), hallCurrencySign))
-  tempObj['gross_percent'] = addNumberColor(FormatNumber((0 - data.gross_percent).toString()) + '%')
+  tempObj['payoff'] = addNumberColor(FormatNumber(data.payoff.toString(), hallCurrencySign))
+  tempObj['gross_percent'] = addNumberColor(FormatNumber(data.gross_percent.toString()) + '%')
   tableData.value = []
   tableData.value.push(tempObj)
 }

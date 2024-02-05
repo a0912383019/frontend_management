@@ -239,7 +239,7 @@ watch(
 )
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in">
     <div class="section-top-filter"><FilterMemberName v-model="activeFile" /></div>
     <SectionTitle class="mb-15" :title="$t('manage_analysis.life_cycle_people_changes')">
       <template #tooltip>
@@ -319,7 +319,7 @@ watch(
   </section>
 </template>
 <style lang="scss" scoped>
-.cdp-section {
+.cdp-section-in {
   position: relative;
 }
 .section-top-filter {

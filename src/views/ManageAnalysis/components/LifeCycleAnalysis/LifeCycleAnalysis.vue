@@ -16,7 +16,7 @@ const callApi = () => {
 <template>
   <!-- 會員階段人數變化 -->
   <LifeCyclePeopleChanges @queryStepTrendAnalysis="callApi" />
-  <section class="cdp-section">
+  <section class="cdp-section-in">
     <!-- 階段總覽 -->
     <StepOverview ref="step" class="mb-30" />
     <MemberDetails ref="member" />
