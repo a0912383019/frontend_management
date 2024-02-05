@@ -153,49 +153,49 @@ describe('LifeCycleStepProfitOverview.vue', () => {
         step_index: 1,
         bet_amount: '1,276,758,348',
         bet_amount_percent: '98%',
-        payoff: '33,092,911',
-        gross_percent: '3%'
+        payoff: '<span class="cdp-text-candypink">-33,092,911</span>',
+        gross_percent: '<span class="cdp-text-candypink">-3%</span>'
       },
       {
         step_index: 2,
         bet_amount: '8,438,998',
         bet_amount_percent: '1%',
-        payoff: '<span class="cdp-text-candypink">-148,481</span>',
-        gross_percent: '<span class="cdp-text-candypink">-2%</span>'
+        payoff: '148,481',
+        gross_percent: '2%'
       },
       {
         step_index: 3,
         bet_amount: '4,155,873',
         bet_amount_percent: '0%',
-        payoff: '72,227',
-        gross_percent: '2%'
+        payoff: '<span class="cdp-text-candypink">-72,227</span>',
+        gross_percent: '<span class="cdp-text-candypink">-2%</span>'
       },
       {
         step_index: 4,
         bet_amount: '9,408,280',
         bet_amount_percent: '1%',
-        payoff: '174,856',
-        gross_percent: '2%'
+        payoff: '<span class="cdp-text-candypink">-174,856</span>',
+        gross_percent: '<span class="cdp-text-candypink">-2%</span>'
       },
       {
         step_index: 5,
         bet_amount: '4,666,939',
         bet_amount_percent: '0%',
-        payoff: '71,863',
-        gross_percent: '2%'
+        payoff: '<span class="cdp-text-candypink">-71,863</span>',
+        gross_percent: '<span class="cdp-text-candypink">-2%</span>'
       },
       {
         step_index: 6,
         bet_amount: '0.00',
         bet_amount_percent: '0%',
-        payoff: '0',
+        payoff: '0.00',
         gross_percent: 'NaN%'
       },
       {
         step_index: 7,
         bet_amount: '0.00',
         bet_amount_percent: '0%',
-        payoff: '0',
+        payoff: '0.00',
         gross_percent: 'NaN%'
       }
     ])

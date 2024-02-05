@@ -166,15 +166,15 @@ describe('TopCard.vue', () => {
       {
         icon: 'fas fa-chart-area',
         colorClass: 'cdp-bg-forest__green__crayola',
-        monthAvg: '¥1,097,599',
-        weekAvg: '¥5,487,996',
-        growth: '400'
+        monthAvg: '<span class="text-danger font-black">¥-1,097,599</span>',
+        weekAvg: '<span class="text-danger font-black">¥-5,487,996</span>',
+        growth: '-400'
       },
       {
         icon: 'fas fa-gift',
         colorClass: 'cdp-bg-indian__yellow',
-        monthAvg: '<span class="text-danger font-black">¥-595,522</span>',
-        weekAvg: '<span class="text-danger font-black">¥-583,375</span>',
+        monthAvg: '¥595,522',
+        weekAvg: '¥583,375',
         growth: '-2'
       },
       {

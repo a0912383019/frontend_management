@@ -109,8 +109,8 @@ describe('DialogStepDetail.vue', () => {
       {
         bet_amount: '¥932,947',
         bet_amount_percent: '3 %',
-        payoff: '<span class="text-danger">¥-9,371</span>',
-        gross_percent: '<span class="text-danger">-1%</span>'
+        payoff: '¥9,371',
+        gross_percent: '1%'
       }
     ])
     expect(wrapper.vm.dialogVisible).toBe(true)
