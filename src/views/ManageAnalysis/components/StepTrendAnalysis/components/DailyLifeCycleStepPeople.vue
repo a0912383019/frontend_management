@@ -272,7 +272,7 @@ watch(
 defineExpose({ query_step_total_people })
 </script>
 <template>
-  <section class="cdp-section">
+  <section class="cdp-section-in">
     <SectionTitle class="mb-15" :title="$t('manage_analysis.daily_life_cycle_step_people')">
       <template #tooltip>
         {{ $t('manage_analysis.click_chart_show_step_details') }}

@@ -77,10 +77,10 @@ const query_life_cycle_analysis_avg_data = async () => {
       )
       //日均損益
       stepData['payoff']['data'] = FormatNumber(
-        (0 - avg_payoff).toString(),
+        avg_payoff.toString(),
         getHallCurrencySign('BBIN', activeHall.hall_code)
       )
-      stepData['payoff']['className'] = 0 - avg_payoff < 0 ? 'cdp-text-candypink' : ''
+      stepData['payoff']['className'] = avg_payoff < 0 ? 'cdp-text-candypink' : ''
     } else {
       messageKey.value = 'chartFailed'
     }

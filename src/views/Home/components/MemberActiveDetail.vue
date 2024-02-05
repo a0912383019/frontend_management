@@ -150,8 +150,8 @@ const transformLivelyChangeDetail = (data) => {
       memberName: ele.user_name,
       deposit: FormatNumber(ele.deposit_amount),
       betAmount: FormatNumber(ele.bet_amount),
-      payoff: FormatNumber(0 - ele.payoff),
-      bonus: FormatNumber(0 - ele.offer_amount),
+      payoff: FormatNumber(ele.payoff),
+      bonus: FormatNumber(ele.offer_amount),
       profitAndLoss: FormatNumber(ele.profit_loss),
       netAmount: FormatNumber(ele.net_amount),
       user: {

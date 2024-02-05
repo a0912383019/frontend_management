@@ -191,14 +191,13 @@ const transformTagsGamePayoffRank = (order, data) => {
   const pushData = (arr, xAxis) => {
     for (let i = 0; i < 20; i++) {
       arr.push({
-        y: 0 - parseFloat(data[i].payoff),
+        y: parseFloat(data[i].payoff),
         color: generateRGBColors(chart_fixed_bgColor[i], 0.7),
         pointWidth: 55 //柱子寬度
       })
       xAxis.push(data[i].lobby_name + '-' + data[i].game_name)
     }
   }
-  console.log(order, data)
   if (order === 'DESC') {
     nChartOptions.series[0].data = []
     nChartOptions.xAxis.categories = []
