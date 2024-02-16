@@ -60,7 +60,8 @@
     "select_include_tags": "选择包含标签...",
     "exclude_tags": "排除标签",
     "select_exclude_tags": "選擇排除标签...",
-
+    "include_weeks": "包含日期",
+    "select_include_weeks": "选择包含日期...",
     "redirect_to_page": "前往页面",
 
     "fuzzy_search": "模糊搜寻",

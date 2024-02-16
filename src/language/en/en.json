@@ -60,7 +60,8 @@
     "select_include_tags": "Click and Pick...",
     "exclude_tags": "Tags excluding",
     "select_exclude_tags": "Click and Pick...",
-
+    "include_weeks": "Weeks including",
+    "select_include_weeks": "Click and Pick...",
     "redirect_to_page": "Visit the page",
 
     "fuzzy_search": "Fuzzy Match",

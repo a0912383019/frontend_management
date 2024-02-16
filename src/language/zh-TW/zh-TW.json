@@ -60,7 +60,8 @@
     "select_include_tags": "選擇包含標籤...",
     "exclude_tags": "排除標籤",
     "select_exclude_tags": "選擇排除標籤...",
-
+    "include_weeks": "包含星期",
+    "select_include_weeks": "選擇包含星期...",
     "redirect_to_page": "前往頁面",
 
     "fuzzy_search": "模糊搜尋",
