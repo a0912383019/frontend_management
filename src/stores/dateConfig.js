@@ -115,6 +115,16 @@ export const useDateStore = defineStore('dateStore', () => {
     }
   })
 
+  // config_9 : 預設選取當月
+  const date_range_picker_config_9 = computed(() => {
+    return {
+      startDate: dayjs(LAST_DATE.value).format('YYYY-MM'), //預設起始時間
+      endDate: dayjs(LAST_DATE.value).format('YYYY-MM'), //預設結束時間
+      minDate: MIN_DATE, //限制最小可選日期
+      maxDate: LAST_DATE.value //限制最大可選日期
+    }
+  })
+
   // 近1週、近2週、近1個月、近2個月、近3個月
   const shortcutsConfig1 = () => {
     const { t } = i18n.global
@@ -212,6 +222,7 @@ export const useDateStore = defineStore('dateStore', () => {
     date_range_picker_config_6,
     date_range_picker_config_7,
     date_range_picker_config_8,
+    date_range_picker_config_9,
     shortcutsConfig1,
     shortcutsConfig2
   }

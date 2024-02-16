@@ -6,6 +6,7 @@
     "date": "Date",
     "format_date": "{{- date, en_date}}",
     "format_date_rule": "MM/DD/YYYY",
+    "format_date_rule_month": "MM/YYYY",
     "date_duration": "Duration",
     "format_date_duration": "{{- date_duration, en_date_duration}}",
     "format_datetime": "{{- date, en_datetime}}",

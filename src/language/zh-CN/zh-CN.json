@@ -6,6 +6,7 @@
     "date": "日期",
     "format_date": "{{- date, zh_date}}",
     "format_date_rule": "YYYY/MM/DD",
+    "format_date_rule_month": "YYYY/MM",
     "date_duration": "日期区间",
     "format_date_duration": "{{- date_duration, zh_date_duration}}",
     "format_datetime": "{{- date, zh_datetime}}",

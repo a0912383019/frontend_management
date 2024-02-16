@@ -94,6 +94,14 @@ describe('useSystemStore', () => {
     }
     expect(store.date_range_picker_config_8).toEqual(date_range_picker_config_8)
 
+    const date_range_picker_config_9 = {
+      startDate: dayjs(newLastDate).format('YYYY-MM'),
+      endDate: dayjs(newLastDate).format('YYYY-MM'),
+      minDate: minDate,
+      maxDate: newLastDate
+    }
+    expect(store.date_range_picker_config_9).toEqual(date_range_picker_config_9)
+
     const shortcutsConfig1 = [
       { text: '近1週', value: expect.any(Function) },
       { text: '近2週', value: expect.any(Function) },

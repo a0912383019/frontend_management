@@ -1,4 +1,5 @@
 import axiosInstance from './axiosInstance'
+import axiosGoInstance from './axiosGoInstance.js'
 
 // 活躍度分析 -> 活躍度總覽
 export const apiQueryLivelyAnalysisOverview = (params) => {
@@ -43,5 +44,18 @@ export const apiQueryMemberLivelyList = (params) => {
     search_name,
     fuzzy_search,
     use_custom_list
+  })
+}
+
+// 週統計報表 -> 每週統計報表
+export const apiWeekTotalReport = (params) => {
+  const { hall_name, start_date, end_date, vip_tag } = params
+  return axiosGoInstance.get('/api/auth/vip/week_total_report', {
+    params: {
+      hall_name,
+      start_date,
+      end_date,
+      vip_tag
+    }
   })
 }
