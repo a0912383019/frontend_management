@@ -27,10 +27,4 @@ const handleCallDetailApi = (data) => {
     <Detail ref="refDetail" />
   </section>
 </template>
-<style lang="scss" scoped>
-.filter-box {
-  position: absolute;
-  right: 0;
-  top: -56px;
-}
-</style>
+<style lang="scss" scoped></style>

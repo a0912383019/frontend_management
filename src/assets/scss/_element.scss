@@ -878,6 +878,14 @@
     }
   }
 
+  .el-month-table{
+    td {
+      .cell {
+        width: 36px;
+      }
+    }
+  }
+
   &__blue {
     &.el-picker__popper.el-popper {
       box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
@@ -943,6 +951,16 @@
           }
         }
       }
+    }
+    .el-month-table td.end-date .cell, .el-month-table td.start-date .cell {
+      background-color: $purple;
+    }
+    .el-month-table td.end-date .cell, .el-month-table td.start-date .cell:hover,
+    .el-month-table td.end-date .cell, .el-month-table td.end-date .cell:hover {
+      color: #fff;
+    }
+    .el-month-table td .cell:hover {
+      color: $purple;
     }
   }
 }
@@ -1057,6 +1075,50 @@
       &:disabled {
         color: rgba(64, 64, 64, 0.30);
       }
+    }
+  }
+}
+
+.el-date-editor--monthrange {
+    .el-range-input {
+      width: 60px !important;
+    }
+}
+
+.el-date-range-picker[type="monthrange"] {
+  width: 408px;
+  .el-picker-panel__body {
+    min-width: auto;
+  }
+  .el-date-range-picker__header {
+    padding-bottom: 7px;
+    margin-bottom: 11px;
+    border-bottom: 1px solid #E7ECF1;
+    height: auto;
+    div {
+      font-size: 12px;
+    }
+  }
+  .el-date-range-picker__content {
+    padding: 18px 20px;
+  }
+  .el-month-table {
+    td {
+      padding: 2px 0;
+      &.today {
+        .cell {
+          color: inherit;
+          font-weight: 400;
+        }
+      }
+      div {
+        height: 36px;
+        padding: 0;
+      }
+    }
+    td.disabled .cell {
+      background-color: transparent;
+      color: #C3C5CA;
     }
   }
 }

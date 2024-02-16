@@ -340,3 +340,18 @@ export function trimBack(data) {
   }
   return newData
 }
+
+/**
+ * 將字串或數值移除 html tag 和 逗號
+ * @param {String | Number} str
+ * @returns {Number}
+ */
+export function extractNumberValue(str) {
+  // 移除 html tag 和 逗號
+  const cleanedStr = String(str)
+    .replace(/<[^>]*>?/gm, '')
+    .replaceAll(',', '')
+
+  // 轉換為 Number
+  return Number(cleanedStr)
+}

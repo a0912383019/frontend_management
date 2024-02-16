@@ -5,14 +5,14 @@ import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import Datepicker from '@/components/Date/Datepicker.vue'
-import ImportCSV from '@/components/Filter/ImportCSV.vue'
+import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import SelectTagSingle from '@/components/Filter/SelectTagSingle.vue'
+import { dayjs } from 'element-plus'
 
 const { t } = useI18n()
 
 const vipStore = useVipCommercialAnalysisStore()
-const { defaultVipTag, livelyAnalysisFilter } = vipStore
+const { defaultVipTag, weekTotalReportFilter } = vipStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -27,12 +27,8 @@ const closePopover = () => {
 
 // filter 欄位資料
 const filterData = reactive({
-  member: '',
   date: '',
-  custom: false,
-  searchTag: defaultVipTag,
-  custom_user_list: [],
-  fuzzySearch: false
+  vip_tag: defaultVipTag
 })
 
 // 取得 system_config 資料
@@ -62,27 +58,19 @@ const originalSelectTypeLists = JSON.parse(JSON.stringify(selectTypeLists.value)
 // 紀錄 key
 const key = ref(0)
 
-// csv 上傳成功
-const handleCsvSuccess = (data) => {
-  filterData['custom_user_list'] = data
-  handleClick()
-}
-
 // 確認篩選
 const handleClick = () => {
-  if (filterData['searchTag'] === '') {
-    // 如果 searchTag 為空，要搜尋全部，且重置 SelectTagSingle 組件，恢復選擇全部選項
-    filterData['searchTag'] = defaultVipTag
+  if (filterData['vip_tag'] === '') {
+    // 如果 vip_tag 為空，要搜尋全部，且重置 SelectTagSingle 組件，恢復選擇全部選項
+    filterData['vip_tag'] = defaultVipTag
     key.value = Math.floor(Math.random() * 10000)
     // 恢復為預設值
     selectTypeLists.value = originalSelectTypeLists
   }
-  livelyAnalysisFilter['date'] = filterData['date']
-  livelyAnalysisFilter['member'] = filterData['member']
-  livelyAnalysisFilter['custom'] = filterData['custom']
-  livelyAnalysisFilter['searchTag'] = filterData['searchTag']
-  livelyAnalysisFilter['fuzzySearch'] = filterData['fuzzySearch']
-  livelyAnalysisFilter['custom_user_list'] = filterData['custom_user_list']
+  const date = filterData['date'].split('~')
+  weekTotalReportFilter['start_date'] = dayjs(date[0]).format('YYYY-MM')
+  weekTotalReportFilter['end_date'] = dayjs(date[1]).format('YYYY-MM')
+  weekTotalReportFilter['vip_tag'] = filterData['vip_tag']
   emit('update:filter')
   closePopover()
 }
@@ -92,7 +80,7 @@ const handleClick = () => {
     <el-popover
       ref="popover"
       placement="bottom-end"
-      :width="600"
+      :width="310"
       trigger="click"
       :teleported="false"
       popper-class="cdp-popover unit-test-people-changes"
@@ -107,26 +95,21 @@ const handleClick = () => {
       </template>
       <div class="drop">
         <div class="drop__top">
-          <div class="drop__top__item">
+          <div class="drop__top__item full">
             <SectionTitle
               size="small"
               class="cdp-text-purple mb-4"
-              :title="$t('data_name.member_name')"
+              :title="$t('date.date_duration')"
             >
             </SectionTitle>
-            <el-input
-              v-model="filterData.member"
-              :placeholder="$t('common.input_member_name_search')"
-              class="cdp-input__purple"
+            <DatepickerRange
+              v-model="filterData.date"
+              type="monthrange"
+              :config="9"
+              :shortcutsConfig="0"
+              classColor="purple"
             />
           </div>
-
-          <div class="drop__top__item">
-            <SectionTitle size="small" class="cdp-text-purple mb-4" :title="$t('date.date')">
-            </SectionTitle>
-            <Datepicker v-model="filterData.date" classColor="purple" />
-          </div>
-
           <div class="drop__top__item full">
             <SectionTitle
               size="small"
@@ -134,32 +117,10 @@ const handleClick = () => {
               :title="$t('common.include_tags')"
             >
             </SectionTitle>
-            <SelectTagSingle :key="key" :lists="selectTypeLists" v-model="filterData.searchTag" />
+            <SelectTagSingle :key="key" :lists="selectTypeLists" v-model="filterData.vip_tag" />
           </div>
         </div>
         <div class="drop__footer">
-          <div class="drop__footer__item">
-            <ImportCSV
-              v-model="filterData['custom']"
-              :csvType="1"
-              @update:success="handleCsvSuccess"
-            />
-          </div>
-          <div class="drop__footer__item">
-            <el-switch
-              v-model="filterData.fuzzySearch"
-              :active-text="$t('common.fuzzy_search')"
-              class="mr-10 cdp-switch"
-            />
-            <el-tooltip
-              class="box-item"
-              effect="dark"
-              :content="$t('common.return_similar_username')"
-              placement="top"
-            >
-              <font-awesome-icon icon="fa-solid fa-circle-info" />
-            </el-tooltip>
-          </div>
           <div class="drop__footer__item">
             <ButtonIcon
               icon="search"

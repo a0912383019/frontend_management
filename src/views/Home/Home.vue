@@ -20,7 +20,6 @@ watch(
     }
   }
 )
-console.log('TEST')
 </script>
 <template>
   <div>

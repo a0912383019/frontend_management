@@ -26,6 +26,10 @@ describe('useSystemStore', () => {
       date_range_picker_config_4: {
         startDate: dayjs(1513823919228),
         endDate: dayjs(1513823919228)
+      },
+      date_range_picker_config_9: {
+        startDate: dayjs(1513823919228),
+        endDate: dayjs(1513823919228)
       }
     }
     useDateStore.mockReturnValue(mockLastDate)

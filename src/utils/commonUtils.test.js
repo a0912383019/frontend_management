@@ -18,7 +18,9 @@ import {
   generateTagMultiSelect,
   formatNumberWithK,
   // getRangeEveryDay,
-  findHallIdMappingKey
+  findHallIdMappingKey,
+  serializeVipTagParams,
+  extractNumberValue
 } from '@/utils/commonUtils.js'
 
 describe('Utility Functions', () => {
@@ -304,5 +306,16 @@ describe('Utility Functions', () => {
   it('findHallIdMappingKey should return the correct value', () => {
     const result = findHallIdMappingKey(['BBIN'], { hall_id: 3820566, domain_id: 0 })
     expect(result).toStrictEqual('sk2')
+  })
+
+  // 測試 extractNumberValue 函數
+  it('extractNumberValue should return the correct value', () => {
+    const value1 = '<div class="aaa">123,443</div>'
+    const result1 = extractNumberValue(value1)
+    expect(result1).toBe(123443)
+
+    const value2 = '-12,321'
+    const result2 = extractNumberValue(value2)
+    expect(result2).toBe(-12321)
   })
 })

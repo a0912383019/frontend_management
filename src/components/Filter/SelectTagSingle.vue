@@ -1,10 +1,14 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useVipCommercialAnalysisStore } from '@/stores'
 import SelectTagDropdown from '@/components/Filter/SelectTagDropdown.vue'
 import { dayjs } from 'element-plus'
 
 const { t } = useI18n()
+
+const vipStore = useVipCommercialAnalysisStore()
+const { defaultVipTag } = vipStore
 
 const props = defineProps({
   modelValue: {
@@ -151,7 +155,7 @@ const handleSetApiRequestKey = () => {
   apiRequestKey.value = ''
   currentTagAry.value.forEach((item, index) => {
     if (item.value === 'all') {
-      apiRequestKey.value = '10001,10003'
+      apiRequestKey.value = defaultVipTag
       return
     }
     if (item.value !== 'all') {

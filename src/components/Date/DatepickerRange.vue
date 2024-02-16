@@ -10,6 +10,7 @@ const {
   date_range_picker_config_2,
   date_range_picker_config_7,
   date_range_picker_config_8,
+  date_range_picker_config_9,
   shortcutsConfig1,
   shortcutsConfig2
 } = useDateStore()
@@ -47,6 +48,10 @@ const props = defineProps({
   classColor: {
     type: String,
     default: 'blue'
+  },
+  type: {
+    type: String,
+    default: 'daterange'
   }
 })
 
@@ -84,6 +89,12 @@ switch (props.config) {
     dateMinDate.value = date_range_picker_config_8.minDate
     dateMaxDate.value = date_range_picker_config_8.maxDate
     break
+  case 9:
+    dateValueStartDate.value = date_range_picker_config_9.startDate
+    dateValueEndDate.value = date_range_picker_config_9.endDate
+    dateMinDate.value = date_range_picker_config_9.minDate
+    dateMaxDate.value = date_range_picker_config_9.maxDate
+    break
 }
 //如果props rangedate有值，優先使用
 if (props.rangeDate !== '') {
@@ -107,11 +118,21 @@ const handleDateChange = (date) => {
 
 // 日期快捷選項
 const shortcuts = computed(() => {
-  if (props.shortcutsConfig === 2) {
+  if (props.shortcutsConfig === 0) {
+    return []
+  } else if (props.shortcutsConfig === 1) {
+    return shortcutsConfig1()
+  } else if (props.shortcutsConfig === 2) {
     return shortcutsConfig2()
   } else {
-    return shortcutsConfig1()
+    return []
   }
+})
+
+// format date 格式
+const formatDate = computed(() => {
+  if (props.type === 'monthrange') return t('date.format_date_rule_month')
+  return t('date.format_date_rule')
 })
 
 // 目前選擇的起始日，用來判斷disabledDate
@@ -132,8 +153,14 @@ const disabledDate = (day) => {
     props.enabledThreeMonth === true
   ) {
     diff = dayjs(selectDate.value[0]).diff(day, 'month')
-    if (diff >= 3 || diff <= -3) {
-      return true
+    if (props.type === 'monthrange') {
+      if (diff >= 2 || diff <= -3) {
+        return true
+      }
+    } else {
+      if (diff >= 3 || diff <= -3) {
+        return true
+      }
     }
   }
 
@@ -173,8 +200,8 @@ watch(i18nLocale, () => {
     <el-date-picker
       v-model="dateValue"
       :key="key"
-      type="daterange"
-      :format="$t('date.format_date_rule')"
+      :type="props.type"
+      :format="formatDate"
       :unlink-panels="false"
       :popper-class="'cdp-datepicker-range-popper cdp-datepicker-range-popper__' + props.classColor"
       :class="'cdp-datepicker-range cdp-datepicker-range__' + props.classColor"

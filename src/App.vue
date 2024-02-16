@@ -13,6 +13,22 @@ const stores = useGlobalStore()
 const { locale } = useI18n()
 
 //設定element-plus語系檔
+const months = {
+  jan: '1月',
+  feb: '2月',
+  mar: '3月',
+  apr: '4月',
+  may: '5月',
+  jun: '6月',
+  jul: '7月',
+  aug: '8月',
+  sep: '9月',
+  oct: '10月',
+  nov: '11月',
+  dec: '12月'
+}
+zhTw['el']['datepicker']['months'] = months
+zhCn['el']['datepicker']['months'] = months
 const lang = {
   en,
   'zh-TW': zhTw,
