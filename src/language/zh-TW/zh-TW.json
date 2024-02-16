@@ -625,14 +625,14 @@
 
     "week_total_report": "週統計報表",
     "week_total_report_table": "每週統計總表",
-    "week_profit_report_table": "損益區間統計",
-    "zero_profit": "0損益",
+    "week_profit_report_table": "實際損益區間統計",
+    "zero_profit": "等於0",
     "positive_profit": "正盈利",
-    "1a_profit": "損益1A以下(1-9,999)",
-    "10a_profit": "損益10A以下(10,000-99,999)",
-    "50a_profit": "損益50A以下(100,000-499,999)",
-    "100a_profit": "損益100A以下(500,000-999,999)",
-    "100a_up_profit": "損益100A以上(1,000,000+)"
+    "1a_profit": "-1A以下<br>(0 > 損益 > -10,000)",
+    "10a_profit": "-10A以下<br>(-10,000 ≥ 損益 > -100,000)",
+    "50a_profit": "損益50A以下<br>(100,000-499,999)",
+    "100a_profit": "損益100A以下<br>(500,000-999,999)",
+    "100a_up_profit": "損益100A以上<br>(1,000,000+)"
   },
 
   "target_group_analysis": {

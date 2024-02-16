@@ -624,11 +624,11 @@
 
     "week_total_report": "Week-by-Week Report",
     "week_total_report_table": "Week-by-Week Report",
-    "week_profit_report_table": "P&L Sectors",
-    "zero_profit": "Bringing 0 Profit",
+    "week_profit_report_table": "實際損益區間統計",
+    "zero_profit": "等於0",
     "positive_profit": "Bringing > 0 Profit",
-    "1a_profit": "Bringing < 10k Profit",
-    "10a_profit": "Bringing 10 ~ 100k Profit",
+    "1a_profit": "-1A以下(0 > 損益 > -10,000)",
+    "10a_profit": "-10A以下(-10,000 ≥ 損益 > -100,000)",
     "50a_profit": "Bringing 100 ~ 500k Profit",
     "100a_profit": "Bringing 0.5 ~ 1M Profit",
     "100a_up_profit": "Bringing > 1M Profit"
