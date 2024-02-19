@@ -1,7 +1,7 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
-import { useGlobalStore } from '@/stores/global.js'
+import { useGlobalStore } from '@/stores'
 import { i18n } from '@/global/i18n'
 import router from '@/router'
 import * as module from '@/utils/commonUtils.js'
