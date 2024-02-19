@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
@@ -74,6 +74,11 @@ const handleClick = () => {
   emit('update:filter')
   closePopover()
 }
+
+onUnmounted(() => {
+  // 將篩選日期恢復成預設值
+  vipStore.resetState()
+})
 </script>
 <template>
   <div class="cdp-popover-container">

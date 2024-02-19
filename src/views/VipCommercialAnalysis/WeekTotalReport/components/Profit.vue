@@ -32,15 +32,15 @@ const tableData = ref([])
 const tableColumns = computed(() => {
   return [
     {
-      label: t('vip_commercial_analysis.zero_profit'),
-      prop: 'profit_zero',
+      label: t('vip_commercial_analysis.positive_profit'),
+      prop: 'profit_positive',
       headerAlign: 'center',
       align: 'center',
       minWidth: '6%'
     },
     {
-      label: t('vip_commercial_analysis.positive_profit'),
-      prop: 'profit_positive',
+      label: t('vip_commercial_analysis.zero_profit'),
+      prop: 'profit_zero',
       headerAlign: 'center',
       align: 'center',
       minWidth: '6%'

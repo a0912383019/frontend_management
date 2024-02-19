@@ -2,9 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { hall_config_dict } from '@/../public/js/system_config.js'
 import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
-import { useGlobalStore } from '@/stores/global.js'
-import { useSystemStore } from '@/stores/system.js'
-import { useSidebarStore } from '@/stores/sidebar.js'
+import { useGlobalStore, useSystemStore, useSidebarStore } from '@/stores'
 import { useRouter } from 'vue-router'
 
 const globalStore = useGlobalStore()
