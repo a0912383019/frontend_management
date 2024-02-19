@@ -120,7 +120,7 @@ const handleTagAddText = (data) => {
 }
 
 // 點擊tag，刪除tag
-const handleTagDelete = ({ index }) => {
+const handleTagDelete = (index) => {
   currentTagAry.value.splice(index, 1)
   selectTypeLists.value.forEach((item) => {
     item.disabled = false

@@ -602,12 +602,12 @@
   display: flex;
   flex-wrap: wrap;
   border: 1px solid #ccc5e1;
+  border-radius: 5px;
+  &:hover {
+      border-color: $purple;
+  }
   &__input {
     padding-left: 10px;
-  }
-  border-radius: 5px;
-  &__input:hover {
-    box-shadow: 0 0 0 1px $purple !important;
   }
   &__box {
     display: flex;

@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { dayjs } from 'element-plus'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
-import { apiWeekTotalReport } from '@/api/vipCommercialAnalysis.js'
+import { apiWeekTotalReport } from '@/api'
 import {
   addNumberColor,
   FormatNumber,
@@ -216,7 +216,7 @@ defineExpose({ queryWeekTotalReport })
       @sort="upadteCurrentSort"
       v-if="apiSuccess === true"
     >
-      <!-- 損益 -->
+      <!-- 日期區間 -->
       <template #date_duration="scope">
         <div class="date">
           <span class="date__start">{{ scope.row['date_duration_start'] }}</span>

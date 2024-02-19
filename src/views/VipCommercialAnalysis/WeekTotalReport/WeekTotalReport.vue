@@ -9,6 +9,7 @@ const refProfit = ref(null)
 
 const handleCallApi = () => {
   refTotal.value.queryWeekTotalReport()
+  refProfit.value.queryWeekProfitReport()
 }
 </script>
 <template>
