@@ -91,7 +91,7 @@ const tableColumns = computed(() => {
 const messageKey = ref('clickNumberAboveToShow')
 
 const today = computed(() => {
-  return dayjs(livelyAnalysisFilter['date']).format(t('date.format_date_rule'))
+  return dayjs(livelyAnalysisFilter.searchDate).format(t('date.format_date_rule'))
 })
 
 // tooltip顯示對應日期
@@ -110,8 +110,8 @@ const tooltipDate = computed(() => {
 const queryMemberLivelyList = async (data) => {
   apiSuccess.value = false
   messageKey.value = 'loading'
-  let startDate = dayjs(livelyAnalysisFilter['date']).subtract(6, 'day').format('YYYY-MM-DD')
-  let endDate = dayjs(livelyAnalysisFilter['date']).format('YYYY-MM-DD')
+  let startDate = dayjs(livelyAnalysisFilter.searchDate).subtract(6, 'day').format('YYYY-MM-DD')
+  let endDate = dayjs(livelyAnalysisFilter.searchDate).format('YYYY-MM-DD')
   try {
     const result = await apiQueryMemberLivelyList({
       hall_name: activeHall.hall_code,
@@ -119,10 +119,10 @@ const queryMemberLivelyList = async (data) => {
       lively_analysis_end_date: endDate,
       lively_level: data['level'],
       detail_type: data['type'],
-      lively_analysis_vip_tag: livelyAnalysisFilter['searchTag'],
-      search_name: livelyAnalysisFilter['member'],
-      fuzzy_search: livelyAnalysisFilter['fuzzySearch'],
-      use_custom_list: livelyAnalysisFilter['custom']
+      lively_analysis_vip_tag: livelyAnalysisFilter.vipTag,
+      search_name: livelyAnalysisFilter.searchName,
+      fuzzy_search: livelyAnalysisFilter.fuzzySearch,
+      use_custom_list: livelyAnalysisFilter.custom
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {

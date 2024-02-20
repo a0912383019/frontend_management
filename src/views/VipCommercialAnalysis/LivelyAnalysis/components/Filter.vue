@@ -27,11 +27,11 @@ const closePopover = () => {
 
 // filter 欄位資料
 const filterData = reactive({
-  member: '',
-  date: '',
+  searchName: '',
+  searchDate: '',
   custom: false,
-  searchTag: defaultVipTag,
-  custom_user_list: [],
+  vipTag: defaultVipTag,
+  customUserList: [],
   fuzzySearch: false
 })
 
@@ -64,25 +64,25 @@ const key = ref(0)
 
 // csv 上傳成功
 const handleCsvSuccess = (data) => {
-  filterData['custom_user_list'] = data
+  filterData.customUserList = data
   handleClick()
 }
 
 // 確認篩選
 const handleClick = () => {
-  if (filterData['searchTag'] === '') {
+  if (filterData.vipTag === '') {
     // 如果 searchTag 為空，要搜尋全部，且重置 SelectTagSingle 組件，恢復選擇全部選項
-    filterData['searchTag'] = defaultVipTag
+    filterData.vipTag = defaultVipTag
     key.value = Math.floor(Math.random() * 10000)
     // 恢復為預設值
     selectTypeLists.value = originalSelectTypeLists
   }
-  livelyAnalysisFilter['date'] = filterData['date']
-  livelyAnalysisFilter['member'] = filterData['member']
-  livelyAnalysisFilter['custom'] = filterData['custom']
-  livelyAnalysisFilter['searchTag'] = filterData['searchTag']
-  livelyAnalysisFilter['fuzzySearch'] = filterData['fuzzySearch']
-  livelyAnalysisFilter['custom_user_list'] = filterData['custom_user_list']
+  livelyAnalysisFilter.searchDate = filterData.searchDate
+  livelyAnalysisFilter.searchName = filterData.searchName
+  livelyAnalysisFilter.custom = filterData.custom
+  livelyAnalysisFilter.vipTag = filterData.vipTag
+  livelyAnalysisFilter.fuzzySearch = filterData.fuzzySearch
+  livelyAnalysisFilter.customUserList = filterData.customUserList
   emit('update:filter')
   closePopover()
 }
@@ -115,7 +115,7 @@ const handleClick = () => {
             >
             </SectionTitle>
             <el-input
-              v-model="filterData.member"
+              v-model="filterData.searchName"
               :placeholder="$t('common.input_member_name_search')"
               class="cdp-input__purple"
             />
@@ -124,7 +124,7 @@ const handleClick = () => {
           <div class="drop__top__item">
             <SectionTitle size="small" class="cdp-text-purple mb-4" :title="$t('date.date')">
             </SectionTitle>
-            <Datepicker v-model="filterData.date" classColor="purple" />
+            <Datepicker v-model="filterData.searchDate" classColor="purple" />
           </div>
 
           <div class="drop__top__item full">
@@ -134,13 +134,13 @@ const handleClick = () => {
               :title="$t('common.include_tags')"
             >
             </SectionTitle>
-            <SelectTagSingle :key="key" :lists="selectTypeLists" v-model="filterData.searchTag" />
+            <SelectTagSingle :key="key" :lists="selectTypeLists" v-model="filterData.vipTag" />
           </div>
         </div>
         <div class="drop__footer">
           <div class="drop__footer__item">
             <ImportCSV
-              v-model="filterData['custom']"
+              v-model="filterData.custom"
               :csvType="1"
               @update:success="handleCsvSuccess"
             />

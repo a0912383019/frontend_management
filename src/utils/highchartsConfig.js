@@ -67,7 +67,6 @@ export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 })
         width: 10px;
         height: 10px;
         background-color: ${data[i].color};
-    
       "></div>
       <div>
         ${data[i]['point']['series']['name']}：
@@ -119,6 +118,7 @@ export const tooltipSingleShared = ({ data, hallCode, tooltipIconBorder = false 
 
 /**
  * tooltipAddSign formatter排版
+ * type: line
  * @param data 帶入tooltip的this.points
  * @param date 帶入tooltip的this.x
  * @param sign 帶入tooltip的符號
@@ -150,5 +150,36 @@ export const tooltipAddSign = ({ data, date = '', sign = '' }) => {
     `
   }
   result += `</div></div>`
+  return result
+}
+
+/**
+ * tooltipAddSignForCol formatter排版
+ * type: column
+ * @param data 帶入tooltip的this
+ * @param sign 帶入tooltip的符號
+ */
+export const tooltipAddSignForCol = ({ data, sign = '' }) => {
+  let result = `
+    <div>
+      <div style="
+        padding: 6px 10px;
+        border-radius: 5px;
+        background-color: rgba(0, 0, 0, 0.8)
+      ">
+        <div class="flex">
+          <div class="mr-4 mt-4" style="
+            width: 10px;
+            height: 10px;
+            background-color: ${data.series.options.borderColor};
+            opacity: 1;
+          "></div>
+          <div>
+            ${data.x}：${data.y}${sign}
+          </div>
+        </div>
+      <div class="flex flex-col">
+    </div>
+  `
   return result
 }

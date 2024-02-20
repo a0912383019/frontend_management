@@ -615,7 +615,7 @@
     "active_time_member_detail": "活跃时段明细",
     "data_time": "资料时段：",
     "click_chart_to_show_detail": "点击长条图显示时段明细",
-    "clock_interval": "(0-23)[{{count}}点];",
+    "clock_interval": "{count}点",
 
     "day_report": "日报表",
 

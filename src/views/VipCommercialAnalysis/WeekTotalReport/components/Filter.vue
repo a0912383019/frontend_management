@@ -1,8 +1,9 @@
 <script setup>
-import { ref, reactive, onUnmounted } from 'vue'
+import { ref, reactive, onUnmounted, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
+import { storeToRefs } from 'pinia'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
@@ -16,6 +17,7 @@ const { defaultVipTag, weekTotalReportFilter } = vipStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+const { systemConfigIsOk } = storeToRefs(globalStore)
 
 const emit = defineEmits(['update:filter'])
 
@@ -27,31 +29,33 @@ const closePopover = () => {
 
 // filter 欄位資料
 const filterData = reactive({
-  date: '',
-  vip_tag: defaultVipTag
+  searchDate: '',
+  vipTag: defaultVipTag
 })
 
 // 取得 system_config 資料
-const tagsConfig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+const tagsConfig = ref(getSessionStorageEntity('system_config').tags_config[activeHall.hall_code])
 
 // 包含標籤選項
-const selectTypeLists = ref([
-  {
-    value: 'all',
-    label: t('vip_commercial_analysis.all'),
-    disabled: false
-  },
-  {
-    value: 10001,
-    label: tagsConfig[10001]['tag_name'],
-    disabled: true
-  },
-  {
-    value: 10003,
-    label: tagsConfig[10003]['tag_name'],
-    disabled: true
-  }
-])
+const selectTypeLists = computed(() => {
+  return [
+    {
+      value: 'all',
+      label: t('vip_commercial_analysis.all'),
+      disabled: false
+    },
+    {
+      value: 10001,
+      label: tagsConfig.value[10001]['tag_name'],
+      disabled: true
+    },
+    {
+      value: 10003,
+      label: tagsConfig.value[10003]['tag_name'],
+      disabled: true
+    }
+  ]
+})
 // 儲存初始資料
 const originalSelectTypeLists = JSON.parse(JSON.stringify(selectTypeLists.value))
 
@@ -60,17 +64,17 @@ const key = ref(0)
 
 // 確認篩選
 const handleClick = () => {
-  if (filterData['vip_tag'] === '') {
+  if (filterData.vipTag === '') {
     // 如果 vip_tag 為空，要搜尋全部，且重置 SelectTagSingle 組件，恢復選擇全部選項
-    filterData['vip_tag'] = defaultVipTag
+    filterData.vipTag = defaultVipTag
     key.value = Math.floor(Math.random() * 10000)
     // 恢復為預設值
     selectTypeLists.value = originalSelectTypeLists
   }
-  const date = filterData['date'].split('~')
-  weekTotalReportFilter['start_date'] = dayjs(date[0]).format('YYYY-MM')
-  weekTotalReportFilter['end_date'] = dayjs(date[1]).format('YYYY-MM')
-  weekTotalReportFilter['vip_tag'] = filterData['vip_tag']
+  const date = filterData.searchDate.split('~')
+  weekTotalReportFilter.startDate = dayjs(date[0]).format('YYYY-MM')
+  weekTotalReportFilter.endDate = dayjs(date[1]).format('YYYY-MM')
+  weekTotalReportFilter.vipTag = filterData.vipTag
   emit('update:filter')
   closePopover()
 }
@@ -79,6 +83,14 @@ onUnmounted(() => {
   // 將篩選日期恢復成預設值
   vipStore.resetState()
 })
+
+watch(
+  () => systemConfigIsOk.value,
+  () => {
+    tagsConfig.value = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+    key.value = Math.floor(Math.random() * 100)
+  }
+)
 </script>
 <template>
   <div class="cdp-popover-container">
@@ -122,7 +134,7 @@ onUnmounted(() => {
               :title="$t('common.include_tags')"
             >
             </SectionTitle>
-            <SelectTagSingle :key="key" :lists="selectTypeLists" v-model="filterData.vip_tag" />
+            <SelectTagSingle :key="key" :lists="selectTypeLists" v-model="filterData.vipTag" />
           </div>
         </div>
         <div class="drop__footer">
