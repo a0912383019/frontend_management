@@ -97,9 +97,9 @@ const queryWeekProfitReport = async () => {
   try {
     const result = await apiWeekProfitReport({
       hall_name: activeHall.hall_code,
-      start_date: weekTotalReportFilter['start_date'],
-      end_date: weekTotalReportFilter['end_date'],
-      vip_tag: weekTotalReportFilter['vip_tag'].split(',')
+      start_date: weekTotalReportFilter.startDate,
+      end_date: weekTotalReportFilter.endDate,
+      vip_tag: weekTotalReportFilter.vipTag.split(',')
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {

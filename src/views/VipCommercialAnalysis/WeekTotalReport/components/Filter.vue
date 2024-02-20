@@ -120,7 +120,7 @@ watch(
             >
             </SectionTitle>
             <DatepickerRange
-              v-model="filterData.date"
+              v-model="filterData.searchDate"
               type="monthrange"
               :config="9"
               :shortcutsConfig="0"
