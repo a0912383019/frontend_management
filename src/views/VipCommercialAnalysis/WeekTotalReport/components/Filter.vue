@@ -46,12 +46,12 @@ const selectTypeLists = computed(() => {
     },
     {
       value: 10001,
-      label: tagsConfig.value[10001]['tag_name'],
+      label: tagsConfig.value[10001].tag_name,
       disabled: true
     },
     {
       value: 10003,
-      label: tagsConfig.value[10003]['tag_name'],
+      label: tagsConfig.value[10003].tag_name,
       disabled: true
     }
   ]
