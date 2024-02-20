@@ -15,7 +15,6 @@ exports[`Tooltip Utils > should format shared tooltip using tooltipShared 1`] = 
         width: 10px;
         height: 10px;
         background-color: rgba(245,105,84,1);
-    
       \\"></div>
       <div>
         活躍期：

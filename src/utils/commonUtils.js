@@ -355,3 +355,9 @@ export function extractNumberValue(str) {
   // 轉換為 Number
   return Number(cleanedStr)
 }
+
+export function stringToIntArray(str){
+  const arr = str.split(',')
+  const newArr = arr.map(item => parseInt(item.trim()))
+  return newArr
+}

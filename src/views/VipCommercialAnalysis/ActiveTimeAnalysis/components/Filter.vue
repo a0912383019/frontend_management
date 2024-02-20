@@ -1,21 +1,23 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
+import { storeToRefs } from 'pinia'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import Datepicker from '@/components/Date/Datepicker.vue'
+import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import ImportCSV from '@/components/Filter/ImportCSV.vue'
 import SelectTagSingle from '@/components/Filter/SelectTagSingle.vue'
 
 const { t } = useI18n()
 
 const vipStore = useVipCommercialAnalysisStore()
-const { defaultVipTag, livelyAnalysisFilter } = vipStore
+const { defaultVipTag, activeTimeAnalysisFilter, defaultWeeks } = vipStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+const { systemConfigIsOk } = storeToRefs(globalStore)
 
 const emit = defineEmits(['update:filter'])
 
@@ -30,37 +32,90 @@ const filterData = reactive({
   searchName: '',
   searchDate: '',
   custom: false,
+  containWeeks: defaultWeeks,
   vipTag: defaultVipTag,
   customUserList: [],
   fuzzySearch: false
 })
 
+// 包含星期選項
+const selectWeekLists = computed(() => {
+  return [
+    {
+      value: 'all',
+      label: t('vip_commercial_analysis.all'),
+      disabled: false
+    },
+    {
+      value: 1,
+      label: t('vip_commercial_analysis.monday'),
+      disabled: true
+    },
+    {
+      value: 2,
+      label: t('vip_commercial_analysis.tuesday'),
+      disabled: true
+    },
+    {
+      value: 3,
+      label: t('vip_commercial_analysis.wednesday'),
+      disabled: true
+    },
+    {
+      value: 4,
+      label: t('vip_commercial_analysis.thursday'),
+      disabled: true
+    },
+    {
+      value: 5,
+      label: t('vip_commercial_analysis.friday'),
+      disabled: true
+    },
+    {
+      value: 6,
+      label: t('vip_commercial_analysis.saturday'),
+      disabled: true
+    },
+    {
+      value: 7,
+      label: t('vip_commercial_analysis.sunday'),
+      disabled: true
+    }
+  ]
+})
+
+// 儲存初始資料
+const originalWeekLists = JSON.parse(JSON.stringify(selectWeekLists.value))
+
 // 取得 system_config 資料
-const tagsConfig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+const tagsConfig = ref(getSessionStorageEntity('system_config').tags_config[activeHall.hall_code])
 
 // 包含標籤選項
-const selectTypeLists = ref([
-  {
-    value: 'all',
-    label: t('vip_commercial_analysis.all'),
-    disabled: false
-  },
-  {
-    value: 10001,
-    label: tagsConfig[10001]['tag_name'],
-    disabled: true
-  },
-  {
-    value: 10003,
-    label: tagsConfig[10003]['tag_name'],
-    disabled: true
-  }
-])
+const selectTagLists = computed(() => {
+  return [
+    {
+      value: 'all',
+      label: t('vip_commercial_analysis.all'),
+      disabled: false
+    },
+    {
+      value: 10001,
+      label: tagsConfig.value[10001].tag_name,
+      disabled: true
+    },
+    {
+      value: 10003,
+      label: tagsConfig.value[10003].tag_name,
+      disabled: true
+    }
+  ]
+})
 // 儲存初始資料
-const originalSelectTypeLists = JSON.parse(JSON.stringify(selectTypeLists.value))
+const originalVipTagLists = JSON.parse(JSON.stringify(selectTagLists.value))
 
 // 紀錄 key
-const key = ref(0)
+const weekKey = ref(0)
+const vipKey = ref(0)
 
 // csv 上傳成功
 const handleCsvSuccess = (data) => {
@@ -70,22 +125,41 @@ const handleCsvSuccess = (data) => {
 
 // 確認篩選
 const handleClick = () => {
-  if (filterData.vipTag === '') {
-    // 如果 searchTag 為空，要搜尋全部，且重置 SelectTagSingle 組件，恢復選擇全部選項
-    filterData.vipTag = defaultVipTag
-    key.value = Math.floor(Math.random() * 10000)
+  if (filterData.containWeeks === '') {
+    // 如果 containWeeks 為空，要搜尋全部，且重置 SelectWeekSingle 組件，恢復選擇全部選項
+    filterData.containWeeks = defaultWeeks
+    weekKey.value = Math.floor(Math.random() * 10000)
     // 恢復為預設值
-    selectTypeLists.value = originalSelectTypeLists
+    selectWeekLists.value = originalWeekLists
   }
-  livelyAnalysisFilter.searchDate = filterData.searchDate
-  livelyAnalysisFilter.searchName = filterData.searchName
-  livelyAnalysisFilter.custom = filterData.custom
-  livelyAnalysisFilter.vipTag = filterData.vipTag
-  livelyAnalysisFilter.fuzzySearch = filterData.fuzzySearch
-  livelyAnalysisFilter.customUserList = filterData.customUserList
+
+  if (filterData.vipTag === '') {
+    // 如果 vipTag 為空，要搜尋全部，且重置 SelectTagSingle 組件，恢復選擇全部選項
+    filterData.vipTag = defaultVipTag
+    vipKey.value = Math.floor(Math.random() * 10000)
+    // 恢復為預設值
+    selectTagLists.value = originalVipTagLists
+  }
+
+  activeTimeAnalysisFilter.searchDate = filterData.searchDate
+  activeTimeAnalysisFilter.searchName = filterData.searchName
+  activeTimeAnalysisFilter.custom = filterData.custom
+  activeTimeAnalysisFilter.vipTag = filterData.vipTag
+  activeTimeAnalysisFilter.containWeeks = filterData.containWeeks
+  activeTimeAnalysisFilter.fuzzySearch = filterData.fuzzySearch
+  activeTimeAnalysisFilter.customUserList = filterData.customUserList
   emit('update:filter')
   closePopover()
 }
+
+watch(
+  () => systemConfigIsOk.value,
+  () => {
+    tagsConfig.value = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+    weekKey.value = Math.floor(Math.random() * 100)
+    vipKey.value = Math.floor(Math.random() * 100)
+  }
+)
 </script>
 <template>
   <div class="cdp-popover-container">
@@ -95,7 +169,7 @@ const handleClick = () => {
       :width="600"
       trigger="click"
       :teleported="false"
-      popper-class="cdp-popover unit-test-people-changes"
+      popper-class="cdp-popover unit-test"
     >
       <template #reference>
         <ButtonIcon
@@ -120,13 +194,30 @@ const handleClick = () => {
               class="cdp-input__purple"
             />
           </div>
-
           <div class="drop__top__item">
             <SectionTitle size="small" class="cdp-text-purple mb-4" :title="$t('date.date')">
             </SectionTitle>
-            <Datepicker v-model="filterData.searchDate" classColor="purple" />
+            <DatepickerRange
+              v-model="filterData.searchDate"
+              :config="8"
+              :shortcutsConfig="1"
+              class="w-full filter-datepicker"
+              classColor="purple"
+            />
           </div>
-
+          <div class="drop__top__item full">
+            <SectionTitle
+              size="small"
+              class="cdp-text-purple mb-4"
+              :title="$t('common.include_weeks')"
+            >
+            </SectionTitle>
+            <SelectTagSingle
+              :key="weekKey"
+              :lists="selectWeekLists"
+              v-model="filterData.containWeeks"
+            />
+          </div>
           <div class="drop__top__item full">
             <SectionTitle
               size="small"
@@ -134,7 +225,7 @@ const handleClick = () => {
               :title="$t('common.include_tags')"
             >
             </SectionTitle>
-            <SelectTagSingle :key="key" :lists="selectTypeLists" v-model="filterData.vipTag" />
+            <SelectTagSingle :key="vipKey" :lists="selectTagLists" v-model="filterData.vipTag" />
           </div>
         </div>
         <div class="drop__footer">
@@ -163,7 +254,7 @@ const handleClick = () => {
           <div class="drop__footer__item">
             <ButtonIcon
               icon="search"
-              size="medium "
+              size="medium"
               color="purple"
               @click="handleClick"
               :name="$t('common.filter')"
