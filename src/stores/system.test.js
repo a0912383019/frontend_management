@@ -27,6 +27,10 @@ describe('useSystemStore', () => {
         startDate: dayjs(1513823919228),
         endDate: dayjs(1513823919228)
       },
+      date_range_picker_config_8: {
+        startDate: dayjs(1513823919228),
+        endDate: dayjs(1513823919228)
+      },
       date_range_picker_config_9: {
         startDate: dayjs(1513823919228),
         endDate: dayjs(1513823919228)
