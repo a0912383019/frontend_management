@@ -39,50 +39,48 @@ const filterData = reactive({
 })
 
 // 包含星期選項
-const selectWeekLists = computed(() => {
-  return [
-    {
-      value: 'all',
-      label: t('vip_commercial_analysis.all'),
-      disabled: false
-    },
-    {
-      value: 1,
-      label: t('vip_commercial_analysis.monday'),
-      disabled: true
-    },
-    {
-      value: 2,
-      label: t('vip_commercial_analysis.tuesday'),
-      disabled: true
-    },
-    {
-      value: 3,
-      label: t('vip_commercial_analysis.wednesday'),
-      disabled: true
-    },
-    {
-      value: 4,
-      label: t('vip_commercial_analysis.thursday'),
-      disabled: true
-    },
-    {
-      value: 5,
-      label: t('vip_commercial_analysis.friday'),
-      disabled: true
-    },
-    {
-      value: 6,
-      label: t('vip_commercial_analysis.saturday'),
-      disabled: true
-    },
-    {
-      value: 7,
-      label: t('vip_commercial_analysis.sunday'),
-      disabled: true
-    }
-  ]
-})
+const selectWeekLists = ref([
+  {
+    value: 'all',
+    label: t('vip_commercial_analysis.all'),
+    disabled: false
+  },
+  {
+    value: 1,
+    label: t('vip_commercial_analysis.monday'),
+    disabled: true
+  },
+  {
+    value: 2,
+    label: t('vip_commercial_analysis.tuesday'),
+    disabled: true
+  },
+  {
+    value: 3,
+    label: t('vip_commercial_analysis.wednesday'),
+    disabled: true
+  },
+  {
+    value: 4,
+    label: t('vip_commercial_analysis.thursday'),
+    disabled: true
+  },
+  {
+    value: 5,
+    label: t('vip_commercial_analysis.friday'),
+    disabled: true
+  },
+  {
+    value: 6,
+    label: t('vip_commercial_analysis.saturday'),
+    disabled: true
+  },
+  {
+    value: 7,
+    label: t('vip_commercial_analysis.sunday'),
+    disabled: true
+  }
+])
 
 // 儲存初始資料
 const originalWeekLists = JSON.parse(JSON.stringify(selectWeekLists.value))
@@ -121,6 +119,8 @@ const vipKey = ref(0)
 const handleCsvSuccess = (data) => {
   filterData.customUserList = data
   handleClick()
+  // 查詢後將 customUserList 清空
+  filterData.customUserList = []
 }
 
 // 確認篩選

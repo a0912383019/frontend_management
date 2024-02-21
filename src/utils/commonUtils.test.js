@@ -19,8 +19,9 @@ import {
   formatNumberWithK,
   // getRangeEveryDay,
   findHallIdMappingKey,
-  serializeVipTagParams,
-  extractNumberValue
+  extractNumberValue,
+  stringToIntArray,
+  sortTableData
 } from '@/utils/commonUtils.js'
 
 describe('Utility Functions', () => {
@@ -317,5 +318,88 @@ describe('Utility Functions', () => {
     const value2 = '-12,321'
     const result2 = extractNumberValue(value2)
     expect(result2).toBe(-12321)
+  })
+
+  // 測試 stringToIntArray 函數
+  it('stringToIntArray should return the correct value', () => {
+    const value = '10001,10003,10004'
+    const result = stringToIntArray(value)
+    expect(result).toStrictEqual([10001, 10003, 10004])
+  })
+
+  // 測試 sortTableData 函數
+  it('sortTableData should return the correct value', () => {
+    const tableData = [
+      {
+        count: 10,
+        user_name: 'dcash888',
+        total_login_count: 89
+      },
+      {
+        count: 18,
+        user_name: 'ballguest',
+        total_login_count: 47
+      },
+      {
+        count: 5,
+        user_name: 'bballguest',
+        total_login_count: 14
+      },
+      {
+        count: 200,
+        user_name: 'dballguest',
+        total_login_count: 5
+      }
+    ]
+
+    // 測試 欄位：total_login_count 排序：ascending
+    const result = sortTableData({ prop: 'total_login_count', order: 'ascending', tableData })
+    expect(result).toStrictEqual([
+      {
+        count: 200,
+        user_name: 'dballguest',
+        total_login_count: 5
+      },
+      {
+        count: 5,
+        user_name: 'bballguest',
+        total_login_count: 14
+      },
+      {
+        count: 18,
+        user_name: 'ballguest',
+        total_login_count: 47
+      },
+      {
+        count: 10,
+        user_name: 'dcash888',
+        total_login_count: 89
+      }
+    ])
+
+    // 測試 欄位：count 排序：descending
+    const result2 = sortTableData({ prop: 'count', order: 'descending', tableData })
+    expect(result2).toStrictEqual([
+      {
+        count: 200,
+        user_name: 'dballguest',
+        total_login_count: 5
+      },
+      {
+        count: 18,
+        user_name: 'ballguest',
+        total_login_count: 47
+      },
+      {
+        count: 10,
+        user_name: 'dcash888',
+        total_login_count: 89
+      },
+      {
+        count: 5,
+        user_name: 'bballguest',
+        total_login_count: 14
+      }
+    ])
   })
 })

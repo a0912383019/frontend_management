@@ -4,12 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { dayjs } from 'element-plus'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiWeekTotalReport } from '@/api'
-import {
-  addNumberColor,
-  FormatNumber,
-  errorRespond,
-  extractNumberValue
-} from '@/utils/commonUtils.js'
+import { addNumberColor, FormatNumber, errorRespond, sortTableData } from '@/utils/commonUtils.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -180,15 +175,7 @@ const transformWeekTotalReport = (data) => {
 
 // 自定義排序執行的內容
 const upadteCurrentSort = ({ prop, order }) => {
-  tableData.value.sort((a, b) => {
-    const valueA = extractNumberValue(a[prop])
-    const valueB = extractNumberValue(b[prop])
-
-    if (isNaN(valueA)) return 1
-    if (isNaN(valueB)) return -1
-
-    return order === 'descending' ? valueB - valueA : valueA - valueB
-  })
+  sortTableData({ prop, order, tableData: tableData.value })
 }
 
 onMounted(() => {

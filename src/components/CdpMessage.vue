@@ -77,6 +77,10 @@ const messageData = computed(() => {
       result['icon'] = getIcon('info')
       result['title'] = t('register_no_deposit_analysis.click_for_detail')
       break
+    case 'clickChartForDetail':
+      result['icon'] = getIcon('info')
+      result['title'] = t('vip_commercial_analysis.click_chart_to_show_detail')
+      break
   }
   return result
 })

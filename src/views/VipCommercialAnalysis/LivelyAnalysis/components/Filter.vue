@@ -1,8 +1,9 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
+import { storeToRefs } from 'pinia'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import Datepicker from '@/components/Date/Datepicker.vue'
@@ -16,6 +17,7 @@ const { defaultVipTag, livelyAnalysisFilter } = vipStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+const { systemConfigIsOk } = storeToRefs(globalStore)
 
 const emit = defineEmits(['update:filter'])
 
@@ -66,6 +68,8 @@ const key = ref(0)
 const handleCsvSuccess = (data) => {
   filterData.customUserList = data
   handleClick()
+  // 查詢後將 customUserList 清空
+  filterData.customUserList = []
 }
 
 // 確認篩選
@@ -86,6 +90,14 @@ const handleClick = () => {
   emit('update:filter')
   closePopover()
 }
+
+watch(
+  () => systemConfigIsOk.value,
+  () => {
+    tagsConfig.value = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+    key.value = Math.floor(Math.random() * 100)
+  }
+)
 </script>
 <template>
   <div class="cdp-popover-container">
