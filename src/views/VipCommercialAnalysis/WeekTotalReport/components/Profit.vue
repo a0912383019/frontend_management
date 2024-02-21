@@ -97,9 +97,9 @@ const queryWeekProfitReport = async () => {
   try {
     const result = await apiWeekProfitReport({
       hall_name: activeHall.hall_code,
-      start_date: weekTotalReportFilter['start_date'],
-      end_date: weekTotalReportFilter['end_date'],
-      vip_tag: weekTotalReportFilter['vip_tag'].split(',')
+      start_date: weekTotalReportFilter.start_date,
+      end_date: weekTotalReportFilter.end_date,
+      vip_tag: weekTotalReportFilter.vip_tag.split(',')
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -128,14 +128,14 @@ const queryWeekProfitReport = async () => {
 const transformWeekProfitReport = (data) => {
   tableData.value = [
     {
-      profit_zero: FormatNumber(data['profit_zero']),
-      profit_positive: FormatNumber(data['profit_positive']),
-      profit_1a: FormatNumber(data['profit_1a']),
-      profit_10a: FormatNumber(data['profit_10a']),
-      profit_50a: FormatNumber(data['profit_50a']),
-      profit_100a: FormatNumber(data['profit_100a']),
-      profit_over100a: FormatNumber(data['profit_over100a']),
-      total_people: FormatNumber(data['total_people'])
+      profit_zero: FormatNumber(data.profit_zero),
+      profit_positive: FormatNumber(data.profit_positive),
+      profit_1a: FormatNumber(data.profit_1a),
+      profit_10a: FormatNumber(data.profit_10a),
+      profit_50a: FormatNumber(data.profit_50a),
+      profit_100a: FormatNumber(data.profit_100a),
+      profit_over100a: FormatNumber(data.profit_over100a),
+      total_people: FormatNumber(data.total_people)
     }
   ]
   apiTableResult.value = tableData.value.slice(0)

@@ -43,12 +43,12 @@ const selectTypeLists = ref([
   },
   {
     value: 10001,
-    label: tagsConfig[10001]['tag_name'],
+    label: tagsConfig[10001].tag_name,
     disabled: true
   },
   {
     value: 10003,
-    label: tagsConfig[10003]['tag_name'],
+    label: tagsConfig[10003].tag_name,
     disabled: true
   }
 ])
@@ -60,17 +60,17 @@ const key = ref(0)
 
 // 確認篩選
 const handleClick = () => {
-  if (filterData['vip_tag'] === '') {
+  if (filterData.vip_tag === '') {
     // 如果 vip_tag 為空，要搜尋全部，且重置 SelectTagSingle 組件，恢復選擇全部選項
-    filterData['vip_tag'] = defaultVipTag
+    filterData.vip_tag = defaultVipTag
     key.value = Math.floor(Math.random() * 10000)
     // 恢復為預設值
     selectTypeLists.value = originalSelectTypeLists
   }
-  const date = filterData['date'].split('~')
-  weekTotalReportFilter['start_date'] = dayjs(date[0]).format('YYYY-MM')
-  weekTotalReportFilter['end_date'] = dayjs(date[1]).format('YYYY-MM')
-  weekTotalReportFilter['vip_tag'] = filterData['vip_tag']
+  const date = filterData.date.split('~')
+  weekTotalReportFilter.start_date = dayjs(date[0]).format('YYYY-MM')
+  weekTotalReportFilter.end_date = dayjs(date[1]).format('YYYY-MM')
+  weekTotalReportFilter.vip_tag = filterData.vip_tag
   emit('update:filter')
   closePopover()
 }

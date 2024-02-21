@@ -596,8 +596,8 @@
     "beginning_month": "Beginning Month",
     "end_month": "End Month",
     "query_period_not_exceed_months": "The query period shall not exceed six months.",
-    "no_vip_warning": "You have not set the VIP related tags for the hall【{hall_name}】, please go to【$t(sidebar.custom_tags_setting)】to set.",
-    "no_vip_warning2": "您尚未設定廳別【{hall_name}】的VIP相關標籤，請先聯絡CDP管理員設定標籤。",
+    "no_vip_warning": "您尚未設定廳別【{hall_name}】的VIP相關標籤，請先聯絡CDP管理員設定標籤。",
+    "no_vip_row_count": "您尚未設定廳別【{hall_name}】的【{tag}】名單，請先至【{sidebar}】匯入名單。",
     "not_set": "尚未設定",
     "backstage_vip": "Backstage VIP",
 

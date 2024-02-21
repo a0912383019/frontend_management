@@ -216,8 +216,8 @@ export const router = createRouter({
       children: [
         {
           path: '/custom-tags-setting',
-          name: 'custom-tags-setting'
-          // component: () => import('../views/Home/Home.vue')
+          name: 'custom-tags-setting',
+          component: () => import('../views/CustomTagsSetting/CustomTagsSetting.vue')
         }
       ]
     },

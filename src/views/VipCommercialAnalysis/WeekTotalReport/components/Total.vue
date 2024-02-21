@@ -127,9 +127,9 @@ const queryWeekTotalReport = async () => {
   try {
     const result = await apiWeekTotalReport({
       hall_name: activeHall.hall_code,
-      start_date: weekTotalReportFilter['start_date'],
-      end_date: weekTotalReportFilter['end_date'],
-      vip_tag: weekTotalReportFilter['vip_tag'].split(',')
+      start_date: weekTotalReportFilter.start_date,
+      end_date: weekTotalReportFilter.end_date,
+      vip_tag: weekTotalReportFilter.vip_tag.split(',')
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -219,29 +219,29 @@ defineExpose({ queryWeekTotalReport })
       <!-- 日期區間 -->
       <template #date_duration="scope">
         <div class="date">
-          <span class="date__start">{{ scope.row['date_duration_start'] }}</span>
-          <span class="date__end">{{ scope.row['date_duration_end'] }}</span>
+          <span class="date__start">{{ scope.row.date_duration_start }}</span>
+          <span class="date__end">{{ scope.row.date_duration_end }}</span>
         </div>
       </template>
 
       <!-- 損益 -->
       <template #payoff="scope">
-        <div v-html="scope.row['payoff']"></div>
+        <div v-html="scope.row.payoff"></div>
       </template>
 
       <!-- 優惠獎金 -->
       <template #premium_amount="scope">
-        <div v-html="scope.row['premium_amount']"></div>
+        <div v-html="scope.row.premium_amount"></div>
       </template>
 
       <!-- 實際損益 -->
       <template #profit_loss="scope">
-        <div v-html="scope.row['profit_loss']"></div>
+        <div v-html="scope.row.profit_loss"></div>
       </template>
 
       <!-- 淨額 -->
       <template #net_amount="scope">
-        <div v-html="scope.row['net_amount']"></div>
+        <div v-html="scope.row.net_amount"></div>
       </template>
     </CustomTable>
   </section>
