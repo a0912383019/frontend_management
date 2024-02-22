@@ -61,6 +61,28 @@ export const apiWeekTotalReport = (params) => {
 }
 
 // 週統計報表 -> 每週統計報表
+export const apiActiveTimePeople = (params) => {
+  const {
+    hall_name,
+    contain_weeks,
+    custom_user_list,
+    fuzzy_search,
+    search_date,
+    search_name,
+    vip_tag
+  } = params
+  return axiosGoInstance.post('/api/auth/vip/active_time_overview', {
+    hall_name,
+    contain_weeks,
+    custom_user_list,
+    fuzzy_search,
+    search_date,
+    search_name,
+    vip_tag
+  })
+}
+
+// 週統計報表 -> 每週統計報表
 export const apiWeekProfitReport = (params) => {
   const { hall_name, start_date, end_date, vip_tag } = params
   return axiosGoInstance.get('/api/auth/vip/week_profit_report', {

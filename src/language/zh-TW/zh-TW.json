@@ -60,7 +60,8 @@
     "select_include_tags": "選擇包含標籤...",
     "exclude_tags": "排除標籤",
     "select_exclude_tags": "選擇排除標籤...",
-
+    "include_weeks": "包含星期",
+    "select_include_weeks": "選擇包含星期...",
     "redirect_to_page": "前往頁面",
 
     "fuzzy_search": "模糊搜尋",
@@ -616,7 +617,7 @@
     "active_time_member_detail": "活躍時段明細",
     "data_time": "資料時段：",
     "click_chart_to_show_detail": "點擊長條圖顯示時段明細",
-    "clock_interval": "(0-23)[{{count}}點];",
+    "clock_interval": "{count}點",
 
     "day_report": "日報表",
 

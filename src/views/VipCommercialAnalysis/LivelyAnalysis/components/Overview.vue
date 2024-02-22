@@ -77,7 +77,7 @@ const tableColumns = computed(() => {
 const messageKey = ref('loading')
 
 const today = computed(() => {
-  return dayjs(livelyAnalysisFilter['date']).format(t('date.format_date_rule'))
+  return dayjs(livelyAnalysisFilter.searchDate).format(t('date.format_date_rule'))
 })
 
 // tooltip顯示對應日期
@@ -99,11 +99,11 @@ const queryLivelyAnalysisOverview = async () => {
   try {
     const result = await apiQueryLivelyAnalysisOverview({
       hall_name: activeHall.hall_code,
-      lively_analysis_end_date: dayjs(livelyAnalysisFilter['date']).format('YYYY-MM-DD'),
-      lively_analysis_vip_tag: livelyAnalysisFilter['searchTag'],
-      search_name: livelyAnalysisFilter['member'],
-      fuzzy_search: livelyAnalysisFilter['fuzzySearch'],
-      use_custom_list: livelyAnalysisFilter['use_custom_list']
+      lively_analysis_end_date: dayjs(livelyAnalysisFilter.searchDate).format('YYYY-MM-DD'),
+      lively_analysis_vip_tag: livelyAnalysisFilter.vipTag,
+      search_name: livelyAnalysisFilter.searchName,
+      fuzzy_search: livelyAnalysisFilter.fuzzySearch,
+      use_custom_list: livelyAnalysisFilter.useCustomList
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {

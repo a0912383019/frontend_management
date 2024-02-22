@@ -13,7 +13,7 @@ const vipStore = useVipCommercialAnalysisStore()
 const { livelyAnalysisFilter } = vipStore
 
 const endDate = computed(() => {
-  return dayjs(livelyAnalysisFilter['date']).format('YYYY-MM-DD')
+  return dayjs(livelyAnalysisFilter.searchDate).format('YYYY-MM-DD')
 })
 
 let paramsData = reactive({})
