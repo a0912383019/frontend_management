@@ -122,7 +122,7 @@ const queryMemberLivelyList = async (data) => {
       lively_analysis_vip_tag: livelyAnalysisFilter.vipTag,
       search_name: livelyAnalysisFilter.searchName,
       fuzzy_search: livelyAnalysisFilter.fuzzySearch,
-      use_custom_list: livelyAnalysisFilter.custom
+      custom_user_list: livelyAnalysisFilter.customUserList
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {

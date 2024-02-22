@@ -1,8 +1,9 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
+import { storeToRefs } from 'pinia'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import Datepicker from '@/components/Date/Datepicker.vue'
@@ -16,6 +17,7 @@ const { defaultVipTag, livelyAnalysisFilter } = vipStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+const { systemConfigIsOk } = storeToRefs(globalStore)
 
 const emit = defineEmits(['update:filter'])
 
@@ -36,26 +38,33 @@ const filterData = reactive({
 })
 
 // 取得 system_config 資料
-const tagsConfig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+const tagsConfig = ref(getSessionStorageEntity('system_config').tags_config[activeHall.hall_code])
 
 // 包含標籤選項
-const selectTypeLists = ref([
-  {
-    value: 'all',
-    label: t('vip_commercial_analysis.all'),
-    disabled: false
+const selectTypeLists = computed({
+  get() {
+    return [
+      {
+        value: 'all',
+        label: t('vip_commercial_analysis.all'),
+        disabled: false
+      },
+      {
+        value: 10001,
+        label: tagsConfig.value[10001].tag_name,
+        disabled: true
+      },
+      {
+        value: 10003,
+        label: tagsConfig.value[10003].tag_name,
+        disabled: true
+      }
+    ]
   },
-  {
-    value: 10001,
-    label: tagsConfig[10001]['tag_name'],
-    disabled: true
-  },
-  {
-    value: 10003,
-    label: tagsConfig[10003]['tag_name'],
-    disabled: true
+  set(newValue) {
+    return newValue
   }
-])
+})
 // 儲存初始資料
 const originalSelectTypeLists = JSON.parse(JSON.stringify(selectTypeLists.value))
 
@@ -66,6 +75,8 @@ const key = ref(0)
 const handleCsvSuccess = (data) => {
   filterData.customUserList = data
   handleClick()
+  // 查詢後將 customUserList 清空
+  filterData.customUserList = []
 }
 
 // 確認篩選
@@ -86,6 +97,14 @@ const handleClick = () => {
   emit('update:filter')
   closePopover()
 }
+
+watch(
+  () => systemConfigIsOk.value,
+  () => {
+    tagsConfig.value = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+    key.value = Math.floor(Math.random() * 100)
+  }
+)
 </script>
 <template>
   <div class="cdp-popover-container">

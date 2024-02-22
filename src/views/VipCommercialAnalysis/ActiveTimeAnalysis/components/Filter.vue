@@ -39,49 +39,54 @@ const filterData = reactive({
 })
 
 // 包含星期選項
-const selectWeekLists = computed(() => {
-  return [
-    {
-      value: 'all',
-      label: t('vip_commercial_analysis.all'),
-      disabled: false
-    },
-    {
-      value: 1,
-      label: t('vip_commercial_analysis.monday'),
-      disabled: true
-    },
-    {
-      value: 2,
-      label: t('vip_commercial_analysis.tuesday'),
-      disabled: true
-    },
-    {
-      value: 3,
-      label: t('vip_commercial_analysis.wednesday'),
-      disabled: true
-    },
-    {
-      value: 4,
-      label: t('vip_commercial_analysis.thursday'),
-      disabled: true
-    },
-    {
-      value: 5,
-      label: t('vip_commercial_analysis.friday'),
-      disabled: true
-    },
-    {
-      value: 6,
-      label: t('vip_commercial_analysis.saturday'),
-      disabled: true
-    },
-    {
-      value: 7,
-      label: t('vip_commercial_analysis.sunday'),
-      disabled: true
-    }
-  ]
+const selectWeekLists = computed({
+  get() {
+    return [
+      {
+        value: 'all',
+        label: t('vip_commercial_analysis.all'),
+        disabled: false
+      },
+      {
+        value: 1,
+        label: t('vip_commercial_analysis.monday'),
+        disabled: true
+      },
+      {
+        value: 2,
+        label: t('vip_commercial_analysis.tuesday'),
+        disabled: true
+      },
+      {
+        value: 3,
+        label: t('vip_commercial_analysis.wednesday'),
+        disabled: true
+      },
+      {
+        value: 4,
+        label: t('vip_commercial_analysis.thursday'),
+        disabled: true
+      },
+      {
+        value: 5,
+        label: t('vip_commercial_analysis.friday'),
+        disabled: true
+      },
+      {
+        value: 6,
+        label: t('vip_commercial_analysis.saturday'),
+        disabled: true
+      },
+      {
+        value: 7,
+        label: t('vip_commercial_analysis.sunday'),
+        disabled: true
+      }
+    ]
+  },
+  set(newValue) {
+    return newValue
+  }
 })
 
 // 儲存初始資料
@@ -91,24 +96,29 @@ const originalWeekLists = JSON.parse(JSON.stringify(selectWeekLists.value))
 const tagsConfig = ref(getSessionStorageEntity('system_config').tags_config[activeHall.hall_code])
 
 // 包含標籤選項
-const selectTagLists = computed(() => {
-  return [
-    {
-      value: 'all',
-      label: t('vip_commercial_analysis.all'),
-      disabled: false
-    },
-    {
-      value: 10001,
-      label: tagsConfig.value[10001].tag_name,
-      disabled: true
-    },
-    {
-      value: 10003,
-      label: tagsConfig.value[10003].tag_name,
-      disabled: true
-    }
-  ]
+const selectTagLists = computed({
+  get() {
+    return [
+      {
+        value: 'all',
+        label: t('vip_commercial_analysis.all'),
+        disabled: false
+      },
+      {
+        value: 10001,
+        label: tagsConfig.value[10001].tag_name,
+        disabled: true
+      },
+      {
+        value: 10003,
+        label: tagsConfig.value[10003].tag_name,
+        disabled: true
+      }
+    ]
+  },
+  set(newVale) {
+    return newVale
+  }
 })
 // 儲存初始資料
 const originalVipTagLists = JSON.parse(JSON.stringify(selectTagLists.value))
@@ -121,6 +131,8 @@ const vipKey = ref(0)
 const handleCsvSuccess = (data) => {
   filterData.customUserList = data
   handleClick()
+  // 查詢後將 customUserList 清空
+  filterData.customUserList = []
 }
 
 // 確認篩選

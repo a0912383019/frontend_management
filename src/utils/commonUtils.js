@@ -356,8 +356,32 @@ export function extractNumberValue(str) {
   return Number(cleanedStr)
 }
 
-export function stringToIntArray(str){
+/**
+ * 將包含逗號分隔的字串轉換為整數陣列
+ * @param {string} str - 要轉換的逗號分隔字串
+ * @returns {number[]} - 整數陣列
+ */
+export function stringToIntArray(str) {
   const arr = str.split(',')
-  const newArr = arr.map(item => parseInt(item.trim()))
+  const newArr = arr.map((item) => parseInt(item.trim()))
   return newArr
+}
+
+/**
+ * 對表格指定的欄位做排序
+ * @param {String} prop 要排序的表格表格欄位
+ * @param {String} order 排序方式 'ascending' 或 'descending'
+ * @param {Array} tableData 要排序的表格資料
+ * @returns {Array} 已排序的表格資料
+ */
+export const sortTableData = ({ prop, order, tableData }) => {
+  return tableData.sort((a, b) => {
+    const valueA = extractNumberValue(a[prop])
+    const valueB = extractNumberValue(b[prop])
+
+    if (isNaN(valueA)) return 1
+    if (isNaN(valueB)) return -1
+
+    return order === 'descending' ? valueB - valueA : valueA - valueB
+  })
 }

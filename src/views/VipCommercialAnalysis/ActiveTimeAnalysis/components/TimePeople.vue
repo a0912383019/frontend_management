@@ -5,7 +5,7 @@ import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { tooltipDarkConfig, tooltipAddSignForCol } from '@/utils/highchartsConfig.js'
-import { apiActiveTimePeople } from '@/api/vipCommercialAnalysis.js'
+import { apiActiveTimeOverview } from '@/api'
 import { stringToIntArray, errorRespond } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
@@ -16,12 +16,14 @@ const { activeTimeAnalysisFilter } = vipStore
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
+const emit = defineEmits(['update:detail'])
+
 const apiSuccess = ref(true) //api是否成功
 
 // 依照不同的messageKey產生不同的message
 const messageKey = ref('loading')
 
-const xAxisName = computed(()=>{
+const xAxisName = computed(() => {
   let chart_labels = []
   for (let i = 0; i < 24; i++) {
     chart_labels.push(
@@ -77,7 +79,8 @@ const chartOptions = reactive({
       borderWidth: 2,
       events: {
         click: function (event) {
-          console.log(event)
+          // 傳遞參數給 活躍時段明細 組件
+          handleEmitDetail(event)
         }
       }
     }
@@ -89,14 +92,14 @@ const queryActiveTimePeople = async () => {
   apiSuccess.value = false
   messageKey.value = 'loading'
   try {
-    const result = await apiActiveTimePeople({
+    const result = await apiActiveTimeOverview({
       hall_name: activeHall.hall_code,
       contain_weeks: stringToIntArray(activeTimeAnalysisFilter.containWeeks),
       vip_tag: stringToIntArray(activeTimeAnalysisFilter.vipTag),
       search_date: activeTimeAnalysisFilter.searchDate,
       search_name: activeTimeAnalysisFilter.searchName,
       fuzzy_search: activeTimeAnalysisFilter.fuzzySearch,
-      use_custom_list: activeTimeAnalysisFilter.useCustomList
+      custom_user_list: activeTimeAnalysisFilter.customUserList
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -122,8 +125,13 @@ const queryActiveTimePeople = async () => {
   }
 }
 
-function transformActiveTimePeople(data) {
+const transformActiveTimePeople = (data) => {
   chartOptions.series[0].data = data
+}
+
+// 傳遞參數給 活躍時段明細 組件
+const handleEmitDetail = (data) => {
+  emit('update:detail', data)
 }
 
 onMounted(() => {
@@ -146,4 +154,13 @@ defineExpose({ queryActiveTimePeople })
     </template>
   </section>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.cdp-section-in {
+  display: flex;
+  flex-direction: column;
+}
+:deep(.message) {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+</style>
