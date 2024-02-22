@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
@@ -38,26 +38,28 @@ const filterData = reactive({
 })
 
 // 取得 system_config 資料
-const tagsConfig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+const tagsConfig = ref(getSessionStorageEntity('system_config').tags_config[activeHall.hall_code])
 
 // 包含標籤選項
-const selectTypeLists = ref([
-  {
-    value: 'all',
-    label: t('vip_commercial_analysis.all'),
-    disabled: false
-  },
-  {
-    value: 10001,
-    label: tagsConfig[10001]['tag_name'],
-    disabled: true
-  },
-  {
-    value: 10003,
-    label: tagsConfig[10003]['tag_name'],
-    disabled: true
-  }
-])
+const selectTypeLists = computed(() => {
+  return [
+    {
+      value: 'all',
+      label: t('vip_commercial_analysis.all'),
+      disabled: false
+    },
+    {
+      value: 10001,
+      label: tagsConfig.value[10001].tag_name,
+      disabled: true
+    },
+    {
+      value: 10003,
+      label: tagsConfig.value[10003].tag_name,
+      disabled: true
+    }
+  ]
+})
 // 儲存初始資料
 const originalSelectTypeLists = JSON.parse(JSON.stringify(selectTypeLists.value))
 
@@ -79,7 +81,11 @@ const handleClick = () => {
     filterData.vipTag = defaultVipTag
     key.value = Math.floor(Math.random() * 10000)
     // 恢復為預設值
-    selectTypeLists.value = originalSelectTypeLists
+    originalSelectTypeLists.forEach((week, index) => {
+      selectTypeLists.value[index].value = week.value
+      selectTypeLists.value[index].label = week.label
+      selectTypeLists.value[index].disabled = week.disabled
+    })
   }
   livelyAnalysisFilter.searchDate = filterData.searchDate
   livelyAnalysisFilter.searchName = filterData.searchName

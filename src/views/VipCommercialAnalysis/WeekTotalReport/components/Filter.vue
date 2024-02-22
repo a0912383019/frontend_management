@@ -69,7 +69,11 @@ const handleClick = () => {
     filterData.vipTag = defaultVipTag
     key.value = Math.floor(Math.random() * 10000)
     // 恢復為預設值
-    selectTypeLists.value = originalSelectTypeLists
+    originalSelectTypeLists.forEach((week, index) => {
+      selectTypeLists.value[index].value = week.value
+      selectTypeLists.value[index].label = week.label
+      selectTypeLists.value[index].disabled = week.disabled
+    })
   }
   const date = filterData.searchDate.split('~')
   weekTotalReportFilter.startDate = dayjs(date[0]).format('YYYY-MM')

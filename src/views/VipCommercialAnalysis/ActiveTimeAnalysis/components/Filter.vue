@@ -39,48 +39,50 @@ const filterData = reactive({
 })
 
 // 包含星期選項
-const selectWeekLists = ref([
-  {
-    value: 'all',
-    label: t('vip_commercial_analysis.all'),
-    disabled: false
-  },
-  {
-    value: 1,
-    label: t('vip_commercial_analysis.monday'),
-    disabled: true
-  },
-  {
-    value: 2,
-    label: t('vip_commercial_analysis.tuesday'),
-    disabled: true
-  },
-  {
-    value: 3,
-    label: t('vip_commercial_analysis.wednesday'),
-    disabled: true
-  },
-  {
-    value: 4,
-    label: t('vip_commercial_analysis.thursday'),
-    disabled: true
-  },
-  {
-    value: 5,
-    label: t('vip_commercial_analysis.friday'),
-    disabled: true
-  },
-  {
-    value: 6,
-    label: t('vip_commercial_analysis.saturday'),
-    disabled: true
-  },
-  {
-    value: 7,
-    label: t('vip_commercial_analysis.sunday'),
-    disabled: true
-  }
-])
+const selectWeekLists = computed(() => {
+  return [
+    {
+      value: 'all',
+      label: t('vip_commercial_analysis.all'),
+      disabled: false
+    },
+    {
+      value: 1,
+      label: t('vip_commercial_analysis.monday'),
+      disabled: true
+    },
+    {
+      value: 2,
+      label: t('vip_commercial_analysis.tuesday'),
+      disabled: true
+    },
+    {
+      value: 3,
+      label: t('vip_commercial_analysis.wednesday'),
+      disabled: true
+    },
+    {
+      value: 4,
+      label: t('vip_commercial_analysis.thursday'),
+      disabled: true
+    },
+    {
+      value: 5,
+      label: t('vip_commercial_analysis.friday'),
+      disabled: true
+    },
+    {
+      value: 6,
+      label: t('vip_commercial_analysis.saturday'),
+      disabled: true
+    },
+    {
+      value: 7,
+      label: t('vip_commercial_analysis.sunday'),
+      disabled: true
+    }
+  ]
+})
 
 // 儲存初始資料
 const originalWeekLists = JSON.parse(JSON.stringify(selectWeekLists.value))
@@ -130,7 +132,11 @@ const handleClick = () => {
     filterData.containWeeks = defaultWeeks
     weekKey.value = Math.floor(Math.random() * 10000)
     // 恢復為預設值
-    selectWeekLists.value = originalWeekLists
+    originalWeekLists.forEach((week, index) => {
+      selectWeekLists.value[index].value = week.value
+      selectWeekLists.value[index].label = week.label
+      selectWeekLists.value[index].disabled = week.disabled
+    })
   }
 
   if (filterData.vipTag === '') {
@@ -138,7 +144,11 @@ const handleClick = () => {
     filterData.vipTag = defaultVipTag
     vipKey.value = Math.floor(Math.random() * 10000)
     // 恢復為預設值
-    selectTagLists.value = originalVipTagLists
+    originalVipTagLists.forEach((week, index) => {
+      selectTagLists.value[index].value = week.value
+      selectTagLists.value[index].label = week.label
+      selectTagLists.value[index].disabled = week.disabled
+    })
   }
 
   activeTimeAnalysisFilter.searchDate = filterData.searchDate
