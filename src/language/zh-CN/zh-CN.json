@@ -596,8 +596,8 @@
     "beginning_month": "开始月份",
     "end_month": "结束月份",
     "query_period_not_exceed_months": "查询区间不得超过六个月",
-    "no_vip_warning": "您尚未设定厅别【{hall_name}】的VIP相关标签，请先至【$t(sidebar.custom_tags_setting)】设定。",
-    "no_vip_warning2": "您尚未设定厅别【{hall_name}】的VIP相关标签，请先联络CDP管理员设定标签。",
+    "no_vip_warning": "您尚未设定厅别【{hall_name}】的VIP相关标签，请先联络CDP管理员设定标签。",
+    "no_vip_row_count": "您尚未设定厅别【{hall_name}】的【{tag}】名单，请先至【{sidebar}】汇入名单。",
     "not_set": "尚未设定",
     "backstage_vip": "管端VIP",
 

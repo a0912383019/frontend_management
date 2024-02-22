@@ -128,14 +128,14 @@ const queryWeekProfitReport = async () => {
 const transformWeekProfitReport = (data) => {
   tableData.value = [
     {
-      profit_zero: FormatNumber(data['profit_zero']),
-      profit_positive: FormatNumber(data['profit_positive']),
-      profit_1a: FormatNumber(data['profit_1a']),
-      profit_10a: FormatNumber(data['profit_10a']),
-      profit_50a: FormatNumber(data['profit_50a']),
-      profit_100a: FormatNumber(data['profit_100a']),
-      profit_over100a: FormatNumber(data['profit_over100a']),
-      total_people: FormatNumber(data['total_people'])
+      profit_zero: FormatNumber(data.profit_zero),
+      profit_positive: FormatNumber(data.profit_positive),
+      profit_1a: FormatNumber(data.profit_1a),
+      profit_10a: FormatNumber(data.profit_10a),
+      profit_50a: FormatNumber(data.profit_50a),
+      profit_100a: FormatNumber(data.profit_100a),
+      profit_over100a: FormatNumber(data.profit_over100a),
+      total_people: FormatNumber(data.total_people)
     }
   ]
   apiTableResult.value = tableData.value.slice(0)

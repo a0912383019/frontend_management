@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import Tab from '@/components/Tab.vue'
+import Dialog from '@/views/VipCommercialAnalysis/components/Dialog.vue'
 import LivelyAnalysis from '@/views/VipCommercialAnalysis/LivelyAnalysis/LivelyAnalysis.vue'
 import ActiveTimeAnalysis from '@/views/VipCommercialAnalysis/ActiveTimeAnalysis/ActiveTimeAnalysis.vue'
 import DayReport from '@/views/VipCommercialAnalysis/DayReport/DayReport.vue'
@@ -66,6 +67,7 @@ const currentTabComponent = computed(() => {
     <keep-alive>
       <component :is="currentTabComponent"></component>
     </keep-alive>
+    <Dialog />
   </section>
 </template>
 <style lang="scss" scoped>

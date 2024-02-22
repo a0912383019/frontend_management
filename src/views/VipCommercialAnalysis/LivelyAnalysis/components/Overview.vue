@@ -9,7 +9,6 @@ import { addNumberColor, FormatNumber, errorRespond } from '@/utils/commonUtils.
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
-import Dialog from '@/views/VipCommercialAnalysis/components/Dialog.vue'
 
 const vipStore = useVipCommercialAnalysisStore()
 const { livelyAnalysisFilter } = vipStore
@@ -21,9 +20,6 @@ const { activityStep } = storeToRefs(globalStore)
 const { t } = useI18n()
 
 const emit = defineEmits(['update:detail_api'])
-
-// dialog 開啟狀態
-const dialogType = ref(false)
 
 // 反轉活躍度資料
 const reverseActivityStep = computed(() => {
@@ -114,16 +110,6 @@ const queryLivelyAnalysisOverview = async () => {
       apiSuccess.value = true // 取得資料成功
       apiTableResult.value = result.data.result
       transformLivelyAnalysisOverview(result.data.result)
-      // 若回傳資料為0且為預設篩選條件，代表該廳別未設置 VIP 標籤，跳出 dialog 提示
-      const { searchName, vipTag, custom } = livelyAnalysisFilter
-      if (
-        tableTotalPeopleNum.value === '0' &&
-        searchName === '' &&
-        vipTag !== '' &&
-        custom === false
-      ) {
-        dialogType.value = true
-      }
     } else {
       const { error_code } = result.data.status
       if (error_code === '210400000') {
@@ -267,7 +253,6 @@ defineExpose({ queryLivelyAnalysisOverview })
         </table>
       </template>
     </CustomTable>
-    <Dialog v-model="dialogType" />
   </section>
 </template>
 <style lang="scss" scoped>
