@@ -26,7 +26,7 @@ const props = defineProps({
   }
 })
 
-const exportDialogVisible = ref(true)
+const exportDialogVisible = ref(false)
 
 const dialogVisible = ref(false) //dialog開啟狀態
 
