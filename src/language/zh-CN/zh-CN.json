@@ -620,7 +620,7 @@
     "day_report": "日报表",
 
     "week_report": "周报表",
-    "compare_percent_desc": "下方数值 = (查询周次总货量 - 查询周次上一周次总货量) ÷ 查询周次上一周次总货量 × 100%",
+    "compare_percent_desc": "货量百分比 = (查询周次总货量 - 查询周次上一周次总货量) ÷ 查询周次上一周次总货量 × 100%",
 
     "week_total_report": "周统计报表",
     "week_total_report_table": "每周统计总表",

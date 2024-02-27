@@ -151,38 +151,38 @@ describe('LifeCycleStepProfitOverview.vue', () => {
     expect(wrapper.vm.tableData).toStrictEqual([
       {
         step_index: 1,
-        bet_amount: '1,276,758,348',
-        bet_amount_percent: '98%',
-        payoff: '<span class="cdp-text-candypink">-33,092,911</span>',
-        gross_percent: '<span class="cdp-text-candypink">-3%</span>'
+        bet_amount: '1,276,758,348.45',
+        bet_amount_percent: '97.95%',
+        gross_percent: '<span class="cdp-text-candypink">-2.59%</span>',
+        payoff: '<span class="cdp-text-candypink">-33,092,910.95</span>'
       },
       {
         step_index: 2,
-        bet_amount: '8,438,998',
-        bet_amount_percent: '1%',
-        payoff: '148,481',
-        gross_percent: '2%'
+        bet_amount: '8,438,998.02',
+        bet_amount_percent: '0.65%',
+        gross_percent: '1.76%',
+        payoff: '148,480.66'
       },
       {
         step_index: 3,
-        bet_amount: '4,155,873',
-        bet_amount_percent: '0%',
-        payoff: '<span class="cdp-text-candypink">-72,227</span>',
-        gross_percent: '<span class="cdp-text-candypink">-2%</span>'
+        bet_amount: '4,155,873.3',
+        bet_amount_percent: '0.32%',
+        gross_percent: '<span class="cdp-text-candypink">-1.74%</span>',
+        payoff: '<span class="cdp-text-candypink">-72,226.67</span>'
       },
       {
         step_index: 4,
-        bet_amount: '9,408,280',
-        bet_amount_percent: '1%',
-        payoff: '<span class="cdp-text-candypink">-174,856</span>',
-        gross_percent: '<span class="cdp-text-candypink">-2%</span>'
+        bet_amount: '9,408,279.74',
+        bet_amount_percent: '0.72%',
+        gross_percent: '<span class="cdp-text-candypink">-1.86%</span>',
+        payoff: '<span class="cdp-text-candypink">-174,855.7</span>'
       },
       {
         step_index: 5,
-        bet_amount: '4,666,939',
-        bet_amount_percent: '0%',
-        payoff: '<span class="cdp-text-candypink">-71,863</span>',
-        gross_percent: '<span class="cdp-text-candypink">-2%</span>'
+        bet_amount: '4,666,938.63',
+        bet_amount_percent: '0.36%',
+        gross_percent: '<span class="cdp-text-candypink">-1.54%</span>',
+        payoff: '<span class="cdp-text-candypink">-71,863.35</span>'
       },
       {
         step_index: 6,

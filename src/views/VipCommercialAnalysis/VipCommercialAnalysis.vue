@@ -67,7 +67,7 @@ const currentTabComponent = computed(() => {
     <keep-alive>
       <component :is="currentTabComponent"></component>
     </keep-alive>
-    <Dialog />
+    <!-- <Dialog /> -->
   </section>
 </template>
 <style lang="scss" scoped>

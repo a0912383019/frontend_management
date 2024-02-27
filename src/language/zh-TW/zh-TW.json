@@ -622,7 +622,7 @@
     "day_report": "日報表",
 
     "week_report": "週報表",
-    "compare_percent_desc": "下方數值 = (查詢週次總貨量 - 查詢週次上一週次總貨量) ÷ 查詢週次上一週次總貨量 × 100%",
+    "compare_percent_desc": "貨量百分比 = (查詢週次總貨量 - 查詢週次上一週次總貨量) ÷ 查詢週次上一週次總貨量 × 100%",
 
     "week_total_report": "週統計報表",
     "week_total_report_table": "每週統計總表",

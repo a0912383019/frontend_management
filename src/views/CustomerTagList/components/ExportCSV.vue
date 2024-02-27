@@ -161,7 +161,6 @@ const handelExportReport = async () => {
               v-model="averageTypeValue"
               class="cdp-select full mr-6"
               popper-class="cdp-select-popper"
-              suffix-icon="CaretBottom"
             >
               <el-option
                 v-for="item in averageTypeOptions"

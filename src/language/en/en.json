@@ -621,7 +621,7 @@
     "day_report": "Daily Report",
 
     "week_report": "Weekly Report",
-    "compare_percent_desc": "Below Number = (Bet in the selected week - Bet in the previous week) ÷ Bet in the previous week × 100%",
+    "compare_percent_desc": "貨量百分比 = (Bet in the selected week - Bet in the previous week) ÷ Bet in the previous week × 100%",
 
     "week_total_report": "Week-by-Week Report",
     "week_total_report_table": "Week-by-Week Report",

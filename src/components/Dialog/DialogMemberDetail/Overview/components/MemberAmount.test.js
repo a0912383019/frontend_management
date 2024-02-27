@@ -74,7 +74,7 @@ describe('MemberAmount.vue', () => {
     //等待異步完成
     await flushPromises()
     const amountData = {
-      total_profit: '-1,236,936',
+      total_profit: '-1,236,936.1',
       withdraw_deposit_net_amount: '-61,723',
       total_deposit: '4,766,000',
       total_withdraw: '4,827,723'

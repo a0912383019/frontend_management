@@ -106,6 +106,20 @@ export const apiActiveTimeDetail = (params) => {
   })
 }
 
+// 週報表
+export const apiWeekReport = (params) => {
+  const { hall_name, financial_month, financial_week, financial_year, vip_tag } = params
+  return axiosGoInstance.get('/api/auth/vip/week_report', {
+    params: {
+      hall_name,
+      financial_month,
+      financial_week,
+      financial_year,
+      vip_tag
+    }
+  })
+}
+
 // 週統計報表 -> 每週統計報表
 export const apiWeekProfitReport = (params) => {
   const { hall_name, start_date, end_date, vip_tag } = params
