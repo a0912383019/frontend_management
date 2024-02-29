@@ -1,8 +1,8 @@
 <script setup>
 import { ref, reactive, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryAgNameUserLevel } from '@/api/customerTagList.js'
-import { useGlobalStore } from '@/stores/global.js'
+import { apiQueryAgNameUserLevel } from '@/api'
+import { useGlobalStore } from '@/stores'
 import { ElNotification } from 'element-plus'
 import { errorRespond } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
@@ -104,19 +104,22 @@ const transformAgNameUserLevel = (data) => {
   // 會員層級
   user_level.forEach((item) => {
     selectLevelOptions.value.push({
-      value: item['user_level_id'],
-      label: item['user_level_name']
+      value: item.user_level_id,
+      label: item.user_level_name
     })
   })
 }
 
 // csv 上傳成功
 const handleCsvSuccess = (result) => {
-  form['custom_user_list'] = []
-  form['custom_user_list'] = result
+  form.custom_user_list = result
   handleSubmitClick()
-  // 查詢後將custom_user_list清空
-  form['custom_user_list'] = []
+}
+
+// 關閉 使用者手動匯入名單
+const handleCsvClear = () => {
+  //將 customUserList 清空
+  form.custom_user_list = []
 }
 
 const popover = ref(null) //popover
@@ -275,6 +278,7 @@ watch(
             class="mr-20"
             :csvType="1"
             @update:success="handleCsvSuccess"
+            @update:clear="handleCsvClear"
           />
           <FuzzySwitchWithTooltip v-model="form.fuzzySearch" />
         </div>

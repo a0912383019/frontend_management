@@ -75,7 +75,11 @@ const key = ref(0)
 const handleCsvSuccess = (data) => {
   filterData.customUserList = data
   handleClick()
-  // 查詢後將 customUserList 清空
+}
+
+// 關閉 使用者手動匯入名單
+const handleCsvClear = () => {
+  //將 customUserList 清空
   filterData.customUserList = []
 }
 
@@ -162,6 +166,7 @@ watch(
               v-model="filterData.custom"
               :csvType="1"
               @update:success="handleCsvSuccess"
+              @update:clear="handleCsvClear"
             />
           </div>
           <div class="drop__footer__item">

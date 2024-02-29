@@ -82,19 +82,37 @@ describe('ImportCSV', () => {
   it('handleClose', async () => {
     const dialogClose = vi.fn()
 
+    wrapper.vm.apiResult = []
     wrapper.vm.dialogVisible = true
-
+    wrapper.vm.switchValue = true
     await wrapper.vm.$nextTick()
 
     wrapper.vm.$refs.refUploadFile.dialogClose = dialogClose
-
     wrapper.vm.handleClose()
 
     expect(wrapper.findComponent(UploadFile).exists()).toBe(true)
-
     expect(wrapper.vm.switchValue).toBe(false)
 
     // 驗證 dialogClose 是否被調用
     expect(dialogClose).toHaveBeenCalled()
+
+    // 將 apiResult 塞入資料，驗證關閉 dialog 後 switchValue 狀態
+    wrapper.vm.apiResult = ['aa']
+    wrapper.vm.dialogVisible = true
+    wrapper.vm.switchValue = true
+    await wrapper.vm.$nextTick()
+
+    wrapper.vm.handleClose()
+    expect(wrapper.vm.switchValue).toBe(true)
+  })
+
+  // 驗證當 switch 為 false 時，emit update:clear
+  it('switch change', async () => {
+    wrapper.vm.switchValue = true
+    await wrapper.vm.$nextTick()
+    wrapper.vm.switchValue = false
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.emitted('update:clear')).toStrictEqual([[true]])
   })
 })
