@@ -50,3 +50,15 @@ export const apiQueryMemberRecentLively = (params) => {
     }
   })
 }
+
+// 取得帳務週
+export const apiFinancialWeeks = (params) => {
+  const { hall_name, month, year } = params
+  return axiosGoInstance.get('/api/auth/financial/financial_weeks', {
+    params: {
+      hall_name,
+      month,
+      year
+    }
+  })
+}

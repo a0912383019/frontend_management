@@ -34,7 +34,8 @@ describe('PercentWithIcon', () => {
         percentData: '22',
         hasColor: false,
         iconSize: '16',
-        fontSize: '18'
+        fontSize: '18',
+        fontWeight: 'normal'
       },
       global: {
         components: {
@@ -45,6 +46,7 @@ describe('PercentWithIcon', () => {
     })
     expect(wrapper.vm.iconSizeClass).toContain('font-size-16')
     expect(wrapper.vm.fontSizeClass).toContain('font-size-18')
+    expect(wrapper.vm.fontWeightClass).toContain('font-normal')
     expect(wrapper.vm.color).toContain('cdp-text-light__slate__gray')
     expect(wrapper.vm.icon).toContain('fa-caret-up')
     expect(wrapper.findComponent(FontAwesomeIcon).exists()).toBe(true)
@@ -58,7 +60,8 @@ describe('PercentWithIcon', () => {
         percentData: '0',
         hasColor: true,
         iconSize: '16',
-        fontSize: '18'
+        fontSize: '18',
+        fontWeight: 'normal'
       },
       global: {
         components: {
@@ -69,6 +72,7 @@ describe('PercentWithIcon', () => {
     })
     expect(wrapper.vm.iconSizeClass).toContain('font-size-16')
     expect(wrapper.vm.fontSizeClass).toContain('font-size-18')
+    expect(wrapper.vm.fontWeightClass).toContain('font-normal')
     expect(wrapper.vm.color).toContain('cdp-text-light__slate__gray')
     expect(wrapper.vm.icon).toContain('fa-caret-left')
     expect(wrapper.findComponent(FontAwesomeIcon).exists()).toBe(true)
@@ -82,7 +86,8 @@ describe('PercentWithIcon', () => {
         percentData: '-22',
         hasColor: true,
         iconSize: '16',
-        fontSize: '18'
+        fontSize: '18',
+        fontWeight: 'normal'
       },
       global: {
         components: {
@@ -93,6 +98,7 @@ describe('PercentWithIcon', () => {
     })
     expect(wrapper.vm.iconSizeClass).toContain('font-size-16')
     expect(wrapper.vm.fontSizeClass).toContain('font-size-18')
+    expect(wrapper.vm.fontWeightClass).toContain('font-normal')
     expect(wrapper.vm.color).toContain('text-danger')
     expect(wrapper.vm.icon).toContain('fa-caret-down')
     expect(wrapper.findComponent(FontAwesomeIcon).exists()).toBe(true)
@@ -106,7 +112,8 @@ describe('PercentWithIcon', () => {
         percentData: '22',
         hasColor: true,
         iconSize: '16',
-        fontSize: '18'
+        fontSize: '18',
+        fontWeight: 'normal'
       },
       global: {
         components: {
@@ -117,6 +124,7 @@ describe('PercentWithIcon', () => {
     })
     expect(wrapper.vm.iconSizeClass).toContain('font-size-16')
     expect(wrapper.vm.fontSizeClass).toContain('font-size-18')
+    expect(wrapper.vm.fontWeightClass).toContain('font-normal')
     expect(wrapper.vm.color).toContain('text-success')
     expect(wrapper.vm.icon).toContain('fa-caret-up')
     expect(wrapper.findComponent(FontAwesomeIcon).exists()).toBe(true)

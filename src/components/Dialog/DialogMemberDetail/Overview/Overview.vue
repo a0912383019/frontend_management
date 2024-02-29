@@ -30,7 +30,7 @@ watch([() => dialogMemberDetailStore.nowTag, () => dialogMemberDetailStore.timeS
         <MemberAmount :key="key" />
       </section>
     </el-col>
-    <el-col :xs="24" :sm="24" :lg="24">
+    <el-col :xs="24" :sm="24" :lg="24" class="mt-20 mb-20">
       <MemberPeriodBetAmount :key="key" />
     </el-col>
     <el-col :xs="24" :sm="24" :lg="24">

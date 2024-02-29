@@ -167,10 +167,9 @@ watch(
           </SectionTitle>
           <el-select-v2
             v-model="form.selectAcount"
-            class="cdp-select-v2 w-full"
-            popper-class="cdp-select-popper__purple"
+            class="cdp-select cdp-select__purple w-full"
+            popper-class="cdp-select-popper cdp-select-popper__purple"
             filterable
-            suffix-icon="CaretBottom"
             :teleported="false"
             :disabled="formDisabled"
             :options="selectAccountOptions"
@@ -185,10 +184,9 @@ watch(
           </SectionTitle>
           <el-select
             v-model="form.selectLevel"
-            class="cdp-select__purple w-full"
-            popper-class="cdp-select-popper__purple"
+            class="cdp-select cdp-select__purple w-full"
+            popper-class="cdp-select-popper cdp-select-popper__purple"
             filterable
-            suffix-icon="CaretBottom"
             :teleported="false"
             :disabled="formDisabled"
           >

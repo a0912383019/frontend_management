@@ -14,6 +14,10 @@ const props = defineProps({
     type: String,
     default: '14'
   },
+  fontWeight: {
+    type: String,
+    default: 'black'
+  },
   fontSize: {
     type: String,
     default: '16'
@@ -22,6 +26,7 @@ const props = defineProps({
 
 const iconSizeClass = 'font-size-' + props.iconSize
 const fontSizeClass = 'font-size-' + props.fontSize
+const fontWeightClass = 'font-' + props.fontWeight
 const color = computed(() => {
   if (!props.hasColor || props.percentData === '0' || props.percentData === '-') {
     return 'cdp-text-light__slate__gray'
@@ -44,12 +49,11 @@ const icon = computed(() => {
 </script>
 <template>
   <span :class="color" v-if="percentData === '-'">
-    <span class="font-black" :class="fontSizeClass">{{ percentData }}</span>
+    <span :class="[fontSizeClass, fontWeightClass]">{{ percentData }}</span>
   </span>
   <span :class="color" v-else>
     <font-awesome-icon class="mr-3" :class="iconSizeClass" :icon="icon" />
-    <span class="font-black" :class="fontSizeClass">{{ percentData.replace('-', '') + '%' }}</span>
+    <span :class="[fontSizeClass, fontWeightClass]">{{ percentData.replace('-', '') + '%' }}</span>
   </span>
 </template>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -159,30 +159,30 @@ describe('TopCard.vue', () => {
       {
         icon: 'fas fa-money-bill-wave',
         colorClass: 'cdp-bg-maximum__blue',
-        monthAvg: '¥50,419,817',
-        weekAvg: '¥46,939,568',
-        growth: '-7'
+        monthAvg: '¥50,419,817.42',
+        weekAvg: '¥46,939,568.13',
+        growth: '-6.9'
       },
       {
         icon: 'fas fa-chart-area',
         colorClass: 'cdp-bg-forest__green__crayola',
-        monthAvg: '<span class="text-danger font-black">¥-1,097,599</span>',
-        weekAvg: '<span class="text-danger font-black">¥-5,487,996</span>',
+        monthAvg: '<span class="text-danger font-black">¥-1,097,599.28</span>',
+        weekAvg: '<span class="text-danger font-black">¥-5,487,996.41</span>',
         growth: '-400'
       },
       {
         icon: 'fas fa-gift',
         colorClass: 'cdp-bg-indian__yellow',
-        monthAvg: '¥595,522',
-        weekAvg: '¥583,375',
-        growth: '-2'
+        monthAvg: '¥595,521.8',
+        weekAvg: '¥583,374.73',
+        growth: '-2.04'
       },
       {
         icon: 'fas fa-users',
         colorClass: 'cdp-bg-candy__pink',
-        monthAvg: '1,890',
-        weekAvg: '2,067',
-        growth: '9'
+        monthAvg: '1,889.5',
+        weekAvg: '2,066.83',
+        growth: '9.39'
       }
     ]
     expect(wrapper.vm.topCardData).toStrictEqual(topCardData)

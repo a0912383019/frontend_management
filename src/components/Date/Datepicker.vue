@@ -27,10 +27,14 @@ const props = defineProps({
   classColor: {
     type: String,
     default: ''
+  },
+  type: {
+    type: String,
+    default: 'date'
   }
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const key = ref(0)
 
@@ -54,6 +58,7 @@ const handleDateChange = (date) => {
   if (date !== null) {
     let result = dayjs(singleDateValue.value).format(t('date.format_date_rule'))
     emit('update:modelValue', result)
+    emit('change', result)
   }
 }
 
@@ -74,6 +79,12 @@ const disabledDate = (time) => {
   }
   return false
 }
+
+// format date 格式
+const formatDate = computed(() => {
+  if (props.type === 'month') return t('date.format_date_rule_month')
+  return t('date.format_date_rule')
+})
 
 const popperClass = computed(() => {
   if (props.classColor !== '') {
@@ -106,10 +117,10 @@ watch(i18nLocale, () => {
     <el-date-picker
       v-model="singleDateValue"
       :key="key"
-      type="date"
+      :type="props.type"
       :popper-class="popperClass"
       class="cdp-datepicker-single"
-      :format="$t('date.format_date_rule')"
+      :format="formatDate"
       :teleported="props.teleported"
       :disabled-date="disabledDate"
       :clearable="false"

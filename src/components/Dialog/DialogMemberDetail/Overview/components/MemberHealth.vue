@@ -5,7 +5,7 @@ import { apiQueryMemberHealthChart } from '@/api/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import Chart from 'chart.js/auto'
-import { generateRGBColors, errorRespond } from '@/utils/commonUtils.js'
+import { generateRGBColors, errorRespond, FormatNumber } from '@/utils/commonUtils.js'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 
@@ -71,7 +71,7 @@ const queryMemberHealthChart = async () => {
       let chart_data_bgColor = [generateRGBColors([255, 255, 255], 0)]
       let chart_data_borderColor = [generateRGBColors([255, 255, 255], 0)]
       let health_value = action_score
-      memberHealthValue.value = health_value
+      memberHealthValue.value = FormatNumber(health_value)
       chart_data.push(100 - health_value)
       chart_data.push(health_value)
 
@@ -175,6 +175,6 @@ onMounted(() => {
   }
 }
 .cdp-section-in {
-  height: calc(100% - 20px);
+  height: 100%;
 }
 </style>

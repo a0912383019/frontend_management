@@ -75,7 +75,7 @@ describe('GADetail.vue', () => {
       { name: '停留時間', value: '3 天 8 小時 22 分 27 秒' },
       { name: '總跳出次數', value: 0 },
       { name: '工作階段總數', value: 2 },
-      { name: '貨量 / 工作階段', value: '¥13,978,058' }
+      { name: '貨量 / 工作階段', value: '¥13,978,057.5' }
     ]
     expect(wrapper.vm.tableData).toStrictEqual(tableData)
   })

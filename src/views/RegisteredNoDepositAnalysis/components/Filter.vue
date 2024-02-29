@@ -148,10 +148,9 @@ onMounted(() => {
           </SectionTitle>
           <el-select
             v-model="selectDepositValue"
-            class="cdp-select__purple w-full"
-            popper-class="cdp-select-popper__purple"
+            class="cdp-select cdp-select__purple w-full"
+            popper-class="cdp-select-popper cdp-select-popper__purple"
             filterable
-            suffix-icon="CaretBottom"
             :teleported="false"
           >
             <el-option

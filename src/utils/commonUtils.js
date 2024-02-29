@@ -98,7 +98,7 @@ export function roundDecimal(val, precision = 2) {
  * @param {int} precision 顯示的小數位數
  * @returns {string}
  */
-export function FormatNumber(n, currency_sign = '', precision = 0) {
+export function FormatNumber(n, currency_sign = '', precision = 2) {
   n = roundDecimal(n, precision)
   let arr = n.split('.')
 
@@ -374,7 +374,7 @@ export function stringToIntArray(str) {
  * @param {Array} tableData 要排序的表格資料
  * @returns {Array} 已排序的表格資料
  */
-export const sortTableData = ({ prop, order, tableData }) => {
+export function sortTableData({ prop, order, tableData }) {
   return tableData.sort((a, b) => {
     const valueA = extractNumberValue(a[prop])
     const valueB = extractNumberValue(b[prop])

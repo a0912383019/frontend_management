@@ -189,4 +189,14 @@ onMounted(() => {
     </template>
   </section>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.cdp-section-in {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  :deep(.message) {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}
+</style>
