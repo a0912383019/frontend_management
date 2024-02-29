@@ -99,7 +99,7 @@ const handleTagAddText = (data) => {
 
   // 如果目前已選取相同選項，則移除該選項
   if (currentTagAryIndex !== -1 && currentTagAryIndex !== false) {
-    handleTagDelete(currentTagAryIndex)
+    handleTagDelete({ index: currentTagAryIndex })
   }
 
   // 如果目前沒有選曲選項，則新增該選項
@@ -120,7 +120,7 @@ const handleTagAddText = (data) => {
 }
 
 // 點擊tag，刪除tag
-const handleTagDelete = (index) => {
+const handleTagDelete = ({ index }) => {
   currentTagAry.value.splice(index, 1)
   selectTypeLists.value.forEach((item) => {
     item.disabled = false

@@ -583,6 +583,7 @@
   },
 
   "vip_commercial_analysis": {
+    "all": "全部",
     "include_day_of_week": "包含星期",
     "select_included_day_of_week": "选择包含星期...",
     "monday": "周一",

@@ -42,7 +42,7 @@ export const useVipCommercialAnalysisStore = defineStore('vipCommercialAnalysis'
   // filter: 週報表
   const weekReportFilter = reactive({
     financialMonth: dayjs(date_range_picker_config_9.startDate).format('MM'),
-    financialWeek: '1',
+    financialWeek: 1,
     financialYear: dayjs(date_range_picker_config_9.startDate).format('YYYY'),
     date: dayjs(date_range_picker_config_9.startDate).format('YYYY-MM'),
     vipTag: defaultVipTag

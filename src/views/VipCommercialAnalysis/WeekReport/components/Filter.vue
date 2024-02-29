@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted, onUnmounted, watch, computed } from 'vue'
+import { ref, reactive, onUnmounted, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore, useVipCommercialAnalysisStore, useDateStore } from '@/stores'
@@ -34,7 +34,8 @@ const closePopover = () => {
 
 // filter 欄位資料
 const filterData = reactive({
-  week: weekReportFilter.financialWeek,
+  displayweek: '', // 畫面顯示用
+  apiWeek: weekReportFilter.financialWeek, // api 參數用
   searchDate: '',
   vipTag: defaultVipTag
 })
@@ -84,7 +85,7 @@ const handleClick = () => {
     selectTypeLists.value = originalSelectTypeLists
   }
   weekReportFilter.financialMonth = dayjs(filterData.searchDate).format('MM')
-  weekReportFilter.financialWeek = filterData.week
+  weekReportFilter.financialWeek = filterData.apiWeek
   weekReportFilter.financialYear = dayjs(filterData.searchDate).format('YYYY')
   weekReportFilter.date = dayjs(filterData.searchDate).format('YYYY-MM')
   weekReportFilter.vipTag = filterData.vipTag
@@ -106,27 +107,49 @@ const handleDateChange = async (date) => {
     year: dayjs(date).format('YYYY')
   })
 
-  // 選取的週次重置成第一週
-  filterData.week = '1'
+  // 清空週次
+  filterData.displayweek = ''
 
   // 產生週次下拉選單
   selectWeeks.value = apiWeekData[0].weeks.map((item) => {
-    const startDate = item.week_duration.split('~')[0].trim()
+    const startDate = dayjs(item.week_duration.split('~')[0]).format(t('date.format_date_rule'))
     // 依照 dayjs 處理 isBetween 邏輯，以確保今天的日期如果剛好是 endDate 也可以被包含在區間內，需要將結束日期 endDate 加上一天，這樣才符合帳務週的時間邏輯
-    const endDate = dayjs(item.week_duration.split('~')[1].trim()).add(1, 'day')
+    const endDate = dayjs(item.week_duration.split('~')[1])
+      .add(1, 'day')
+      .format(t('date.format_date_rule'))
+
+    // 轉換帳務週顯示格式
+    const formatDate = `${item.fin_week}(${startDate} ~ ${endDate})`
+
+    // 判斷日期是否在帳務週區間
     const isBetween = dayjs(LAST_DATE).isBetween(startDate, endDate)
-    if (isBetween) filterData.week = item.fin_week
+    if (isBetween) {
+      filterData.displayweek = formatDate
+      filterData.apiWeek = item.fin_week
+    }
     return {
-      label: `${item.fin_week}(${item.week_duration})`,
-      value: item.fin_week.toString()
+      label: formatDate,
+      value: item.fin_week
     }
   })
+
+  // 如果 displayweek 為空，預設顯示第一週
+  if (filterData.displayweek === '') {
+    filterData.displayweek = selectWeeks.value[0].label
+    filterData.apiWeek = selectWeeks.value[0].value
+  }
 
   // 第一次載入執行這段，須等帳戶週處理完今日的日期對應的週次，再進行篩選
   if (isFirst.value) {
     handleClick()
     isFirst.value = false
   }
+}
+
+// 週次變動觸發
+const handleWeekChange = (value) => {
+  console.log(value)
+  filterData.apiWeek = value
 }
 
 onUnmounted(() => {
@@ -139,6 +162,7 @@ watch(
   () => {
     tagsConfig.value = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
     key.value = Math.floor(Math.random() * 100)
+    handleDateChange()
   }
 )
 </script>
@@ -177,17 +201,19 @@ watch(
             <SectionTitle size="small" class="cdp-text-purple mb-4" :title="$t('date.week')">
             </SectionTitle>
             <el-select
-              v-model="filterData.week"
+              v-model="filterData.displayweek"
               class="cdp-select cdp-select__purple w-full"
               popper-class="cdp-select-popper cdp-select-popper__purple"
               :teleported="false"
+              @change="handleWeekChange"
             >
               <el-option
-                v-for="(item, index) in selectWeeks"
-                :key="index"
+                v-for="item in selectWeeks"
+                :key="item.value"
                 :label="item.label"
                 :value="item.value"
-              />
+              >
+              </el-option>
             </el-select>
           </div>
           <div class="drop__top__item full">
