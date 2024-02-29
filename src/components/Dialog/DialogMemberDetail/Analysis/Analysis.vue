@@ -20,14 +20,14 @@ watch([() => dialogMemberDetailStore.nowTag, () => dialogMemberDetailStore.timeS
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="8">
+      <el-col :span="8" class="mb-20">
         <GADetail :key="key" />
       </el-col>
-      <el-col :span="16">
+      <el-col :span="16" class="mb-20">
         <GALoginCount :key="key" />
       </el-col>
     </el-row>
-    <el-row :gutter="20">
+    <el-row :gutter="20" class="mb-20">
       <el-col :span="8">
         <PeriodOfferAmount :key="key" />
       </el-col>

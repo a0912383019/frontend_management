@@ -129,14 +129,15 @@ const handleDateChange = async (date) => {
     }
     return {
       label: formatDate,
-      value: item.fin_week
+      value: formatDate
     }
   })
 
   // 如果 displayweek 為空，預設顯示第一週
   if (filterData.displayweek === '') {
+    const weekData = Number(selectWeeks.value[0].label.split('(')[0])
     filterData.displayweek = selectWeeks.value[0].label
-    filterData.apiWeek = selectWeeks.value[0].value
+    filterData.apiWeek = weekData
   }
 
   // 第一次載入執行這段，須等帳戶週處理完今日的日期對應的週次，再進行篩選
@@ -148,8 +149,7 @@ const handleDateChange = async (date) => {
 
 // 週次變動觸發
 const handleWeekChange = (value) => {
-  console.log(value)
-  filterData.apiWeek = value
+  filterData.apiWeek = Number(value.split('(')[0])
 }
 
 onUnmounted(() => {

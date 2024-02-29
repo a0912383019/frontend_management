@@ -175,6 +175,6 @@ onMounted(() => {
   }
 }
 .cdp-section-in {
-  height: calc(100% - 20px);
+  height: 100%;
 }
 </style>
