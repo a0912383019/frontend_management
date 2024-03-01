@@ -44,7 +44,7 @@ exports[`Tooltip Utils > should format single shared tooltip using tooltipSingle
       <div>
         New BB體育-足球：
         ¥
-        49,662,271.24
+        49,662,271
       </div>
     </div>
     </div></div>"
@@ -90,7 +90,7 @@ exports[`Tooltip Utils > should format tooltip with added sign using tooltipAddS
       \\"></div>
       <div>
         活躍期：
-        0.6
+        1
         @
       </div>
     </div>

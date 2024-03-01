@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useVipCommercialAnalysisStore, useDialogMemberDetailStore } from '@/stores'
 import { apiWeekReport } from '@/api'
@@ -156,6 +156,7 @@ const transformWeekReport = (data) => {
       user_name: item.user_name,
       deposit_amount: FormatNumber(item.deposit_amount),
       bet_amount: FormatNumber(item.bet_amount),
+      compare_bet_amount_percent: FormatNumber(item.compare_bet_amount_percent),
       payoff: addNumberColor(FormatNumber(item.payoff)),
       offer_amount: FormatNumber(item.offer_amount),
       profit_loss: addNumberColor(FormatNumber(item.profit_loss)),
