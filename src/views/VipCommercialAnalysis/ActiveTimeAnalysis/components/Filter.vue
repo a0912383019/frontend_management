@@ -131,7 +131,11 @@ const vipKey = ref(0)
 const handleCsvSuccess = (data) => {
   filterData.customUserList = data
   handleClick()
-  // 查詢後將 customUserList 清空
+}
+
+// 關閉 使用者手動匯入名單
+const handleCsvClear = () => {
+  //將 customUserList 清空
   filterData.customUserList = []
 }
 
@@ -221,12 +225,13 @@ watch(
             <SectionTitle
               size="small"
               class="cdp-text-purple mb-4"
-              :title="$t('common.include_weeks')"
+              :title="$t('vip_commercial_analysis.include_day_of_week')"
             >
             </SectionTitle>
             <SelectTagSingle
               :key="weekKey"
               :lists="selectWeekLists"
+              :defaultAll="defaultWeeks"
               v-model="filterData.containWeeks"
             />
           </div>
@@ -246,6 +251,7 @@ watch(
               v-model="filterData.custom"
               :csvType="1"
               @update:success="handleCsvSuccess"
+              @update:clear="handleCsvClear"
             />
           </div>
           <div class="drop__footer__item">

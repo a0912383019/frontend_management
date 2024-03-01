@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { apiUploadCsvList } from '@/api/global.js'
@@ -15,7 +15,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue', 'update:success'])
+const emit = defineEmits(['update:modelValue', 'update:success', 'update:clear'])
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -32,13 +32,18 @@ const handleGetFileName = (data) => {
   uploadCsvFile()
 }
 
+// 存放 api 資料
+const apiResult = ref([])
+
 //dialog 開啟狀態
 const dialogVisible = ref(false)
 
 //dialog close callback
 const handleClose = () => {
   refUploadFile.value.dialogClose()
-  switchValue.value = false
+  if (apiResult.value.length === 0) {
+    switchValue.value = false
+  }
 }
 
 const uploadCsvFile = async () => {
@@ -60,11 +65,13 @@ const uploadCsvFile = async () => {
       globalStore.isLoading = false // 關閉loading
 
       // 傳遞會員帳號的emit給父層使用
-      emit('update:success', result.data.result)
+      apiResult.value = result.data.result
+      emit('update:success', apiResult.value)
     }
   } catch (error) {
     console.error(error)
     globalStore.isLoading = false // 關閉loading
+    apiResult.value = []
     if (error.response.status === 403) {
       ElNotification({
         title: t('msg.no_permission'),
@@ -89,6 +96,16 @@ const handleUseCustomSwitchChange = (type) => {
   emit('update:modelValue', type)
   dialogVisible.value = type
 }
+
+watch(
+  () => switchValue.value,
+  () => {
+    // 關閉手動匯入名單時，emit update:clear
+    if (!switchValue.value) {
+      emit('update:clear', true)
+    }
+  }
+)
 </script>
 <template>
   <div class="box">

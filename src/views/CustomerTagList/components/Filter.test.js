@@ -1,5 +1,5 @@
 import { it, describe, expect, afterEach, vi, beforeEach } from 'vitest'
-import { shallowMount, flushPromises } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
 import { useGlobalStore } from '@/stores/global.js'
@@ -102,6 +102,12 @@ describe('Filter', () => {
 
     wrapper.vm.handleCsvSuccess(user)
     expect(hide).toHaveBeenCalled()
+  })
+
+  it('handleCsvClear', async () => {
+    wrapper.vm.form.custom_user_list = ['aa']
+    await wrapper.vm.handleCsvClear()
+    expect(wrapper.vm.form.custom_user_list).toStrictEqual([])
   })
 
   // 測試 closePopover

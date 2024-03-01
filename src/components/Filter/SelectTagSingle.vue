@@ -7,15 +7,17 @@ import { dayjs } from 'element-plus'
 
 const { t } = useI18n()
 
-const vipStore = useVipCommercialAnalysisStore()
-const { defaultVipTag } = vipStore
-
 const props = defineProps({
   modelValue: {
     type: String
   },
   lists: {
     type: Array
+  },
+  defaultAll: {
+    type: String,
+    // default: '10001, 10003'
+    default: useVipCommercialAnalysisStore().defaultVipTag
   }
 })
 
@@ -155,7 +157,7 @@ const handleSetApiRequestKey = () => {
   apiRequestKey.value = ''
   currentTagAry.value.forEach((item, index) => {
     if (item.value === 'all') {
-      apiRequestKey.value = defaultVipTag
+      apiRequestKey.value = props.defaultAll
       return
     }
     if (item.value !== 'all') {
