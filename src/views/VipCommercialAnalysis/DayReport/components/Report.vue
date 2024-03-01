@@ -155,7 +155,7 @@ const transformDayReport = (data) => {
       deposit_amount: FormatNumber(item.deposit_amount),
       bet_amount: FormatNumber(item.bet_amount),
       payoff: addNumberColor(FormatNumber(item.payoff)),
-      offer_amount: addNumberColor(FormatNumber(item.offer_amount)),
+      offer_amount: FormatNumber(item.offer_amount),
       profit_loss: addNumberColor(FormatNumber(item.profit_loss)),
       net_amount: addNumberColor(FormatNumber(item.net_amount)),
       ga_num: FormatNumber(item.ga_num),

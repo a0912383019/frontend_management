@@ -163,7 +163,7 @@ const transformWeekTotalReport = (data) => {
       deposit_amount: FormatNumber(item.deposit_amount),
       bet_amount: FormatNumber(item.bet_amount),
       payoff: addNumberColor(FormatNumber(item.payoff)),
-      premium_amount: addNumberColor(FormatNumber(item.premium_amount)),
+      premium_amount: FormatNumber(item.premium_amount),
       profit_loss: addNumberColor(FormatNumber(item.profit_loss)),
       net_amount: addNumberColor(FormatNumber(item.net_amount)),
       ga_num: FormatNumber(item.ga_num),
