@@ -1,17 +1,21 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { dayjs } from 'element-plus'
-import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
-import { apiWeekTotalReport } from '@/api'
+import { useGlobalStore, useVipCommercialAnalysisStore, useDialogMemberDetailStore } from '@/stores'
+import { apiDayReport } from '@/api'
 import { addNumberColor, FormatNumber, errorRespond, sortTableData } from '@/utils/commonUtils.js'
-import CdpMessage from '@/components/CdpMessage.vue'
-import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
+import CustomTable from '@/components/CustomTable/CustomTable.vue'
+import CdpMessage from '@/components/CdpMessage.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
+import ExportCSV from './ExportCSV.vue'
+import { dayjs } from 'element-plus'
 
 const vipStore = useVipCommercialAnalysisStore()
-const { weekTotalReportFilter } = vipStore
+const { dayReportFilter } = vipStore
+
+const dialogMemberDetailStore = useDialogMemberDetailStore()
+const { updateMemberData } = dialogMemberDetailStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -24,9 +28,6 @@ const apiSuccess = ref(false)
 // 依照不同的 messageKey 產生不同的 message
 const messageKey = ref('loading')
 
-// 表格 api 資料
-const apiTableResult = ref([])
-
 // 表格資料
 const tableData = ref([])
 
@@ -34,26 +35,18 @@ const tableData = ref([])
 const tableColumns = computed(() => {
   return [
     {
-      label: t('date.date_duration'),
-      prop: 'date_duration',
+      label: t('data_name.member_name'),
+      prop: 'user_name',
       headerAlign: 'center',
       align: 'center',
       minWidth: '12%'
-    },
-    {
-      label: t('data_name.active_member'),
-      prop: 'active_people',
-      headerAlign: 'center',
-      align: 'center',
-      minWidth: '10%',
-      sortable: 'custom'
     },
     {
       label: t('data_name.deposit'),
       prop: 'deposit_amount',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '11%',
       sortable: 'custom'
     },
     {
@@ -61,7 +54,7 @@ const tableColumns = computed(() => {
       prop: 'bet_amount',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '11%',
       sortable: 'custom'
     },
     {
@@ -69,15 +62,15 @@ const tableColumns = computed(() => {
       prop: 'payoff',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '11%',
       sortable: 'custom'
     },
     {
       label: t('data_name.bonus'),
-      prop: 'premium_amount',
+      prop: 'offer_amount',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '11%',
       sortable: 'custom'
     },
     {
@@ -85,7 +78,7 @@ const tableColumns = computed(() => {
       prop: 'profit_loss',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '11%',
       sortable: 'custom'
     },
     {
@@ -93,7 +86,7 @@ const tableColumns = computed(() => {
       prop: 'net_amount',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '11%',
       sortable: 'custom'
     },
     {
@@ -101,7 +94,7 @@ const tableColumns = computed(() => {
       prop: 'ga_num',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '11%',
       sortable: 'custom'
     },
     {
@@ -109,27 +102,27 @@ const tableColumns = computed(() => {
       prop: 'login_num',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '11%',
       sortable: 'custom'
     }
   ]
 })
 
-// 呼叫 api
-const queryWeekTotalReport = async () => {
+// call api
+const queryDayReport = async () => {
   apiSuccess.value = false
   messageKey.value = 'loading'
+  const { searchDate, vipTag } = dayReportFilter
   try {
-    const result = await apiWeekTotalReport({
+    const result = await apiDayReport({
       hall_name: activeHall.hall_code,
-      start_date: weekTotalReportFilter.startDate,
-      end_date: weekTotalReportFilter.endDate,
-      vip_tag: weekTotalReportFilter.vipTag.split(',')
+      report_date: dayjs(searchDate).format('YYYY-MM-DD'),
+      vip_tag: vipTag.split(',')
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true // 取得資料成功
-      transformWeekTotalReport(result.data.result)
+      transformDayReport(result.data.result)
     } else {
       const { error_code } = result.data.status
       if (error_code === '210400000') {
@@ -150,27 +143,25 @@ const queryWeekTotalReport = async () => {
   }
 }
 
-const transformWeekTotalReport = (data) => {
+// 轉換資料
+const transformDayReport = (data) => {
   tableData.value = data.map((item) => {
     return {
-      date_duration:
-        dayjs(item.financial_week_start).format(t('date.format_date_rule')) +
-        ' ~ ' +
-        dayjs(item.financial_week_end).format(t('date.format_date_rule')),
-      date_duration_start: dayjs(item.financial_week_start).format(t('date.format_date_rule')),
-      date_duration_end: dayjs(item.financial_week_end).format(t('date.format_date_rule')),
-      active_people: FormatNumber(item.active_people),
+      user: {
+        user_name: item.user_name,
+        user_id: item.user_id
+      },
+      user_name: item.user_name,
       deposit_amount: FormatNumber(item.deposit_amount),
       bet_amount: FormatNumber(item.bet_amount),
       payoff: addNumberColor(FormatNumber(item.payoff)),
-      premium_amount: FormatNumber(item.premium_amount),
+      offer_amount: FormatNumber(item.offer_amount),
       profit_loss: addNumberColor(FormatNumber(item.profit_loss)),
       net_amount: addNumberColor(FormatNumber(item.net_amount)),
       ga_num: FormatNumber(item.ga_num),
       login_num: FormatNumber(item.login_num)
     }
   })
-  apiTableResult.value = tableData.value.slice(0)
 }
 
 // 自定義排序執行的內容
@@ -179,36 +170,34 @@ const upadteCurrentSort = ({ prop, order }) => {
 }
 
 onMounted(() => {
-  queryWeekTotalReport()
+  queryDayReport()
 })
 
-defineExpose({ queryWeekTotalReport })
+defineExpose({ queryDayReport })
 </script>
 <template>
   <section class="cdp-section-in">
-    <div class="top-box">
-      <SectionTitle
-        :title="$t('vip_commercial_analysis.week_total_report_table')"
-        class="mb-15"
-      ></SectionTitle>
-      <CurrencySignText v-show="apiSuccess" />
+    <div class="detail-top-box">
+      <SectionTitle :title="$t('vip_commercial_analysis.day_report')"> </SectionTitle>
+      <div class="detail-top-box__right">
+        <CurrencySignText class="mr-20" />
+        <ExportCSV />
+      </div>
     </div>
     <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
     <CustomTable
+      v-else
       :tableData="tableData"
       :tableColumns="tableColumns"
-      :hasPagination="true"
       :stripe="true"
       class="customTable2"
       @sort="upadteCurrentSort"
-      v-if="apiSuccess === true"
     >
-      <!-- 日期區間 -->
-      <template #date_duration="scope">
-        <div class="date">
-          <span class="date__start">{{ scope.row.date_duration_start }}</span>
-          <span class="date__end">{{ scope.row.date_duration_end }}</span>
-        </div>
+      <!-- 會員名稱 -->
+      <template #user_name="scope">
+        <span class="cdp-link-click" @click="updateMemberData(scope.row.user)">
+          {{ scope.row.user_name }}
+        </span>
       </template>
 
       <!-- 損益 -->
@@ -217,8 +206,8 @@ defineExpose({ queryWeekTotalReport })
       </template>
 
       <!-- 優惠獎金 -->
-      <template #premium_amount="scope">
-        <div v-html="scope.row.premium_amount"></div>
+      <template #offer_amount="scope">
+        <div v-html="scope.row.offer_amount"></div>
       </template>
 
       <!-- 實際損益 -->
@@ -234,24 +223,18 @@ defineExpose({ queryWeekTotalReport })
   </section>
 </template>
 <style lang="scss" scoped>
-.top-box {
+.detail-top-box {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 16px;
+  &__right {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+  }
 }
-
-.date {
-  &__start {
-    position: relative;
-    display: inline-block;
-    &::after {
-      content: '~';
-      position: absolute;
-      right: -13px;
-      top: 1px;
-    }
-  }
-  &__end {
-    display: block;
-  }
+:deep(.cdp-text-light__slate__gray) {
+  color: #6c757d !important;
 }
 </style>
