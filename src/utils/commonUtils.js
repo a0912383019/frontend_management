@@ -98,7 +98,7 @@ export function roundDecimal(val, precision = 2) {
  * @param {int} precision 顯示的小數位數
  * @returns {string}
  */
-export function FormatNumber(n, currency_sign = '', precision = 2) {
+export function FormatNumber(n, currency_sign = '', precision = 0) {
   n = roundDecimal(n, precision)
   let arr = n.split('.')
 

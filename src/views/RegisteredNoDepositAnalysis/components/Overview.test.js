@@ -169,7 +169,7 @@ describe('Overview', () => {
         total_people_num: 2,
         total_deposit_people_num: 2,
         deposit_ratio: '100%',
-        avg_first_deposit_day: '5,478.5',
+        avg_first_deposit_day: '5,479',
         has_bg: true
       },
       {
@@ -179,7 +179,7 @@ describe('Overview', () => {
         total_people_num: 4,
         total_deposit_people_num: 4,
         deposit_ratio: '100%',
-        avg_first_deposit_day: '5,415.75',
+        avg_first_deposit_day: '5,416',
         has_bg: true
       },
       {
