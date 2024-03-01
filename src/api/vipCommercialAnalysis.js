@@ -106,6 +106,31 @@ export const apiActiveTimeDetail = (params) => {
   })
 }
 
+// 日報表
+export const apiDayReport = (params) => {
+  const { hall_name, report_date, vip_tag } = params
+  return axiosGoInstance.get('/api/auth/vip/day_report', {
+    params: {
+      hall_name,
+      report_date,
+      vip_tag
+    }
+  })
+}
+
+// 日報表 - 匯出報表
+export const apiExportDayReport = (params) => {
+  const { hall_name, locale, report_date, vip_tag } = params
+  return axiosGoInstance.get('/api/auth/vip/export_day_report', {
+    params: {
+      hall_name,
+      locale,
+      report_date,
+      vip_tag
+    }
+  })
+}
+
 // 週報表
 export const apiWeekReport = (params) => {
   const { hall_name, financial_month, financial_week, financial_year, vip_tag } = params

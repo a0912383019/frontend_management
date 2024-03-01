@@ -39,6 +39,12 @@ export const useVipCommercialAnalysisStore = defineStore('vipCommercialAnalysis'
     fuzzySearch: false
   })
 
+  // filter: 日報表
+  const dayReportFilter = reactive({
+    searchDate: dayjs(date_range_picker_config_4.endDate).format('YYYY-MM-DD'),
+    vipTag: defaultVipTag
+  })
+
   // filter: 週報表
   const weekReportFilter = reactive({
     financialMonth: dayjs(date_range_picker_config_9.startDate).format('MM'),
@@ -59,6 +65,8 @@ export const useVipCommercialAnalysisStore = defineStore('vipCommercialAnalysis'
   const resetState = () => {
     livelyAnalysisFilter.searchDate = dayjs(date_range_picker_config_4.endDate).format('YYYY-MM-DD')
 
+    dayReportFilter.searchDate = dayjs(date_range_picker_config_4.endDate).format('YYYY-MM-DD')
+
     weekTotalReportFilter.startDate = dayjs(date_range_picker_config_9.startDate).format('YYYY-MM')
     weekTotalReportFilter.endDate = dayjs(date_range_picker_config_9.endDate).format('YYYY-MM')
   }
@@ -68,6 +76,7 @@ export const useVipCommercialAnalysisStore = defineStore('vipCommercialAnalysis'
     defaultWeeks,
     livelyAnalysisFilter,
     activeTimeAnalysisFilter,
+    dayReportFilter,
     weekReportFilter,
     weekTotalReportFilter,
     resetState
