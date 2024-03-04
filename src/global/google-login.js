@@ -10,6 +10,11 @@ if (developmentEnvironment === 'qa' || developmentEnvironment === 'local') {
   clientId = '1055824448864-oifmo3rcb9t51lucpbvsf6v0mhrfvh0s.apps.googleusercontent.com'
 }
 
+// for staging
+if (developmentEnvironment === 'staging') {
+  clientId = '625258764705-4ceasn0n82ete5dnv9mt4dk9bjni9bqp.apps.googleusercontent.com'
+}
+
 export const googleLoginRegister = (app) => {
   app.use(vue3GoogleLogin, {
     clientId,
