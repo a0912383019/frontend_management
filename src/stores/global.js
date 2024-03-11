@@ -3,8 +3,6 @@ import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import { RFM_NAPL_step_config, iconStep } from '@/../public/js/system_config.js'
 import { i18n } from '@/global/i18n'
-import { apiFinancialWeeks } from '@/api'
-import { errorRespond } from '@/utils/commonUtils.js'
 
 export const useGlobalStore = defineStore(
   'global',
@@ -125,33 +123,9 @@ export const useGlobalStore = defineStore(
 
     const systemConfigIsOk = ref(0)
 
-    // 取得帳務週次
-    const storeQueryFinancialWeeks = async ({ year, month }) => {
-      try {
-        const result = await apiFinancialWeeks({
-          hall_name: activeHall.hall_code,
-          year,
-          month
-        })
-        const { return_code } = result.data.status
-        if (return_code === '0000') {
-          return result.data.result
-        } else {
-          let failMsg = errorRespond(result.data.status)
-          console.error(failMsg)
-        }
-      } catch (error) {
-        console.error(error)
-        if (error.response.status === 401) {
-          storeHandleApiError()
-        }
-      }
-    }
-
     return {
       isLoading,
       storeHandleApiError,
-      storeQueryFinancialWeeks,
       activeHall,
       lobbyGroupConfig,
       tableConfig,

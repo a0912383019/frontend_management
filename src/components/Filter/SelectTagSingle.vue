@@ -15,13 +15,21 @@ const props = defineProps({
     type: Array
   },
   defaultAll: {
-    type: String,
-    // default: '10001, 10003'
-    default: useVipCommercialAnalysisStore().defaultVipTag
+    type: String
   }
 })
 
+const vipStore = useVipCommercialAnalysisStore()
+const { defaultVipTag } = vipStore
+
 const emit = defineEmits(['update:modelValue'])
+
+/*
+  原本作法為 props.defaultAll 給預設值 useVipCommercialAnalysisStore().defaultVipTag
+  但單元測試會有 pinia 問題，目前不知道怎麼解決
+  所以改成 defaultAll 為 undefined 時，賦值 defaultVipTag
+*/
+const defaultAll = props.defaultAll === undefined ? defaultVipTag : props.defaultAll
 
 // 創建不重複的class name
 const dropClass = ref('dropClass' + dayjs() + Math.floor(Math.random() * 10))
@@ -157,7 +165,7 @@ const handleSetApiRequestKey = () => {
   apiRequestKey.value = ''
   currentTagAry.value.forEach((item, index) => {
     if (item.value === 'all') {
-      apiRequestKey.value = props.defaultAll
+      apiRequestKey.value = defaultAll
       return
     }
     if (item.value !== 'all') {
