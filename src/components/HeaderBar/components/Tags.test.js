@@ -7,10 +7,12 @@ import { createTestingPinia } from '@pinia/testing'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@/utils/fontawsome.js'
 import router from '@/router'
+import * as module from '@/utils/commonUtils.js'
 
 describe('Tags', () => {
   let wrapper = null
   let system_config = null
+  let spy
 
   beforeEach(() => {
     system_config = {
@@ -95,6 +97,11 @@ describe('Tags', () => {
     }
     sessionStorage.setItem('system_config', JSON.stringify(system_config))
 
+    spy = vi.spyOn(module, 'findRootHall').mockImplementation(vi.fn())
+
+    //模擬第一次與第二次呼叫getSessionStorageEntity
+    module.findRootHall.mockReturnValue("BBIN")
+
     wrapper = mount(Tags, {
       global: {
         plugins: [
@@ -134,33 +141,6 @@ describe('Tags', () => {
       all: [
         {
           mutual_tags_code: '',
-          sort_index: 1000000,
-          tag_category: 1,
-          tag_description: '測試敘述',
-          tag_enabled: true,
-          tag_name: '測試',
-          tag_type: 1
-        },
-        {
-          mutual_tags_code: '',
-          sort_index: 1000001,
-          tag_category: 1,
-          tag_description: '人工定義為高價值會員',
-          tag_enabled: true,
-          tag_name: 'VIP客',
-          tag_type: 1
-        },
-        {
-          mutual_tags_code: '30009,30010,30011,30013,30014',
-          sort_index: 3000012,
-          tag_category: 1,
-          tag_description: '會員近15個實動日，在體育類遊戲總有效投註量最多',
-          tag_enabled: true,
-          tag_name: '體育客',
-          tag_type: 3
-        },
-        {
-          mutual_tags_code: '',
           sort_index: 6011000,
           tag_category: 1,
           tag_description: 'AI 判定有對打嫌疑玩百家樂視訊的會員',
@@ -187,6 +167,15 @@ describe('Tags', () => {
           tag_type: 6
         },
         {
+          mutual_tags_code: '30009,30010,30011,30013,30014',
+          sort_index: 3000012,
+          tag_category: 1,
+          tag_description: '會員近15個實動日，在體育類遊戲總有效投註量最多',
+          tag_enabled: true,
+          tag_name: '體育客',
+          tag_type: 3
+        },
+        {
           tag_description: '會員近15個實動日，遊玩『週一 至 週日』週次總下注最多者',
           tag_name: '週次'
         },
@@ -208,8 +197,30 @@ describe('Tags', () => {
           tag_name: '常用入款方式'
         },
         {
+          tag_description: '會員近15個實動日，最常關注的優惠類型',
+          tag_name: '偏好優惠方式'
+        },
+        {
           tag_description: '會員近15個實動日，登入次數最多的省份地區',
           tag_name: '常登入地區(省)'
+        },
+        {
+          mutual_tags_code: '',
+          sort_index: 1000000,
+          tag_category: 1,
+          tag_description: '測試敘述',
+          tag_enabled: true,
+          tag_name: '測試',
+          tag_type: 1
+        },
+        {
+          mutual_tags_code: '',
+          sort_index: 1000001,
+          tag_category: 1,
+          tag_description: '人工定義為高價值會員',
+          tag_enabled: true,
+          tag_name: 'VIP客',
+          tag_type: 1
         }
       ],
       type1: [
@@ -264,6 +275,10 @@ describe('Tags', () => {
           tag_name: '常用入款方式'
         },
         {
+          tag_description: '會員近15個實動日，最常關注的優惠類型',
+          tag_name: '偏好優惠方式'
+        },
+        {
           tag_description: '會員近15個實動日，登入次數最多的省份地區',
           tag_name: '常登入地區(省)'
         }
@@ -298,7 +313,8 @@ describe('Tags', () => {
           tag_name: '骰寶視訊疑似對打客',
           tag_type: 6
         }
-      ]
+      ],
+      type9: []
     }
     expect(wrapper.vm.tagsData).toStrictEqual(tagConfigEsb)
     expect(wrapper.vm.tableData).toStrictEqual(tagConfigEsb['all'])
@@ -351,24 +367,6 @@ describe('Tags', () => {
     const tagConfigBmw = {
       all: [
         {
-          tag_type: 4,
-          tag_name: 'AG視訊對打客',
-          tag_description: 'AI 判定有對打玩AG視訊的會員',
-          tag_category: 1,
-          sort_index: 4000030,
-          tag_enabled: true,
-          mutual_tags_code: '40006,40014'
-        },
-        {
-          tag_type: 5,
-          tag_name: '代理傭金轉會員',
-          tag_description: '人工定義為代理傭金轉會員',
-          tag_category: 1,
-          sort_index: 5000300,
-          tag_enabled: true,
-          mutual_tags_code: ''
-        },
-        {
           tag_name: '週次',
           tag_description: '會員近15個實動日，遊玩『週一 至 週日』週次總下注最多者'
         },
@@ -389,7 +387,29 @@ describe('Tags', () => {
           tag_description:
             '會員近15個實動日，在 某入款方法 總金額最高，包含公司入款、加密貨幣、人工存入、購寶錢包、CGPAY支付、線上存款、e點付、e點富、OSPAY支付等'
         },
-        { tag_name: '常登入地區(省)', tag_description: '會員近15個實動日，登入次數最多的省份地區' }
+        {
+          tag_description: '會員近15個實動日，最常關注的優惠類型',
+          tag_name: '偏好優惠方式'
+        },
+        { tag_name: '常登入地區(省)', tag_description: '會員近15個實動日，登入次數最多的省份地區' },
+        {
+          mutual_tags_code: '40006,40014',
+          sort_index: 4000030,
+          tag_category: 1,
+          tag_description: 'AI 判定有對打玩AG視訊的會員',
+          tag_enabled: true,
+          tag_name: 'AG視訊對打客',
+          tag_type: 4
+        },
+        {
+          mutual_tags_code: '',
+          sort_index: 5000300,
+          tag_category: 1,
+          tag_description: '人工定義為代理傭金轉會員',
+          tag_enabled: true,
+          tag_name: '代理傭金轉會員',
+          tag_type: 5
+        }
       ],
       type1: [],
       type3: [
@@ -413,6 +433,10 @@ describe('Tags', () => {
           tag_name: '常用入款方式',
           tag_description:
             '會員近15個實動日，在 某入款方法 總金額最高，包含公司入款、加密貨幣、人工存入、購寶錢包、CGPAY支付、線上存款、e點付、e點富、OSPAY支付等'
+        },
+        {
+          tag_description: '會員近15個實動日，最常關注的優惠類型',
+          tag_name: '偏好優惠方式'
         },
         { tag_name: '常登入地區(省)', tag_description: '會員近15個實動日，登入次數最多的省份地區' }
       ],
@@ -438,7 +462,8 @@ describe('Tags', () => {
           mutual_tags_code: ''
         }
       ],
-      type6: []
+      type6: [],
+      type9: []
     }
     wrapper.vm.activeHall.hall_code = 'bmw'
     await wrapper.vm.$nextTick()

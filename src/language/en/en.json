@@ -304,6 +304,7 @@
     "type_4": "AI",
     "type_5": "Custom",
     "type_6": "Risk",
+    "type_9": "Manual(管端)",
 
     "category": "Category",
     "select_category": "Click and Pick...",
