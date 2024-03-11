@@ -3,7 +3,9 @@ import { ref, reactive, onUnmounted, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore, useVipCommercialAnalysisStore, useDateStore } from '@/stores'
+import { apiFinancialWeeks } from '@/api'
 import { storeToRefs } from 'pinia'
+import { errorRespond } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import Datepicker from '@/components/Date/Datepicker.vue'
@@ -21,7 +23,7 @@ const dateStore = useDateStore()
 const { LAST_DATE } = dateStore
 
 const globalStore = useGlobalStore()
-const { activeHall, storeQueryFinancialWeeks } = globalStore
+const { activeHall } = globalStore
 const { systemConfigIsOk } = storeToRefs(globalStore)
 
 const emit = defineEmits(['update:filter'])
@@ -102,49 +104,62 @@ const selectWeeks = ref([])
 // 日期變動觸發
 const handleDateChange = async (date) => {
   // call 帳務週 api
-  const apiWeekData = await storeQueryFinancialWeeks({
-    month: dayjs(date).format('MM'),
-    year: dayjs(date).format('YYYY')
-  })
+  try {
+    const result = await apiFinancialWeeks({
+      hall_name: activeHall.hall_code,
+      month: dayjs(date).format('MM'),
+      year: dayjs(date).format('YYYY')
+    })
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      // 清空週次
+      filterData.displayweek = ''
 
-  // 清空週次
-  filterData.displayweek = ''
+      // 產生週次下拉選單
+      selectWeeks.value = result.data.result[0].weeks.map((item) => {
+        const startDate = dayjs(item.week_duration.split('~')[0]).format(t('date.format_date_rule'))
+        const endDate = dayjs(item.week_duration.split('~')[1]).format(t('date.format_date_rule'))
+        // 依照 dayjs 處理 isBetween 邏輯，以確保今天的日期如果剛好是 endDate 也可以被包含在區間內，需要將結束日期 isBetweenEndDate 加上一天，這樣才符合帳務週的時間邏輯
+        const isBetweenEndDate = dayjs(item.week_duration.split('~')[1])
+          .add(1, 'day')
+          .format(t('date.format_date_rule'))
 
-  // 產生週次下拉選單
-  selectWeeks.value = apiWeekData[0].weeks.map((item) => {
-    const startDate = dayjs(item.week_duration.split('~')[0]).format(t('date.format_date_rule'))
-    const endDate = dayjs(item.week_duration.split('~')[1]).format(t('date.format_date_rule'))
-    // 依照 dayjs 處理 isBetween 邏輯，以確保今天的日期如果剛好是 endDate 也可以被包含在區間內，需要將結束日期 isBetweenEndDate 加上一天，這樣才符合帳務週的時間邏輯
-    const isBetweenEndDate = dayjs(item.week_duration.split('~')[1])
-      .add(1, 'day')
-      .format(t('date.format_date_rule'))
+        // 轉換帳務週顯示格式
+        const formatDate = `${item.fin_week}(${startDate} ~ ${endDate})`
 
-    // 轉換帳務週顯示格式
-    const formatDate = `${item.fin_week}(${startDate} ~ ${endDate})`
+        // 判斷日期是否在帳務週區間
+        const isBetween = dayjs(LAST_DATE).isBetween(startDate, isBetweenEndDate)
+        if (isBetween) {
+          filterData.displayweek = formatDate
+          filterData.apiWeek = item.fin_week
+        }
+        return {
+          label: formatDate,
+          value: formatDate
+        }
+      })
 
-    // 判斷日期是否在帳務週區間
-    const isBetween = dayjs(LAST_DATE).isBetween(startDate, isBetweenEndDate)
-    if (isBetween) {
-      filterData.displayweek = formatDate
-      filterData.apiWeek = item.fin_week
+      // 如果 displayweek 為空，預設顯示第一週
+      if (filterData.displayweek === '') {
+        const weekData = Number(selectWeeks.value[0].label.split('(')[0])
+        filterData.displayweek = selectWeeks.value[0].label
+        filterData.apiWeek = weekData
+      }
+
+      // 第一次載入執行這段，須等帳戶週處理完今日的日期對應的週次，再進行篩選
+      if (isFirst.value) {
+        handleClick()
+        isFirst.value = false
+      }
+    } else {
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     }
-    return {
-      label: formatDate,
-      value: formatDate
+  } catch (error) {
+    console.error(error)
+    if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
     }
-  })
-
-  // 如果 displayweek 為空，預設顯示第一週
-  if (filterData.displayweek === '') {
-    const weekData = Number(selectWeeks.value[0].label.split('(')[0])
-    filterData.displayweek = selectWeeks.value[0].label
-    filterData.apiWeek = weekData
-  }
-
-  // 第一次載入執行這段，須等帳戶週處理完今日的日期對應的週次，再進行篩選
-  if (isFirst.value) {
-    handleClick()
-    isFirst.value = false
   }
 }
 
