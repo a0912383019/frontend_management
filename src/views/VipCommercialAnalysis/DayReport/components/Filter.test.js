@@ -59,12 +59,7 @@ describe('Filter', () => {
 
     wrapper = shallowMount(Filter, {
       global: {
-        plugins: [i18n, ElementPlus],
-        stubs: {
-          ElDialog: {
-            template: '<div><slot /></div>'
-          }
-        }
+        plugins: [i18n, ElementPlus]
       }
     })
 
