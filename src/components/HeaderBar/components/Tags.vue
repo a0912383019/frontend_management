@@ -46,8 +46,8 @@ const tabData = computed(() => {
       name: 'all'
     },
     {
-      label: t('tags.type_1'),
-      name: 'type1'
+      label: t('tags.type_6'),
+      name: 'type6'
     },
     {
       label: t('tags.type_3'),
@@ -62,8 +62,12 @@ const tabData = computed(() => {
       name: 'type5'
     },
     {
-      label: t('tags.type_6'),
-      name: 'type6'
+      label: t('tags.type_1'),
+      name: 'type1'
+    },
+    {
+      label: t('tags.type_9'),
+      name: 'type9'
     }
   ]
 })
@@ -75,7 +79,8 @@ const tagsData = reactive({
   type3: [],
   type4: [],
   type5: [],
-  type6: []
+  type6: [],
+  type9: []
 })
 let tagsDataOriginal = reactive({})
 
@@ -90,14 +95,13 @@ const transformTagsConfig = () => {
     tagsData[item] = []
   })
 
-  // let tagsConfigData = tagsConfig[findParentKey(activeHall.hall_code)]
   let tagsConfigData = tagsConfig[activeHall.hall_code]
   if (tagsConfigData !== undefined) {
     Object.entries(tagsConfigData).forEach((key) => {
       let value = key[1]
       if (value.tag_enabled && value.tag_category === 1) {
         // 僅列出啟用及tag_category = 1(一般標籤)的標籤
-        tagsData['all'].push(value)
+        // tagsData['all'].push(value)
         if (value.tag_type === 1) {
           tagsData['type1'].push(value)
         } else if (value.tag_type === 3) {
@@ -108,6 +112,8 @@ const transformTagsConfig = () => {
           tagsData['type5'].push(value)
         } else if (value.tag_type === 6) {
           tagsData['type6'].push(value)
+        } else if (value.tag_type === 9) {
+          tagsData['type9'].push(value)
         }
       }
     })
@@ -125,10 +131,6 @@ const transformTagsConfig = () => {
       case 6:
       case 8:
       case 9:
-        // 若選則XBB廳別，加上tag_category = 8(優惠)標籤種類說明
-        if (i === 8 && root_hall !== 'XBB') {
-          break
-        }
         type3_data.push({
           tag_name: t(`tags.category_${i}`),
           tag_description: t(`tags.category_desc_${i}`)
@@ -143,12 +145,14 @@ const transformTagsConfig = () => {
     }
   }
   //將資料合併到all和type3內
-  let type3Ary = tagsData['type3'].concat(type3_data)
-  tagsData['type3'] = []
-  tagsData['type3'] = type3Ary
-  let allAry = tagsData['all'].concat(type3_data)
-  tagsData['all'] = []
-  tagsData['all'] = allAry
+  tagsData['type3'] = tagsData['type3'].concat(type3_data)
+  tagsData['all'] = tagsData['all']
+    .concat(tagsData['type6'])
+    .concat(tagsData['type3'])
+    .concat(tagsData['type4'])
+    .concat(tagsData['type5'])
+    .concat(tagsData['type1'])
+    .concat(tagsData['type9'])
 
   //將目前資料複製一份到tagsDataOriginal
   tagsDataOriginal = {}
@@ -251,6 +255,7 @@ watch(
       v-model="dialogTableVisible"
       class="cdp-dialog"
       :append-to-body="true"
+      width="1000"
       :title="$t('tags.tag_description')"
       @close="handleCloseDialog"
     >
