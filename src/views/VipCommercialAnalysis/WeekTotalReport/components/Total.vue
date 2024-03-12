@@ -24,9 +24,6 @@ const apiSuccess = ref(false)
 // 依照不同的 messageKey 產生不同的 message
 const messageKey = ref('loading')
 
-// 表格 api 資料
-const apiTableResult = ref([])
-
 // 表格資料
 const tableData = ref([])
 
@@ -170,7 +167,6 @@ const transformWeekTotalReport = (data) => {
       login_num: FormatNumber(item.login_num)
     }
   })
-  apiTableResult.value = tableData.value.slice(0)
 }
 
 // 自定義排序執行的內容

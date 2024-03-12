@@ -22,9 +22,6 @@ const apiSuccess = ref(false)
 // 依照不同的 messageKey 產生不同的 message
 const messageKey = ref('loading')
 
-// 表格 api 資料
-const apiTableResult = ref([])
-
 // 表格資料
 const tableData = ref([])
 
@@ -138,7 +135,6 @@ const transformWeekProfitReport = (data) => {
       total_people: FormatNumber(data.total_people)
     }
   ]
-  apiTableResult.value = tableData.value.slice(0)
 }
 
 onMounted(() => {
