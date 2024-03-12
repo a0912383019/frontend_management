@@ -233,11 +233,13 @@ defineExpose({ queryLivelyAnalysisOverview })
         <div
           class="cdp-link-box cursor-pointer"
           @click="handleCallDeatilApi({ level: scope.row.lively_level, type: 1 })"
+          v-if="scope.row.increase_num !== '0'"
         >
           <div class="cdp-link-click">
             {{ scope.row.increase_num }}
           </div>
         </div>
+        <div class="cdp-link-box" v-else v-html="scope.row.increase_num"></div>
       </template>
 
       <!-- 本週減少 -->
@@ -245,11 +247,13 @@ defineExpose({ queryLivelyAnalysisOverview })
         <div
           class="cdp-link-box cursor-pointer"
           @click="handleCallDeatilApi({ level: scope.row.lively_level, type: 2 })"
+          v-if="scope.row.decrease_num !== '0'"
         >
           <div class="cdp-link-click">
             {{ scope.row.decrease_num }}
           </div>
         </div>
+        <div class="cdp-link-box" v-else v-html="scope.row.decrease_num"></div>
       </template>
 
       <template #append>
