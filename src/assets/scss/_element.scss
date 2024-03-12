@@ -668,7 +668,8 @@
         }
         &.today {
           .cell {
-            color: $purple;
+            color: inherit;
+            font-weight: normal;
           }
         }
         .cell {

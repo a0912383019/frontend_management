@@ -21,7 +21,9 @@ export const useVipCommercialAnalysisStore = defineStore('vipCommercialAnalysis'
     custom: false,
     vipTag: defaultVipTag,
     customUserList: [],
-    fuzzySearch: false
+    fuzzySearch: false,
+    detailType: null,
+    livelyLevel: null
   })
 
   // filter: 活躍時段分析
