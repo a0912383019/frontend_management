@@ -138,7 +138,7 @@ describe('WeekReport', () => {
     expect(sortTableData).toHaveBeenCalled()
   })
 
-  it('Expected components render correctly, mock api 0000', async () => {
+  it('Expected API data in the transform function is correct', async () => {
     const data = [
       {
         user_id: 457588964,

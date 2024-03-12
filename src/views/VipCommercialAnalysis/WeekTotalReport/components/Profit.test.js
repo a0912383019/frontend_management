@@ -74,7 +74,7 @@ describe('Profit', () => {
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
   })
 
-  it('Expected components render correctly, mock api 0000', async () => {
+  it('Expected API data in the transform function is correct', async () => {
     const data = [
       {
         profit_zero: '6',

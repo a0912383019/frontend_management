@@ -152,7 +152,7 @@ describe('Total', () => {
     expect(sortTableData).toHaveBeenCalled()
   })
 
-  it('Expected components render correctly, mock api 0000', async () => {
+  it('Expected API data in the transform function is correct', async () => {
     const data = [
       {
         date_duration: '2024/03/04 ~ 2024/03/10',
