@@ -4,7 +4,13 @@ import { useI18n } from 'vue-i18n'
 import { dayjs } from 'element-plus'
 import { useGlobalStore, useVipCommercialAnalysisStore, useDialogMemberDetailStore } from '@/stores'
 import { apiQueryMemberLivelyList } from '@/api'
-import { FormatNumber, addNumberColor, errorRespond } from '@/utils/commonUtils.js'
+import {
+  FormatNumber,
+  addNumberColor,
+  errorRespond,
+  formatDateDuration,
+  stringToIntArray
+} from '@/utils/commonUtils.js'
 import { iconStep } from '@/../public/js/system_config.js'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -110,19 +116,22 @@ const tooltipDate = computed(() => {
 const queryMemberLivelyList = async (data) => {
   apiSuccess.value = false
   messageKey.value = 'loading'
+  livelyAnalysisFilter.detailType = data.type
+  livelyAnalysisFilter.livelyLevel = data.level
   let startDate = dayjs(livelyAnalysisFilter.searchDate).subtract(6, 'day').format('YYYY-MM-DD')
   let endDate = dayjs(livelyAnalysisFilter.searchDate).format('YYYY-MM-DD')
+  const { customUserList, detailType, fuzzySearch, livelyLevel, searchName, vipTag } =
+    livelyAnalysisFilter
   try {
     const result = await apiQueryMemberLivelyList({
+      custom_user_list: customUserList,
+      detail_type: detailType,
+      fuzzy_search: fuzzySearch,
       hall_name: activeHall.hall_code,
-      lively_analysis_start_date: startDate,
-      lively_analysis_end_date: endDate,
-      lively_level: data['level'],
-      detail_type: data['type'],
-      lively_analysis_vip_tag: livelyAnalysisFilter.vipTag,
-      search_name: livelyAnalysisFilter.searchName,
-      fuzzy_search: livelyAnalysisFilter.fuzzySearch,
-      custom_user_list: livelyAnalysisFilter.customUserList
+      lively_level: livelyLevel,
+      search_date: formatDateDuration(`${startDate}~${endDate}`),
+      search_name: searchName,
+      vip_tag: stringToIntArray(vipTag)
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -201,7 +210,7 @@ defineExpose({ queryMemberLivelyList, apiSuccess, messageKey })
         <template #tooltip>
           <div class="tooltip-date">
             {{ $t('date.aggregated_data_statistical_time_period') }}<br />
-            {{ $t('date.statistical_time_period') }}{{ tooltipDate['thisWeekData'] }}
+            {{ $t('date.statistical_time_period') }}{{ tooltipDate.thisWeekData }}
           </div>
         </template>
       </SectionTitle>

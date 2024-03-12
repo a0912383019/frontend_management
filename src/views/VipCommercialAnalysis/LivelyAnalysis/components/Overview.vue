@@ -5,7 +5,12 @@ import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiQueryLivelyAnalysisOverview } from '@/api'
-import { addNumberColor, FormatNumber, errorRespond } from '@/utils/commonUtils.js'
+import {
+  addNumberColor,
+  FormatNumber,
+  errorRespond,
+  stringToIntArray
+} from '@/utils/commonUtils.js'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -96,14 +101,15 @@ const tooltipDate = computed(() => {
 const queryLivelyAnalysisOverview = async () => {
   apiSuccess.value = false
   messageKey.value = 'loading'
+  const { customUserList, fuzzySearch, searchDate, searchName, vipTag } = livelyAnalysisFilter
   try {
     const result = await apiQueryLivelyAnalysisOverview({
+      custom_user_list: customUserList,
+      fuzzy_search: fuzzySearch,
       hall_name: activeHall.hall_code,
-      lively_analysis_end_date: dayjs(livelyAnalysisFilter.searchDate).format('YYYY-MM-DD'),
-      lively_analysis_vip_tag: livelyAnalysisFilter.vipTag,
-      search_name: livelyAnalysisFilter.searchName,
-      fuzzy_search: livelyAnalysisFilter.fuzzySearch,
-      custom_user_list: livelyAnalysisFilter.customUserList
+      query_date: dayjs(searchDate).format('YYYY-MM-DD'),
+      search_name: searchName,
+      vip_tag: stringToIntArray(vipTag)
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -135,21 +141,21 @@ const transformLivelyAnalysisOverview = (data) => {
   let total = 0
   const mapData = data.map((item) => {
     // 對比上週差異
-    const diffNumber = FormatNumber(item['increase_num'] - item['decrease_num'])
+    const diffNumber = FormatNumber(item.increase_num - item.decrease_num)
     const diffAddColor =
       diffNumber > 0
         ? addNumberColor('+' + diffNumber, 'cdp-text-lightgreen')
         : addNumberColor(diffNumber, 'cdp-text-candypink')
 
     // 計算總人數
-    total += item['total_num']
+    total += item.total_num
 
     return {
-      lively_level: item['lively_level'],
-      total_num: FormatNumber(item['total_num']),
+      lively_level: item.lively_level,
+      total_num: FormatNumber(item.total_num),
       weekDiff: diffAddColor,
-      increase_num: FormatNumber(item['increase_num']),
-      decrease_num: FormatNumber(item['decrease_num'])
+      increase_num: FormatNumber(item.increase_num),
+      decrease_num: FormatNumber(item.decrease_num)
     }
   })
   tableTotalPeopleNum.value = FormatNumber(total)
@@ -173,8 +179,8 @@ defineExpose({ queryLivelyAnalysisOverview })
     <SectionTitle class="mb-15" :title="$t('vip_commercial_analysis.lively_analysis_overview')">
       <template #tooltip>
         <div class="tooltip-date">
-          <div>{{ $t('date.last_week') }}：{{ tooltipDate['lastWeekData'] }}</div>
-          <div>{{ $t('date.this_week') }}：{{ tooltipDate['thisWeekData'] }}</div>
+          <div>{{ $t('date.last_week') }}：{{ tooltipDate.lastWeekData }}</div>
+          <div>{{ $t('date.this_week') }}：{{ tooltipDate.thisWeekData }}</div>
         </div>
       </template>
     </SectionTitle>
@@ -208,11 +214,13 @@ defineExpose({ queryLivelyAnalysisOverview })
         <div
           class="cdp-link-box cursor-pointer"
           @click="handleCallDeatilApi({ level: scope.row.lively_level, type: 0 })"
+          v-if="scope.row.total_num !== '0'"
         >
           <div class="cdp-link-click">
-            {{ scope.row['total_num'] }}
+            {{ scope.row.total_num }}
           </div>
         </div>
+        <div class="cdp-link-box" v-else v-html="scope.row.total_num"></div>
       </template>
 
       <!-- 對比上週差異 -->
@@ -225,11 +233,13 @@ defineExpose({ queryLivelyAnalysisOverview })
         <div
           class="cdp-link-box cursor-pointer"
           @click="handleCallDeatilApi({ level: scope.row.lively_level, type: 1 })"
+          v-if="scope.row.increase_num !== '0'"
         >
           <div class="cdp-link-click">
-            {{ scope.row['increase_num'] }}
+            {{ scope.row.increase_num }}
           </div>
         </div>
+        <div class="cdp-link-box" v-else v-html="scope.row.increase_num"></div>
       </template>
 
       <!-- 本週減少 -->
@@ -237,11 +247,13 @@ defineExpose({ queryLivelyAnalysisOverview })
         <div
           class="cdp-link-box cursor-pointer"
           @click="handleCallDeatilApi({ level: scope.row.lively_level, type: 2 })"
+          v-if="scope.row.decrease_num !== '0'"
         >
           <div class="cdp-link-click">
-            {{ scope.row['decrease_num'] }}
+            {{ scope.row.decrease_num }}
           </div>
         </div>
+        <div class="cdp-link-box" v-else v-html="scope.row.decrease_num"></div>
       </template>
 
       <template #append>
