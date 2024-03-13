@@ -22,22 +22,20 @@ if (get_tag_code !== undefined) {
   const tag_type = get_tag_code.tag_type
   switch (tag_type) {
     case 1:
-      badge_class.value += ' badge-custom-green'
-      break
-    case 2:
+    case 5:
       badge_class.value += ' badge-custom-green'
       break
     case 3:
       badge_class.value += ' badge-custom-blue'
       break
     case 4:
-      badge_class.value += ' badge-custom-yellow'
-      break
-    case 5:
-      badge_class.value += ' badge-custom-danger'
+      badge_class.value += ' badge-custom-orange'
       break
     case 6:
       badge_class.value += ' badge-custom-danger'
+      break
+    case 9:
+      badge_class.value += ' badge-custom-tree-green'
       break
   }
   badge_class.value += ` ${props.badge_text_class}`

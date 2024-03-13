@@ -197,10 +197,6 @@ describe('Tags', () => {
           tag_name: '常用入款方式'
         },
         {
-          tag_description: '會員近15個實動日，最常關注的優惠類型',
-          tag_name: '偏好優惠方式'
-        },
-        {
           tag_description: '會員近15個實動日，登入次數最多的省份地區',
           tag_name: '常登入地區(省)'
         },
@@ -273,10 +269,6 @@ describe('Tags', () => {
           tag_description:
             '會員近15個實動日，在 某入款方法 總金額最高，包含公司入款、加密貨幣、人工存入、購寶錢包、CGPAY支付、線上存款、e點付、e點富、OSPAY支付等',
           tag_name: '常用入款方式'
-        },
-        {
-          tag_description: '會員近15個實動日，最常關注的優惠類型',
-          tag_name: '偏好優惠方式'
         },
         {
           tag_description: '會員近15個實動日，登入次數最多的省份地區',
@@ -387,10 +379,6 @@ describe('Tags', () => {
           tag_description:
             '會員近15個實動日，在 某入款方法 總金額最高，包含公司入款、加密貨幣、人工存入、購寶錢包、CGPAY支付、線上存款、e點付、e點富、OSPAY支付等'
         },
-        {
-          tag_description: '會員近15個實動日，最常關注的優惠類型',
-          tag_name: '偏好優惠方式'
-        },
         { tag_name: '常登入地區(省)', tag_description: '會員近15個實動日，登入次數最多的省份地區' },
         {
           mutual_tags_code: '40006,40014',
@@ -433,10 +421,6 @@ describe('Tags', () => {
           tag_name: '常用入款方式',
           tag_description:
             '會員近15個實動日，在 某入款方法 總金額最高，包含公司入款、加密貨幣、人工存入、購寶錢包、CGPAY支付、線上存款、e點付、e點富、OSPAY支付等'
-        },
-        {
-          tag_description: '會員近15個實動日，最常關注的優惠類型',
-          tag_name: '偏好優惠方式'
         },
         { tag_name: '常登入地區(省)', tag_description: '會員近15個實動日，登入次數最多的省份地區' }
       ],

@@ -80,15 +80,7 @@ const tableColumns = computed(() => {
     {
       label: t('tags.tags'),
       prop: 'tag_name_str',
-      headerAlign: i18nLocale.value === 'en' ? 'left' : 'center',
-      headerSlot: `
-      <div class="page-customtag-type">
-        <div class="page-customtag-type__item red">${t('tags.type_6')}</div>
-        <div class="page-customtag-type__item blue">${t('tags.type_3')}</div>
-        <div class="page-customtag-type__item green">${t('tags.type_1')}</div>
-        <div class="page-customtag-type__item orange">${t('tags.type_4')}</div>
-      </div>
-      `,
+      headerAlign: 'center',
       align: 'left',
       minWidth: defineTagsWidth + '%'
     },
@@ -342,6 +334,20 @@ onMounted(() => {
             {{ scope.row.user_name }}
           </div>
         </template>
+        <template #tag_name_str-header>
+          <el-tooltip effect="dark" placement="right">
+            <template #content>
+              <div class="font-size-14">
+                <div class="page-customtag-type__item red">{{ $t('tags.type_6') }}</div>
+                <div class="page-customtag-type__item blue">{{ $t('tags.type_3') }}</div>
+                <div class="page-customtag-type__item orange">{{ $t('tags.type_4') }}</div>
+                <div class="page-customtag-type__item green">{{ $t('tags.type_1') }}</div>
+                <div class="page-customtag-type__item tree-green">{{ $t('tags.type_9') }}</div>
+              </div>
+            </template>
+            <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
+          </el-tooltip>
+        </template>
         <template #tag_name_str="scope">
           <div class="tags">
             <ul class="tags__list" :class="{ allShow: scope.row.tag_show }">
@@ -432,44 +438,41 @@ onMounted(() => {
 </style>
 <style lang="scss">
 .page-customtag-type {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
   &__item {
     display: flex;
     align-items: center;
-    margin-left: 6px;
+    margin-top: 2px;
+    margin-bottom: 2px;
     &::before {
       content: '';
-      width: 10px;
-      height: 10px;
-      margin-right: 4px;
+      width: 12px;
+      height: 12px;
+      margin-right: 6px;
       border-radius: 50%;
     }
     &.green {
-      color: $green;
       &::before {
         background-color: $green;
       }
     }
     &.red {
-      color: $red;
       &::before {
         background-color: $red;
       }
     }
     &.blue {
-      color: $blue;
       &::before {
         background-color: $blue;
       }
     }
     &.orange {
-      color: $oragne;
       &::before {
-        background-color: $oragne;
+        background-color: $orange;
+      }
+    }
+    &.tree-green {
+      &::before {
+        background-color: $tree-green;
       }
     }
   }
