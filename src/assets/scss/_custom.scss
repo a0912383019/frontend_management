@@ -585,18 +585,20 @@
   color: #fff;
 }
 .badge-custom-blue {
-  background-color: #4f84cf;
+  background-color: $blue;
 }
-.badge-custom-yellow {
-  background-color: #f39c10;
+.badge-custom-orange {
+  background-color: $orange;
 }
 .badge-custom-danger {
   background-color: $red;
 }
 .badge-custom-green {
-  background-color: #adba53;
+  background-color: $green;
 }
-
+.badge-custom-tree-green {
+  background-color: $tree-green;
+}
 
 .select-tag {
   display: flex;

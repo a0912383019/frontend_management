@@ -40,8 +40,8 @@ const apiRequestKey = ref('')
 const selectTypeValue = ref()
 const selectTypeLists = ref([
   {
-    value: 1,
-    label: t('tags.type_1')
+    value: 6,
+    label: t('tags.type_6')
   },
   {
     value: 3,
@@ -54,6 +54,14 @@ const selectTypeLists = ref([
   {
     value: 5,
     label: t('tags.type_5')
+  },
+  {
+    value: 1,
+    label: t('tags.type_1')
+  },
+  {
+    value: 9,
+    label: t('tags.type_9')
   }
 ])
 const originalSelectTypeLists = ref(selectTypeLists.value.slice(0))
@@ -75,10 +83,6 @@ const changeGenerateCategoryLists = () => {
       for (let i = 2; i <= 9; i++) {
         // 時段標籤下架，下拉選單不顯示時段
         if (i === 3) {
-          continue
-        }
-        // 若為XBB廳別才加入category = 8標籤
-        if (i === 8 && findRootHall(activeHall.hall_code) !== 'XBB') {
           continue
         }
         selectCategoryLists.value.push({

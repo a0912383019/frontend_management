@@ -223,7 +223,7 @@ const handelExportReport = async () => {
     margin-bottom: 17px;
     padding-top: 5px;
     font-size: 13px;
-    color: $oragne;
+    color: $orange;
     svg {
       margin-right: 5px;
     }
