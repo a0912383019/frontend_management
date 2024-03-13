@@ -22,9 +22,9 @@ let paramsData = reactive({})
 const handleOpenDialog = (user) => {
   userName.value = user.user_name
   paramsData = {
+    ...user,
     startDate: dayjs(endDate.value).subtract(89, 'day').format('YYYY-MM-DD'),
-    endDate: endDate.value,
-    ...user
+    endDate: endDate.value
   }
   dialogVisible.value = true
 }
