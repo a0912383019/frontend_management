@@ -338,13 +338,11 @@ onMounted(() => {
           <el-tooltip effect="dark" placement="right">
             <template #content>
               <div class="font-size-14">
-                <div class="">
-                  <div class="page-customtag-type__item red">{{ $t('tags.type_6') }}</div>
-                  <div class="page-customtag-type__item blue">{{ $t('tags.type_3') }}</div>
-                  <div class="page-customtag-type__item orange">{{ $t('tags.type_4') }}</div>
-                  <div class="page-customtag-type__item green">{{ $t('tags.type_1') }}</div>
-                  <div class="page-customtag-type__item tree-green">{{ $t('tags.type_9') }}</div>
-                </div>
+                <div class="page-customtag-type__item red">{{ $t('tags.type_6') }}</div>
+                <div class="page-customtag-type__item blue">{{ $t('tags.type_3') }}</div>
+                <div class="page-customtag-type__item orange">{{ $t('tags.type_4') }}</div>
+                <div class="page-customtag-type__item green">{{ $t('tags.type_1') }}</div>
+                <div class="page-customtag-type__item tree-green">{{ $t('tags.type_9') }}</div>
               </div>
             </template>
             <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
