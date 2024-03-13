@@ -28,8 +28,6 @@ describe('ActiveTimeAnalysis', () => {
   it('Expected handleCallApi toHaveBeenCalled', () => {
     wrapper.vm.$refs.refTimePeople.queryActiveTimePeople = queryActiveTimePeople
 
-    // console.log(wrapper.vm.$refs.refDetail.apiSuccess)
-
     wrapper.vm.handleCallApi()
 
     // 驗證 queryActiveTimePeople 是否被呼叫過

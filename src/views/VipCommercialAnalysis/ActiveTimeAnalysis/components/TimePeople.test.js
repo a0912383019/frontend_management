@@ -99,7 +99,6 @@ describe('TimePeople', () => {
   })
 
   it('Expected emit update:detail result is correct', async () => {
-    // await wrapper.vm.handleEmitDetail('test')
     await wrapper.vm.chartOptions.series[0].events.click('test')
     expect(wrapper.emitted('update:detail')).toStrictEqual([['test']])
   })
