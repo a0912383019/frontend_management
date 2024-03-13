@@ -82,9 +82,11 @@ const changeGenerateCategoryLists = () => {
     if (selectTypeValue.value === 3) {
       for (let i = 2; i <= 9; i++) {
         // 時段標籤下架，下拉選單不顯示時段
-        if (i === 3) {
+        // category = 8 標籤的不顯示，(XBB廳專用，已無此廳)
+        if (i === 3 || i === 8) {
           continue
         }
+
         selectCategoryLists.value.push({
           value: i,
           label: t(`tags.category_${i}`)

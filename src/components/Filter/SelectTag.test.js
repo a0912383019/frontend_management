@@ -576,12 +576,17 @@ describe('SelectTag', () => {
   it('watch tagInputText', async () => {
     // 標籤類型
     const data1 = [
-      { value: 1, label: '人工' },
+      { value: 6, label: '風控' },
       { value: 3, label: '規則' },
       { value: 4, label: '機器' },
-      { value: 5, label: '自訂' }
+      { value: 5, label: '自訂' },
+      { value: 1, label: '人工' },
+      { value: 9, label: '人工(管端)' }
     ]
-    const result1 = [{ value: 1, label: '人工' }]
+    const result1 = [
+      { value: 1, label: '人工' },
+      { value: 9, label: '人工(管端)' }
+    ]
 
     wrapper.vm.tagInputText = '人'
     await wrapper.vm.$nextTick()
