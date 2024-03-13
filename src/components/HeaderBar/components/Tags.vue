@@ -123,13 +123,13 @@ const transformTagsConfig = () => {
   let root_hall = findRootHall(activeHall.hall_code)
   let type3_data = []
   for (let i = 2; i <= 9; i++) {
-    // case 3 時段標籤下架，下拉選單不顯示時段
+    // tag_category 3 時段標籤下架，下拉選單不顯示時段
+    // tag_category 8 (XBB廳專用，已無此廳)
     switch (i) {
       case 2:
       case 4:
       case 5:
       case 6:
-      case 8:
       case 9:
         type3_data.push({
           tag_name: t(`tags.category_${i}`),
