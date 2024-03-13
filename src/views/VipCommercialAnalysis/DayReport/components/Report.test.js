@@ -125,7 +125,7 @@ describe('DayReport', () => {
     expect(sortTableData).toHaveBeenCalled()
   })
 
-  it('Expected components render correctly, mock api 0000', () => {
+  it('Expected API data in the transform function is correct', () => {
     const data = [
       {
         bet_amount: '250',
