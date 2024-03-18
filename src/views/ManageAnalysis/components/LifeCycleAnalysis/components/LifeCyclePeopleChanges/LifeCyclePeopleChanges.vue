@@ -2,11 +2,9 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { dayjs } from 'element-plus'
-import { apiQueryLifeCycleAnalysisOverview } from '@/api/manageAnalysis.js'
+import { apiQueryLifeCycleAnalysisOverview } from '@/api'
 import { storeToRefs } from 'pinia'
-import { useGlobalStore } from '@/stores/global.js'
-import { useDateStore } from '@/stores/dateConfig.js'
-import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
+import { useGlobalStore, useDateStore, useManageAnalysisStore } from '@/stores'
 import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 import FilterMemberName from './components/FilterMemberName.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -270,16 +268,18 @@ watch(
           class="cdp-link-box cursor-pointer"
           :class="{ selected: scope.row.total_num.id === selectRow }"
           @click="handleClick(scope.row.total_num)"
+          v-if="scope.row.total_num.data !== '0'"
         >
           <div class="cdp-link-click">
-            {{ scope['row']['total_num']['data'] }}
+            {{ scope.row.total_num.data }}
           </div>
         </div>
+        <div class="cdp-link-box" v-else v-html="scope.row.total_num.data"></div>
       </template>
       <template #diff_pre_day="scope">
         <!-- 對比前日差異 -->
-        <div :class="scope['row']['diff_pre_day']['class']" class="cdp-link-box">
-          {{ scope['row']['diff_pre_day']['num'] }}
+        <div :class="scope.row.diff_pre_day.class" class="cdp-link-box">
+          {{ scope.row.diff_pre_day.num }}
         </div>
       </template>
       <template #increase_num="scope">
@@ -288,11 +288,13 @@ watch(
           class="cdp-link-box cursor-pointer"
           :class="{ selected: scope.row.increase_num.id === selectRow }"
           @click="handleClick(scope.row.increase_num)"
+          v-if="scope.row.increase_num.data !== '0'"
         >
           <div class="cdp-link-click">
-            {{ scope['row']['increase_num']['data'] }}
+            {{ scope.row.increase_num.data }}
           </div>
         </div>
+        <div class="cdp-link-box" v-else v-html="scope.row.increase_num.data"></div>
       </template>
       <template #decrease_num="scope">
         <!-- 本日減少 -->
@@ -300,11 +302,13 @@ watch(
           class="cdp-link-box cursor-pointer"
           :class="{ selected: scope.row.decrease_num.id === selectRow }"
           @click="handleClick(scope.row.decrease_num)"
+          v-if="scope.row.decrease_num.data !== '0'"
         >
           <div class="cdp-link-click">
-            {{ scope['row']['decrease_num']['data'] }}
+            {{ scope.row.decrease_num.data }}
           </div>
         </div>
+        <div class="cdp-link-box" v-else v-html="scope.row.decrease_num.data"></div>
       </template>
 
       <template #append>

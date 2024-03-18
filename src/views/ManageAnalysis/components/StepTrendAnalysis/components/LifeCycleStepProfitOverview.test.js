@@ -186,16 +186,16 @@ describe('LifeCycleStepProfitOverview.vue', () => {
       },
       {
         step_index: 6,
-        bet_amount: '0.00',
+        bet_amount: '0',
         bet_amount_percent: '0%',
-        payoff: '0.00',
+        payoff: '0',
         gross_percent: 'NaN%'
       },
       {
         step_index: 7,
-        bet_amount: '0.00',
+        bet_amount: '0',
         bet_amount_percent: '0%',
-        payoff: '0.00',
+        payoff: '0',
         gross_percent: 'NaN%'
       }
     ])

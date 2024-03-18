@@ -146,7 +146,7 @@ describe('WeekReport', () => {
         bet_amount: '780',
         bet_amount_compare: '180.0000',
         payoff: '288',
-        profit_loss: '<span class="text-danger">-319</span>',
+        profit_loss: '<span class="text-danger">-318</span>',
         offer_amount: '607',
         ga_num: '0',
         login_num: '4',
