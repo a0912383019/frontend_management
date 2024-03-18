@@ -255,6 +255,11 @@ defineExpose({ queryMemberLivelyList, apiSuccess, messageKey })
         </span>
       </template>
 
+      <!-- 存款 -->
+      <template #deposit_amount="scope">
+        <span v-html="addNumberColor(scope.row.deposit_amount, 'cdp-text-candypink')"></span>
+      </template>
+
       <!-- 損益 -->
       <template #payoff="scope">
         <span v-html="addNumberColor(scope.row.payoff, 'cdp-text-candypink')"></span>

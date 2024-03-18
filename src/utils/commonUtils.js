@@ -72,23 +72,14 @@ export function errorRespond(error) {
  * @returns {string}
  */
 export function roundDecimal(val, precision = 2) {
-  if (parseFloat(val)) {
-    if (val < 0) {
-      val = 0 - val
-      return (
-        0 -
-        Math.round(Math.round(val * Math.pow(10, (precision || 0) + 1)) / 10) /
-          Math.pow(10, precision || 0)
-      ).toString()
-    } else {
-      return (
-        Math.round(Math.round(val * Math.pow(10, (precision || 0) + 1)) / 10) /
-        Math.pow(10, precision || 0)
-      ).toString()
-    }
-  } else {
-    return val.toString()
+  if (isNaN(val)) {
+    return val.toString() // 如果不是数字，则直接返回原始值
   }
+
+  const multiplier = Math.pow(10, precision)
+  const roundedValue = Math.round(val * multiplier) / multiplier
+
+  return roundedValue.toString()
 }
 
 /**
