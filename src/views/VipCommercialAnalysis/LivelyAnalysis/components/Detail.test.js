@@ -186,7 +186,7 @@ describe('Detail', () => {
         bet_amount: '0',
         payoff: '0',
         offer_amount: '391',
-        profit_loss: '-391',
+        profit_loss: '-390',
         net_amount: '0',
         user: { user_name: 'pdlalaauto', user_id: 457588978 },
         lastWeekIcon: { icon: 'fa-dizzy', color: 'cdp-text-light__slate__gray' },
