@@ -127,8 +127,8 @@ const transformMemberRecentLively = (data) => {
 }
 
 const clearChart = () => {
-  chartOptions['xAxis']['categories'] = []
-  chartOptions['series'] = []
+  chartOptions.xAxis.categories = []
+  chartOptions.series = []
 }
 
 onMounted(() => {

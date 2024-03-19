@@ -9,15 +9,16 @@ import {
   addNumberColor,
   errorRespond,
   formatDateDuration,
-  stringToIntArray
+  stringToIntArray,
+  sortTableData
 } from '@/utils/commonUtils.js'
 import { iconStep } from '@/../public/js/system_config.js'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
-import ActiveDetail from './ActiveDetail.vue'
-import ExportCSV from './ExportCSV.vue'
+import ActiveDetail from '@/views/VipCommercialAnalysis/LivelyAnalysis/components/ActiveDetail.vue'
+import ExportCSV from '@/views/VipCommercialAnalysis/LivelyAnalysis/components/ExportCSV.vue'
 
 const { t } = useI18n()
 
@@ -180,19 +181,9 @@ const transformQueryMemberLivelyList = (data) => {
   apiTableResult.value = tableData.value.slice(0)
 }
 
-// 排序資料
-const handleSort = ({ prop, order }) => {
-  if (order === 'descending') {
-    tableData.value.sort((a, b) => {
-      return parseInt(b[prop].replaceAll(',', '')) - parseInt(a[prop].replaceAll(',', ''))
-    })
-  } else if (order === 'ascending') {
-    tableData.value.sort((a, b) => {
-      return parseInt(a[prop].replaceAll(',', '')) - parseInt(b[prop].replaceAll(',', ''))
-    })
-  } else {
-    tableData.value = apiTableResult.value.slice(0)
-  }
+// 自定義排序執行的內容
+const upadteCurrentSort = ({ prop, order }) => {
+  sortTableData({ prop, order, tableData: tableData.value })
 }
 
 const refActiveDetail = ref(null)
@@ -228,7 +219,7 @@ defineExpose({ queryMemberLivelyList, apiSuccess, messageKey })
       :stripe="true"
       :serverSide="false"
       :pageSize="15"
-      @sort="handleSort"
+      @sort="upadteCurrentSort"
       class="customTable2"
     >
       <!-- 活躍度表頭 -->

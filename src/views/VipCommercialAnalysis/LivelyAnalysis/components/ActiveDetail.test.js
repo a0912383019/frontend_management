@@ -2,7 +2,6 @@ import { it, describe, expect, afterEach, beforeEach, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { useVipCommercialAnalysisStore } from '@/stores'
-import { dayjs } from 'element-plus'
 import ElementPlus from 'element-plus'
 import ActiveDetail from '@/views/VipCommercialAnalysis/LivelyAnalysis/components/ActiveDetail.vue'
 
