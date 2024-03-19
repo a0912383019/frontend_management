@@ -107,8 +107,8 @@ describe('DialogStepDetail.vue', () => {
     //資料轉換是否如預期
     expect(wrapper.vm.tableData).toStrictEqual([
       {
-        bet_amount: '¥932,947',
-        bet_amount_percent: '3 %',
+        bet_amount: '¥932,946',
+        bet_amount_percent: '2 %',
         payoff: '¥9,371',
         gross_percent: '1%'
       }

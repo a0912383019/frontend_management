@@ -19,10 +19,14 @@ export const useSystemStore = defineStore('system', () => {
     globalStore.isLoading = true
     try {
       await apiLogout()
+      ElNotification({
+        title: '',
+        message: t('msg.logout'),
+        type: 'success'
+      })
     } catch (error) {
-      router.push({ name: 'Login' })
+      console.error(error)
     } finally {
-      router.push({ name: 'Login' })
       globalStore.isLoading = false
 
       // 登出後，讓 pinia 資料回覆預設值
@@ -31,11 +35,7 @@ export const useSystemStore = defineStore('system', () => {
       // 不管logout的ajax成功或失敗，都清除所有sessionStorage與localStorage
       sessionStorage.clear()
       localStorage.clear()
-      ElNotification({
-        title: '',
-        message: t('msg.logout'),
-        type: 'success'
-      })
+      router.push({ name: 'Login' })
     }
   }
 
