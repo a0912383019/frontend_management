@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed, onMounted, toRefs, defineProps, reactive } from 'vue'
+import { ref, watch, onMounted, toRefs, defineProps, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
@@ -71,6 +71,24 @@ const chartOptions = reactive({
     },
     stickOnContact: true // 需要加這個才能使overflow 生效
   },
+  plotOptions: {
+        series: {
+            events: {
+                click: function (event) {
+                    // 获取当前点击的系列的 ID
+                    const clickedSeriesId = event.point.series.options.id;
+                    // 遍历所有系列，显示当前点击的系列，隐藏其他系列
+                    this.chart.series.forEach(series => {
+                        if (series.options.id === clickedSeriesId) {
+                            series.show();
+                        } else {
+                            series.hide();
+                        }
+                    });
+                }
+            }
+        }
+    },
   series: []
 })
 

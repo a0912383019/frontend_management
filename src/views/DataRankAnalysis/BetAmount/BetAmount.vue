@@ -7,7 +7,7 @@ import Filter from '@/views/DataRankAnalysis/BetAmount/components/Filter.vue'
 import RankerDetail from '@/views/DataRankAnalysis/BetAmount/components/RankerDetail.vue'
 import DetailChart from '@/views/DataRankAnalysis/BetAmount/components/DetailChart.vue'
 import { useGlobalStore, useDataRankAnalysisStore } from '@/stores'
-import { apiQueryBetAmountRank } from '@/api/dataRankAnalysis.js'
+import { apiQueryBetAmountRank } from '@/api'
 
 const { t } = useI18n()
 
