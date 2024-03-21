@@ -7,7 +7,7 @@ import { dayjs } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { tooltipDarkConfig, tooltipShared } from '@/utils/highchartsConfig.js'
-import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
+import { latest_chart_color } from '@/../public/js/system_config.js'
 
 const { t } = useI18n()
 
@@ -121,7 +121,7 @@ const transformBetAmountDailyRank = (data) => {
         }
       }),
       // 超過20個會員資料時顏色使用隨機
-      color: userNameList.length > 20 ? color[i] : generateRGBColors(chart_fixed_bgColor[i], 1),
+      color: userNameList.length > 20 ? color[i] : generateRGBColors(latest_chart_color[i], 1),
       lineWidth: 3,
       marker: {
         symbol: 'circle', // 點點樣式
