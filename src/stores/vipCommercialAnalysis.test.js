@@ -28,12 +28,12 @@ describe('useVipCommercialAnalysisStore', () => {
     let filter = vipStore.livelyAnalysisFilter
     expect(filter.searchName).toBe('')
     expect(filter.searchDate).toBe(dayjs(date_range_picker_config_4.endDate).format('YYYY-MM-DD'))
-    expect(filter.custom).toBeFalsy(),
-      expect(filter.vipTag).toBe(defaultVipTag),
-      expect(filter.customUserList).toStrictEqual([]),
-      expect(filter.fuzzySearch).toBeFalsy(),
-      expect(filter.detailType).toBe(null),
-      expect(filter.livelyLevel).toBe(null)
+    expect(filter.custom).toBeFalsy()
+    expect(filter.vipTag).toBe(defaultVipTag)
+    expect(filter.customUserList).toStrictEqual([])
+    expect(filter.fuzzySearch).toBeFalsy()
+    expect(filter.detailType).toBe(null)
+    expect(filter.livelyLevel).toBe(null)
   })
 
   // filter: 活躍時段分析
