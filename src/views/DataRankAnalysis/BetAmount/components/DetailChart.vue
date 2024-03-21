@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, toRefs, defineProps, reactive } from 'vue'
+import { ref, watch, onMounted, toRefs, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
@@ -20,7 +20,8 @@ const props = defineProps({
     messageKey: String,
     apiRecordsTotal: Number,
     result: Object
-  }
+  },
+  clientWidth: Number
 })
 const { apiObject } = toRefs(props)
 
@@ -37,14 +38,10 @@ const chartOptions = reactive({
     useHTML: true,
     symbolWidth: 0,
     labelFormatter: function () {
-      return (
-        `<div style="display: flex;">
-            <div style="width: 14px; height: 14px; background-color:` +
-        this.color +
-        `; display: inline-block; margin-right: 6px"></div><span>` +
-        this.name +
-        `</span></div>`
-      )
+      return `<div style="display: flex;">
+        <div style="width: 14px; height: 14px; background-color:
+        ${this.color}; display: inline-block; margin-right: 6px"></div><span>
+        ${this.name}</span></div>`
     }
   },
   xAxis: {
@@ -72,23 +69,23 @@ const chartOptions = reactive({
     stickOnContact: true // 需要加這個才能使overflow 生效
   },
   plotOptions: {
-        series: {
-            events: {
-                click: function (event) {
-                    // 获取当前点击的系列的 ID
-                    const clickedSeriesId = event.point.series.options.id;
-                    // 遍历所有系列，显示当前点击的系列，隐藏其他系列
-                    this.chart.series.forEach(series => {
-                        if (series.options.id === clickedSeriesId) {
-                            series.show();
-                        } else {
-                            series.hide();
-                        }
-                    });
-                }
+    series: {
+      events: {
+        click: function (event) {
+          // 获取当前点击的系列的 ID
+          const clickedSeriesId = event.point.series.options.id
+          // 遍历所有系列，显示当前点击的系列，隐藏其他系列
+          this.chart.series.forEach((series) => {
+            if (series.options.id === clickedSeriesId) {
+              series.show()
+            } else {
+              series.hide()
             }
+          })
         }
-    },
+      }
+    }
+  },
   series: []
 })
 
@@ -99,7 +96,7 @@ const transformBetAmountDailyRank = (data) => {
     dayjs(ele.date).format(t('date.format_date_rule'))
   )
 
-// 儲存排名會員名稱
+  // 儲存排名會員名稱
   let userNameList = []
   for (let i = 0; i < data.rank.length; i++) {
     userNameList.push(data.rank[i].user_name)

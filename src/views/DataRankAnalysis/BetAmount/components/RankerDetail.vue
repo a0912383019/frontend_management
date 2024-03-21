@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed, onMounted, toRefs, defineProps } from 'vue'
+import { ref, watch, computed, onMounted, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useDialogMemberDetailStore } from '@/stores'
 import { storeToRefs } from 'pinia'
