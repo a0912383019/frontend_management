@@ -376,3 +376,21 @@ export function sortTableData({ prop, order, tableData }) {
     return order === 'descending' ? valueB - valueA : valueA - valueB
   })
 }
+
+/**
+ * 對會員標籤做排序
+ * @param {Array} tagArr 要排序的標籤陣列
+ * @returns {Array} 已排序的標籤陣列
+ */
+export function orderTags(tagArr) {
+  // 取得各個數字的標籤
+  const isSix = tagArr.filter((item) => String(item).startsWith('6'))
+  const isThree = tagArr.filter((item) => String(item).startsWith('3'))
+  const isFour = tagArr.filter((item) => String(item).startsWith('4'))
+  const isFive = tagArr.filter((item) => String(item).startsWith('5'))
+  const isOne = tagArr.filter((item) => String(item).startsWith('1'))
+  const isNine = tagArr.filter((item) => String(item).startsWith('9'))
+
+  // 根據標籤說明順序合併陣列
+  return isSix.concat(isThree).concat(isFour).concat(isFive).concat(isOne).concat(isNine)
+}
