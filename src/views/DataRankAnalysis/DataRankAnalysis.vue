@@ -7,7 +7,7 @@ import BetAmountRank from '@/views/DataRankAnalysis/BetAmount/BetAmount.vue'
 
 const { t } = useI18n()
 
-//tabs列表
+// tabs列表
 const tabData = computed(() => {
   return [
     {
@@ -38,11 +38,7 @@ const currentTabs = ref('BetAmountRank')
 
 // 整理所有 component
 const componentMap = {
-  BetAmountRank,
-  // ActiveTimeAnalysis,
-  // DayReport,
-  // WeekReport,
-  // WeekTotalReport
+  BetAmountRank
 }
 
 // 當前使用的 component

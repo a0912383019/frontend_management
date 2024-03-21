@@ -1,9 +1,8 @@
 <script setup>
 import { ref, watch, computed, onMounted, toRefs, defineProps, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
-import { FormatNumber, generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
+import { generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
 import { dayjs } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
