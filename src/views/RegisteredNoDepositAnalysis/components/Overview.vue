@@ -128,6 +128,8 @@ const transformActionScoreSpan = (data) => {
 
 // 發送存款機率區間會員明細
 const handleChangeDetail = (val) => {
+  // 如果區間總人數為 0 ，不發送事件
+  if (val.total_people_num === 0) return
   emit('update:detail', val.lower.replace('%', ';') + val.upper.replace('%', ''))
 }
 
@@ -159,8 +161,8 @@ onMounted(() => {
       >
         <template #deposit_prob="scope">
           <div
-            class="cell-box deposit_prob"
-            :class="{ bg: scope.row.has_bg }"
+            class="cell-box"
+            :class="{ bg: scope.row.has_bg, deposit_prob: scope.row.total_people_num !== 0 }"
             @click="handleChangeDetail(scope.row)"
           >
             {{
