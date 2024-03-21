@@ -33,7 +33,7 @@ describe('CurrencySignText', () => {
       currencySignText: '¥'
     }
 
-    const currencyHtml = '<div> (幣別： 人民幣¥) </div>'
+    const currencyHtml = '<div class="font-size-14 cdp-text-onyx"> (幣別： 人民幣¥) </div>'
     expect(wrapper.vm.currencyObj).toStrictEqual(currencyObject)
     expect(wrapper.vm.isReady).toBe(true)
     expect(wrapper.find('div').html()).toBe(currencyHtml)

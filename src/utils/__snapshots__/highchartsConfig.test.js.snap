@@ -5,7 +5,9 @@ exports[`Tooltip Utils > should format shared tooltip using tooltipShared 1`] = 
     <div style=\\"
       padding: 6px 10px;
       border-radius: 5px;
-      background-color: rgba(0, 0, 0, 0.8)
+      background-color: rgba(0, 0, 0, 0.8);
+      overflow-y: scroll;
+      max-height: 240px;
     \\">
     <div class=\\"font-bold mb-3\\">2323/11/11</div>
     <div class=\\"flex flex-col\\">
