@@ -184,8 +184,8 @@ export const router = createRouter({
       children: [
         {
           path: '/rank-analysis',
-          name: 'rank-analysis'
-          // component: () => import('../views/Home/Home.vue')
+          name: 'rank-analysis',
+          component: () => import('../views/DataRankAnalysis/DataRankAnalysis.vue')
         }
       ]
     },

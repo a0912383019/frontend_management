@@ -55,7 +55,9 @@ export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 })
     <div style="
       padding: 6px 10px;
       border-radius: 5px;
-      background-color: rgba(0, 0, 0, 0.8)
+      background-color: rgba(0, 0, 0, 0.8);
+      overflow-y: scroll;
+      max-height: 400px;
     ">
     <div class="font-bold mb-3">${date}</div>
     <div class="flex flex-col">

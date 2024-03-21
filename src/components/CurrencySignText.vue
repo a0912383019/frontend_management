@@ -35,7 +35,7 @@ watch(
 )
 </script>
 <template>
-  <div v-if="isReady">
+  <div v-if="isReady" class="font-size-14 cdp-text-onyx">
     ({{ $t(currencyObj['currency']) }} {{ $t(currencyObj['currencySign'])
     }}{{ currencyObj['currencySignText'] }})
   </div>

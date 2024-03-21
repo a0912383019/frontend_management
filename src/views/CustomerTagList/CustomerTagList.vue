@@ -10,7 +10,8 @@ import {
   checkTagUsage,
   formatDateDuration,
   getSessionStorageEntity,
-  trimBack
+  trimBack,
+  orderTags
 } from '@/utils/commonUtils.js'
 import { ElNotification } from 'element-plus'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
@@ -213,7 +214,7 @@ const transformListMemberTags = (data) => {
       }
     }
     // 將 6 開頭的風控標籤移動到最前面
-    tempObj['tag_name_str'] = move6ToStart(tempObj['tag_name_str'])
+    tempObj['tag_name_str'] = orderTags(tempObj['tag_name_str'])
 
     tempObj['tag_name_str'].forEach((item) => {
       let obj = {}
@@ -234,18 +235,6 @@ const transformListMemberTags = (data) => {
     tagWidth = 0
   })
   return result
-}
-
-// 將 6 開頭的風控標籤移動到最前面
-const move6ToStart = (val) => {
-  // 取得6開頭的標籤
-  const isSix = val.filter((item) => item.startsWith('6'))
-
-  // 取得不為6開頭的標籤
-  const other = val.filter((item) => !item.startsWith('6'))
-
-  // 陣列合併
-  return isSix.concat(other)
 }
 
 // 取得文字總寬
