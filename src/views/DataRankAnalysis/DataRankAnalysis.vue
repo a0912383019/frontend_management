@@ -4,6 +4,11 @@ import { useI18n } from 'vue-i18n'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import Tab from '@/components/Tab.vue'
 import BetAmountRank from '@/views/DataRankAnalysis/BetAmount/BetAmount.vue'
+import PositiveProfitRank from '@/views/DataRankAnalysis/ProfitRank/PositiveProfitRank.vue'
+import NegativeProfitRank from '@/views/DataRankAnalysis/ProfitRank/NegativeProfitRank.vue'
+import { useDataRankAnalysisStore } from '@/stores'
+
+const dataRankStore = useDataRankAnalysisStore()
 
 const { t } = useI18n()
 
@@ -38,11 +43,14 @@ const currentTabs = ref('BetAmountRank')
 
 // 整理所有 component
 const componentMap = {
-  BetAmountRank
+  BetAmountRank,
+  PositiveProfitRank,
+  NegativeProfitRank
 }
 
 // 當前使用的 component
 const currentTabComponent = computed(() => {
+  dataRankStore.currentTab = currentTabs.value
   return componentMap[currentTabs.value] || null
 })
 </script>
@@ -63,10 +71,5 @@ const currentTabComponent = computed(() => {
 <style lang="scss" scoped>
 :deep(.cdp-section-in) {
   position: relative;
-}
-:deep(.filter-box) {
-  position: absolute;
-  right: 0;
-  top: -57px;
 }
 </style>

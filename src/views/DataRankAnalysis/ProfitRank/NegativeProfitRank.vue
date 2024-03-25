@@ -1,13 +1,13 @@
 <script setup>
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Tab from '@/components/Tab.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
-import Filter from '@/views/DataRankAnalysis/BetAmount/components/Filter.vue'
-import RankerDetail from '@/views/DataRankAnalysis/BetAmount/components/RankerDetail.vue'
-import DetailChart from '@/views/DataRankAnalysis/BetAmount/components/DetailChart.vue'
+import Filter from '@/views/DataRankAnalysis/ProfitRank/components/Filter.vue'
+import RankerDetail from '@/views/DataRankAnalysis/ProfitRank/components/RankerDetail.vue'
+import DetailChart from '@/views/DataRankAnalysis/ProfitRank/components/DetailChart.vue'
 import { useGlobalStore, useDataRankAnalysisStore } from '@/stores'
-import { apiQueryBetAmountRank } from '@/api'
+import { apiQueryPositiveNegativeProfitRank } from '@/api'
 
 const { t } = useI18n()
 
@@ -15,7 +15,7 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const dataRankStore = useDataRankAnalysisStore()
-const { betAmountFilter } = dataRankStore
+const { profitFilter } = dataRankStore
 
 const refContent = ref(null)
 
@@ -56,15 +56,16 @@ const apiObject = reactive({
 const clientWidth = ref(0)
 
 // 取得資料
-const queryBetAmountRank = async () => {
+const queryPositiveNegativeProfitRank = async () => {
   apiObject.messageKey = 'loading'
   apiObject.apiSuccess = false
   try {
-    const result = await apiQueryBetAmountRank({
+    const result = await apiQueryPositiveNegativeProfitRank({
       hall_name: activeHall.hall_code,
-      rank_date: betAmountFilter.searchDate,
-      rank_num: betAmountFilter.rank,
-      users_detail_date: betAmountFilter.searchDate
+      profit_rank_date: profitFilter.searchDate,
+      rank_num: profitFilter.rank,
+      daily_date: profitFilter.searchDate,
+      order: 'ASC'
     })
 
     const { return_code } = result.data.status
@@ -92,20 +93,23 @@ const queryBetAmountRank = async () => {
   }
 }
 
-const handleCallApi = () => {
-  queryBetAmountRank()
-}
+watch(
+  () => dataRankStore.profitIsSearchedAgainNum,
+  () => {
+    queryPositiveNegativeProfitRank()
+  }
+)
 
 onMounted(() => {
   clientWidth.value = refContent.value.clientWidth
   // 將篩選恢復成預設值
-  queryBetAmountRank()
+  queryPositiveNegativeProfitRank()
 })
 </script>
 <template>
   <section class="cdp-section-in mb-0" ref="refContent">
     <div class="filter-box">
-      <Filter @update:filter="handleCallApi" />
+      <Filter />
     </div>
     <el-row :gutter="20" class="mb-20">
       <el-col :span="8">
@@ -115,13 +119,11 @@ onMounted(() => {
         <CurrencySignText v-show="currentTabs === 'RankerDetail'" />
       </el-col>
     </el-row>
-    <keep-alive>
-      <component
-        :is="currentTabComponent"
-        :apiObject="apiObject"
-        :clientWidth="clientWidth"
-      ></component>
-    </keep-alive>
+    <component
+      :is="currentTabComponent"
+      :apiObject="apiObject"
+      :clientWidth="clientWidth"
+    ></component>
   </section>
 </template>
 <style lang="scss" scoped>
