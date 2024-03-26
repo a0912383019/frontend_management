@@ -17,7 +17,6 @@ const props = defineProps({
   apiObject: {
     apiSuccess: Boolean,
     messageKey: String,
-    apiRecordsTotal: Number,
     result: Object
   },
   clientWidth: Number
@@ -157,7 +156,12 @@ watch(
     apiSuccess.value = apiObject.value.apiSuccess
     messageKey.value = apiObject.value.messageKey
     if (apiObject.value.apiSuccess) {
-      transformBetAmountDailyRank(apiObject.value.result)
+      if (apiObject.value.result.rank.length === 0) {
+        apiSuccess.value = false
+        messageKey.value = 'noResult'
+      } else {
+        transformBetAmountDailyRank(apiObject.value.result)
+      }
     }
   }
 )

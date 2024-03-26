@@ -49,7 +49,6 @@ const currentTabComponent = computed(() => {
 const apiObject = reactive({
   apiSuccess: false,
   messageKey: 'loading',
-  apiRecordsTotal: 0,
   result: {}
 })
 
@@ -76,10 +75,8 @@ const queryBetAmountRank = async () => {
     } else {
       const { error_code } = result.data.status
       if (error_code === '210400000') {
-        apiObject.apiRecordsTotal = 0
         apiObject.messageKey = 'noResult'
       } else {
-        apiObject.apiRecordsTotal = 0
         apiObject.messageKey = 'queryFailed'
       }
     }

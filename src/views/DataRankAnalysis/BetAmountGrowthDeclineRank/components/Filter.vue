@@ -25,8 +25,6 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 const { systemConfigIsOk } = storeToRefs(globalStore)
 
-const emit = defineEmits(['update:filter'])
-
 const popover = ref(null) // popover
 // 關閉 popover
 const closePopover = () => {

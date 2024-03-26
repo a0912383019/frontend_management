@@ -37,14 +37,12 @@ const props = defineProps({
   apiObject: {
     apiSuccess: Boolean,
     messageKey: String,
-    apiRecordsTotal: Number,
     result: Object
   },
   clientWidth: Number
 })
 const { apiObject, clientWidth } = toRefs(props)
 
-const apiRecordsTotal = ref(apiObject.value.apiRecordsTotal) //資料總數
 const apiSuccess = ref(apiObject.value.apiSuccess)
 const messageKey = ref(apiObject.value.messageKey)
 
@@ -193,7 +191,6 @@ watch(
   () => {
     apiSuccess.value = apiObject.value.apiSuccess
     messageKey.value = apiObject.value.messageKey
-    apiRecordsTotal.value = apiObject.value.apiRecordsTotal
     tableData.value = []
     if (apiObject.value.apiSuccess) {
       tableData.value = transformMemberData(apiObject.value.result.rank)
@@ -225,7 +222,6 @@ onMounted(() => {
         :tableData="tableData"
         :tableColumns="tableColumns"
         :pageSize="apiLength"
-        :tableTotal="apiRecordsTotal"
         :stripe="true"
         ref="refCustomTable"
         class="customTable2 customTagListTable"
