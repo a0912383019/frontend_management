@@ -13,7 +13,6 @@ import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
-import TooltipCustomTag from '@/components/TooltipCustomTag.vue'
 
 const { t } = useI18n()
 
@@ -73,14 +72,14 @@ const tableColumns = computed(() => {
     },
     {
       label: t('data_name.user_level'),
-      prop: 'user_level',
+      prop: 'level',
       headerAlign: 'center',
       align: 'center',
       minWidth: '12%'
     },
     {
-      label: t('rank_analysis.commissionable'),
-      prop: 'commissionable',
+      label: t('rank_analysis.total_profit_loss'),
+      prop: 'profit_loss',
       headerAlign: 'center',
       align: 'center',
       minWidth: '10%'
@@ -104,7 +103,7 @@ const transformMemberData = (data) => {
       ...item,
       index,
       rank: index,
-      commissionable: FormatNumber(item.commissionable_total),
+      profit_loss: FormatNumber(item.profit_loss),
       tag_name_str: [],
       tag_transfrom_obj: [],
       tag_show: false,
@@ -235,7 +234,18 @@ onMounted(() => {
           </div>
         </template>
         <template #tag_name_str-header>
-          <TooltipCustomTag />
+          <el-tooltip effect="dark" placement="right">
+            <template #content>
+              <div class="font-size-14">
+                <div class="page-customtag-type__item red">{{ $t('tags.type_6') }}</div>
+                <div class="page-customtag-type__item blue">{{ $t('tags.type_3') }}</div>
+                <div class="page-customtag-type__item orange">{{ $t('tags.type_4') }}</div>
+                <div class="page-customtag-type__item green">{{ $t('tags.type_1') }}</div>
+                <div class="page-customtag-type__item tree-green">{{ $t('tags.type_9') }}</div>
+              </div>
+            </template>
+            <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
+          </el-tooltip>
         </template>
         <template #tag_name_str="scope">
           <div class="tags">
@@ -326,6 +336,47 @@ onMounted(() => {
 }
 </style>
 <style lang="scss">
+.page-customtag-type {
+  &__item {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    &::before {
+      content: '';
+      width: 12px;
+      height: 12px;
+      margin-right: 6px;
+      border-radius: 50%;
+    }
+    &.green {
+      &::before {
+        background-color: $green;
+      }
+    }
+    &.red {
+      &::before {
+        background-color: $red;
+      }
+    }
+    &.blue {
+      &::before {
+        background-color: $blue;
+      }
+    }
+    &.orange {
+      &::before {
+        background-color: $orange;
+      }
+    }
+    &.tree-green {
+      &::before {
+        background-color: $tree-green;
+      }
+    }
+  }
+}
+
 .customTagListTable {
   button.detail-button {
     min-width: 80px;

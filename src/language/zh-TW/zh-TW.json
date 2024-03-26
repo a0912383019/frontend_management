@@ -805,7 +805,7 @@
     "positive_profit_rank": "正盈利排名",
     "negative_profit_rank": "負盈利排名",
     "total_profit_loss": "淨利",
-    "ranking_member_daily_profit_loss": "排名會員每日淨利"
+    "ranking_member_daily_total_profit_loss": "排名會員每日累加淨利"
   },
 
   "custom_tags_setting": {

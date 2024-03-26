@@ -101,11 +101,10 @@ const chartOptions = reactive({
 })
 
 //轉換資料
-const transformBetAmountDailyRank = (data) => {
+const transformProfitDailyRank = (data) => {
   clearChart()
-  chartOptions.xAxis.categories = data.daily.map((ele) =>
-    dayjs(ele.date).format(t('date.format_date_rule'))
-  )
+  let aaa = data.daily.map((ele) => dayjs(ele.date).format(t('date.format_date_rule')))
+  chartOptions.xAxis.categories = aaa
 
   // 儲存排名會員名稱
   let userNameList = []
@@ -128,7 +127,7 @@ const transformBetAmountDailyRank = (data) => {
         // 根據會員名稱遍歷取得該會員資料
         const index = ele.users.findIndex((item) => item.user_name === userNameList[i])
         if (index !== -1) {
-          return Number(ele.users[index].commissionable)
+          return Number(ele.users[index].accumulate_profit_loss)
         }
       }),
       // 超過20個會員資料時顏色使用隨機
@@ -160,7 +159,7 @@ watch(
         apiSuccess.value = false
         messageKey.value = 'noResult'
       } else {
-        transformBetAmountDailyRank(apiObject.value.result)
+        transformProfitDailyRank(apiObject.value.result)
       }
     }
   }
@@ -172,14 +171,14 @@ onMounted(() => {
       apiSuccess.value = false
       messageKey.value = 'noResult'
     } else {
-      transformBetAmountDailyRank(apiObject.value.result)
+      transformProfitDailyRank(apiObject.value.result)
     }
   }
 })
 </script>
 <template>
   <section class="">
-    <SectionTitle class="mb-15" :title="$t('rank_analysis.ranking_member_daily_bet_amount')">
+    <SectionTitle class="mb-15" :title="$t('rank_analysis.ranking_member_daily_total_profit_loss')">
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>
