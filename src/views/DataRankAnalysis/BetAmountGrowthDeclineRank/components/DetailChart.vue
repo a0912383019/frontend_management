@@ -1,6 +1,5 @@
 <script setup>
 import { ref, watch, onMounted, toRefs, reactive } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useDataRankAnalysisStore } from '@/stores'
 import { generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
 import { dayjs } from 'element-plus'
@@ -8,8 +7,6 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { tooltipDarkConfig, tooltipShared } from '@/utils/highchartsConfig.js'
 import { latest_chart_color } from '@/../public/js/system_config.js'
-
-const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -103,11 +100,12 @@ const chartOptions = reactive({
 })
 
 //轉換資料
-const transformProfitDailyRank = (data) => {
+const transformBetAmountDailyRank = (data) => {
   clearChart()
-  chartOptions.xAxis.categories = data.daily.map((ele) =>
-    dayjs(ele.date).format(t('date.format_date_rule'))
-  )
+  chartOptions.xAxis.categories = data.daily.map((ele) => {
+    const { fin_year, fin_month, fin_week } = ele.date
+    return `${fin_year}/${dayjs(fin_year + '/' + fin_month + '/01').format('MM')}/W${fin_week}`
+  })
 
   // 儲存排名會員名稱
   let userNameList = []
@@ -130,7 +128,7 @@ const transformProfitDailyRank = (data) => {
         // 根據會員名稱遍歷取得該會員資料
         const index = ele.users.findIndex((item) => item.user_name === userNameList[i])
         if (index !== -1) {
-          return Number(ele.users[index].accumulate_profit_loss)
+          return Number(ele.users[index].commissionable)
         }
       }),
       // 超過20個會員資料時顏色使用隨機
@@ -148,8 +146,8 @@ const transformProfitDailyRank = (data) => {
 }
 
 const clearChart = () => {
-  chartOptions.xAxis.categories = []
-  chartOptions.series = []
+  chartOptions['xAxis']['categories'] = []
+  chartOptions['series'] = []
 }
 
 watch(
@@ -162,7 +160,7 @@ watch(
         apiSuccess.value = false
         messageKey.value = 'noResult'
       } else {
-        transformProfitDailyRank(apiObject.value.result)
+        transformBetAmountDailyRank(apiObject.value.result)
       }
     }
   }
@@ -170,29 +168,26 @@ watch(
 
 onMounted(() => {
   if (apiObject.value.apiSuccess && Object.keys(apiObject.value.result).length !== 0) {
-    if (apiObject.value.result.rank.length === 0) {
-      apiSuccess.value = false
-      messageKey.value = 'noResult'
-    } else {
-      transformProfitDailyRank(apiObject.value.result)
-    }
+    transformBetAmountDailyRank(apiObject.value.result)
   }
 })
 </script>
 <template>
-  <section>
-    <SectionTitle class="mb-15" :title="$t('rank_analysis.ranking_member_daily_total_profit_loss')">
-    </SectionTitle>
+  <section class="section">
+    <SectionTitle
+      class="mb-15"
+      :title="$t('rank_analysis.ranking_member_weekly_bet_amount')"
+    ></SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>
       <div class="cursor-pointer">
         <highcharts
           :options="chartOptions"
-          v-if="dataRankStore.currentTab === 'PositiveProfitRank'"
+          v-if="dataRankStore.currentTab === 'Growth'"
         ></highcharts>
         <highcharts
           :options="chartOptions"
-          v-if="dataRankStore.currentTab === 'NegativeProfitRank'"
+          v-if="dataRankStore.currentTab === 'Decline'"
         ></highcharts>
       </div>
     </template>

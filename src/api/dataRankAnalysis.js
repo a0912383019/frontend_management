@@ -16,3 +16,11 @@ export const apiQueryPositiveNegativeProfitRank = (params) => {
     params: { hall_name, daily_date, rank_num, order, profit_rank_date }
   })
 }
+
+// 貨量成長/衰退排名
+export const apiBetAmountGrowthDeclineRank = (params) => {
+  const { financial_month, financial_week, financial_year, hall_name, order, rank_num } = params
+  return axiosGoInstance.get('/api/auth/rank/bet_amount_growth_decline_rank', {
+    params: { financial_month, financial_week, financial_year, hall_name, order, rank_num }
+  })
+}

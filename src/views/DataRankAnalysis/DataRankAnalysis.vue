@@ -4,10 +4,13 @@ import { useI18n } from 'vue-i18n'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import Tab from '@/components/Tab.vue'
 import BetAmountRank from '@/views/DataRankAnalysis/BetAmount/BetAmount.vue'
+import Growth from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/Growth.vue'
+import Decline from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/Decline.vue'
 import PositiveProfitRank from '@/views/DataRankAnalysis/ProfitRank/PositiveProfitRank.vue'
 import NegativeProfitRank from '@/views/DataRankAnalysis/ProfitRank/NegativeProfitRank.vue'
 import { useDataRankAnalysisStore } from '@/stores'
 import Filter from '@/views/DataRankAnalysis/ProfitRank/components/Filter.vue'
+import GrowthDecayFilter from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/components/Filter.vue'
 
 const dataRankStore = useDataRankAnalysisStore()
 
@@ -21,11 +24,11 @@ const tabData = computed(() => {
       label: t('rank_analysis.bet_amount_rank')
     },
     {
-      name: 'BetAmountGrowthRank',
+      name: 'Growth',
       label: t('rank_analysis.bet_amount_growth_rank')
     },
     {
-      name: 'BetAmountDeclineRank',
+      name: 'Decline',
       label: t('rank_analysis.bet_amount_decline_rank')
     },
     {
@@ -45,12 +48,15 @@ const currentTabs = ref('BetAmountRank')
 // 整理所有 component
 const componentMap = {
   BetAmountRank,
+  Growth,
+  Decline,
   PositiveProfitRank,
   NegativeProfitRank
 }
 
 // 當前使用的 component
 const currentTabComponent = computed(() => {
+  dataRankStore.currentTab = currentTabs.value
   return componentMap[currentTabs.value] || null
 })
 </script>
@@ -66,6 +72,7 @@ const currentTabComponent = computed(() => {
           <Filter
             v-if="currentTabs === 'PositiveProfitRank' || currentTabs === 'NegativeProfitRank'"
           />
+          <GrowthDecayFilter v-if="currentTabs === 'Growth' || currentTabs === 'Decline'" />
         </div>
       </el-col>
     </el-row>

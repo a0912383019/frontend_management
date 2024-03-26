@@ -13,6 +13,7 @@ import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
+import PercentWithIcon from '@/components/PercentWithIcon.vue'
 import TooltipCustomTag from '@/components/TooltipCustomTag.vue'
 
 const { t } = useI18n()
@@ -79,7 +80,7 @@ const tableColumns = computed(() => {
       minWidth: '12%'
     },
     {
-      label: t('rank_analysis.commissionable'),
+      label: t('rank_analysis.commissionable_changes'),
       prop: 'commissionable',
       headerAlign: 'center',
       align: 'center',
@@ -104,7 +105,9 @@ const transformMemberData = (data) => {
       ...item,
       index,
       rank: index,
+      user_level: item.level,
       commissionable: FormatNumber(item.commissionable_total),
+      commissionable_growth_percent: FormatNumber(item.commissionable_growth_percent),
       tag_name_str: [],
       tag_transfrom_obj: [],
       tag_show: false,
@@ -122,17 +125,17 @@ const transformMemberData = (data) => {
     tempObj.tag_name_str = orderTags(tempObj.tag_name_str)
 
     // 分第一行與第二行，第二行-10為了預留...的空間
-    let lineone = clientWidth.value * 0.43
-    let linetwo = clientWidth.value * 0.43 - 20
+    let lineone = clientWidth.value * 0.44
+    let linetwo = clientWidth.value * 0.44 - 10
     let currentLine = 1
-
     tempObj.tag_name_str.forEach((item) => {
       let obj = {}
       obj.code = String(item)
       obj.name = tag_description_dict[item].tag_name
-      obj.width = getTextWidth(obj.name)
-      obj.hide = false
 
+      obj.width = getTextWidth(obj.name)
+
+      obj.hide = false
       // 計算標籤寬度並根據需要更新行數和顯示狀態
       if (currentLine === 1 && tagWidth + obj.width > lineone) {
         tagWidth = obj.width
@@ -141,12 +144,14 @@ const transformMemberData = (data) => {
         currentLine = 3
         obj.hide = true
         tempObj.tag_button_show = true
-      } else if (currentLine >= 3) {
-        // 當到達第三行時，隱藏標籤並設置按鈕顯示
+      } else {
+        tagWidth += obj.width + 4
+      }
+
+      // 當到達第三行時，隱藏標籤並設置按鈕顯示
+      if (currentLine === 3) {
         obj.hide = true
         tempObj.tag_button_show = true
-      } else {
-        tagWidth += obj.width + 1
       }
 
       tempObj.tag_transfrom_obj.push(obj)
@@ -237,6 +242,18 @@ onMounted(() => {
         <template #tag_name_str-header>
           <TooltipCustomTag />
         </template>
+        <template #commissionable="scope">
+          <div class="commissionable">
+            {{ scope.row.commissionable }}
+            <br />
+            <PercentWithIcon
+              :percentData="scope.row.commissionable_growth_percent"
+              fontSize="14"
+              fontWeight="normal"
+              iconSize="13"
+            />
+          </div>
+        </template>
         <template #tag_name_str="scope">
           <div class="tags">
             <ul class="tags__list" :class="{ allShow: scope.row.tag_show }">
@@ -291,6 +308,10 @@ onMounted(() => {
 <style lang="scss" scoped>
 .mb-0 {
   margin-bottom: 0 !important;
+}
+
+.commissionable {
+  text-align: right;
 }
 
 .tags {

@@ -5,10 +5,12 @@ import { useDateStore } from '@/stores/dateConfig.js'
 import { formatDateDuration } from '@/utils/commonUtils.js'
 
 export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
-  const { date_range_picker_config_8 } = useDateStore()
+  const { date_range_picker_config_8, date_range_picker_config_9 } = useDateStore()
 
   // 因為正負盈利頁籤共用進階篩選，所以用此參數判斷是否要重打api
   const profitIsSearchedAgainNum = ref(0)
+
+  const growthDecayAgainNum = ref(0)
 
   // filter: 貨量排名
   const betAmountFilter = reactive({
@@ -30,6 +32,16 @@ export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
     rank: 10
   })
 
+  // filter: 貨量成長/衰退排名
+  const growthDecayFilter = reactive({
+    financialMonth: dayjs(date_range_picker_config_9.startDate).format('MM'),
+    financialWeek: 1,
+    financialYear: dayjs(date_range_picker_config_9.startDate).format('YYYY'),
+    searchDate: dayjs(date_range_picker_config_9.startDate).format('YYYY-MM'),
+    rank: 10,
+    isFirst: true // 紀錄是否第一次載入
+  })
+
   // 重置資料
   const resetState = () => {
     let latestWeek = formatDateDuration(
@@ -49,6 +61,8 @@ export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
     betAmountFilter,
     profitFilter,
     profitIsSearchedAgainNum,
+    growthDecayFilter,
+    growthDecayAgainNum,
     resetState
   }
 })
