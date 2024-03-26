@@ -72,14 +72,14 @@ const tableColumns = computed(() => {
     },
     {
       label: t('data_name.user_level'),
-      prop: 'user_level',
+      prop: 'level',
       headerAlign: 'center',
       align: 'center',
       minWidth: '12%'
     },
     {
-      label: t('rank_analysis.commissionable'),
-      prop: 'commissionable',
+      label: t('rank_analysis.total_profit_loss'),
+      prop: 'profit_loss',
       headerAlign: 'center',
       align: 'center',
       minWidth: '10%'
@@ -103,7 +103,7 @@ const transformMemberData = (data) => {
       ...item,
       index,
       rank: index,
-      commissionable: FormatNumber(item.commissionable_total),
+      profit_loss: FormatNumber(item.profit_loss),
       tag_name_str: [],
       tag_transfrom_obj: [],
       tag_show: false,
