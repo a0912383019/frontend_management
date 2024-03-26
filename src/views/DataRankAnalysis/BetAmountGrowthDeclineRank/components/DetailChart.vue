@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, onMounted, toRefs, reactive } from 'vue'
-import { useGlobalStore } from '@/stores/global.js'
+import { useGlobalStore, useDataRankAnalysisStore } from '@/stores'
 import { generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
 import { dayjs } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -10,6 +10,8 @@ import { latest_chart_color } from '@/../public/js/system_config.js'
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+
+const dataRankStore = useDataRankAnalysisStore()
 
 const props = defineProps({
   apiObject: {
@@ -155,7 +157,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="">
+  <section class="section">
     <SectionTitle
       class="mb-15"
       :title="$t('rank_analysis.ranking_member_weekly_bet_amount')"
@@ -163,7 +165,14 @@ onMounted(() => {
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>
       <div class="cursor-pointer">
-        <highcharts :options="chartOptions"></highcharts>
+        <highcharts
+          :options="chartOptions"
+          v-if="dataRankStore.currentTab === 'Growth'"
+        ></highcharts>
+        <highcharts
+          :options="chartOptions"
+          v-if="dataRankStore.currentTab === 'Decline'"
+        ></highcharts>
       </div>
     </template>
   </section>

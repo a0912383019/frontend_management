@@ -69,12 +69,10 @@ const handleClick = () => {
   growthDecayFilter.financialMonth = dayjs(filterData.searchDate).format('MM')
   growthDecayFilter.financialWeek = filterData.apiWeek
   growthDecayFilter.financialYear = dayjs(filterData.searchDate).format('YYYY')
-  emit('update:filter')
+  // emit('update:filter')
+  dataRankStore.growthDecayAgainNum = Date.parse(new Date())
   closePopover()
 }
-
-// 紀錄是否第一次載入
-const isFirst = ref(true)
 
 // 週次下拉選單
 const selectWeeks = ref([])
@@ -125,9 +123,9 @@ const handleDateChange = async (date) => {
       }
 
       // 第一次載入執行這段，須等帳戶週處理完今日的日期對應的週次，再進行篩選
-      if (isFirst.value) {
+      if (growthDecayFilter.isFirst) {
         handleClick()
-        isFirst.value = false
+        growthDecayFilter.isFirst = false
       }
     } else {
       let failMsg = errorRespond(result.data.status)
@@ -161,20 +159,6 @@ watch(
 </script>
 <template>
   <div class="cdp-popover-container">
-    <div
-      style="
-        pointer-events: none;
-        background-color: #fff;
-        position: fixed;
-        right: 20px;
-        top: 70px;
-        z-index: 999999;
-      "
-    >
-      aa-{{ filterData.searchDate }}
-      <br />
-      bb-{{ growthDecayFilter }}
-    </div>
     <el-popover
       ref="popover"
       placement="bottom-end"

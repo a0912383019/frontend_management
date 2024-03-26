@@ -1,9 +1,8 @@
 <script setup>
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Tab from '@/components/Tab.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
-import GrowthDecayFilter from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/components/Filter.vue'
 import RankerDetail from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/components/RankerDetail.vue'
 import DetailChart from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/components/DetailChart.vue'
 import { useGlobalStore, useDataRankAnalysisStore } from '@/stores'
@@ -97,19 +96,22 @@ const queryBetAmountRank = async () => {
   }
 }
 
-const handleCallApi = () => {
-  queryBetAmountRank()
-}
-
 onMounted(() => {
   clientWidth.value = refContent.value.clientWidth
+  if (!growthDecayFilter.isFirst) {
+    queryBetAmountRank()
+  }
 })
+
+watch(
+  () => dataRankStore.growthDecayAgainNum,
+  () => {
+    queryBetAmountRank()
+  }
+)
 </script>
 <template>
   <section class="cdp-section-in mb-0" ref="refContent">
-    <div class="filter-box">
-      <GrowthDecayFilter @update:filter="handleCallApi" />
-    </div>
     <el-row :gutter="20" class="mb-20">
       <el-col :span="8">
         <Tab :tabData="tabData" :activeName="currentTabs" v-model="currentTabs"></Tab>
@@ -118,13 +120,15 @@ onMounted(() => {
         <CurrencySignText v-show="currentTabs === 'RankerDetail'" />
       </el-col>
     </el-row>
-    <keep-alive>
-      <component
-        :is="currentTabComponent"
-        :apiObject="apiObject"
-        :clientWidth="clientWidth"
-      ></component>
-    </keep-alive>
+    <div class="component-box" :class="{ show: dataRankStore.currentTab === 'Growth' }">
+      <keep-alive>
+        <component
+          :is="currentTabComponent"
+          :apiObject="apiObject"
+          :clientWidth="clientWidth"
+        ></component>
+      </keep-alive>
+    </div>
   </section>
 </template>
 <style lang="scss" scoped>
@@ -138,5 +142,14 @@ onMounted(() => {
 }
 .vtal-b {
   vertical-align: bottom;
+}
+
+.component-box {
+  opacity: 0;
+  transition: all 0.5s;
+  &.show {
+    opacity: 1;
+    transition-delay: 1s;
+  }
 }
 </style>

@@ -10,6 +10,8 @@ export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
   // 因為正負盈利頁籤共用進階篩選，所以用此參數判斷是否要重打api
   const profitIsSearchedAgainNum = ref(0)
 
+  const growthDecayAgainNum = ref(0)
+
   // filter: 貨量排名
   const betAmountFilter = reactive({
     searchDate: formatDateDuration(
@@ -36,7 +38,8 @@ export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
     financialWeek: 1,
     financialYear: dayjs(date_range_picker_config_9.startDate).format('YYYY'),
     searchDate: dayjs(date_range_picker_config_9.startDate).format('YYYY-MM'),
-    rank: 10
+    rank: 10,
+    isFirst: true // 紀錄是否第一次載入
   })
 
   // 重置資料
@@ -59,6 +62,7 @@ export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
     profitFilter,
     profitIsSearchedAgainNum,
     growthDecayFilter,
+    growthDecayAgainNum,
     resetState
   }
 })
