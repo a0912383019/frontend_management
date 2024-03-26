@@ -56,7 +56,6 @@ const componentMap = {
 
 // 當前使用的 component
 const currentTabComponent = computed(() => {
-  dataRankStore.currentTab = currentTabs.value
   return componentMap[currentTabs.value] || null
 })
 </script>

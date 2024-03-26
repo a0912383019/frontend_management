@@ -71,7 +71,7 @@ const chartOptions = reactive({
     series: {
       events: {
         click: function (event) {
-          // 获取当前点击的系列的 ID
+          // 获取当前点击的系列的 name
           const clickedSeriesName = event.point.series.name
 
           let showLines = 0
@@ -103,8 +103,7 @@ const chartOptions = reactive({
 //轉換資料
 const transformProfitDailyRank = (data) => {
   clearChart()
-  let aaa = data.daily.map((ele) => dayjs(ele.date).format(t('date.format_date_rule')))
-  chartOptions.xAxis.categories = aaa
+  chartOptions.xAxis.categories = data.daily.map((ele) => dayjs(ele.date).format(t('date.format_date_rule')))
 
   // 儲存排名會員名稱
   let userNameList = []
@@ -177,7 +176,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="">
+  <section>
     <SectionTitle class="mb-15" :title="$t('rank_analysis.ranking_member_daily_total_profit_loss')">
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
