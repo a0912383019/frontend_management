@@ -178,7 +178,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="">
+  <section>
     <SectionTitle class="mb-15" :title="$t('rank_analysis.ranking_member_daily_bet_amount')">
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
