@@ -3,7 +3,6 @@ import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Tab from '@/components/Tab.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
-import Filter from '@/views/DataRankAnalysis/ProfitRank/components/Filter.vue'
 import RankerDetail from '@/views/DataRankAnalysis/ProfitRank/components/RankerDetail.vue'
 import DetailChart from '@/views/DataRankAnalysis/ProfitRank/components/DetailChart.vue'
 import { useGlobalStore, useDataRankAnalysisStore } from '@/stores'
@@ -108,9 +107,6 @@ onMounted(() => {
 </script>
 <template>
   <section class="cdp-section-in mb-0" ref="refContent">
-    <div class="filter-box">
-      <Filter />
-    </div>
     <el-row :gutter="20" class="mb-20">
       <el-col :span="8">
         <Tab :tabData="tabData" :activeName="currentTabs" v-model="currentTabs"></Tab>
