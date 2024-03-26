@@ -5,7 +5,7 @@ import { useDateStore } from '@/stores/dateConfig.js'
 import { formatDateDuration } from '@/utils/commonUtils.js'
 
 export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
-  const { date_range_picker_config_8 } = useDateStore()
+  const { date_range_picker_config_8, date_range_picker_config_9 } = useDateStore()
 
   // filter: 貨量排名
   const betAmountFilter = reactive({
@@ -14,6 +14,15 @@ export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
         ' ~ ' +
         dayjs(date_range_picker_config_8.endDate).format('YYYY-MM-DD')
     ),
+    rank: 10
+  })
+
+  // filter: 貨量成長/衰退排名
+  const growthDecayFilter = reactive({
+    financialMonth: dayjs(date_range_picker_config_9.startDate).format('MM'),
+    financialWeek: 1,
+    financialYear: dayjs(date_range_picker_config_9.startDate).format('YYYY'),
+    searchDate: dayjs(date_range_picker_config_9.startDate).format('YYYY-MM'),
     rank: 10
   })
 
@@ -29,6 +38,7 @@ export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
 
   return {
     betAmountFilter,
+    growthDecayFilter,
     resetState
   }
 })

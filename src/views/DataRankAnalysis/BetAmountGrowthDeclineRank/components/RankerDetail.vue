@@ -13,6 +13,7 @@ import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
+import PercentWithIcon from '@/components/PercentWithIcon.vue'
 import TooltipCustomTag from '@/components/TooltipCustomTag.vue'
 
 const { t } = useI18n()
@@ -81,7 +82,7 @@ const tableColumns = computed(() => {
       minWidth: '12%'
     },
     {
-      label: t('rank_analysis.commissionable'),
+      label: t('rank_analysis.commissionable_changes'),
       prop: 'commissionable',
       headerAlign: 'center',
       align: 'center',
@@ -106,7 +107,9 @@ const transformMemberData = (data) => {
       ...item,
       index,
       rank: index,
+      user_level: item.level,
       commissionable: FormatNumber(item.commissionable_total),
+      commissionable_growth_percent: FormatNumber(item.commissionable_growth_percent),
       tag_name_str: [],
       tag_transfrom_obj: [],
       tag_show: false,
@@ -243,6 +246,18 @@ onMounted(() => {
         <template #tag_name_str-header>
           <TooltipCustomTag />
         </template>
+        <template #commissionable="scope">
+          <div class="commissionable">
+            {{ scope.row.commissionable }}
+            <br />
+            <PercentWithIcon
+              :percentData="scope.row.commissionable_growth_percent"
+              fontSize="14"
+              fontWeight="normal"
+              iconSize="13"
+            />
+          </div>
+        </template>
         <template #tag_name_str="scope">
           <div class="tags">
             <ul class="tags__list" :class="{ allShow: scope.row.tag_show }">
@@ -297,6 +312,10 @@ onMounted(() => {
 <style lang="scss" scoped>
 .mb-0 {
   margin-bottom: 0 !important;
+}
+
+.commissionable {
+  text-align: right;
 }
 
 .tags {

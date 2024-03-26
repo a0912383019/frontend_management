@@ -4,6 +4,8 @@ import { useI18n } from 'vue-i18n'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import Tab from '@/components/Tab.vue'
 import BetAmountRank from '@/views/DataRankAnalysis/BetAmount/BetAmount.vue'
+import Growth from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/Growth.vue'
+import Decline from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/Decline.vue'
 
 const { t } = useI18n()
 
@@ -15,11 +17,11 @@ const tabData = computed(() => {
       label: t('rank_analysis.bet_amount_rank')
     },
     {
-      name: 'BetAmountGrowthRank',
+      name: 'Growth',
       label: t('rank_analysis.bet_amount_growth_rank')
     },
     {
-      name: 'BetAmountDeclineRank',
+      name: 'Decline',
       label: t('rank_analysis.bet_amount_decline_rank')
     },
     {
@@ -34,11 +36,13 @@ const tabData = computed(() => {
 })
 
 // 當前顯示的tab
-const currentTabs = ref('BetAmountRank')
+const currentTabs = ref('Growth')
 
 // 整理所有 component
 const componentMap = {
-  BetAmountRank
+  BetAmountRank,
+  Growth,
+  Decline
 }
 
 // 當前使用的 component
