@@ -71,14 +71,26 @@ const chartOptions = reactive({
     series: {
       events: {
         click: function (event) {
-          // 获取当前点击的系列的 ID
-          const clickedSeriesId = event.point.series.options.id
+          // 获取当前点击的系列的 name
+          const clickedSeriesName = event.point.series.name
+
+          let showLines = 0
+          this.chart.series.forEach((series) => {
+            if (series.visible === true) {
+              series.show()
+              showLines++
+            }
+          })
           // 遍历所有系列，显示当前点击的系列，隐藏其他系列
           this.chart.series.forEach((series) => {
-            if (series.options.id === clickedSeriesId) {
-              series.show()
+            if (showLines > 1) {
+              if (series.name === clickedSeriesName) {
+                series.show()
+              } else {
+                series.hide()
+              }
             } else {
-              series.hide()
+              series.show()
             }
           })
         }

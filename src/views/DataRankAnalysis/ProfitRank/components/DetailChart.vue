@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onMounted, toRefs, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useGlobalStore } from '@/stores/global.js'
+import { useGlobalStore, useDataRankAnalysisStore } from '@/stores'
 import { generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
 import { dayjs } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -13,6 +13,8 @@ const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+
+const dataRankStore = useDataRankAnalysisStore()
 
 const props = defineProps({
   apiObject: {
@@ -103,7 +105,9 @@ const chartOptions = reactive({
 //轉換資料
 const transformProfitDailyRank = (data) => {
   clearChart()
-  chartOptions.xAxis.categories = data.daily.map((ele) => dayjs(ele.date).format(t('date.format_date_rule')))
+  chartOptions.xAxis.categories = data.daily.map((ele) =>
+    dayjs(ele.date).format(t('date.format_date_rule'))
+  )
 
   // 儲存排名會員名稱
   let userNameList = []
@@ -182,7 +186,14 @@ onMounted(() => {
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>
       <div class="cursor-pointer">
-        <highcharts :options="chartOptions"></highcharts>
+        <highcharts
+          :options="chartOptions"
+          v-if="dataRankStore.currentTab === 'PositiveProfitRank'"
+        ></highcharts>
+        <highcharts
+          :options="chartOptions"
+          v-if="dataRankStore.currentTab === 'NegativeProfitRank'"
+        ></highcharts>
       </div>
     </template>
   </section>

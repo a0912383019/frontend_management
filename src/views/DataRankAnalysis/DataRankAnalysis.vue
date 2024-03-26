@@ -43,7 +43,7 @@ const tabData = computed(() => {
 })
 
 // 當前顯示的tab
-const currentTabs = ref('Growth')
+const currentTabs = ref('BetAmountRank')
 
 // 整理所有 component
 const componentMap = {
@@ -56,6 +56,7 @@ const componentMap = {
 
 // 當前使用的 component
 const currentTabComponent = computed(() => {
+  dataRankStore.currentTab = currentTabs.value
   return componentMap[currentTabs.value] || null
 })
 </script>
