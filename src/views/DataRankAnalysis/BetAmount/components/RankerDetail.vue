@@ -24,11 +24,11 @@ const { systemConfigIsOk } = storeToRefs(globalStore)
 const dialogMemberDetailStore = useDialogMemberDetailStore()
 const { updateMemberData } = dialogMemberDetailStore
 
-const refCustomTable = ref(null) //table ref
+const refCustomTable = ref(null) // table ref
 const refContent = ref(null)
 
 const tableData = ref([])
-const apiLength = ref(10) //一頁幾筆
+const apiLength = ref(10) // 一頁幾筆
 
 const canvas = ref(null)
 
@@ -112,7 +112,7 @@ const transformMemberData = (data) => {
     }
 
     for (let i = 0; i < tempObj.tags.length; i++) {
-      //  若標籤代碼禁用，則跳過不顯示
+      // 若標籤代碼禁用，則跳過不顯示
       if (checkTagUsage(activeHall.hall_code, tempObj.tags[i])) {
         tempObj.tag_name_str.push(tempObj.tags[i])
       }

@@ -18,7 +18,7 @@ const { profitFilter } = dataRankStore
 
 const refContent = ref(null)
 
-//tabs列表
+// tabs列表
 const tabData = computed(() => {
   return [
     {
@@ -101,7 +101,6 @@ watch(
 
 onMounted(() => {
   clientWidth.value = refContent.value.clientWidth
-  // 將篩選恢復成預設值
   queryPositiveNegativeProfitRank()
 })
 </script>

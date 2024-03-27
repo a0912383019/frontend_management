@@ -18,7 +18,7 @@ const { growthDecayFilter } = dataRankStore
 
 const refContent = ref(null)
 
-//tabs列表
+// tabs列表
 const tabData = computed(() => {
   return [
     {

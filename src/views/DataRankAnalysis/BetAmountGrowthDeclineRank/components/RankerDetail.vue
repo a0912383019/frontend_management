@@ -25,11 +25,11 @@ const { systemConfigIsOk } = storeToRefs(globalStore)
 const dialogMemberDetailStore = useDialogMemberDetailStore()
 const { updateMemberData } = dialogMemberDetailStore
 
-const refCustomTable = ref(null) //table ref
+const refCustomTable = ref(null) // table ref
 const refContent = ref(null)
 
 const tableData = ref([])
-const apiLength = ref(10) //一頁幾筆
+const apiLength = ref(10) // 一頁幾筆
 
 const canvas = ref(null)
 
