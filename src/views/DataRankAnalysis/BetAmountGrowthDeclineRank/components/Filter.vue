@@ -67,7 +67,6 @@ const handleClick = () => {
   growthDecayFilter.financialMonth = dayjs(filterData.searchDate).format('MM')
   growthDecayFilter.financialWeek = filterData.apiWeek
   growthDecayFilter.financialYear = dayjs(filterData.searchDate).format('YYYY')
-  // emit('update:filter')
   dataRankStore.growthDecayAgainNum = Date.parse(new Date())
   closePopover()
 }

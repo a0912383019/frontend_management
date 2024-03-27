@@ -71,28 +71,32 @@ const chartOptions = reactive({
     series: {
       events: {
         click: function (event) {
-          // 获取当前点击的系列的 ID
+          // 因為每次執行 series的 function都會重新 redraw導致速度很慢
+          var _redraw = this.chart.redraw
+          this.chart.redraw = function () {}
+          // 获取当前点击的系列的 name
           const clickedSeriesName = event.point.series.name
 
           let showLines = 0
           this.chart.series.forEach((series) => {
-            if (series.visible === true) {
-              series.show()
+            if (showLines > 1) {
+              return false // 如果已经找到需要显示的 series 超过1个，就跳出循环
+            } else if (series.visible === true) {
               showLines++
             }
           })
-          // 遍历所有系列，显示当前点击的系列，隐藏其他系列
-          this.chart.series.forEach((series) => {
+
+          for (let i = 0, len = this.chart.series.length; i < len; i++) {
+            const series = this.chart.series[i]
             if (showLines > 1) {
-              if (series.name === clickedSeriesName) {
-                series.show()
-              } else {
-                series.hide()
-              }
+              series.update({ visible: series.name === clickedSeriesName })
             } else {
-              series.show()
+              series.update({ visible: true })
             }
-          })
+          }
+
+          this.chart.redraw = _redraw
+          this.chart.redraw()
         }
       }
     }
