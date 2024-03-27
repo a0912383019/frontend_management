@@ -7,11 +7,8 @@ import { svgBuilder } from './src/utils/svgBuilder'
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
-
-  console.log(process.env.VITE_ENV)
   return defineConfig({
-    base: process.env.VITE_ENV !== 'staging' ? '/' : '/cdp-v2/',
+    base: loadEnv(mode, process.cwd()).VITE_ENV !== 'staging' ? '/' : '/cdp-v2/',
     // build: {
     //   outDir: 'CDP'
     // },
