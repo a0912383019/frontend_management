@@ -47,10 +47,10 @@ const badge_class = computed(() => {
   return (badgeClass += ` ${props.badge_text_class}`)
 })
 const tagConent = computed(() => {
-  return get_tag_code.value.tag_description || ''
+  return get_tag_code.value.tag_description
 })
 const tagName = computed(() => {
-  return get_tag_code.value.tag_name || ''
+  return get_tag_code.value.tag_name
 })
 </script>
 <template>
