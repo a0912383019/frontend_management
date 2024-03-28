@@ -1,13 +1,41 @@
-<script setup></script>
+<script setup>
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const tagsList = computed(() => {
+  return [
+    {
+      color: 'red',
+      name: t('tags.type_6')
+    },
+    {
+      color: 'blue',
+      name: t('tags.type_3')
+    },
+    {
+      color: 'orange',
+      name: t('tags.type_4')
+    },
+    {
+      color: 'green',
+      name: t('tags.type_1')
+    },
+    {
+      color: 'tree-green',
+      name: t('tags.type_9')
+    }
+  ]
+})
+</script>
 <template>
   <el-tooltip effect="dark" placement="right">
     <template #content>
       <div class="page-customtag-type">
-        <div class="page-customtag-type__item red">{{ $t('tags.type_6') }}</div>
-        <div class="page-customtag-type__item blue">{{ $t('tags.type_3') }}</div>
-        <div class="page-customtag-type__item orange">{{ $t('tags.type_4') }}</div>
-        <div class="page-customtag-type__item green">{{ $t('tags.type_1') }}</div>
-        <div class="page-customtag-type__item tree-green">{{ $t('tags.type_9') }}</div>
+        <template v-for="item in tagsList" :key="item.color">
+          <div class="page-customtag-type__item" :class="item.color">{{ item.name }}</div>
+        </template>
       </div>
     </template>
     <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
