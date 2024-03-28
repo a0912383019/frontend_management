@@ -77,9 +77,13 @@ export function roundDecimal(val, precision = 2) {
   }
 
   const multiplier = Math.pow(10, precision)
-  const roundedValue = Math.round(val * multiplier) / multiplier
-
-  return roundedValue.toString()
+  if (val > 0) {
+    const roundedValue = Math.round(val * multiplier) / multiplier
+    return (roundedValue).toString()
+  } else {
+    const roundedValue = Math.round(Math.abs(val) * multiplier) / multiplier
+    return (roundedValue * -1).toString()
+  }
 }
 
 /**

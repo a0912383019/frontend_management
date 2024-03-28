@@ -64,6 +64,9 @@ describe('Utility Functions', () => {
 
     const result2 = roundDecimal('-22.456', 1)
     expect(result2).toStrictEqual('-22.5')
+
+    const result3 = roundDecimal('-20.500', 0)
+    expect(result3).toStrictEqual('-21')
   })
 
   //測試 FormatNumber 函數
