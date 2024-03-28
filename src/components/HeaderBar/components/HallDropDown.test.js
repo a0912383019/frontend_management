@@ -191,7 +191,8 @@ describe('HallDropDown', () => {
         is_active: false
       }
     ]
-    await wrapper.vm.changeHeaderHall(changeHallObj)
+    wrapper.vm.changeHeaderHall(changeHallObj)
+    await router.isReady()
     await flushPromises()
     expect(globalStore.activeHall.hall_name).toBe('Esball')
     expect(globalStore.activeHall.hall_code).toBe('esx')

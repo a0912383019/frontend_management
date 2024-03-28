@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 const props = defineProps({
   hall_name: {
@@ -15,43 +15,46 @@ const props = defineProps({
     default: ''
   }
 })
-const badge_class = ref('badge')
-const tag_description_dict = getSessionStorageEntity('system_config').tags_config[props.hall_name]
-const get_tag_code = tag_description_dict[props.tag_code]
-if (get_tag_code !== undefined) {
-  const tag_type = get_tag_code.tag_type
-  switch (tag_type) {
-    case 1:
-    case 5:
-      badge_class.value += ' badge-custom-green'
-      break
-    case 3:
-      badge_class.value += ' badge-custom-blue'
-      break
-    case 4:
-      badge_class.value += ' badge-custom-orange'
-      break
-    case 6:
-      badge_class.value += ' badge-custom-danger'
-      break
-    case 9:
-      badge_class.value += ' badge-custom-tree-green'
-      break
+const tag_description_dict = computed(() => {
+  return getSessionStorageEntity('system_config').tags_config[props.hall_name]
+})
+const get_tag_code = computed(() => {
+  return tag_description_dict.value[props.tag_code]
+})
+const badge_class = computed(() => {
+  let badgeClass = 'badge'
+  if (get_tag_code.value !== undefined) {
+    const tag_type = get_tag_code.value.tag_type
+    switch (tag_type) {
+      case 1:
+      case 5:
+        badgeClass += ' badge-custom-green'
+        break
+      case 3:
+        badgeClass += ' badge-custom-blue'
+        break
+      case 4:
+        badgeClass += ' badge-custom-orange'
+        break
+      case 6:
+        badgeClass += ' badge-custom-danger'
+        break
+      case 9:
+        badgeClass += ' badge-custom-tree-green'
+        break
+    }
   }
-  badge_class.value += ` ${props.badge_text_class}`
-}
-
+  return (badgeClass += ` ${props.badge_text_class}`)
+})
+const tagConent = computed(() => {
+  return get_tag_code.value.tag_description
+})
 const tagName = computed(() => {
-  return tag_description_dict[props.tag_code].tag_name
+  return get_tag_code.value.tag_name
 })
 </script>
 <template>
-  <el-tooltip
-    effect="dark"
-    :content="tag_description_dict[props.tag_code].tag_description"
-    placement="top"
-    :hide-after="0"
-  >
+  <el-tooltip effect="dark" :content="tagConent" placement="top" :hide-after="0">
     <div :class="badge_class">
       {{ tagName }}
     </div>
