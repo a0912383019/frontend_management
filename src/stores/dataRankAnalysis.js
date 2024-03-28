@@ -52,6 +52,14 @@ export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
     betAmountFilter.searchDate = latestWeek
     betAmountFilter.rank = 10
 
+    growthDecayFilter.financialMonth = dayjs(date_range_picker_config_9.startDate).format('MM')
+    growthDecayFilter.financialWeek = 1
+    growthDecayFilter.financialYear = dayjs(date_range_picker_config_9.startDate).format('YYYY')
+    growthDecayFilter.searchDate = dayjs(date_range_picker_config_9.startDate).format('YYYY-MM')
+    growthDecayFilter.rank = 10
+    growthDecayFilter.isFirst = true
+    growthDecayAgainNum.value = 0
+
     profitFilter.searchDate = latestWeek
     profitFilter.rank = 10
     profitIsSearchedAgainNum.value = 0

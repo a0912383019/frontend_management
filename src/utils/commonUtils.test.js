@@ -21,7 +21,8 @@ import {
   findHallIdMappingKey,
   extractNumberValue,
   stringToIntArray,
-  sortTableData
+  sortTableData,
+  orderTags
 } from '@/utils/commonUtils.js'
 
 describe('Utility Functions', () => {
@@ -401,5 +402,13 @@ describe('Utility Functions', () => {
         total_login_count: 14
       }
     ])
+  })
+
+  // 測試 orderTags 函數
+  it('orderTags should return the correct value', () => {
+    const tagsArr = [10009,30001,40005,90001,60002,500005]
+
+    const result = orderTags(tagsArr)
+    expect(result).toStrictEqual([60002,30001,40005,500005,10009,90001])
   })
 })
