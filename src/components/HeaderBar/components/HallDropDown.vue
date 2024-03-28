@@ -50,28 +50,28 @@ const generateHeaderHallDropdown = () => {
 
 //處理選取廳別
 const changeHeaderHall = (element) => {
-  const { hall_name, hall_code } = element
-  // 目前選取的廳別
-  globalStore.activeHall.hall_name = hall_name
-  globalStore.activeHall.hall_code = hall_code
-
-  // 將所有廳別選取狀態取消，並選取目前的廳別
-  const updatedDropdownList = Object.values(hallDropdownList.value).map((item) => {
-    const isCurrentHall = item.hall_name === hall_name
-    return { ...item, is_active: isCurrentHall }
-  })
-
-  // 更新 hallDropdownList.value
-  hallDropdownList.value = updatedDropdownList
-
-  // 依據所選廳別產生對應的sidebar功能
-  sidebarStore.generateSidebarMenu()
-
   //導回首頁
-  router.push({ path: '/home' })
+  router.push({ path: '/home' }).then(() => {
+    const { hall_name, hall_code } = element
+    // 目前選取的廳別
+    globalStore.activeHall.hall_name = hall_name
+    globalStore.activeHall.hall_code = hall_code
 
-  // 關閉下拉
-  emit('update:drop', false)
+    // 將所有廳別選取狀態取消，並選取目前的廳別
+    const updatedDropdownList = Object.values(hallDropdownList.value).map((item) => {
+      const isCurrentHall = item.hall_name === hall_name
+      return { ...item, is_active: isCurrentHall }
+    })
+
+    // 更新 hallDropdownList.value
+    hallDropdownList.value = updatedDropdownList
+
+    // 依據所選廳別產生對應的sidebar功能
+    sidebarStore.generateSidebarMenu()
+
+    // 關閉下拉
+    emit('update:drop', false)
+  })
 }
 
 onMounted(() => {
