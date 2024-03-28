@@ -7,12 +7,14 @@ import {
   checkTagUsage,
   getSessionStorageEntity,
   FormatNumber,
+  addNumberColor,
   orderTags
 } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
+import TooltipCustomTag from '@/components/TooltipCustomTag.vue'
 
 const { t } = useI18n()
 
@@ -220,6 +222,9 @@ onMounted(() => {
         ref="refCustomTable"
         class="customTable2 customTagListTable"
       >
+        <template #tag_name_str-header>
+          <TooltipCustomTag />
+        </template>
         <template #rank="scope">
           <div class="font-size-32" v-if="scope.row.rank < 3">
             <cdp-icon :name="'grade' + (scope.row.rank + 1)"></cdp-icon>
@@ -233,19 +238,8 @@ onMounted(() => {
             {{ scope.row.user_name }}
           </div>
         </template>
-        <template #tag_name_str-header>
-          <el-tooltip effect="dark" placement="right">
-            <template #content>
-              <div class="font-size-14">
-                <div class="page-customtag-type__item red">{{ $t('tags.type_6') }}</div>
-                <div class="page-customtag-type__item blue">{{ $t('tags.type_3') }}</div>
-                <div class="page-customtag-type__item orange">{{ $t('tags.type_4') }}</div>
-                <div class="page-customtag-type__item green">{{ $t('tags.type_1') }}</div>
-                <div class="page-customtag-type__item tree-green">{{ $t('tags.type_9') }}</div>
-              </div>
-            </template>
-            <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
-          </el-tooltip>
+        <template #profit_loss="scope">
+          <span v-html="addNumberColor(scope.row.profit_loss, 'cdp-text-candypink')"></span>
         </template>
         <template #tag_name_str="scope">
           <div class="tags">

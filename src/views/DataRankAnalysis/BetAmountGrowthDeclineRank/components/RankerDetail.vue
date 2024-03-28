@@ -226,6 +226,9 @@ onMounted(() => {
         ref="refCustomTable"
         class="customTable2 customTagListTable"
       >
+        <template #tag_name_str-header>
+          <TooltipCustomTag />
+        </template>
         <template #rank="scope">
           <div class="font-size-32" v-if="scope.row.rank < 3">
             <cdp-icon :name="'grade' + (scope.row.rank + 1)"></cdp-icon>
@@ -238,9 +241,6 @@ onMounted(() => {
           <div class="cdp-link-click" @click="updateMemberData(scope.row)">
             {{ scope.row.user_name }}
           </div>
-        </template>
-        <template #tag_name_str-header>
-          <TooltipCustomTag />
         </template>
         <template #commissionable="scope">
           <div class="commissionable">
