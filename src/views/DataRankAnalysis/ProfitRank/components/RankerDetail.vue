@@ -10,7 +10,6 @@ import {
   addNumberColor,
   orderTags
 } from '@/utils/commonUtils.js'
-import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
@@ -275,17 +274,6 @@ onMounted(() => {
             {{ scope.row.register_date.split(' ')[0] }} <br />{{
               scope.row.register_date.split(' ')[1]
             }}
-          </div>
-        </template>
-        <template #operation="scope">
-          <div>
-            <ButtonIcon
-              class="detail-button"
-              icon="magnifier"
-              :isSvg="true"
-              :name="$t('common.detail_short')"
-              @click="updateMemberData(scope.row)"
-            />
           </div>
         </template>
       </CustomTable>
