@@ -58,6 +58,7 @@ const clientWidth = ref(0)
 const queryBetAmountRank = async () => {
   apiObject.messageKey = 'loading'
   apiObject.apiSuccess = false
+  apiObject.result = {}
   try {
     const result = await apiBetAmountGrowthDeclineRank({
       hall_name: activeHall.hall_code,
@@ -137,10 +138,6 @@ watch(
   right: 0;
   top: -57px;
 }
-.vtal-b {
-  vertical-align: bottom;
-}
-
 .component-box {
   opacity: 0;
   transition: all 0.5s;

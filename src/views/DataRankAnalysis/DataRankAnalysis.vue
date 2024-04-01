@@ -9,7 +9,7 @@ import Decline from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/Decline
 import PositiveProfitRank from '@/views/DataRankAnalysis/ProfitRank/PositiveProfitRank.vue'
 import NegativeProfitRank from '@/views/DataRankAnalysis/ProfitRank/NegativeProfitRank.vue'
 import { useDataRankAnalysisStore } from '@/stores'
-import Filter from '@/views/DataRankAnalysis/ProfitRank/components/Filter.vue'
+import ProfitFilter from '@/views/DataRankAnalysis/ProfitRank/components/Filter.vue'
 import GrowthDecayFilter from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/components/Filter.vue'
 
 const dataRankStore = useDataRankAnalysisStore()
@@ -69,7 +69,7 @@ const currentTabComponent = computed(() => {
       </el-col>
       <el-col :span="5">
         <div class="filter-box-out">
-          <Filter
+          <ProfitFilter
             v-if="currentTabs === 'PositiveProfitRank' || currentTabs === 'NegativeProfitRank'"
           />
           <GrowthDecayFilter v-if="currentTabs === 'Growth' || currentTabs === 'Decline'" />

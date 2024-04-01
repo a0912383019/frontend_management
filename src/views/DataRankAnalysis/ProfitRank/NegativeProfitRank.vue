@@ -58,6 +58,7 @@ const clientWidth = ref(0)
 const queryPositiveNegativeProfitRank = async () => {
   apiObject.messageKey = 'loading'
   apiObject.apiSuccess = false
+  apiObject.result = {}
   try {
     const result = await apiQueryPositiveNegativeProfitRank({
       hall_name: activeHall.hall_code,
@@ -129,8 +130,5 @@ onMounted(() => {
   position: absolute;
   right: 0;
   top: -57px;
-}
-.vtal-b {
-  vertical-align: bottom;
 }
 </style>
