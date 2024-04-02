@@ -58,6 +58,7 @@ const clientWidth = ref(0)
 const queryPositiveNegativeProfitRank = async () => {
   apiObject.messageKey = 'loading'
   apiObject.apiSuccess = false
+  apiObject.result = {}
   try {
     const result = await apiQueryPositiveNegativeProfitRank({
       hall_name: activeHall.hall_code,
@@ -114,11 +115,13 @@ onMounted(() => {
         <CurrencySignText v-show="currentTabs === 'RankerDetail'" />
       </el-col>
     </el-row>
-    <component
-      :is="currentTabComponent"
-      :apiObject="apiObject"
-      :clientWidth="clientWidth"
-    ></component>
+    <keep-alive>
+      <component
+        :is="currentTabComponent"
+        :apiObject="apiObject"
+        :clientWidth="clientWidth"
+      ></component>
+    </keep-alive>
   </section>
 </template>
 <style lang="scss" scoped>

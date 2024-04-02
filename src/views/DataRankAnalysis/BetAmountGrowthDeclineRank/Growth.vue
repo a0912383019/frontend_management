@@ -58,6 +58,7 @@ const clientWidth = ref(0)
 const queryBetAmountRank = async () => {
   apiObject.messageKey = 'loading'
   apiObject.apiSuccess = false
+  apiObject.result = {}
   try {
     const result = await apiBetAmountGrowthDeclineRank({
       hall_name: activeHall.hall_code,
@@ -117,15 +118,13 @@ watch(
         <CurrencySignText v-show="currentTabs === 'RankerDetail'" />
       </el-col>
     </el-row>
-    <div class="component-box" :class="{ show: dataRankStore.currentTab === 'Growth' }">
-      <keep-alive>
-        <component
-          :is="currentTabComponent"
-          :apiObject="apiObject"
-          :clientWidth="clientWidth"
-        ></component>
-      </keep-alive>
-    </div>
+    <keep-alive>
+      <component
+        :is="currentTabComponent"
+        :apiObject="apiObject"
+        :clientWidth="clientWidth"
+      ></component>
+    </keep-alive>
   </section>
 </template>
 <style lang="scss" scoped>
@@ -136,17 +135,5 @@ watch(
   position: absolute;
   right: 0;
   top: -57px;
-}
-.vtal-b {
-  vertical-align: bottom;
-}
-
-.component-box {
-  opacity: 0;
-  transition: all 0.5s;
-  &.show {
-    opacity: 1;
-    transition-delay: 1s;
-  }
 }
 </style>
