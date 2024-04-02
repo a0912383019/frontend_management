@@ -118,15 +118,13 @@ watch(
         <CurrencySignText v-show="currentTabs === 'RankerDetail'" />
       </el-col>
     </el-row>
-    <div class="component-box" :class="{ show: dataRankStore.currentTab === 'Decline' }">
-      <keep-alive>
-        <component
-          :is="currentTabComponent"
-          :apiObject="apiObject"
-          :clientWidth="clientWidth"
-        ></component>
-      </keep-alive>
-    </div>
+    <keep-alive>
+      <component
+        :is="currentTabComponent"
+        :apiObject="apiObject"
+        :clientWidth="clientWidth"
+      ></component>
+    </keep-alive>
   </section>
 </template>
 <style lang="scss" scoped>
@@ -137,13 +135,5 @@ watch(
   position: absolute;
   right: 0;
   top: -57px;
-}
-.component-box {
-  opacity: 0;
-  transition: all 0.5s;
-  &.show {
-    opacity: 1;
-    transition-delay: 1s;
-  }
 }
 </style>
