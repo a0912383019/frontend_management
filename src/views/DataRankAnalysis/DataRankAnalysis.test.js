@@ -10,13 +10,17 @@ import Tab from '@/components/Tab.vue'
 import BetAmountRank from '@/views/DataRankAnalysis/BetAmount/BetAmount.vue'
 import Growth from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/Growth.vue'
 import PositiveProfitRank from '@/views/DataRankAnalysis/ProfitRank/PositiveProfitRank.vue'
+import { useDataRankAnalysisStore } from '@/stores'
 
 describe('DataRankAnalysis.vue', () => {
   let wrapper = null
+  let rankStore
+  const resetState = vi.fn()
 
   beforeEach(() => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
-
+    rankStore = useDataRankAnalysisStore(pinia)
+    rankStore.resetState = resetState
     wrapper = shallowMount(DataRankAnalysis, {
       global: {
         plugins: [i18n],
@@ -28,12 +32,16 @@ describe('DataRankAnalysis.vue', () => {
             template: '<div><slot /></div>'
           }
         }
-      }
+      },
+      attachTo: document.body
     })
   })
 
   afterEach(() => {
     wrapper.unmount()
+
+    // 確認 resetState有被呼叫
+    expect(resetState).toHaveBeenCalled()
   })
 
   it('Expected current tab change and components render correctly', async () => {
@@ -41,8 +49,8 @@ describe('DataRankAnalysis.vue', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.findComponent(PageTitle).exists()).toBe(true)
     expect(wrapper.findComponent(Tab).exists()).toBe(true)
-    expect(wrapper.findComponent(GrowthDecayFilter).exists()).toBe(false)
-    expect(wrapper.findComponent(ProfitFilter).exists()).toBe(false)
+    expect(wrapper.findComponent(GrowthDecayFilter).isVisible()).toBeFalsy()
+    expect(wrapper.findComponent(ProfitFilter).isVisible()).toBeFalsy()
 
     expect(wrapper.vm.currentTabs).toStrictEqual('BetAmountRank')
     expect(wrapper.vm.currentTabComponent).toStrictEqual(BetAmountRank)
@@ -52,16 +60,16 @@ describe('DataRankAnalysis.vue', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.vm.currentTabs).toStrictEqual('Growth')
     expect(wrapper.vm.currentTabComponent).toStrictEqual(Growth)
-    expect(wrapper.findComponent(GrowthDecayFilter).exists()).toBe(true)
-    expect(wrapper.findComponent(ProfitFilter).exists()).toBe(false)
+    expect(wrapper.findComponent(GrowthDecayFilter).isVisible()).toBeTruthy()
+    expect(wrapper.findComponent(ProfitFilter).isVisible()).toBeFalsy()
 
     // 模擬更改tab
     wrapper.vm.currentTabs = 'PositiveProfitRank'
     await wrapper.vm.$nextTick()
     expect(wrapper.vm.currentTabs).toStrictEqual('PositiveProfitRank')
     expect(wrapper.vm.currentTabComponent).toStrictEqual(PositiveProfitRank)
-    expect(wrapper.findComponent(GrowthDecayFilter).exists()).toBe(false)
-    expect(wrapper.findComponent(ProfitFilter).exists()).toBe(true)
+    expect(wrapper.findComponent(GrowthDecayFilter).isVisible()).toBeFalsy()
+    expect(wrapper.findComponent(ProfitFilter).isVisible()).toBeTruthy()
   })
 
   it('Expected tab name correctly', async () => {

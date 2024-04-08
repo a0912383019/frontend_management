@@ -53,7 +53,7 @@ const apiObject = reactive({
   result: {}
 })
 
-const clientWidth = ref(0)
+const sectionWidth = ref(0)
 
 // 取得資料
 const queryBetAmountRank = async () => {
@@ -98,7 +98,7 @@ const handleCallApi = () => {
 }
 
 onMounted(() => {
-  clientWidth.value = refContent.value.clientWidth
+  sectionWidth.value = refContent.value.clientWidth
   // 將篩選恢復成預設值
   queryBetAmountRank()
 })
@@ -116,13 +116,11 @@ onMounted(() => {
         <CurrencySignText v-show="currentTabs === 'RankerDetail'" />
       </el-col>
     </el-row>
-    <keep-alive>
-      <component
-        :is="currentTabComponent"
-        :apiObject="apiObject"
-        :clientWidth="clientWidth"
-      ></component>
-    </keep-alive>
+    <component
+      :is="currentTabComponent"
+      :apiObject="apiObject"
+      :sectionWidth="sectionWidth"
+    ></component>
   </section>
 </template>
 <style lang="scss" scoped>

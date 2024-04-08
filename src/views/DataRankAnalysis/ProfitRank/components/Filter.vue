@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onUnmounted, computed, toRefs } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDataRankAnalysisStore } from '@/stores'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
@@ -10,7 +10,6 @@ const { t } = useI18n()
 
 const dataRankStore = useDataRankAnalysisStore()
 const { profitFilter } = dataRankStore
-const { searchDate, rank } = toRefs(profitFilter)
 
 const emit = defineEmits(['update:filter'])
 
@@ -22,8 +21,8 @@ const closePopover = () => {
 
 // filter 欄位資料
 const filterData = reactive({
-  searchDate: searchDate,
-  rank: rank
+  searchDate: profitFilter.searchDate,
+  rank: profitFilter.rank
 })
 
 // 排名選項
@@ -46,15 +45,11 @@ const selectRankLists = computed(() => {
 
 // 確認篩選
 const handleClick = () => {
-  dataRankStore.profitIsSearchedAgainNum++
-  emit('update:filter')
+  profitFilter.searchDate = filterData.searchDate
+  profitFilter.rank = filterData.rank
+  dataRankStore.profitIsSearchedAgainNum = Date.parse(new Date())
   closePopover()
 }
-
-onUnmounted(() => {
-  // 將篩選恢復成預設值
-  dataRankStore.resetState()
-})
 </script>
 <template>
   <div class="cdp-popover-container">

@@ -1,7 +1,7 @@
 import { it, describe, expect, vi, afterEach, beforeEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
-import RankerDetail from '@/views/DataRankAnalysis/BetAmount/components/RankerDetail.vue'
+import RankerDetail from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/components/RankerDetail.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import ElementPlus from 'element-plus'
@@ -29,7 +29,11 @@ describe('RankerDetail.vue', () => {
             commissionable: '0'
           }
         ],
-        date: '2024-03-22'
+        date: {
+          fin_year: 2024,
+          fin_month: 3,
+          fin_week: 2
+        }
       },
       {
         users: [
@@ -46,26 +50,38 @@ describe('RankerDetail.vue', () => {
             commissionable: '20491.8000'
           }
         ],
-        date: '2024-03-23'
+        date: {
+          fin_year: 2024,
+          fin_month: 3,
+          fin_week: 3
+        }
       }
     ],
     rank: [
       {
         ag_name: 'dgiambii',
+        bet_amount_growth_percent: '100.0000',
         bet_amount_total: '20500.0000',
-        commissionable_total: '20491.8000',
+        bet_amount_total_compare: '0',
+        commissionable_growth_percent: '100.0000',
+        commissionable_total: '27659.4978',
+        commissionable_total_compare: '0',
         user_id: 455673606,
         user_name: 'guspig43',
-        user_level: 'shu測試',
+        level: '未分層',
         tags: [10001]
       },
       {
         ag_name: 'djimmy',
-        bet_amount_total: '11100.0000',
-        commissionable_total: '10500.0000',
+        bet_amount_growth_percent: '100.0000',
+        bet_amount_total: '17657.5900',
+        bet_amount_total_compare: '0',
+        commissionable_growth_percent: '100.0000',
+        commissionable_total: '17650.5270',
+        commissionable_total_compare: '0',
         user_id: 455648693,
         user_name: 'jimmyrmb01',
-        user_level: 'QAJimmy(勿動)',
+        level: 'QAJimmy(勿動)',
         tags: [10001, 10002, 10003, 10004]
       }
     ]
@@ -73,10 +89,15 @@ describe('RankerDetail.vue', () => {
   const expectResult = [
     {
       ag_name: 'dgiambii',
+      bet_amount_growth_percent: '100.0000',
       bet_amount_total: '20500.0000',
-      commissionable: '20,492',
-      commissionable_total: '20491.8000',
+      bet_amount_total_compare: '0',
+      commissionable: '27,659',
+      commissionable_growth_percent: '100',
+      commissionable_total: '27659.4978',
+      commissionable_total_compare: '0',
       index: 0,
+      level: '未分層',
       rank: 0,
       tag_button_show: false,
       tag_name_str: [10001],
@@ -91,15 +112,19 @@ describe('RankerDetail.vue', () => {
       ],
       tags: [10001],
       user_id: 455673606,
-      user_level: 'shu測試',
       user_name: 'guspig43'
     },
     {
       ag_name: 'djimmy',
-      bet_amount_total: '11100.0000',
-      commissionable: '10,500',
-      commissionable_total: '10500.0000',
+      bet_amount_growth_percent: '100.0000',
+      bet_amount_total: '17657.5900',
+      bet_amount_total_compare: '0',
+      commissionable: '17,651',
+      commissionable_growth_percent: '100',
+      commissionable_total: '17650.5270',
+      commissionable_total_compare: '0',
       index: 1,
+      level: 'QAJimmy(勿動)',
       rank: 1,
       tag_button_show: true,
       tag_name_str: [10001, 10002, 10003, 10004],
@@ -132,7 +157,6 @@ describe('RankerDetail.vue', () => {
       ],
       tags: [10001, 10002, 10003, 10004],
       user_id: 455648693,
-      user_level: 'QAJimmy(勿動)',
       user_name: 'jimmyrmb01'
     }
   ]
@@ -226,7 +250,7 @@ describe('RankerDetail.vue', () => {
         apiObject: {
           apiSuccess: true,
           messageKey: 'loading',
-          result: apiResult,
+          result: apiResult
         },
         clientWidth: 100
       }
@@ -250,7 +274,7 @@ describe('RankerDetail.vue', () => {
         apiObject: {
           apiSuccess: true,
           messageKey: 'loading',
-          result: apiResult,
+          result: apiResult
         },
         clientWidth: 100
       }
@@ -289,13 +313,13 @@ describe('RankerDetail.vue', () => {
       },
       {
         label: '會員層級',
-        prop: 'user_level',
+        prop: 'level',
         headerAlign: 'center',
         align: 'center',
         minWidth: '12%'
       },
       {
-        label: '有效投注',
+        label: '有效投注變化',
         prop: 'commissionable',
         headerAlign: 'center',
         align: 'center',

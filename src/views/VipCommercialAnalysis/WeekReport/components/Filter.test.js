@@ -94,19 +94,9 @@ describe('Filter', () => {
         }
       }
     }
-    const result2 = {
-      data: {
-        status: {
-          return_code: '0001',
-          message: 'success',
-          error_code: '210400000'
-        }
-      }
-    }
 
     spyGet = vi.spyOn(axiosGoInstance, 'get')
     spyGet.mockResolvedValueOnce(result1)
-    spyGet.mockResolvedValueOnce(result2)
 
     wrapper = shallowMount(Filter, {
       global: {

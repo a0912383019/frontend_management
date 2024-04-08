@@ -52,7 +52,7 @@ const apiObject = reactive({
   result: {}
 })
 
-const clientWidth = ref(0)
+const sectionWidth = ref(0)
 
 // 取得資料
 const queryPositiveNegativeProfitRank = async () => {
@@ -101,7 +101,7 @@ watch(
 )
 
 onMounted(() => {
-  clientWidth.value = refContent.value.clientWidth
+  sectionWidth.value = refContent.value.clientWidth
   queryPositiveNegativeProfitRank()
 })
 </script>
@@ -115,13 +115,11 @@ onMounted(() => {
         <CurrencySignText v-show="currentTabs === 'RankerDetail'" />
       </el-col>
     </el-row>
-    <keep-alive>
-      <component
-        :is="currentTabComponent"
-        :apiObject="apiObject"
-        :clientWidth="clientWidth"
-      ></component>
-    </keep-alive>
+    <component
+      :is="currentTabComponent"
+      :apiObject="apiObject"
+      :sectionWidth="sectionWidth"
+    ></component>
   </section>
 </template>
 <style lang="scss" scoped>

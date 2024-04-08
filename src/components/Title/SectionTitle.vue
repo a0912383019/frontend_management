@@ -34,7 +34,7 @@ const hasSlotContent = !!useSlots().tooltip
     margin-right: 5px;
   }
   &__icon {
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
   }
   &.small {

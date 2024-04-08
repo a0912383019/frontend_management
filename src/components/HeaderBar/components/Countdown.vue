@@ -161,15 +161,15 @@ onUnmounted(() => {
 <template>
   <div class="counter">
     <div class="counter__time">{{ timeoutMinText }}</div>
-    <div class="counter__text font-semibold">{{ $t('unit.minute') }}</div>
+    <div class="counter__text font-medium">{{ $t('unit.minute') }}</div>
     <div class="counter__time">{{ timeoutSecText }}</div>
-    <div class="counter__text font-semibold">{{ $t('unit.second') }}</div>
-    <div class="counter__text font-semibold">{{ $t('nav.auto_logout') }}</div>
+    <div class="counter__text font-medium">{{ $t('unit.second') }}</div>
+    <div class="counter__text font-medium">{{ $t('nav.auto_logout') }}</div>
     <ButtonIcon
       :name="$t('nav.reset')"
       icon="history"
       size="small"
-      class="counter__button font-semibold"
+      class="counter__button font-medium"
       :disabled="isDisabledResetBtn"
       @click="restartTimer(true)"
     />

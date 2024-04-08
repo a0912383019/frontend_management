@@ -73,7 +73,7 @@ const tableColumns = computed(() => {
     },
     {
       label: t('data_name.user_level'),
-      prop: 'user_level',
+      prop: 'level',
       headerAlign: 'center',
       align: 'center',
       minWidth: '12%'
@@ -104,7 +104,6 @@ const transformMemberData = (data) => {
       ...item,
       index,
       rank: index,
-      user_level: item.level,
       commissionable: FormatNumber(item.commissionable_total),
       commissionable_growth_percent: FormatNumber(item.commissionable_growth_percent),
       tag_name_str: [],
@@ -185,17 +184,14 @@ const handleTagButtonClick = (item) => {
 
 const key = ref(systemConfigIsOk.value)
 
-watch(
-  () => apiObject.value.apiSuccess,
-  () => {
-    apiSuccess.value = apiObject.value.apiSuccess
-    messageKey.value = apiObject.value.messageKey
-    tableData.value = []
-    if (apiObject.value.apiSuccess) {
-      tableData.value = transformMemberData(apiObject.value.result.rank)
-    }
+watch([() => apiObject.value.apiSuccess, () => apiObject.value.messageKey], () => {
+  apiSuccess.value = apiObject.value.apiSuccess
+  messageKey.value = apiObject.value.messageKey
+  tableData.value = []
+  if (apiObject.value.apiSuccess) {
+    tableData.value = transformMemberData(apiObject.value.result.rank)
   }
-)
+})
 
 watch(
   () => systemConfigIsOk.value,

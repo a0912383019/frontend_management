@@ -181,17 +181,14 @@ const handleTagButtonClick = (item) => {
 
 const key = ref(systemConfigIsOk.value)
 
-watch(
-  () => apiObject.value.apiSuccess,
-  () => {
-    apiSuccess.value = apiObject.value.apiSuccess
-    messageKey.value = apiObject.value.messageKey
-    tableData.value = []
-    if (apiObject.value.apiSuccess) {
-      tableData.value = transformMemberData(apiObject.value.result.rank)
-    }
+watch([() => apiObject.value.apiSuccess, () => apiObject.value.messageKey], () => {
+  apiSuccess.value = apiObject.value.apiSuccess
+  messageKey.value = apiObject.value.messageKey
+  tableData.value = []
+  if (apiObject.value.apiSuccess) {
+    tableData.value = transformMemberData(apiObject.value.result.rank)
   }
-)
+})
 
 watch(
   () => systemConfigIsOk.value,
