@@ -804,7 +804,9 @@
     "positive_profit_rank": "Top Contributors",
     "negative_profit_rank": "Top Detractors",
     "total_profit_loss": "P&L",
-    "ranking_member_daily_total_profit_loss": "Cumulative P&L by Day"
+    "ranking_member_daily_total_profit_loss": "Cumulative P&L by Day",
+    "display_search_duration_data": "Display query date interval data",
+    "display_search_fin_week_previous_month_data": "Display the data of the month before the query week"
   },
 
   "custom_tags_setting": {

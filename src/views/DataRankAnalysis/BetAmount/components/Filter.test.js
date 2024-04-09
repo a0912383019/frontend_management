@@ -9,13 +9,12 @@ import { useDataRankAnalysisStore } from '@/stores'
 
 describe('Filter', () => {
   let wrapper = null
+  let rankStore
   const hide = vi.fn()
-  const resetState = vi.fn()
 
   beforeEach(() => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
-    const rankStore = useDataRankAnalysisStore(pinia)
-    rankStore.resetState = resetState
+    rankStore = useDataRankAnalysisStore(pinia)
     rankStore.betAmountFilter = {
       searchDate: '2024-03-12 ~ 2024-03-22',
       rank: 10
@@ -35,9 +34,6 @@ describe('Filter', () => {
 
   afterEach(() => {
     wrapper.unmount()
-
-    // 確認 resetState有被呼叫
-    expect(resetState).toHaveBeenCalled()
   })
 
   // 測試 closePopover
@@ -62,12 +58,17 @@ describe('Filter', () => {
       }
     ]
     expect(wrapper.vm.selectRankLists).toStrictEqual(selectRankLists)
+    expect(wrapper.vm.filterData.searchDate).toBe('2024-03-12 ~ 2024-03-22')
+    expect(wrapper.vm.filterData.rank).toBe(10)
   })
 
   it('handleClick', async () => {
+    wrapper.vm.filterData.searchDate = '2024-02-20 ~ 2024-02-28'
+    wrapper.vm.filterData.rank = 20
     await wrapper.vm.handleClick()
-    expect(wrapper.vm.filterData.searchDate).toBe('2024-03-12 ~ 2024-03-22')
-    expect(wrapper.vm.filterData.rank).toBe(10)
+
+    expect(rankStore.betAmountFilter.searchDate).toBe('2024-02-20 ~ 2024-02-28')
+    expect(rankStore.betAmountFilter.rank).toBe(20)
     expect(wrapper.emitted('update:filter')).toBeTruthy()
     expect(hide).toHaveBeenCalled()
   })

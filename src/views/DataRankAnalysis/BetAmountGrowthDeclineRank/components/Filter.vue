@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onUnmounted, watch, computed, toRefs } from 'vue'
+import { ref, reactive, watch, computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useDataRankAnalysisStore, useDateStore } from '@/stores'
 import { apiFinancialWeeks } from '@/api'
@@ -16,7 +16,7 @@ const { t } = useI18n()
 
 const dataRankStore = useDataRankAnalysisStore()
 const { growthDecayFilter } = dataRankStore
-const { searchDate, rank } = toRefs(growthDecayFilter)
+// const { searchDate, rank } = toRefs(growthDecayFilter)
 
 const dateStore = useDateStore()
 const { LAST_DATE } = dateStore
@@ -35,8 +35,8 @@ const closePopover = () => {
 const filterData = reactive({
   displayweek: '', // 畫面顯示用
   apiWeek: growthDecayFilter.financialWeek, // api 參數用
-  searchDate: searchDate,
-  rank: rank
+  searchDate: growthDecayFilter.searchDate,
+  rank: growthDecayFilter.rank
 })
 
 // 排名選項
@@ -140,11 +140,6 @@ const handleDateChange = async (date) => {
 const handleWeekChange = (value) => {
   filterData.apiWeek = Number(value.split('(')[0])
 }
-
-onUnmounted(() => {
-  // 將篩選日期恢復成預設值
-  dataRankStore.resetState()
-})
 
 watch(
   () => systemConfigIsOk.value,

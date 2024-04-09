@@ -156,21 +156,18 @@ const clearChart = () => {
   chartOptions.series = []
 }
 
-watch(
-  () => apiObject.value.apiSuccess,
-  () => {
-    apiSuccess.value = apiObject.value.apiSuccess
-    messageKey.value = apiObject.value.messageKey
-    if (apiObject.value.apiSuccess) {
-      if (apiObject.value.result.rank.length === 0) {
-        apiSuccess.value = false
-        messageKey.value = 'noResult'
-      } else {
-        transformProfitDailyRank(apiObject.value.result)
-      }
+watch([() => apiObject.value.apiSuccess, () => apiObject.value.messageKey], () => {
+  apiSuccess.value = apiObject.value.apiSuccess
+  messageKey.value = apiObject.value.messageKey
+  if (apiObject.value.apiSuccess) {
+    if (apiObject.value.result.rank.length === 0) {
+      apiSuccess.value = false
+      messageKey.value = 'noResult'
+    } else {
+      transformProfitDailyRank(apiObject.value.result)
     }
   }
-)
+})
 
 onMounted(() => {
   if (apiObject.value.apiSuccess && Object.keys(apiObject.value.result).length !== 0) {
@@ -186,6 +183,11 @@ onMounted(() => {
 <template>
   <section>
     <SectionTitle class="mb-15" :title="$t('rank_analysis.ranking_member_daily_total_profit_loss')">
+      <template #tooltip>
+        <div class="font-size-14">
+          {{ $t('rank_analysis.display_search_duration_data') }}
+        </div>
+      </template>
     </SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>

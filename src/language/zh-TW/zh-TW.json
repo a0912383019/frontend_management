@@ -805,7 +805,9 @@
     "positive_profit_rank": "正盈利排名",
     "negative_profit_rank": "負盈利排名",
     "total_profit_loss": "淨利",
-    "ranking_member_daily_total_profit_loss": "排名會員每日累加淨利"
+    "ranking_member_daily_total_profit_loss": "排名會員每日累加淨利",
+    "display_search_duration_data": "顯示查詢日期區間資料",
+    "display_search_fin_week_previous_month_data": "顯示查詢週次前一個月資料"
   },
 
   "custom_tags_setting": {

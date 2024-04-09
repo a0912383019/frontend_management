@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import Tab from '@/components/Tab.vue'
@@ -59,6 +59,12 @@ const currentTabComponent = computed(() => {
   dataRankStore.currentTab = currentTabs.value
   return componentMap[currentTabs.value] || null
 })
+
+
+onUnmounted(() => {
+  // 將篩選恢復成預設值
+  dataRankStore.resetState()
+})
 </script>
 <template>
   <section class="cdp-section mb-0">
@@ -70,9 +76,9 @@ const currentTabComponent = computed(() => {
       <el-col :span="5">
         <div class="filter-box-out">
           <ProfitFilter
-            v-if="currentTabs === 'PositiveProfitRank' || currentTabs === 'NegativeProfitRank'"
+            v-show="currentTabs === 'PositiveProfitRank' || currentTabs === 'NegativeProfitRank'"
           />
-          <GrowthDecayFilter v-if="currentTabs === 'Growth' || currentTabs === 'Decline'" />
+          <GrowthDecayFilter v-show="currentTabs === 'Growth' || currentTabs === 'Decline'" />
         </div>
       </el-col>
     </el-row>

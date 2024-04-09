@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onUnmounted, computed, toRefs } from 'vue'
+import { ref, reactive, computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDataRankAnalysisStore } from '@/stores'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
@@ -51,11 +51,6 @@ const handleClick = () => {
   emit('update:filter')
   closePopover()
 }
-
-onUnmounted(() => {
-  // 將篩選恢復成預設值
-  dataRankStore.resetState()
-})
 </script>
 <template>
   <div class="cdp-popover-container">

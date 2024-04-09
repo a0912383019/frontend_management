@@ -7,6 +7,8 @@ import { formatDateDuration } from '@/utils/commonUtils.js'
 export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
   const { date_range_picker_config_8, date_range_picker_config_9 } = useDateStore()
 
+  const currentTab = ref('BetAmountRank')
+
   // 因為正負盈利頁籤共用進階篩選，所以用此參數判斷是否要重打api
   const profitIsSearchedAgainNum = ref(0)
 
@@ -66,6 +68,7 @@ export const useDataRankAnalysisStore = defineStore('dataRankAnalysis', () => {
   }
 
   return {
+    currentTab,
     betAmountFilter,
     profitFilter,
     profitIsSearchedAgainNum,

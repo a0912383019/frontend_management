@@ -1,7 +1,7 @@
 import { it, describe, expect, vi, afterEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
-import DetailChart from '@/views/DataRankAnalysis/BetAmount/components/DetailChart.vue'
+import DetailChart from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/components/DetailChart.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { createTestingPinia } from '@pinia/testing'
@@ -26,7 +26,11 @@ describe('DetailChart.vue', () => {
             commissionable: '0'
           }
         ],
-        date: '2024-03-22'
+        date: {
+          fin_year: 2024,
+          fin_month: 3,
+          fin_week: 2
+        }
       },
       {
         users: [
@@ -43,27 +47,39 @@ describe('DetailChart.vue', () => {
             commissionable: '20491.8000'
           }
         ],
-        date: '2024-03-23'
+        date: {
+          fin_year: 2024,
+          fin_month: 3,
+          fin_week: 3
+        }
       }
     ],
     rank: [
       {
         ag_name: 'dgiambii',
+        bet_amount_growth_percent: '100.0000',
         bet_amount_total: '20500.0000',
-        commissionable_total: '20491.8000',
+        bet_amount_total_compare: '0',
+        commissionable_growth_percent: '100.0000',
+        commissionable_total: '27659.4978',
+        commissionable_total_compare: '0',
         user_id: 455673606,
         user_name: 'guspig43',
-        user_level: 'shu測試',
+        level: '未分層',
         tags: [30010, 30412, 30358, 30406, 30407, 50001, 9459, 9289, 99079, 9283, 30414, 40003]
       },
       {
         ag_name: 'djimmy',
-        bet_amount_total: '11100.0000',
-        commissionable_total: '10500.0000',
+        bet_amount_growth_percent: '100.0000',
+        bet_amount_total: '17657.5900',
+        bet_amount_total_compare: '0',
+        commissionable_growth_percent: '100.0000',
+        commissionable_total: '17650.5270',
+        commissionable_total_compare: '0',
         user_id: 455648693,
         user_name: 'jimmyrmb01',
-        user_level: 'QAJimmy(勿動)',
-        tags: [30412, 30406, 30416, 30010, 60110, 40012, 30407, 40003]
+        level: 'QAJimmy(勿動)',
+        tags: [30010, 30412, 30406, 30407, 9283, 9289, 99079, 9459, 30414, 40003]
       }
     ]
   }
@@ -136,7 +152,7 @@ describe('DetailChart.vue', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.findComponent(SectionTitle).exists()).toBe(true)
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(false)
-    expect(wrapper.vm.chartOptions.xAxis.categories).toStrictEqual(['2024/03/22', '2024/03/23'])
+    expect(wrapper.vm.chartOptions.xAxis.categories).toStrictEqual(['2024/03/W2', '2024/03/W3'])
     expect(wrapper.vm.chartOptions.series).toStrictEqual(expectResult)
   })
 
@@ -229,7 +245,7 @@ describe('DetailChart.vue', () => {
         result: apiResult
       }
     })
-    expect(wrapper.vm.chartOptions.xAxis.categories).toStrictEqual(['2024/03/22', '2024/03/23'])
+    expect(wrapper.vm.chartOptions.xAxis.categories).toStrictEqual(['2024/03/W2', '2024/03/W3'])
     expect(wrapper.vm.chartOptions.series).toStrictEqual(expectResult)
   })
 })

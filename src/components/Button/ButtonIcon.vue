@@ -69,7 +69,7 @@ button {
       font-size: 12px;
       line-height: 1.5;
       border-radius: 5px;
-      min-height: 40px;
+      min-height: 30px;
     }
     &__medium {
       padding: 6px 8px;
