@@ -45,7 +45,6 @@ const modalText = computed(() => {
 const emit = defineEmits(['update:modelValue', 'confirmExecute'])
 
 const handleCancel = () => {
-  console.log('okok')
   emit('update:modelValue', false)
 }
 

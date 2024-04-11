@@ -32,7 +32,7 @@ describe('ConfirmBox.vue', () => {
     await wrapper.find('.cdp__modal-btn__cancel').trigger('click')
 
     //檢查是否觸發了名為 'cancel' 的事件
-    expect(wrapper.emitted('cancel')).toBeTruthy()
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
   })
 
   it('name = notSaved, emits confirm event when confirm button is clicked', async () => {
@@ -57,6 +57,6 @@ describe('ConfirmBox.vue', () => {
     await wrapper.find('.cdp__modal-btn__submit').trigger('click')
 
     //檢查是否觸發了名為 'confirm' 的事件
-    expect(wrapper.emitted('confirm')).toBeTruthy()
+    expect(wrapper.emitted('confirmExecute')).toBeTruthy()
   })
 })
