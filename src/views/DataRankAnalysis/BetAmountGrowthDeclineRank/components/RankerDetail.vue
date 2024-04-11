@@ -38,9 +38,9 @@ const props = defineProps({
     messageKey: String,
     result: Object
   },
-  clientWidth: Number
+  sectionWidth: Number
 })
-const { apiObject, clientWidth } = toRefs(props)
+const { apiObject, sectionWidth } = toRefs(props)
 
 const apiSuccess = ref(apiObject.value.apiSuccess)
 const messageKey = ref(apiObject.value.messageKey)
@@ -123,8 +123,8 @@ const transformMemberData = (data) => {
     tempObj.tag_name_str = orderTags(tempObj.tag_name_str)
 
     // 分第一行與第二行，第二行-10為了預留...的空間
-    let lineone = clientWidth.value * 0.44
-    let linetwo = clientWidth.value * 0.44 - 10
+    let lineone = sectionWidth.value * 0.44
+    let linetwo = sectionWidth.value * 0.44 - 10
     let currentLine = 1
     tempObj.tag_name_str.forEach((item) => {
       let obj = {}

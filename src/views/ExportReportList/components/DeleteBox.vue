@@ -35,7 +35,7 @@ const props = defineProps({
 
 const emit = defineEmits(['deleteBoxClose', 'deleteSuccess'])
 
-const visibleValue1 = computed({
+const visibleBox = computed({
   get() {
     return props.confirmBoxVisible
   },
@@ -45,7 +45,7 @@ const visibleValue1 = computed({
   }
 })
 
-const visibleValue2 = computed({
+const visibleTopBox = computed({
   get() {
     return props.confirmBoxTopVisible
   },
@@ -57,6 +57,7 @@ const visibleValue2 = computed({
 
 // 取得資料
 const deleteUserExportList = async () => {
+  emit('deleteBoxClose')
   globalStore.isLoading = true
   try {
     const result = await apiDeleteUserExportList({
@@ -106,7 +107,7 @@ const deleteExecute = () => {
 <template>
   <ConfirmBox
     name="delete"
-    v-model="visibleValue1"
+    v-model="visibleBox"
     class="top15per"
     @confirmExecute="deleteExecute"
   >
@@ -131,7 +132,7 @@ const deleteExecute = () => {
   </ConfirmBox>
   <ConfirmBox
     name="delete"
-    v-model="visibleValue2"
+    v-model="visibleTopBox"
     class="top15per"
     @confirmExecute="deleteExecute"
   >

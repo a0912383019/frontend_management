@@ -127,6 +127,7 @@ const transformExportList = (data) => {
       ...item,
       source_page: getSourceName(item.type),
       status: item.is_expired ? 'expired' : item.export_progress ? 'completed' : 'processing',
+      is_disabled: !item.export_progress,
       export_date: dayjs(item.created_time).format(t('date.format_datetime_rule'))
     }
 
@@ -237,7 +238,6 @@ const confirmDeleteAll = () => {
 
 const deleteSuccess = () => {
   queryUserExportList()
-  deleteBoxClose()
 }
 
 const deleteBoxClose = () => {
@@ -273,7 +273,6 @@ onMounted(() => {
         :tableData="tableData"
         :tableColumns="tableColumns"
         :pageSize="apiLength"
-        :hasPagination="true"
         :stripe="true"
         class="customTable2 customTagListTable"
         @sort="upadteCurrentSort"
@@ -326,7 +325,7 @@ onMounted(() => {
         <template #operation="scope">
           <div>
             <ButtonIcon
-              :disabled="scope.row.status === 'processing'"
+              :disabled="scope.row.is_disabled"
               class="detail-button"
               color="red"
               icon="trash"

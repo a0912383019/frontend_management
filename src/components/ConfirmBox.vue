@@ -114,7 +114,6 @@ const handleComfirm = () => {
     }
   }
   &__list__text {
-    // min-height: 50px;
     width: 100%;
     text-align: center;
   }
