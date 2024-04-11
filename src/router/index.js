@@ -249,7 +249,7 @@ export const router = createRouter({
         {
           path: '/user-export-report',
           name: 'user-export-report',
-          component: () => import('../views/UserExportReport/UserExportReport.vue')
+          component: () => import('../views/ExportReportList/ExportReportList.vue')
         }
       ]
     },

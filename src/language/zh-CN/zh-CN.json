@@ -835,7 +835,9 @@
     "people_num": "人数",
     "increase": "新增",
     "decrease": "减少",
-    "click_type": "点选类型"
+    "click_type": "点选类型",
+
+    "delete_all": "一键清除"
   },
 
   "tag_synchronization": {

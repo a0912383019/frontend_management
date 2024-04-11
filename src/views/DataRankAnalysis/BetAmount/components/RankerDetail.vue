@@ -23,9 +23,6 @@ const { systemConfigIsOk } = storeToRefs(globalStore)
 const dialogMemberDetailStore = useDialogMemberDetailStore()
 const { updateMemberData } = dialogMemberDetailStore
 
-const refCustomTable = ref(null) // table ref
-const refContent = ref(null)
-
 const tableData = ref([])
 const apiLength = ref(10) // 一頁幾筆
 
@@ -204,17 +201,16 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="mb-0" ref="refContent">
+  <section class="mb-0">
     <canvas ref="canvas" style="display: none"></canvas>
     <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
-    <div ref="refContent" v-else>
+    <div v-else>
       <CustomTable
         :serverSide="false"
         :tableData="tableData"
         :tableColumns="tableColumns"
         :pageSize="apiLength"
         :stripe="true"
-        ref="refCustomTable"
         class="customTable2 customTagListTable"
       >
         <template #tag_name_str-header>
