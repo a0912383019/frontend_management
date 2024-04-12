@@ -107,7 +107,7 @@ describe('DetailChart.vue', () => {
           messageKey: 'loading',
           result: {}
         },
-        clientWidth: 500
+        sectionWidth: 500
       }
     })
     //等待異步完成
@@ -126,7 +126,7 @@ describe('DetailChart.vue', () => {
           apiSuccess: true,
           messageKey: 'loading',
           result: apiResult,
-          clientWidth: 500
+          sectionWidth: 500
         }
       }
     })
@@ -160,7 +160,7 @@ describe('DetailChart.vue', () => {
             daily: []
           }
         },
-        clientWidth: 500
+        sectionWidth: 500
       }
     })
     //等待異步完成
@@ -183,7 +183,7 @@ describe('DetailChart.vue', () => {
             daily: []
           }
         },
-        clientWidth: 500
+        sectionWidth: 500
       }
     })
     //等待異步完成

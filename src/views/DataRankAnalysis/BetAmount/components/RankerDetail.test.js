@@ -205,7 +205,7 @@ describe('RankerDetail.vue', () => {
           messageKey: 'loading',
           result: {}
         },
-        clientWidth: 100
+        sectionWidth: 100
       }
     })
     //等待異步完成
@@ -228,7 +228,7 @@ describe('RankerDetail.vue', () => {
           messageKey: 'loading',
           result: apiResult,
         },
-        clientWidth: 100
+        sectionWidth: 100
       }
     })
     //等待異步完成
@@ -252,7 +252,7 @@ describe('RankerDetail.vue', () => {
           messageKey: 'loading',
           result: apiResult,
         },
-        clientWidth: 100
+        sectionWidth: 100
       }
     })
     //等待異步完成
@@ -329,7 +329,7 @@ describe('RankerDetail.vue', () => {
             daily: []
           }
         },
-        clientWidth: 100
+        sectionWidth: 100
       }
     })
     //等待異步完成
