@@ -1,7 +1,7 @@
 import { it, describe, expect, vi, afterEach, beforeEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
-import RankerDetail from '@/views/DataRankAnalysis/BetAmountGrowthDeclineRank/components/RankerDetail.vue'
+import RankerDetail from '@/views/DataRankAnalysis/ProfitRank/components/RankerDetail.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import ElementPlus from 'element-plus'
@@ -19,85 +19,61 @@ describe('RankerDetail.vue', () => {
           {
             user_id: 455648693,
             user_name: 'jimmyrmb01',
-            bet_amount: '11100.0000',
-            commissionable: '10500.0000'
+            accumulate_profit_loss: '9430.0000',
+            profit_loss: '9430.0000'
           },
           {
             user_id: 455673606,
             user_name: 'guspig43',
-            bet_amount: '0',
-            commissionable: '0'
+            accumulate_profit_loss: '0',
+            profit_loss: '0'
           }
         ],
-        date: {
-          fin_year: 2024,
-          fin_month: 3,
-          fin_week: 2
-        }
+        date: '2024-04-01'
       },
       {
         users: [
           {
             user_id: 455648693,
             user_name: 'jimmyrmb01',
-            bet_amount: '0',
-            commissionable: '0'
+            accumulate_profit_loss: '9329.2500',
+            profit_loss: '100.7500'
           },
           {
             user_id: 455673606,
             user_name: 'guspig43',
-            bet_amount: '20500.0000',
-            commissionable: '20491.8000'
+            accumulate_profit_loss: '8526.5069',
+            profit_loss: '8526.5069'
           }
         ],
-        date: {
-          fin_year: 2024,
-          fin_month: 3,
-          fin_week: 3
-        }
+        date: '2024-04-02'
       }
     ],
     rank: [
       {
-        ag_name: 'dgiambii',
-        bet_amount_growth_percent: '100.0000',
-        bet_amount_total: '20500.0000',
-        bet_amount_total_compare: '0',
-        commissionable_growth_percent: '100.0000',
-        commissionable_total: '27659.4978',
-        commissionable_total_compare: '0',
+        ag_name: 'dcash888',
+        level: '未分層',
+        profit_loss: '9298.2500',
         user_id: 455673606,
         user_name: 'guspig43',
-        level: '未分層',
         tags: [10001]
       },
       {
-        ag_name: 'djimmy',
-        bet_amount_growth_percent: '100.0000',
-        bet_amount_total: '17657.5900',
-        bet_amount_total_compare: '0',
-        commissionable_growth_percent: '100.0000',
-        commissionable_total: '17650.5270',
-        commissionable_total_compare: '0',
+        ag_name: 'dqamicotwda',
+        level: '未分層',
+        profit_loss: '8526.5069',
         user_id: 455648693,
         user_name: 'jimmyrmb01',
-        level: 'QAJimmy(勿動)',
         tags: [10001, 10002, 10003, 10004]
       }
     ]
   }
   const expectResult = [
     {
-      ag_name: 'dgiambii',
-      bet_amount_growth_percent: '100.0000',
-      bet_amount_total: '20500.0000',
-      bet_amount_total_compare: '0',
-      commissionable: '27,659',
-      commissionable_growth_percent: '100',
-      commissionable_total: '27659.4978',
-      commissionable_total_compare: '0',
+      ag_name: 'dcash888',
       index: 0,
       level: '未分層',
+      profit_loss: '9,298',
       rank: 0,
       tag_button_show: false,
       tag_name_str: [10001],
@@ -115,16 +91,10 @@ describe('RankerDetail.vue', () => {
       user_name: 'guspig43'
     },
     {
-      ag_name: 'djimmy',
-      bet_amount_growth_percent: '100.0000',
-      bet_amount_total: '17657.5900',
-      bet_amount_total_compare: '0',
-      commissionable: '17,651',
-      commissionable_growth_percent: '100',
-      commissionable_total: '17650.5270',
-      commissionable_total_compare: '0',
+      ag_name: 'dqamicotwda',
       index: 1,
-      level: 'QAJimmy(勿動)',
+      level: '未分層',
+      profit_loss: '8,527',
       rank: 1,
       tag_button_show: true,
       tag_name_str: [10001, 10002, 10003, 10004],
@@ -319,8 +289,8 @@ describe('RankerDetail.vue', () => {
         minWidth: '12%'
       },
       {
-        label: '有效投注變化',
-        prop: 'commissionable',
+        label: '淨利',
+        prop: 'profit_loss',
         headerAlign: 'center',
         align: 'center',
         minWidth: '10%'

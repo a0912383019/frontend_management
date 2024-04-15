@@ -19,8 +19,8 @@ const { t } = useI18n()
 const vipStore = useVipCommercialAnalysisStore()
 const { defaultVipTag, weekReportFilter } = vipStore
 
-const dateStore = useDateStore()
-const { LAST_DATE } = dateStore
+// const dateStore = useDateStore()
+// const { LAST_DATE } = dateStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -120,19 +120,19 @@ const handleDateChange = async (date) => {
         const startDate = dayjs(item.week_duration.split('~')[0]).format(t('date.format_date_rule'))
         const endDate = dayjs(item.week_duration.split('~')[1]).format(t('date.format_date_rule'))
         // 依照 dayjs 處理 isBetween 邏輯，以確保今天的日期如果剛好是 endDate 也可以被包含在區間內，需要將結束日期 isBetweenEndDate 加上一天，這樣才符合帳務週的時間邏輯
-        const isBetweenEndDate = dayjs(item.week_duration.split('~')[1])
-          .add(1, 'day')
-          .format(t('date.format_date_rule'))
+        // const isBetweenEndDate = dayjs(item.week_duration.split('~')[1])
+        //   .add(1, 'day')
+        //   .format(t('date.format_date_rule'))
 
         // 轉換帳務週顯示格式
         const formatDate = `${item.fin_week}(${startDate} ~ ${endDate})`
 
         // 判斷日期是否在帳務週區間
-        const isBetween = dayjs(LAST_DATE).isBetween(startDate, isBetweenEndDate)
-        if (isBetween) {
-          filterData.displayweek = formatDate
-          filterData.apiWeek = item.fin_week
-        }
+        // const isBetween = dayjs(LAST_DATE).isBetween(startDate, isBetweenEndDate)
+        // if (isBetween) {
+        //   filterData.displayweek = formatDate
+        //   filterData.apiWeek = item.fin_week
+        // }
         return {
           label: formatDate,
           value: formatDate
