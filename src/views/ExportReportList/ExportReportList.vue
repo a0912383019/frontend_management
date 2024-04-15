@@ -1,23 +1,27 @@
 <script setup>
-import { ref, reactive, watch, computed, onMounted } from 'vue'
+import { ref, reactive, watch, computed, onMounted, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryUserExportList } from '@/api'
-import { useGlobalStore } from '@/stores/global.js'
+import { useGlobalStore, useExportListStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
-import { findRootHall } from '@/utils/commonUtils.js'
+import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
 import DeleteBox from '@/views/ExportReportList/components/DeleteBox.vue'
+import SearchDetailBox from '@/views/ExportReportList/components/SearchDetailBox.vue'
 
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 const { systemConfigIsOk } = storeToRefs(globalStore)
+
+const exportListStore = useExportListStore()
+const { queryAgNameUserLevel, tag_description_dict } = exportListStore
 
 const apiSuccess = ref(false) //api是否成功
 
@@ -131,7 +135,6 @@ const transformExportList = (data) => {
       export_date: dayjs(item.created_time).format(t('date.format_datetime_rule'))
     }
 
-    console.log(JSON.parse(item.search_content))
     if (item.export_download_link) {
       allLinkList.value.push(item.export_download_link)
     }
@@ -209,6 +212,29 @@ const downloadReport = (link) => {
   window.open(link, '_blank')
 }
 
+const detailBoxVisible = ref(false)
+const reportDetail = reactive({
+  type: 0,
+  source: '',
+  content: {}
+})
+
+const opendetail = (data) => {
+  if (data.search_content) {
+    reportDetail.type = data.type
+    reportDetail.source = data.source_page
+    reportDetail.content = JSON.parse(data.search_content)
+
+  } else {
+    reportDetail.type = 9999
+  }
+  detailBoxVisible.value = true
+}
+
+const detailBoxClose = () => {
+  detailBoxVisible.value = false
+}
+
 // 顯示刪除彈框
 const confirmBoxVisible = ref(false)
 const confirmBoxTopVisible = ref(false)
@@ -245,15 +271,19 @@ const deleteBoxClose = () => {
   confirmBoxTopVisible.value = false
 }
 
-const key = ref(systemConfigIsOk.value)
 watch(
   () => systemConfigIsOk.value,
   () => {
-    key.value = Math.floor(Math.random() * 100)
+    tag_description_dict.hall =
+      getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+    queryAgNameUserLevel()
   }
 )
 
 onMounted(() => {
+  tag_description_dict.hall =
+    getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+  queryAgNameUserLevel()
   queryUserExportList()
 })
 </script>
@@ -337,6 +367,11 @@ onMounted(() => {
         </template>
       </CustomTable>
     </div>
+    <SearchDetailBox
+      :detailBoxVisible="detailBoxVisible"
+      :reportDetail="reportDetail"
+      @detailBoxClose="detailBoxClose"
+    ></SearchDetailBox>
     <DeleteBox
       :confirmBoxVisible="confirmBoxVisible"
       :confirmBoxTopVisible="confirmBoxTopVisible"
@@ -353,7 +388,6 @@ onMounted(() => {
 }
 </style>
 <style lang="scss">
-
 .customTagListTable {
   button.detail-button {
     min-width: 80px;
