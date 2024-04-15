@@ -1,8 +1,5 @@
 <script setup>
-import { ref, computed, reactive } from 'vue'
-import LoadingBox from '@/components/Loading/LoadingBox.vue'
-import CustomPagination from '@/components/Pagination/Pagination.vue'
-import TotalPagination from '@/components/Pagination/TotalPagination.vue'
+import { computed } from 'vue'
 const props = defineProps({
   tableData: {
     //表格資料
@@ -69,7 +66,7 @@ const pageTableData = computed(() => {
 .form-head-black {
   &.el-table {
     td:first-child {
-      background-color: #F6F8FB;
+      background-color: #f6f8fb;
     }
   }
 }
