@@ -16,9 +16,6 @@ export const apiDeleteUserExportList = (params) => {
     {
       hall_name,
       download_urls
-    },
-    // {
-    //   headers: { 'Content-Type': 'multipart/form-data' } //upload_file為binary，須改headers content-type
-    // }
+    }
   )
 }
