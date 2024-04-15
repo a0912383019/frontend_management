@@ -11,9 +11,18 @@ const props = defineProps({
     type: String,
     default: 'delete'
   },
-  confirmBoxVisible: {
+  modelValue: {
     type: Boolean,
     default: false
+  }
+})
+
+const visibleValue = computed({
+  get() {
+    return props.modelValue
+  },
+  set(newValue) {
+    return newValue
   }
 })
 
@@ -33,18 +42,19 @@ const modalText = computed(() => {
   }
 })
 
-const emit = defineEmits(['cancel', 'confirm'])
+const emit = defineEmits(['update:modelValue', 'confirmExecute'])
+
 const handleCancel = () => {
-  emit('cancel')
+  emit('update:modelValue', false)
 }
 
 const handleComfirm = () => {
-  emit('confirm')
+  emit('confirmExecute')
 }
 </script>
 <template>
   <el-dialog
-    v-model="props.confirmBoxVisible"
+    v-model="visibleValue"
     width="300"
     :show-close="false"
     :close-on-click-modal="false"
@@ -63,20 +73,16 @@ const handleComfirm = () => {
       >
         {{ modalText.title }}
       </div>
-      <div class="inner-dialog__list__text">
-        {{ modalText.text }}
+      <div class="inner-dialog__list__text mb-35">
+        <slot name="text-body">{{ modalText.text }}</slot>
       </div>
       <div class="inner-dialog__button">
-        <CdpButton
-          class="cdp__modal-btn__cancel"
-          :name="modalText.leftBtn"
-          @click="handleCancel()"
-        />
+        <CdpButton class="cdp__modal-btn__cancel" :name="modalText.leftBtn" @click="handleCancel" />
         <CdpButton
           class="cdp__modal-btn__submit"
           :class="{ 'delete-bg': props.name === 'delete' }"
           :name="$t('modal.confirm')"
-          @click="handleComfirm()"
+          @click="handleComfirm"
         />
       </div>
     </div>
@@ -107,7 +113,6 @@ const handleComfirm = () => {
     }
   }
   &__list__text {
-    min-height: 50px;
     width: 100%;
     text-align: center;
   }

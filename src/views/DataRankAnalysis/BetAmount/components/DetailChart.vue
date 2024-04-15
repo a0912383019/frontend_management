@@ -20,7 +20,7 @@ const props = defineProps({
     messageKey: String,
     result: Object
   },
-  clientWidth: Number
+  sectionWidth: Number
 })
 const { apiObject } = toRefs(props)
 

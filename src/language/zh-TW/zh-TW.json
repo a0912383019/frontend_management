@@ -836,7 +836,9 @@
     "people_num": "人數",
     "increase": "新增",
     "decrease": "減少",
-    "click_type": "點選類型"
+    "click_type": "點選類型",
+
+    "delete_all": "一鍵清除"
   },
 
   "tag_synchronization": {

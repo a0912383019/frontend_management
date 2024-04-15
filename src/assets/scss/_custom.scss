@@ -7,6 +7,16 @@
   cursor: pointer;
 }
 
+.cdp-pink-link-click {
+  display: inline-block;
+  color: $red;
+  text-decoration: underline;
+  cursor: pointer;
+  &:hover {
+    color: $red-hover;
+  }
+}
+
 /* background color */
 .cdp-bg-blue {
   background-color: #4f7dc5 !important;
