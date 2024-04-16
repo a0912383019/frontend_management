@@ -46,9 +46,19 @@ const generateTags = (tagsString) => {
       .map((item) => {
         return tag_description_dict.hall[item].tag_name
       })
-      .join(' and ')
+      .join(', ')
   })
-  return result.join(' or ')
+  result = result.join(' or ')
+
+  let newSubStrings = result.split(',')
+  let newMap = newSubStrings.map((ele) => {
+    if(ele.indexOf(' or ') !== -1) {
+      return '(' + ele + ')'
+    }
+    return ele
+  })
+
+  return newMap.join(', ')
 }
 
 const tableData = computed(() => {
@@ -83,13 +93,23 @@ const tableData = computed(() => {
   return tableData
 })
 
-const memberStepName = (type) => {
+const memberDayStepName = (type) => {
   if (type === 0) {
     return 'manage_analysis.today_num'
   } else if (type === 1) {
     return 'manage_analysis.diff_pre_day'
   } else {
     return 'manage_analysis.today_add'
+  }
+}
+
+const memberWeekStepName = (type) => {
+  if (type === 0) {
+    return 'vip_commercial_analysis.this_week_people_num'
+  } else if (type === 1) {
+    return 'vip_commercial_analysis.this_week_increase_people_num'
+  } else {
+    return 'vip_commercial_analysis.this_week_decrease_people_num'
   }
 }
 
@@ -109,8 +129,8 @@ const tableDataType1 = computed(() => {
       contentData:
         props.reportDetail.content.custom_user_list &&
         props.reportDetail.content.custom_user_list.length !== 0
-          ? 'true'
-          : '-'
+          ? t('common.yes')
+          : t('common.no')
     },
     {
       contentKey: t('date.date'),
@@ -124,7 +144,7 @@ const tableDataType1 = computed(() => {
     },
     {
       contentKey: t('user_export_report.click_type'),
-      contentData: t(memberStepName(props.reportDetail.content.detail_type))
+      contentData: t(memberDayStepName(props.reportDetail.content.detail_type))
     }
   ]
 })
@@ -170,15 +190,15 @@ const tableDataType2 = computed(() => {
     {
       slotKey: 'tags',
       contentKey: t('common.exclude_tags'),
-      contentData: props.reportDetail.content.exclude_tag
+      contentData: generateTags(props.reportDetail.content.exclude_tag)
     },
     {
       contentKey: t('import_export_file.import'),
       contentData:
         props.reportDetail.content.custom_user_list &&
         props.reportDetail.content.custom_user_list.length !== 0
-          ? 'true'
-          : '-'
+          ? t('common.yes')
+          : t('common.no')
     },
     {
       contentKey: t('customer_tag_list.current_duration'),
@@ -215,7 +235,9 @@ const tableDataType3 = computed(() => {
   return [
     {
       contentKey: t('user_export_report.source_page'),
-      contentData: `${t(props.reportDetail.source)} - ${t('member_active_level.active_level_breakdown')}`
+      contentData: `${t(props.reportDetail.source)} - ${t(
+        'member_active_level.active_level_breakdown'
+      )}`
     },
     {
       contentKey: t('data_name.member_name'),
@@ -232,8 +254,8 @@ const tableDataType3 = computed(() => {
       contentData:
         props.reportDetail.content.custom_user_list &&
         props.reportDetail.content.custom_user_list.length !== 0
-          ? 'true'
-          : '-'
+          ? t('common.yes')
+          : t('common.no')
     },
     {
       slotKey: 'steps',
@@ -247,7 +269,7 @@ const tableDataType3 = computed(() => {
     },
     {
       contentKey: t('user_export_report.click_type'),
-      contentData: t(memberStepName(props.reportDetail.content.detail_type))
+      contentData: t(memberWeekStepName(props.reportDetail.content.detail_type))
     },
     {
       slotKey: 'tags',
