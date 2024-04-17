@@ -12,7 +12,7 @@ describe('ConfirmBox.vue', () => {
     wrapper.unmount()
   })
 
-  it('name = delet, emits cancel event when cancel button is clicked', async () => {
+  it('name = delete, emits cancel event when cancel button is clicked', async () => {
     wrapper = shallowMount(ConfirmBox, {
       global: {
         plugins: [i18n, ElementPlus],
@@ -23,7 +23,7 @@ describe('ConfirmBox.vue', () => {
         }
       },
       props: {
-        confirmBoxVisible: true
+        modelValue: true
       }
     })
     expect(wrapper.find('.inner-dialog__title').classes()).toContain('delete-color')
@@ -47,7 +47,7 @@ describe('ConfirmBox.vue', () => {
       },
       props: {
         name: 'notSaved',
-        confirmBoxVisible: true
+        modelValue: true
       }
     })
     expect(wrapper.find('.inner-dialog__title').classes()).not.toContain('delete-color')
@@ -58,5 +58,26 @@ describe('ConfirmBox.vue', () => {
 
     //檢查是否觸發了名為 'confirm' 的事件
     expect(wrapper.emitted('confirmExecute')).toBeTruthy()
+  })
+
+  it('name = notSaved, set modelValue to change visibleValue', async () => {
+    wrapper = shallowMount(ConfirmBox, {
+      global: {
+        plugins: [i18n, ElementPlus],
+        stubs: {
+          ElDialog: {
+            template: '<div><slot /></div>'
+          }
+        }
+      },
+      props: {
+        name: 'notSaved',
+        modelValue: true
+      }
+    })
+
+    await wrapper.setProps({modelValue: false})
+    expect(wrapper.vm.visibleValue).toBeFalsy()
+
   })
 })
