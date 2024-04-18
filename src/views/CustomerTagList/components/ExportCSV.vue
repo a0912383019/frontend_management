@@ -87,6 +87,7 @@ const handelExportReport = async () => {
 
     if (return_code === '0000') {
       window.location.href = result.data.result.url
+      dialogVisible.value = false
     } else {
       const { error_code } = result.data.status
       if (error_code === '210400000') {
