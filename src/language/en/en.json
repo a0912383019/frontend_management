@@ -70,7 +70,7 @@
     "operation": "Move",
     "manage": "Manage",
     "detail": "Details",
-    "detail_short": "詳情",
+    "detail_short": "Details",
     "edit": "Edit",
     "delete": "Delete",
     "pending": "Pending",
@@ -664,7 +664,9 @@
     "daily_payoff": "Daily P&L",
     "total_people": "Gamblers by Tags Group",
     "daily_active_people": "Daily Active Gamblers",
-    "daily_deposit_people": "Daily Deposit Gamblers"
+    "daily_deposit_people": "Daily Deposit Gamblers",
+
+    "analysis_overview": "Overview"
   },
 
   "game_tag_analysis": {

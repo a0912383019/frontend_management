@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch, computed, onMounted, toRefs } from 'vue'
+import { ref, reactive, watch, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryUserExportList } from '@/api'
 import { useGlobalStore, useExportListStore } from '@/stores'
@@ -94,19 +94,13 @@ const queryUserExportList = async () => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true
-      tableData.value = transformExportList(result.data.result)
-      upadteCurrentSort({ prop: 'export_date', order: 'descending' })
-    } else {
-      const { error_code } = result.data.status
-      if (error_code === '210400000') {
-        messageKey.value = 'noResult'
-      } else {
-        messageKey.value = 'queryFailed'
+      if (result.data.result.length !== 0) {
+        tableData.value = transformExportList(result.data.result)
+        upadteCurrentSort({ prop: 'export_date', order: 'descending' })
       }
     }
   } catch (error) {
     console.error(error)
-    apiSuccess.value = false //取得資料失敗
     if (error.response.status === 403) {
       messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
@@ -224,8 +218,8 @@ const opendetail = (data) => {
     reportDetail.type = data.type
     reportDetail.source = data.source_page
     reportDetail.content = JSON.parse(data.search_content)
-
   } else {
+    // 舊版沒有 search_content
     reportDetail.type = 9999
   }
   detailBoxVisible.value = true
@@ -295,8 +289,8 @@ onMounted(() => {
         $t('user_export_report.delete_all')
       }}</a>
     </div>
-    <CdpMessage :messageKey="messageKey" v-show="apiSuccess === false" />
-    <div v-show="apiSuccess === true">
+    <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
+    <div v-else>
       <CustomTable
         :defaultSort="{ prop: 'export_date', order: 'descending' }"
         :serverSide="false"

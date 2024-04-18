@@ -125,6 +125,7 @@ const formData = reactive({
 
 // 取得資料
 const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
+  tableData.value = []
   if (searchType !== 'page') {
     apiSuccess.value = false
     messageKey.value = 'loading'
@@ -162,7 +163,6 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
           type: 'success'
         })
       }
-      tableData.value = []
       tableData.value = transformListMemberTags(result.data.result.data)
       apiRecordsTotal.value = result.data.result.records_total
     } else {
@@ -301,7 +301,7 @@ onMounted(() => {
       <!-- justify-between -->
       <PageTitle icon="menuTag" :title="$t('sidebar.bbin_customer_tag_list')" />
       <div class="flex">
-        <ExportCSV class="mr-10" :formData="formData" :total="apiRecordsTotal" />
+        <ExportCSV v-if="tableData.length !== 0" class="mr-10" :formData="formData" :total="apiRecordsTotal" />
         <Filter :key="key" @update:filter-submit="handleFilterSubmit" />
       </div>
     </div>
