@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import {  computed } from 'vue'
 const props = defineProps({
   tableData: {
     //表格資料
@@ -17,7 +17,7 @@ const props = defineProps({
   border: {
     //邊框
     type: Boolean,
-    default: false
+    default: true
   }
 })
 
@@ -66,7 +66,7 @@ const pageTableData = computed(() => {
 .form-head-black {
   &.el-table {
     td:first-child {
-      background-color: #f6f8fb;
+      background-color: #F6F8FB;
     }
   }
 }

@@ -380,8 +380,6 @@ const handleCloseDialog = () => {
           v-if="tableData.length !== 0"
           :tableData="tableData"
           :tableColumns="tableColumns"
-          class="cdp-table"
-          border="border"
         >
           <template #contentData="scope">
             <div v-if="scope.row.slotKey === 'tags'">
