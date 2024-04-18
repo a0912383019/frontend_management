@@ -1,14 +1,9 @@
 import { it, describe, expect, vi, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import {
-  useSystemStore,
   useGlobalStore,
-  useVipCommercialAnalysisStore,
   useExportListStore
 } from '@/stores'
-import { useRouter } from 'vue-router'
-import { apiLogout } from '@/api/system.js'
-import { dayjs } from 'element-plus'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
 
 describe('useExportListStore', () => {
@@ -56,7 +51,7 @@ describe('useExportListStore', () => {
     expect(exportListStore.tag_description_dict).toStrictEqual({ hall: {} })
 
     await exportListStore.queryAgNameUserLevel()
-    result.data.result.user_level.forEach(ele=>{
+    result.data.result.user_level.forEach((ele) => {
       expect(exportListStore.levelList[ele.user_level_id]).toStrictEqual(ele.user_level_name)
     })
   })

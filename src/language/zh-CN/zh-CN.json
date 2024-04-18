@@ -664,7 +664,9 @@
     "daily_payoff": "每日损益",
     "total_people": "总人数",
     "daily_active_people": "每日实动人数",
-    "daily_deposit_people": "每日存款人数"
+    "daily_deposit_people": "每日存款人数",
+
+    "analysis_overview": "分析总览"
   },
 
   "game_tag_analysis": {

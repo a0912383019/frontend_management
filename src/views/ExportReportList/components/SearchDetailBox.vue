@@ -52,7 +52,7 @@ const generateTags = (tagsString) => {
 
   let newSubStrings = result.split(',')
   let newMap = newSubStrings.map((ele) => {
-    if(ele.indexOf(' or ') !== -1) {
+    if (ele.indexOf(' or ') !== -1) {
       return '(' + ele + ')'
     }
     return ele

@@ -1,5 +1,5 @@
 <script setup>
-import {  computed } from 'vue'
+import { computed } from 'vue'
 const props = defineProps({
   tableData: {
     //表格資料
@@ -53,7 +53,6 @@ const pageTableData = computed(() => {
           </template>
         </el-table-column>
       </template>
-
       <!-- append插槽：插入至表格最后一行之后的内容 -->
       <template #append><slot name="append"></slot></template>
       <template #empty>
@@ -66,7 +65,7 @@ const pageTableData = computed(() => {
 .form-head-black {
   &.el-table {
     td:first-child {
-      background-color: #F6F8FB;
+      background-color: #f6f8fb;
     }
   }
 }
