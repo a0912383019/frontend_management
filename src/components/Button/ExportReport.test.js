@@ -1,6 +1,6 @@
 import { it, describe, expect, beforeEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
-import ExportReport from '@/components/ExportReport.vue'
+import ExportReport from '@/components/Button/ExportReport.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import { i18n } from '@/global/i18n'
 

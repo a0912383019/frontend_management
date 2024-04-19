@@ -120,8 +120,8 @@ export const router = createRouter({
       children: [
         {
           path: '/target-group-analysis-list',
-          name: 'target-group-analysis-list'
-          // component: () => import('../views/Home/Home.vue')
+          name: 'target-group-analysis-list',
+          component: () => import('../views/TargetGroupAnalysis/TargetGroupAnalysis.vue')
         }
       ]
     },

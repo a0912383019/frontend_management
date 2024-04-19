@@ -7,7 +7,7 @@ import ElementPlus from 'element-plus'
 import router from '@/router'
 import ExportCSV from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/StepOverview/components/ExportCSV.vue'
 import ExportDialog from '@/components/ExportDialog.vue'
-import ExportReport from '@/components/ExportReport.vue'
+import ExportReport from '@/components/Button/ExportReport.vue'
 
 describe('ExportCSV', () => {
   let wrapper = null

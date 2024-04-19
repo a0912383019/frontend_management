@@ -8,7 +8,7 @@ import { ElNotification } from 'element-plus'
 import { errorRespond } from '@/utils/commonUtils.js'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import ExportDialog from '@/components/ExportDialog.vue'
-import ExportReport from '@/components/ExportReport.vue'
+import ExportReport from '@/components/Button/ExportReport.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 
 const { t, locale: i18nLocale } = useI18n()

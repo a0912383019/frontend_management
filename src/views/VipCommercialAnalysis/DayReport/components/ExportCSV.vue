@@ -7,7 +7,7 @@ import { ElNotification } from 'element-plus'
 import { dayjs } from 'element-plus'
 import { errorRespond } from '@/utils/commonUtils.js'
 import ExportDialog from '@/components/ExportDialog.vue'
-import ExportReport from '@/components/ExportReport.vue'
+import ExportReport from '@/components/Button/ExportReport.vue'
 
 const { t, locale: i18nLocale } = useI18n()
 const globalStore = useGlobalStore()

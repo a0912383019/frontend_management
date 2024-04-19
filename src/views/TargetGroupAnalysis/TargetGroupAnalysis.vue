@@ -12,7 +12,7 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
 import DeleteBox from '@/views/ExportReportList/components/DeleteBox.vue'
-import SearchDetailBox from '@/views/ExportReportList/components/SearchDetailBox.vue'
+import Filter from '@/views/TargetGroupAnalysis/components/Filter.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 
 const { t } = useI18n()
@@ -120,6 +120,12 @@ const transformTargetGroups = (data) => {
 
   return result
 }
+
+const searchWithTargetName = (targetName) => {
+    console.log('ok')
+  searchTargetGroupName.value = targetName
+  queryTargetGroups()
+}
 onMounted(() => {
   queryTargetGroups()
 })
@@ -128,6 +134,7 @@ onMounted(() => {
   <section class="cdp-section mb-0">
     <div class="flex items-center justify-between mb-20" ref="refContent">
       <PageTitle icon="menuExport" :title="$t('sidebar.target_group_analysis_list')" />
+      <Filter @searchWithTargetName="searchWithTargetName"></Filter>
     </div>
     <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
     <div class="cdp-section-in" v-else>
@@ -145,13 +152,17 @@ onMounted(() => {
         class="customTable2 customTagListTable"
       >
         <template #is_open="scope">
-            <span class="cdp-text-shamrockgreen" v-if="scope.row.is_open === true">{{ $t('target_group_analysis.is_open_true') }}</span>
-            <span class="cdp-text-candypink" v-else>{{ $t('target_group_analysis.is_open_false') }}</span>
+          <span class="cdp-text-shamrockgreen" v-if="scope.row.is_open === true">{{
+            $t('target_group_analysis.is_open_true')
+          }}</span>
+          <span class="cdp-text-candypink" v-else>{{
+            $t('target_group_analysis.is_open_false')
+          }}</span>
         </template>
         <template #operation="scope">
           <div>
             <ButtonIcon
-            :disabled="!scope.row.can_operate"
+              :disabled="!scope.row.can_operate"
               class="detail-button mr-5"
               icon="magnifier"
               :isSvg="true"
