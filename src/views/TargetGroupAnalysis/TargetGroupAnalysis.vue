@@ -12,7 +12,9 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
 import DeleteBox from '@/views/ExportReportList/components/DeleteBox.vue'
+import AddTarget from '@/components/button/AddButton.vue'
 import Filter from '@/views/TargetGroupAnalysis/components/Filter.vue'
+import TargetGroupDetail from '@/views/TargetGroupAnalysis/components/TargetGroupDetail.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 
 const { t } = useI18n()
@@ -41,7 +43,7 @@ const tableColumns = computed(() => {
     },
     {
       label: t('data_name.created_time'),
-      prop: 'created_time',
+      prop: 'createTime',
       headerAlign: 'center',
       align: 'center',
       minWidth: '20%',
@@ -105,7 +107,8 @@ const transformTargetGroups = (data) => {
 
   data.map((item) => {
     let tempObj = {
-      ...item
+      ...item,
+      createTime: dayjs(item.create_time).format(t('date.format_datetime_rule'))
       //   source_page: getSourceName(item.type),
       //   status: item.is_expired ? 'expired' : item.export_progress ? 'completed' : 'processing',
       //   is_disabled: !item.export_progress,
@@ -121,11 +124,23 @@ const transformTargetGroups = (data) => {
   return result
 }
 
+const dialogVisible = ref(false)
+const targetId = ref(0)
+
+const openTargetDetail= (data) => {
+    targetId.value = data
+    dialogVisible.value = true
+}
+
+const closeDialog = () => {
+  dialogVisible.value = false
+}
+
 const searchWithTargetName = (targetName) => {
-    console.log('ok')
   searchTargetGroupName.value = targetName
   queryTargetGroups()
 }
+
 onMounted(() => {
   queryTargetGroups()
 })
@@ -134,7 +149,10 @@ onMounted(() => {
   <section class="cdp-section mb-0">
     <div class="flex items-center justify-between mb-20" ref="refContent">
       <PageTitle icon="menuExport" :title="$t('sidebar.target_group_analysis_list')" />
-      <Filter @searchWithTargetName="searchWithTargetName"></Filter>
+      <div class="flex">
+        <AddTarget class="mr-10" name="target_group_analysis.add_target_group" />
+        <Filter @searchWithTargetName="searchWithTargetName" />
+      </div>
     </div>
     <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
     <div class="cdp-section-in" v-else>
@@ -167,7 +185,7 @@ onMounted(() => {
               icon="magnifier"
               :isSvg="true"
               :name="$t('common.detail_short')"
-              @click="aaa(scope.row)"
+              @click="openTargetDetail(scope.row.target_group_id)"
             />
             <ButtonIcon
               :disabled="!scope.row.can_operate"
@@ -181,6 +199,7 @@ onMounted(() => {
           </div>
         </template>
       </CustomTable>
+      <TargetGroupDetail v-model="dialogVisible" :targetId="targetId" @closeDialog="closeDialog" />
     </div>
   </section>
 </template>
