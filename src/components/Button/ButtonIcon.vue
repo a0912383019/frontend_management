@@ -28,6 +28,10 @@ const props = defineProps({
   bg: {
     type: Boolean,
     default: true
+  },
+  iconColor: {
+    type: String,
+    default: '#E476AA'
   }
 })
 
@@ -43,12 +47,14 @@ const buttonClass = computed(() => {
 <template>
   <button class="btn-reset" :class="buttonClass">
     <template v-if="props.isSvg">
-      <cdp-icon class="mr-6" :name="props.icon" />
+      <cdp-icon :name="props.icon" :color="props.iconColor" />
     </template>
     <template v-else>
       <font-awesome-icon class="mr-6" :icon="`fa-${props.icon}`" v-if="props.icon" />
     </template>
-    {{ props.name }}
+    <span v-if="props.name !== ''" class="ml-6">
+      {{ props.name }}
+    </span>
   </button>
 </template>
 <style lang="scss" scoped>

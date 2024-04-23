@@ -8,6 +8,7 @@ import ConfirmBox from '@/components/ConfirmBox.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import SelectTag from '@/components/Filter/SelectTag.vue'
+import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 
 const { t } = useI18n()
 
@@ -41,14 +42,14 @@ const tableColumns = computed(() => {
       prop: 'include_tags',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '70%'
+      minWidth: '74%'
     },
     {
       label: t('common.operation'),
-      prop: 'operation',
+      prop: 'delete',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '6%'
     }
   ]
 })
@@ -83,7 +84,7 @@ const tableData = computed(() => {
     >
       <template #tag_groups_name="scope">
         <el-input
-          v-if="!isDisabled"
+          v-if="props.isDisabled"
           v-model="scope.row.custom_tags_name"
           class="cdp-input cdp-input-disabled"
           readonly
@@ -93,9 +94,23 @@ const tableData = computed(() => {
         <el-input v-else v-model="scope.row.custom_tags_name" class="cdp-input"></el-input>
       </template>
       <template #include_tags="scope">
-        <SelectTag v-model="scope.row.don" :selectedTags="scope.row.custom_tag_str" />
+        <SelectTag
+          v-model="scope.row.don"
+          :selectedTags="scope.row.custom_tag_str"
+          :isDisabled="props.isDisabled"
+          color="blue"
+        />
       </template>
-      <!-- <template #status="scope"> </template> -->
+      <template #delete="scope">
+        <ButtonIcon
+          :disabled="false"
+          class="detail-button"
+          color="red"
+          icon="trash"
+          :isSvg="true"
+          @click="deleteGroup(scope.row)"
+        />
+      </template>
     </CustomTable>
   </section>
 </template>
@@ -115,8 +130,8 @@ const tableData = computed(() => {
   }
 }
 .select-tag {
-    width: 100%;
-    margin: 0 10px;
+  width: 100%;
+  margin: 0 10px;
 }
 :deep(.el-table .cell) {
   overflow: visible !important;
@@ -128,13 +143,25 @@ const tableData = computed(() => {
   overflow: visible !important;
 }
 :deep(.el-table--fit) {
-    overflow: visible !important;
+  overflow: visible !important;
 }
 :deep(.el-table__body-wrapper) {
+  overflow: visible !important;
+  .el-scrollbar {
     overflow: visible !important;
-    .el-scrollbar {
-        overflow: visible !important;
+  }
+}
+.detail-button {
+    min-width: 40px !important;
+    width: 100%;
+    height: 42px;
+    &:disabled {
+        background-color: rgba(207, 216, 230, 0.3) !important;
+        border-color: rgba(207, 216, 230, 0.3) !important;
     }
+}
+:deep(.svg-icon) {
+    color: darkgreen !important;
 }
 // :deep(.cdp-dialog.el-dialog) {
 //     overflow: visible !important;

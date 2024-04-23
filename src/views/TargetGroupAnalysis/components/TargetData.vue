@@ -128,7 +128,7 @@ onMounted(() => {
       </el-col>
     </div>
     <section class="cdp-section-in mb-20">
-      <TagGroupSetting :apiTagGroupData="apiTagGroupData" />
+      <TagGroupSetting :apiTagGroupData="apiTagGroupData" :isDisabled="!edit" />
     </section>
     <div class="mb-20 flex justify-end">
       <SwitchWithTooltip

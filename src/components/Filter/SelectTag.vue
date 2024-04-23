@@ -27,11 +27,20 @@ const props = defineProps({
     default: false
   },
   color: {
-    type: String,
-    default: 'blue'
+    type:String,
+    default: 'purple'
   }
 })
 
+const placeholder = computed(() => {
+  let placeholder = ''
+  if(props.isDisabled) {
+    placeholder = ''
+  } else {
+    placeholder = t('tags.filter')
+  }
+  return placeholder
+})
 const emit = defineEmits(['update:modelValue'])
 
 // 創建不重複的class name
@@ -196,7 +205,6 @@ const isDropShow = ref(false)
 
 // input focus事件
 const handleInputFocus = () => {
-  if (props.isDisabled === true) return
   isDropShow.value = true
 }
 
@@ -205,7 +213,6 @@ const clearTagInputValue = () => {
 }
 
 const handleInputKeyup = (e) => {
-  if (props.isDisabled === true) return
   if (e.keyCode === 8) {
     if (tagTextAry.value.length > 0 && tagInputTextOld.value === '') {
       let lastIndex = tagTextAry.value.length - 1
@@ -270,7 +277,7 @@ const isOperatorShow = computed(() => {
 
 // 點擊tag，刪除tag
 const handleTagDelete = ({ index }) => {
-  if (props.isDisabled === true) return
+  if (props.isDisabled) return
   currentTagAry.value.splice(index, 1)
   // 如果刪除後的陣列，第1筆是OR，要將OR刪除，不可單除存在
   if (currentTagAry.value.length > 0) {
@@ -386,7 +393,7 @@ watch(
 )
 </script>
 <template>
-  <div class="select-tag" :class="`select-tag-${props.color}`">
+  <div class="select-tag" :class="{[`select-tag-${props.color}`]:true, 'select-tag-disabled':props.isDisabled}">
     <div class="select-tag__box" :class="`select-tag-${props.color}__box`">
       <div
         class="select-tag__box__tag"
@@ -395,10 +402,7 @@ watch(
         :key="index"
         @click="handleTagDelete({ item, index })"
       >
-        <div
-          class="select-tag__box__tag__item"
-          :class="{ isActive: item.active, [`select-tag-${props.color}__box__tag__item`]: true }"
-        >
+        <div class="select-tag__box__tag__item" :class="{ isActive: item.active, [`select-tag-${props.color}__box__tag__item`]: true }">
           {{ item.label }}
           <div class="select-tag__box__tag__close" v-if="!props.isDisabled"></div>
         </div>
@@ -414,16 +418,12 @@ watch(
         type="text"
         v-model="tagInputText"
         class="select-tag__input"
-        :class="{
-          dropClass,
-          [`select-tag-${props.color}__input`]: true,
-        }"
-        :placeholder="$t('tags.filter')"
+        :class="[dropClass, `select-tag-${props.color}__input`]"
+        :placeholder="placeholder"
         ref="refTagInput"
         @focus="handleInputFocus"
         @keyup="handleInputKeyup"
-        :disabled="!props.isDisabled"
-
+        :disabled="props.isDisabled"
       />
       <SelectTagDropdown
         v-model="selectTypeValue"
