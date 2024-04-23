@@ -666,7 +666,9 @@
     "daily_active_people": "每日实动人数",
     "daily_deposit_people": "每日存款人数",
 
-    "analysis_overview": "分析总览"
+    "analysis_overview": "分析总览",
+    "tag_groups_setting": "标签群组设置",
+    "tag_groups_name": "标签群组名称"
   },
 
   "game_tag_analysis": {

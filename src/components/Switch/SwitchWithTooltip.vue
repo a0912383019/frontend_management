@@ -21,10 +21,13 @@ const props = defineProps({
   isDisabled: {
     type: Boolean,
     default: true
+  },
+  modelValue: {
+    type: Boolean,
+    default: false
   }
 })
 
-const isSwitch = ref(false)
 const switchColor = 'cdp-switch-' + props.color
 
 const emit = defineEmits(['update:modelValue'])
@@ -36,7 +39,7 @@ const handleSwitchChange = (data) => {
 <template>
   <div>
     <el-switch
-      v-model="isSwitch"
+      :model-value="props.modelValue"
       @change="handleSwitchChange"
       :active-text="$t(props.name)"
       class="mr-5"

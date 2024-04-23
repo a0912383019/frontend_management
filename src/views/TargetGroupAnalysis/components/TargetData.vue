@@ -9,6 +9,7 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import { dayjs } from 'element-plus'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
+import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TagGroupSetting.vue'
 
 const { t } = useI18n()
 
@@ -24,7 +25,8 @@ const props = defineProps({
 const apiSuccess = ref(false)
 const messageKey = ref('loading')
 
-const apiTargetData = reactive({}) //存放api資料
+const apiTargetData = reactive({}) // 存放api資料
+const newTargetData = reactive({}) // 可更新的資料
 
 const queryTargetGroupsId = async () => {
   //   apiSuccess.value = false
@@ -57,14 +59,30 @@ const queryTargetGroupsId = async () => {
   }
 }
 
+// 是否公開
+const isOpen = ref(false)
+
+// 預設都是disabled
+const edit = ref(false)
+
+const apiTagGroupData = ref([])
 const transformTargetDetails = (data) => {
   apiTargetData.targetName = data.target_group_name
   apiTargetData.memberName = data.member_name
   apiTargetData.createdTime = dayjs(data.created_time).format(t('date.format_datetime_rule'))
-  apiTargetData.zzz = 'data.target_group_name'
+  apiTargetData.updaterName = data.updater_name
   apiTargetData.updatedTime = dayjs(data.updated_time).format(t('date.format_datetime_rule'))
+
+  newTargetData.targetName = data.target_group_name
+
+  apiTagGroupData.value = data.custom_tags_data
+  isOpen.value = data.is_open
 }
-// defineExpose({queryTargetGroupsId})
+
+const handleTagIsEdit = () => {
+  edit.value = true
+}
+
 onMounted(() => {
   console.log('child')
   queryTargetGroupsId()
@@ -76,9 +94,13 @@ onMounted(() => {
     <div class="flex mb-20 justify-between">
       <el-col :span="5">
         <div class="cdp-text-blue mb-3">{{ $t('target_group_analysis.target_group_name') }}</div>
-        <el-input v-model="apiTargetData.targetName" class="cdp-input cdp-input-disabled" readonly>
-          <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
-        </el-input>
+        <div>
+          <el-input v-if="!edit" v-model="apiTargetData.targetName" class="cdp-input cdp-input-disabled" readonly>
+            <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+          </el-input>
+          <el-input v-else v-model="newTargetData.targetName" class="cdp-input">
+          </el-input>
+        </div>
       </el-col>
       <el-col :span="5">
         <div class="cdp-text-blue mb-3">{{ $t('data_name.uploader') }}</div>
@@ -94,7 +116,7 @@ onMounted(() => {
       </el-col>
       <el-col :span="5">
         <div class="cdp-text-blue mb-3">{{ $t('data_name.updater') }}</div>
-        <el-input v-model="apiTargetData.zzz" class="cdp-input cdp-input-disabled" readonly>
+        <el-input v-model="apiTargetData.updaterName" class="cdp-input cdp-input-disabled" readonly>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
       </el-col>
@@ -105,18 +127,21 @@ onMounted(() => {
         </el-input>
       </el-col>
     </div>
-    <section class="cdp-section-in mb-20"></section>
+    <section class="cdp-section-in mb-20">
+      <TagGroupSetting :apiTagGroupData="apiTagGroupData" />
+    </section>
     <div class="mb-20 flex justify-end">
       <SwitchWithTooltip
         name="target_group_analysis.is_open"
         content="target_group_analysis.is_open_reminder"
-        :isDisabled="true"
+        v-model="isOpen"
+        :isDisabled="!edit"
       />
       <CdpButton
         class="custom-bg-dark__blue ml-20"
         :name="$t('common.edit')"
         size="sm-130"
-        @click="handleTagIsEdit(true)"
+        @click="handleTagIsEdit()"
       />
     </div>
   </section>
@@ -126,5 +151,13 @@ onMounted(() => {
 .el-col-5 {
   width: 19%;
   flex: 0 0 19%;
+}
+.cdp-input {
+  :deep(.el-input__inner) {
+    cursor: default !important;
+  }
+  :deep(.el-input__wrapper:hover) {
+    box-shadow: 0 0 0 0 !important;
+  }
 }
 </style>

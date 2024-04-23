@@ -666,7 +666,9 @@
     "daily_active_people": "Daily Active Gamblers",
     "daily_deposit_people": "Daily Deposit Gamblers",
 
-    "analysis_overview": "Overview"
+    "analysis_overview": "Overview",
+    "tag_groups_setting": "標籤群組設定",
+    "tag_groups_name": "標籤群組名稱"
   },
 
   "game_tag_analysis": {

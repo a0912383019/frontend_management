@@ -613,10 +613,12 @@
 .select-tag {
   display: flex;
   flex-wrap: wrap;
-  border: 1px solid #ccc5e1;
   border-radius: 5px;
-  &:hover {
-      border-color: $purple;
+  &-disabled {
+    background-color: rgba(207, 216, 230, 0.2);
+    &:hover {
+      box-shadow: 0 0 0 0 !important;
+    }
   }
   &__input {
     padding-left: 10px;
@@ -636,7 +638,6 @@
         border-radius: 20px;
         margin-top: 5px;
         margin-bottom: 5px;
-        background-color: $purple;
         color: #fff;
         line-height: 1;
         cursor: pointer;
@@ -689,8 +690,45 @@
     border: none;
     border-radius: 5px;
     &::placeholder {
-      color: rgba($purple, 0.4);
       opacity: 1;
+    }
+  }
+}
+
+.select-tag-purple {
+  border: 1px solid #ccc5e1;
+  &:hover {
+      border-color: $purple;
+  }
+  &__box {
+    &__tag {
+      &__item {
+        background-color: $purple;
+      }
+    }
+  }
+  &__input {
+    &::placeholder {
+      color: rgba($purple, 0.4);
+    }
+  }
+}
+
+.select-tag-blue {
+  border: 1px solid #CFD8E6;
+  &:hover {
+      border-color: $blue;
+  }
+  &__box {
+    &__tag {
+      &__item {
+        background-color: $blue;
+      }
+    }
+  }
+  &__input {
+    &::placeholder {
+      color: rgba($blue, 0.4);
     }
   }
 }
