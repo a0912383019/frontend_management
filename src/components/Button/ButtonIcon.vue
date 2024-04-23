@@ -31,7 +31,7 @@ const props = defineProps({
   },
   iconColor: {
     type: String,
-    default: '#E476AA'
+    default: ''
   }
 })
 

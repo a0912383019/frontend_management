@@ -108,6 +108,7 @@ const tableData = computed(() => {
           color="red"
           icon="trash"
           :isSvg="true"
+          iconColor=""
           @click="deleteGroup(scope.row)"
         />
       </template>
