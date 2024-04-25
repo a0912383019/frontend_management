@@ -159,8 +159,9 @@ defineExpose({ goToFirstPage, showTableLoading })
       @sort-change="handleTableSort"
       style="width: 100%"
     >
-      <template v-for="(column, idx) in tableColumns" :key="idx">
+      <template v-for="column in tableColumns" :key="column.prop">
         <el-table-column
+          :prop="column.prop"
           :label="column.label"
           :width="column.width"
           :min-width="column.minWidth"
