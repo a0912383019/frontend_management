@@ -1,19 +1,19 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiDeleteUserExportList } from '@/api'
-import { useGlobalStore } from '@/stores'
-import { ElNotification } from 'element-plus'
-import ConfirmBox from '@/components/ConfirmBox.vue'
+import { useTargetGroupStore } from '@/stores'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import SelectTag from '@/components/Filter/SelectTag.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
+import AddGroup from '@/components/button/AddButton.vue'
+import { storeToRefs } from 'pinia'
+import CdpMessage from '@/components/CdpMessage.vue'
 
 const { t } = useI18n()
 
-const globalStore = useGlobalStore()
-const { activeHall } = globalStore
+const targetGroup = useTargetGroupStore()
+const { tagGroupList } = storeToRefs(targetGroup)
 
 const props = defineProps({
   apiTagGroupData: {
@@ -27,7 +27,9 @@ const props = defineProps({
 })
 
 const maxLength = ref(10)
-const newTagGroupData = ref(...props.apiTagGroupData)
+
+const renderComplete = ref(false)
+
 const tableColumns = computed(() => {
   return [
     {
@@ -54,17 +56,61 @@ const tableColumns = computed(() => {
   ]
 })
 
-const tableData = computed(() => {
-  let result = []
-  props.apiTagGroupData.forEach((ele) => {
-    let newpp = {
-      ...ele,
-      don: ''
-    }
-    result.push(newpp)
+const addTagGroup = () => {
+  tagGroupList.value.push({
+    custom_tag_str: '',
+    custom_tags_name: '',
+    groupNameValid: true,
+    tagGroupValid: true
   })
-  return result
-})
+}
+
+const deleteGroup = (idx) => {
+  tagGroupList.value.splice(idx, 1)
+}
+
+const validTable = () => {
+  let isValid = true // 是否驗證成功
+  tagGroupList.value.forEach((ele, idx) => {
+    let isError = false
+    tagGroupList.value[idx].groupNameValid = true
+    if (ele.custom_tags_name.trim() === '') {
+      tagGroupList.value[idx].groupNameValid = false
+      isError = true
+      isValid = false
+    }
+    tagGroupList.value[idx].tagGroupValid = true
+    if (ele.custom_tag_str.trim() === '') {
+      tagGroupList.value[idx].tagGroupValid = false
+      isError = true
+      isValid = false
+    }
+
+    const cellsInSecondRow = document.querySelectorAll(`.el-table tr:nth-child(${idx + 1}) .cell`)
+    for (var i = 0; i < cellsInSecondRow.length; ++i) {
+      if (isError) {
+        cellsInSecondRow[i].classList.add('row-append')
+      } else {
+        cellsInSecondRow[i].classList.remove('row-append')
+      }
+    }
+  })
+
+  emit('vertifyPassed', isValid)
+}
+
+const emit = defineEmits(['vertifyPassed'])
+defineExpose({ validTable })
+watch(
+  () => tagGroupList.value,
+  () => {
+    if (tagGroupList.value.length !== 0) {
+      nextTick(() => {
+        renderComplete.value = true
+      })
+    }
+  }
+)
 </script>
 <template>
   <section>
@@ -73,13 +119,16 @@ const tableData = computed(() => {
       icon="menuExport"
       :title="$t('target_group_analysis.tag_groups_setting')"
     />
+    <CdpMessage messageKey="loading" v-show="renderComplete === false" />
     <CustomTable
+      v-show="renderComplete === true"
       :serverSide="false"
-      :tableData="tableData"
+      :tableData="tagGroupList"
       :tableColumns="tableColumns"
       :pageSize="maxLength"
       :hasPagination="false"
       :stripe="false"
+      rowKey="custom_tags_id"
       class="customTable2 customTagListTable"
     >
       <template #tag_groups_name="scope">
@@ -91,54 +140,100 @@ const tableData = computed(() => {
         >
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
-        <el-input v-else v-model="scope.row.custom_tags_name" class="cdp-input"></el-input>
+        <div v-else style="width: 100%" class="text-left">
+          <el-input
+            v-model="scope.row.custom_tags_name"
+            class="cdp-input"
+            :class="{ 'is-error': !scope.row.groupNameValid }"
+            :placeholder="$t('target_group_analysis.input_custom_tags_name')"
+          ></el-input>
+          <span v-if="!scope.row.groupNameValid" class="cdp-text-candypink font-size-12">{{
+            $t('target_group_analysis.blank_custom_tags_name_error_msg')
+          }}</span>
+        </div>
       </template>
       <template #include_tags="scope">
         <SelectTag
-          v-model="scope.row.don"
-          :selectedTags="scope.row.custom_tag_str"
-          :isDisabled="props.isDisabled"
+          v-if="props.isDisabled"
+          v-model="scope.row.originTags"
+          class="is-disabled"
+          :selectedTags="scope.row.originTags"
+          :isDisabled="true"
           color="blue"
         />
+        <div
+          v-if="!props.isDisabled"
+          style="width: 100%"
+          class="text-left"
+          :class="{ 'is-error': !scope.row.tagGroupValid }"
+        >
+          <SelectTag
+            v-model="scope.row.custom_tag_str"
+            :selectedTags="scope.row.custom_tag_str"
+            :isDisabled="false"
+            color="blue"
+          />
+          <span v-if="!scope.row.tagGroupValid" class="cdp-text-candypink font-size-12 ml-10">{{
+            $t('target_group_analysis.blank_tags_error_msg')
+          }}</span>
+        </div>
       </template>
       <template #delete="scope">
         <ButtonIcon
-          :disabled="false"
+          v-if="scope.idx !== 0"
+          :disabled="props.isDisabled"
           class="detail-button"
           color="red"
           icon="trash"
           :isSvg="true"
-          iconColor=""
-          @click="deleteGroup(scope.row)"
+          @click="deleteGroup(scope.idx)"
         />
       </template>
     </CustomTable>
+    <AddGroup
+      v-if="!props.isDisabled"
+      class="mt-5"
+      name="target_group_analysis.add_custom_tags"
+      size="long"
+      :bg="true"
+      @click="addTagGroup()"
+    />
   </section>
 </template>
 <style lang="scss" scoped>
-:deep(.el-table td.el-table__cell) {
-  padding: 0px 0;
+:deep(.el-table) {
   .cell {
-    padding: 0;
+    overflow: visible !important;
+    padding-top: 0;
+  }
+  .el-table__cell {
+    z-index: auto !important;
+  }
+  td.el-table__cell {
+    padding: 0px 0;
+    .cell {
+      padding: 0;
+    }
+  }
+  tr.el-table__row {
+    .cell {
+      display: flex;
+      align-items: flex-start !important;
+      min-height: 50px;
+    }
+    .row-append {
+      min-height: 65px;
+    }
+  }
+  .el-table__header {
+    margin-bottom: 10px;
   }
 }
-:deep(.el-table .el-table__header) {
-  margin-bottom: 5px;
-}
-:deep(.el-table tr.el-table__row) {
-  .cell {
-    min-height: 50px;
-  }
+.is-disabled.select-tag {
+  width: 100%;
 }
 .select-tag {
-  width: 100%;
   margin: 0 10px;
-}
-:deep(.el-table .cell) {
-  overflow: visible !important;
-}
-:deep(.el-table .el-table__cell) {
-  z-index: auto !important;
 }
 :deep(.el-scrollbar__wrap) {
   overflow: visible !important;
@@ -153,29 +248,41 @@ const tableData = computed(() => {
   }
 }
 .detail-button {
-    min-width: 40px !important;
-    width: 100%;
-    height: 42px;
-    &:disabled {
-        background-color: rgba(207, 216, 230, 0.3) !important;
-        border-color: rgba(207, 216, 230, 0.3) !important;
+  min-width: 40px !important;
+  width: 100%;
+  height: 42px;
+  &:disabled {
+    background-color: rgba(207, 216, 230, 0.3) !important;
+    border-color: rgba(207, 216, 230, 0.3) !important;
+    &:deep(.svg-icon) {
+      color: rgba(64, 64, 64, 0.3) !important;
     }
+  }
 }
-:deep(.svg-icon) {
-    color: darkgreen !important;
+:deep(.el-input .el-input__wrapper) {
+  box-shadow: none;
 }
-// :deep(.cdp-dialog.el-dialog) {
-//     overflow: visible !important;
-// }
-// :deep(.drop) {
-//     z-index: 50;
-// }
-// .table-total {
-//   width: 100%;
-//   td {
-//     font-size: 14px;
-//     color: #404040;
-//     font-weight: normal;
-//   }
-// }
+.cdp-input {
+  &-disabled {
+    :deep(.el-input__wrapper) {
+      &:hover {
+        box-shadow: none !important;
+      }
+    }
+    :deep(.el-input__inner) {
+      cursor: default !important;
+    }
+  }
+}
+.is-error {
+  :deep(.el-input__wrapper) {
+    box-shadow: 0 0 0 1px #f56c6c !important;
+    &:hover {
+      box-shadow: 0 0 0 1px #f56c6c !important;
+    }
+  }
+  .select-tag {
+    border-color: #f56c6c;
+  }
+}
 </style>

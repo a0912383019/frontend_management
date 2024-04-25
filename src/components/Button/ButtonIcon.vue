@@ -28,10 +28,6 @@ const props = defineProps({
   bg: {
     type: Boolean,
     default: true
-  },
-  iconColor: {
-    type: String,
-    default: ''
   }
 })
 
@@ -47,7 +43,7 @@ const buttonClass = computed(() => {
 <template>
   <button class="btn-reset" :class="buttonClass">
     <template v-if="props.isSvg">
-      <cdp-icon :name="props.icon" :color="props.iconColor" />
+      <cdp-icon :name="props.icon" />
     </template>
     <template v-else>
       <font-awesome-icon class="mr-6" :icon="`fa-${props.icon}`" v-if="props.icon" />
@@ -84,6 +80,16 @@ button {
       border-radius: 5px;
       min-width: 120px;
       min-height: 34px;
+    }
+    &__long {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      width: 100%;
+      border-radius: 5px;
+      min-height: 40px;
+      padding: 9px 15px;
     }
     &__large {
       display: inline-flex;

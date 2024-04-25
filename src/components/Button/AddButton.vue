@@ -9,6 +9,14 @@ const props = defineProps({
     type: String,
     default: 'modal.add'
   },
+  size: {
+    type: String,
+    default: 'large'
+  },
+  bg: {
+    type: Boolean,
+    default: false
+  }
 })
 </script>
 <template>
@@ -16,8 +24,8 @@ const props = defineProps({
     <ButtonIcon
       icon="plus"
       :isSvg="true"
-      size="large"
-      :bg="false"
+      :size="props.size"
+      :bg="props.bg"
       color="blue"
       :name="$t(props.name)"
     />

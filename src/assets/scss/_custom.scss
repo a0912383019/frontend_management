@@ -348,6 +348,19 @@
   background-color: rgba(207, 216, 230, 0.2);
 }
 
+.custom-bg-white {
+  color: $blue;
+  background-color: white;
+  border: 1px $blue solid !important;
+  &:hover {
+    background-color: #ebebee;
+  }
+}
+.custom-bg-white:disabled {
+  color: #8d8d8d;
+  background-color: rgba(207, 216, 230, 0.2);
+}
+
 .custom-bg-purple {
   color: white;
   background-color: #6a53ba;
@@ -617,7 +630,8 @@
   &-disabled {
     background-color: rgba(207, 216, 230, 0.2);
     &:hover {
-      box-shadow: 0 0 0 0 !important;
+      box-shadow: none !important;
+      border: 1px solid #CFD8E6 !important;
     }
   }
   &__input {

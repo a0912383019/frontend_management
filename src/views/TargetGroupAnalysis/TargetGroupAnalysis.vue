@@ -2,7 +2,7 @@
 import { ref, reactive, watch, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryTargetGroups } from '@/api'
-import { useGlobalStore, useExportListStore } from '@/stores'
+import { useGlobalStore, useTargetGroupStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
 import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils.js'
@@ -21,6 +21,8 @@ const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+
+const targetGroup = useTargetGroupStore()
 
 const apiSuccess = ref(false)
 const messageKey = ref('loading')
@@ -101,7 +103,6 @@ const queryTargetGroups = async () => {
   }
 }
 
-let beforeSort
 const transformTargetGroups = (data) => {
   let result = []
 
@@ -109,17 +110,10 @@ const transformTargetGroups = (data) => {
     let tempObj = {
       ...item,
       createTime: dayjs(item.create_time).format(t('date.format_datetime_rule'))
-      //   source_page: getSourceName(item.type),
-      //   status: item.is_expired ? 'expired' : item.export_progress ? 'completed' : 'processing',
-      //   is_disabled: !item.export_progress,
-      //   export_date: dayjs(item.created_time).format(t('date.format_datetime_rule'))
     }
 
     result.push(tempObj)
   })
-
-  //複製原始data
-  beforeSort = result.slice(0)
 
   return result
 }
@@ -127,13 +121,14 @@ const transformTargetGroups = (data) => {
 const dialogVisible = ref(false)
 const targetId = ref(0)
 
-const openTargetDetail= (data) => {
-    targetId.value = data
-    dialogVisible.value = true
+const openTargetDetail = (data) => {
+  targetId.value = data
+  dialogVisible.value = true
 }
 
 const closeDialog = () => {
   dialogVisible.value = false
+  targetGroup.tagGroupList = []
 }
 
 const searchWithTargetName = (targetName) => {

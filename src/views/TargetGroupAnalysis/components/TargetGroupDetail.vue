@@ -47,10 +47,10 @@ const currentTabComponent = computed(() => {
   return result
 })
 
-//開啟 dialog
-const handleOpenDialog = () => {
-  console.log('father', props.targetId)
-}
+// //開啟 dialog
+// const handleOpenDialog = () => {
+//   console.log('father', props.targetId)
+// }
 
 // 關閉 dialog
 const handleDialogClosed = () => {
@@ -64,7 +64,6 @@ const handleDialogClosed = () => {
     :append-to-body="true"
     width="1280"
     :destroy-on-close="true"
-    @open="handleOpenDialog"
     @closed="handleDialogClosed"
   >
     <template #header>
