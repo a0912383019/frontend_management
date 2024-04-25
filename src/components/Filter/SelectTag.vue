@@ -17,9 +17,30 @@ const { activeHall } = globalStore
 const props = defineProps({
   modelValue: {
     type: String
+  },
+  selectedTags: {
+    type: String,
+    default: ''
+  },
+  isDisabled: {
+    type: Boolean,
+    default: false
+  },
+  color: {
+    type:String,
+    default: 'purple'
   }
 })
 
+const placeholder = computed(() => {
+  let placeholder = ''
+  if(props.isDisabled) {
+    placeholder = ''
+  } else {
+    placeholder = t('tags.filter')
+  }
+  return placeholder
+})
 const emit = defineEmits(['update:modelValue'])
 
 // 創建不重複的class name
@@ -27,6 +48,50 @@ const dropClass = ref('dropClass' + dayjs() + Math.floor(Math.random() * 10))
 
 // 已選標籤列表
 const currentTagAry = ref([])
+
+const groupTypeTagList = reactive([])
+
+const hasSelectValues = () => {
+  if (props.selectedTags === '') return
+  let tagListarr = []
+  for (const [k, v] of Object.entries(tagsConfigTransformData)) {
+    let tagArr = []
+    for (const [key, value] of Object.entries(v)) {
+      tagArr = tagArr.concat(value)
+    }
+    tagListarr = tagListarr.concat(tagArr)
+    groupTypeTagList.value = tagListarr
+  }
+
+  if (props.selectedTags !== '') {
+    let resultArray = props.selectedTags.split(',').flatMap((item) => {
+      if (item.includes(';')) {
+        return item.split(';').flatMap((item, index, array) => {
+          if (index === array.length - 1) {
+            return item
+          } else {
+            return [item, 'OR']
+          }
+        })
+      }
+      return item
+    })
+
+    resultArray.forEach((ele) => {
+      if (ele === 'OR') {
+        currentTagAry.value.push({ value: 'OR', label: 'OR', active: false })
+      } else {
+        groupTypeTagList.value.forEach((tagsObj) => {
+          if (tagsObj.value === ele) {
+            currentTagAry.value.push(tagsObj)
+            return
+          }
+        })
+      }
+    })
+  }
+}
+
 // 標籤選取文字
 const tagTextAry = ref([])
 // 篩選標籤input欄位
@@ -212,6 +277,7 @@ const isOperatorShow = computed(() => {
 
 // 點擊tag，刪除tag
 const handleTagDelete = ({ index }) => {
+  if (props.isDisabled) return
   currentTagAry.value.splice(index, 1)
   // 如果刪除後的陣列，第1筆是OR，要將OR刪除，不可單除存在
   if (currentTagAry.value.length > 0) {
@@ -249,6 +315,7 @@ onMounted(() => {
   transformTagsConfig()
   // 註冊點擊
   document.addEventListener('click', handleDocumentClick)
+  hasSelectValues()
 })
 
 onUnmounted(() => {
@@ -326,17 +393,18 @@ watch(
 )
 </script>
 <template>
-  <div class="select-tag">
-    <div class="select-tag__box">
+  <div class="select-tag" :class="{[`select-tag-${props.color}`]:true, 'select-tag-disabled':props.isDisabled}">
+    <div class="select-tag__box" :class="`select-tag-${props.color}__box`">
       <div
         class="select-tag__box__tag"
+        :class="`select-tag-${props.color}__box__tag`"
         v-for="(item, index) in currentTagAry"
         :key="index"
         @click="handleTagDelete({ item, index })"
       >
-        <div class="select-tag__box__tag__item" :class="{ isActive: item.active }">
+        <div class="select-tag__box__tag__item" :class="{ isActive: item.active, [`select-tag-${props.color}__box__tag__item`]: true }">
           {{ item.label }}
-          <div class="select-tag__box__tag__close"></div>
+          <div class="select-tag__box__tag__close" v-if="!props.isDisabled"></div>
         </div>
       </div>
       <div class="select-tag__box__text" v-for="(item, index) in tagTextAry" :key="index">
@@ -350,11 +418,12 @@ watch(
         type="text"
         v-model="tagInputText"
         class="select-tag__input"
-        :class="dropClass"
-        :placeholder="$t('tags.filter')"
+        :class="[dropClass, `select-tag-${props.color}__input`]"
+        :placeholder="placeholder"
         ref="refTagInput"
         @focus="handleInputFocus"
         @keyup="handleInputKeyup"
+        :disabled="props.isDisabled"
       />
       <SelectTagDropdown
         v-model="selectTypeValue"
@@ -382,7 +451,15 @@ watch(
         v-show="tagTextAry && tagTextAry.length === 2 && isDropShow === true"
         @update:tagtext="handleTagAddText"
       />
+      <font-awesome-icon v-if="props.isDisabled" class="cdp-lock-input" icon="fa-solid fa-lock" />
     </div>
   </div>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.cdp-lock-input {
+  position: absolute;
+  right: 8px;
+  top: 12px;
+  color: #c0ccdf;
+}
+</style>

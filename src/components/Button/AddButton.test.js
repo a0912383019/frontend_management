@@ -1,14 +1,14 @@
 import { it, describe, expect, beforeEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
-import ExportReport from '@/components/ExportReport.vue'
+import AddButton from '@/components/Button/AddButton.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import { i18n } from '@/global/i18n'
 
-describe('ExportReport', () => {
+describe('AddButton', () => {
   let wrapper = null
 
   beforeEach(() => {
-    wrapper = shallowMount(ExportReport, {
+    wrapper = shallowMount(AddButton, {
       global: {
         plugins: [i18n],
         components: {

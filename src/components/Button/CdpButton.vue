@@ -46,6 +46,10 @@ const buttonClass = computed(() => {
     width: 120px;
     height: 34px;
   }
+  &__sm-130 {
+    width: 130px;
+    height: 34px;
+  }
   &__sm-140 {
     width: 140px;
     height: 40px;

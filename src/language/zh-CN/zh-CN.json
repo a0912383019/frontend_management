@@ -96,7 +96,9 @@
     "yes": "是",
     "no": "否",
 
-    "none": "无"
+    "none": "无",
+    "cancel_edit": "取消编辑",
+    "confirm_update": "确定修改"
   },
 
   "import_export_file": {
@@ -158,7 +160,8 @@
     "status": "状态",
     "growth": "成长率",
 
-    "model_select": "AI模型"
+    "model_select": "AI模型",
+    "click_to_edit": "请点击编辑按钮后进行操作"
   },
 
   "nav": {
@@ -248,6 +251,7 @@
   "modal": {
     "not_yet_saved": "尚未储存",
     "do_you_want_to_save_changes": "是否要储存异动内容？",
+    "do_you_want_to_cancel_edit": "是否要取消编辑？",
     "do_not_save": "不储存",
     "save": "储存",
     "confirm": "确认",
@@ -666,7 +670,9 @@
     "daily_active_people": "每日实动人数",
     "daily_deposit_people": "每日存款人数",
 
-    "analysis_overview": "分析总览"
+    "analysis_overview": "分析总览",
+    "tag_groups_setting": "标签群组设置",
+    "tag_groups_name": "标签群组名称"
   },
 
   "game_tag_analysis": {

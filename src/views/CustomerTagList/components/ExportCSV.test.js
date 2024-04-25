@@ -9,7 +9,7 @@ import ExportCSV from '@/views/CustomerTagList/components/ExportCSV.vue'
 import router from '@/router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import ExportDialog from '@/components/ExportDialog.vue'
-import ExportReport from '@/components/ExportReport.vue'
+import ExportReport from '@/components/Button/ExportReport.vue'
 
 describe('ExportCSV', () => {
   let wrapper = null

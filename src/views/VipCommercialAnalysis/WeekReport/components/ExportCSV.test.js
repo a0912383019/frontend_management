@@ -6,7 +6,7 @@ import { useGlobalStore } from '@/stores'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
 import ExrpotCSV from '@/views/VipCommercialAnalysis/WeekReport/components/ExportCSV.vue'
 import ExportDialog from '@/components/ExportDialog.vue'
-import ExportReport from '@/components/ExportReport.vue'
+import ExportReport from '@/components/Button/ExportReport.vue'
 
 describe('ExportCSV', () => {
   let wrapper = null
