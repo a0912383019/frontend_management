@@ -1,17 +1,13 @@
 <script setup>
-import { ref, reactive, watch, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryTargetGroups } from '@/api'
 import { useGlobalStore, useTargetGroupStore } from '@/stores'
-import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
-import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
-import LoadingBox from '@/components/Loading/LoadingBox.vue'
-import DeleteBox from '@/views/ExportReportList/components/DeleteBox.vue'
 import AddTarget from '@/components/button/AddButton.vue'
 import Filter from '@/views/TargetGroupAnalysis/components/Filter.vue'
 import TargetGroupDetail from '@/views/TargetGroupAnalysis/components/TargetGroupDetail.vue'
@@ -88,7 +84,6 @@ const queryTargetGroups = async () => {
       apiSuccess.value = true
       if (result.data.result.length !== 0) {
         tableData.value = transformTargetGroups(result.data.result)
-        // upadteCurrentSort({ prop: 'export_date', order: 'descending' })
       }
     }
   } catch (error) {

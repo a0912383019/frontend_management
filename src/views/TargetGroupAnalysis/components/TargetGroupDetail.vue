@@ -1,7 +1,6 @@
 <script setup>
-import { ref, computed, watch, toRefs, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { storeToRefs } from 'pinia'
 import Tab from '@/components/Tab.vue'
 import TargetData from '@/views/TargetGroupAnalysis/components/TargetData.vue'
 
@@ -46,11 +45,6 @@ const currentTabComponent = computed(() => {
   }
   return result
 })
-
-// //開啟 dialog
-// const handleOpenDialog = () => {
-//   console.log('father', props.targetId)
-// }
 
 // 關閉 dialog
 const handleDialogClosed = () => {

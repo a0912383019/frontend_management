@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted, compile, computed } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useTargetGroupStore } from '@/stores'
 import { apiQueryTargetGroupsWithId } from '@/api'
@@ -29,7 +29,6 @@ const validateForm = reactive({
   newTargetName: ''
 })
 const apiTargetData = reactive({}) // 存放api資料
-const newTargetName = ref('') // 目標名稱
 
 const queryTargetGroupsId = async () => {
   try {
@@ -137,9 +136,7 @@ const handleEditConfirm = () => {
   formRef.value.validate((valid) => {
     if (valid && tagsGroupsValid.value) {
       confirmEditBox.value = true
-      console.log('success')
     } else {
-      console.log('error submit!')
       return false
     }
   })
@@ -270,10 +267,11 @@ onMounted(() => {
       @confirmExecute="confirmExecute"
     >
     </ConfirmBox>
-    <!-- <ConfirmBox
+    <ConfirmBox
       color="blue"
       v-model="confirmEditBox"
-      :title="$t('modal.confirm_correct_desc')"
+      :width="350"
+      title="modal.confirm_correct_desc"
       class="top15per"
       @cancelExecute="cancelSaved"
       @confirmExecute="confirmSaved"
@@ -298,16 +296,16 @@ onMounted(() => {
               }}
             </td>
           </tr>
-          <tr>
+          <tr class=" align-baseline">
             <td width="35%" class="text-right">{{ $t('target_group_analysis.custom_tags') }}</td>
             <td width="2%" class="text-center">：</td>
             <td width="63%" class="text-left">
-              <div v-for="item in 3" :key="item">{{ item }}</div>
+              <div v-for="(item, idx) in targetGroup.tagGroupList" :key="idx">{{ item.custom_tags_name }}</div>
             </td>
           </tr>
         </table>
       </template>
-    </ConfirmBox> -->
+    </ConfirmBox>
   </section>
 </template>
 <style lang="scss" scoped>
@@ -347,6 +345,9 @@ onMounted(() => {
     font-size: 14px;
     color: #404040;
     font-weight: normal;
+  }
+  .align-baseline {
+    vertical-align: baseline;
   }
 }
 </style>

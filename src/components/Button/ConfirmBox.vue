@@ -1,11 +1,14 @@
 <script setup>
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CdpButton from '@/components/Button/CdpButton.vue'
 
 const { t } = useI18n()
 
 const props = defineProps({
+  width: {
+    type: Number,
+    default: 300
+  },
   //目前只有兩種 red 跟 blue
   color: {
     type: String,
@@ -46,7 +49,7 @@ const handleComfirm = () => {
 <template>
   <el-dialog
     :model-value="props.modelValue"
-    width="300"
+    :width="props.width"
     :show-close="false"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
