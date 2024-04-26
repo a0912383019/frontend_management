@@ -27,6 +27,7 @@ const formRef = ref(null)
 const validateForm = reactive({
   newTargetName: ''
 })
+
 // 關閉 dialog
 const handleDialogClosed = () => {
   validateForm.newTargetName = ''
