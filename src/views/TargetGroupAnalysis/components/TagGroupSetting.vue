@@ -6,7 +6,7 @@ import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import SelectTag from '@/components/Filter/SelectTag.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
-import AddGroup from '@/components/button/AddButton.vue'
+import AddGroup from '@/components/Button/AddButton.vue'
 import { storeToRefs } from 'pinia'
 import CdpMessage from '@/components/CdpMessage.vue'
 
