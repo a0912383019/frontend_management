@@ -140,8 +140,10 @@ const confirmSaved = () => {
 
 const tagGroups = ref(null)
 
+const forTargetNameClass = ref(false)
 const handleEditConfirm = () => {
   formRef.value.validate((valid) => {
+    forTargetNameClass.value = valid
     if (valid && tagsGroupsValid.value) {
       confirmEditBox.value = true
     } else {
@@ -175,7 +177,7 @@ onMounted(() => {
           >
             <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
           </el-input>
-          <el-form v-else ref="formRef" :model="validateForm">
+          <el-form v-else ref="formRef" :model="validateForm" :class="{ 'is-en': locale === 'en' && !forTargetNameClass }">
             <el-form-item prop="newTargetName" :rules="targetNameRule">
               <el-input
                 v-model="validateForm.newTargetName"
@@ -316,12 +318,16 @@ onMounted(() => {
     box-shadow: 0 0 0 1px #4f84cf !important;
   }
 }
+:deep(.el-form.is-en) {
+  .el-form-item {
+    margin-bottom: 24px;
+  }
+}
 :deep(.el-form) {
   .el-form-item {
     margin-bottom: 0;
   }
   .is-error {
-    margin-bottom: 22px;
     .is-open {
       &:hover {
         box-shadow: none;
