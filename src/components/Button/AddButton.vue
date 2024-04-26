@@ -20,15 +20,13 @@ const props = defineProps({
 })
 </script>
 <template>
-  <div>
-    <ButtonIcon
-      icon="plus"
-      :isSvg="true"
-      :size="props.size"
-      :bg="props.bg"
-      color="blue"
-      :name="$t(props.name)"
-    />
-  </div>
+  <ButtonIcon
+    icon="plus"
+    :isSvg="true"
+    :size="props.size"
+    :bg="props.bg"
+    color="blue"
+    :name="$t(props.name)"
+  />
 </template>
 <style lang="scss" scoped></style>

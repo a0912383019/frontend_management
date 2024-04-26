@@ -10,8 +10,9 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import AddTarget from '@/components/Button/AddButton.vue'
 import Filter from '@/views/TargetGroupAnalysis/components/Filter.vue'
-import TargetGroupDetail from '@/views/TargetGroupAnalysis/components/TargetGroupDetail.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
+import TargetGroupDetail from '@/views/TargetGroupAnalysis/components/TargetGroupDetail.vue'
+import AddTargetGroup from '@/views/TargetGroupAnalysis/components/AddTargetGroup.vue'
 
 const { t } = useI18n()
 
@@ -131,6 +132,22 @@ const searchWithTargetName = (targetName) => {
   queryTargetGroups()
 }
 
+const addDialogVisible = ref(false)
+
+const openAddDialog = () => {
+  targetGroup.tagGroupList = [{
+    custom_tag_str: '',
+    custom_tags_name: '',
+    groupNameValid: true,
+    tagGroupValid: true
+  }]
+  addDialogVisible.value = true
+}
+
+const closeAddDialog = () => {
+  addDialogVisible.value = false
+}
+
 onMounted(() => {
   queryTargetGroups()
 })
@@ -140,7 +157,7 @@ onMounted(() => {
     <div class="flex items-center justify-between mb-20" ref="refContent">
       <PageTitle icon="menuExport" :title="$t('sidebar.target_group_analysis_list')" />
       <div class="flex">
-        <AddTarget class="mr-10" name="target_group_analysis.add_target_group" />
+        <AddTarget class="mr-10" name="target_group_analysis.add_target_group"  @click="openAddDialog"/>
         <Filter @searchWithTargetName="searchWithTargetName" />
       </div>
     </div>
@@ -190,6 +207,7 @@ onMounted(() => {
         </template>
       </CustomTable>
       <TargetGroupDetail v-model="dialogVisible" :targetId="targetId" @closeDialog="closeDialog" />
+      <AddTargetGroup v-model="addDialogVisible" @closeDialog="closeAddDialog" />
     </div>
   </section>
 </template>

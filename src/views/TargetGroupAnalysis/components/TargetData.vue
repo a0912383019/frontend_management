@@ -8,13 +8,15 @@ import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TagGroupSetting.vue'
 import ConfirmBox from '@/components/Button/ConfirmBox.vue'
+import { storeToRefs } from 'pinia'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const targetGroup = useTargetGroupStore()
+const { targetNameRule } = storeToRefs(targetGroup)
 
 const props = defineProps({
   targetId: {
@@ -62,9 +64,8 @@ const isOpen = ref(false)
 // 預設都是disabled
 const edit = ref(false)
 
-// 標籤群組資料
-const apiTagGroupData = ref([])
 let copiedObject
+
 const transformTargetDetails = (data) => {
   copiedObject = JSON.parse(JSON.stringify(data))
 
@@ -97,6 +98,7 @@ const generateTagGroupData = (data) => {
 
 const cancelEditBox = ref(false)
 const formRef = ref(null)
+
 const handleTagIsEdit = () => {
   edit.value = true
 }
@@ -119,6 +121,11 @@ const confirmExecute = () => {
   isOpen.value = copiedObject.is_open
 
   targetGroup.tagGroupList = generateTagGroupData(copiedObject.custom_tags_data)
+  const cellsInSecondRow = document.querySelectorAll(`.el-table tr .cell`)
+  const classType = locale.value === 'en' ? 'en-row' : 'ch-row'
+  for (var i = 0; i < cellsInSecondRow.length; ++i) {
+    cellsInSecondRow[i].classList.remove(classType)
+  }
 }
 
 const confirmEditBox = ref(false)
@@ -132,6 +139,7 @@ const confirmSaved = () => {
 }
 
 const tagGroups = ref(null)
+
 const handleEditConfirm = () => {
   formRef.value.validate((valid) => {
     if (valid && tagsGroupsValid.value) {
@@ -144,22 +152,9 @@ const handleEditConfirm = () => {
 }
 
 const tagsGroupsValid = ref(false)
+
 const vertifyPassed = (valid) => {
   tagsGroupsValid.value = valid
-}
-const targetNameRule = computed(() => {
-  return [
-    { required: true, message: t('target_group_analysis.blank_target_group_name_error_msg') },
-    { validator: validateTargetName, trigger: 'blur' }
-  ]
-})
-
-const validateTargetName = (rule, value, callback) => {
-  if (value.trim() === '') {
-    callback(new Error(t('target_group_analysis.blank_target_group_name_error_msg')))
-  } else {
-    callback()
-  }
 }
 
 onMounted(() => {
@@ -219,12 +214,7 @@ onMounted(() => {
       </el-col>
     </div>
     <section class="cdp-section-in mb-20">
-      <TagGroupSetting
-        ref="tagGroups"
-        :apiTagGroupData="apiTagGroupData"
-        :isDisabled="!edit"
-        @vertifyPassed="vertifyPassed"
-      />
+      <TagGroupSetting ref="tagGroups" :isDisabled="!edit" @vertifyPassed="vertifyPassed" />
     </section>
     <div class="mb-20 flex justify-end">
       <span v-if="!edit" class="mr-10 pt-5 font-size-13 cdp-text-blue"
@@ -296,11 +286,13 @@ onMounted(() => {
               }}
             </td>
           </tr>
-          <tr class=" align-baseline">
+          <tr class="align-baseline">
             <td width="35%" class="text-right">{{ $t('target_group_analysis.custom_tags') }}</td>
             <td width="2%" class="text-center">：</td>
             <td width="63%" class="text-left">
-              <div v-for="(item, idx) in targetGroup.tagGroupList" :key="idx">{{ item.custom_tags_name }}</div>
+              <div v-for="(item, idx) in targetGroup.tagGroupList" :key="idx">
+                {{ item.custom_tags_name }}
+              </div>
             </td>
           </tr>
         </table>
@@ -325,7 +317,11 @@ onMounted(() => {
   }
 }
 :deep(.el-form) {
+  .el-form-item {
+    margin-bottom: 0;
+  }
   .is-error {
+    margin-bottom: 22px;
     .is-open {
       &:hover {
         box-shadow: none;
@@ -349,5 +345,9 @@ onMounted(() => {
   .align-baseline {
     vertical-align: baseline;
   }
+}
+:deep(.el-form-item__error) {
+  line-height: 1.5;
+  padding-top: 0px;
 }
 </style>
