@@ -77,7 +77,7 @@ const confirmSaved = () => {
     </template>
     <div class="cdp-dialog__content">
       <section class="cdp-section">
-        <div class="mb-22">
+        <div class="mb-20">
           <div class="cdp-text-blue mb-3">{{ $t('target_group_analysis.target_group_name') }}</div>
           <el-form ref="formRef" :model="validateForm">
             <el-form-item prop="newTargetName" :rules="targetGroup.targetNameRule">
@@ -186,6 +186,21 @@ const confirmSaved = () => {
   }
   .align-baseline {
     vertical-align: baseline;
+  }
+}
+:deep(.el-form) {
+  .is-error {
+    .is-open {
+      &:hover {
+        box-shadow: none;
+      }
+    }
+    .cdp-input {
+      border: none;
+      .el-input__wrapper:hover {
+        box-shadow: 0 0 0 1px #f56c6c !important;
+      }
+    }
   }
 }
 </style>
