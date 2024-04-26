@@ -10,6 +10,8 @@
   }
   .el-dialog {
     &__header {
+      border-top-left-radius: 9px;
+      border-top-right-radius: 10px;
       display: flex;
       align-items: center;
       height: 60px;
@@ -33,6 +35,7 @@
       color: #fff;
     }
     &__body {
+      border-radius: 20px;
       padding: 20px;
       background-color: #f4f6f9;
     }

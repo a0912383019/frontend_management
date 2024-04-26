@@ -10,17 +10,17 @@ import AddGroup from '@/components/Button/AddButton.vue'
 import { storeToRefs } from 'pinia'
 import CdpMessage from '@/components/CdpMessage.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const targetGroup = useTargetGroupStore()
 const { tagGroupList } = storeToRefs(targetGroup)
 
 const props = defineProps({
-  apiTagGroupData: {
-    type: Array,
-    default: []
-  },
   isDisabled: {
+    type: Boolean,
+    default: false
+  },
+  newTarget: {
     type: Boolean,
     default: false
   }
@@ -74,7 +74,7 @@ const validTable = () => {
   tagGroupList.value.forEach((ele, idx) => {
     let isError = false
     tagGroupList.value[idx].groupNameValid = true
-    if (ele.custom_tags_name.trim() === '') {
+    if (ele.custom_tags_name.trim() === '' || ele.custom_tags_name.trim().length > 10) {
       tagGroupList.value[idx].groupNameValid = false
       isError = true
       isValid = false
@@ -87,11 +87,12 @@ const validTable = () => {
     }
 
     const cellsInSecondRow = document.querySelectorAll(`.el-table tr:nth-child(${idx + 1}) .cell`)
+    const classType = locale.value === 'en' ? 'en-row' : 'ch-row'
     for (var i = 0; i < cellsInSecondRow.length; ++i) {
       if (isError) {
-        cellsInSecondRow[i].classList.add('row-append')
+        cellsInSecondRow[i].classList.add(classType)
       } else {
-        cellsInSecondRow[i].classList.remove('row-append')
+        cellsInSecondRow[i].classList.remove(classType)
       }
     }
   })
@@ -119,9 +120,9 @@ watch(
       icon="menuExport"
       :title="$t('target_group_analysis.tag_groups_setting')"
     />
-    <CdpMessage messageKey="loading" v-show="renderComplete === false" />
+    <CdpMessage messageKey="loading" v-show="renderComplete === false && !props.newTarget" />
     <CustomTable
-      v-show="renderComplete === true"
+      v-show="renderComplete === true || props.newTarget"
       :serverSide="false"
       :tableData="tagGroupList"
       :tableColumns="tableColumns"
@@ -147,9 +148,11 @@ watch(
             :class="{ 'is-error': !scope.row.groupNameValid }"
             :placeholder="$t('target_group_analysis.input_custom_tags_name')"
           ></el-input>
-          <span v-if="!scope.row.groupNameValid" class="cdp-text-candypink font-size-12">{{
-            $t('target_group_analysis.blank_custom_tags_name_error_msg')
-          }}</span>
+          <div v-if="!scope.row.groupNameValid" class="cdp-text-candypink font-size-12 line-1-5">{{
+            scope.row.custom_tags_name.trim() === ''
+              ? $t('target_group_analysis.blank_custom_tags_name_error_msg')
+              : $t('target_group_analysis.custom_tags_name_length_limit_error_msg')
+          }}</div>
         </div>
       </template>
       <template #include_tags="scope">
@@ -221,8 +224,11 @@ watch(
       align-items: flex-start !important;
       min-height: 50px;
     }
-    .row-append {
+    .ch-row {
       min-height: 65px;
+    }
+    .en-row {
+      min-height: 87px;
     }
   }
   .el-table__header {
@@ -284,5 +290,8 @@ watch(
   .select-tag {
     border-color: #f56c6c;
   }
+}
+.line-1-5 {
+  line-height: 1.5;
 }
 </style>
