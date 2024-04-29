@@ -105,9 +105,10 @@ const transformTargetGroups = (data) => {
   data.map((item) => {
     let tempObj = {
       ...item,
-      createTime: dayjs(item.create_time).format(t('date.format_datetime_rule'))
+      createTime: dayjs(item.created_time).format(t('date.format_datetime_rule'))
     }
 
+    console.log(tempObj)
     result.push(tempObj)
   })
 
@@ -168,7 +169,7 @@ onMounted(() => {
         :title="$t('target_group_analysis.analysis_overview')"
       ></SectionTitle>
       <CustomTable
-        :defaultSort="{ prop: 'created_time', order: 'descending' }"
+        :defaultSort="{ prop: 'createTime', order: 'descending' }"
         :serverSide="false"
         :tableData="tableData"
         :tableColumns="tableColumns"
