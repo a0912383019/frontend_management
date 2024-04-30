@@ -11,6 +11,12 @@ export const useGlobalStore = defineStore(
     // loading顯示狀態
     const isLoading = ref(false)
 
+    // 給使用到 generateTagsBadage的組件做切換廳判斷
+    const hallChange = ref(false)
+
+    // 切換廳需區分是否從首頁切
+    const lastRoute = ref('')
+
     const storeHandleApiError = () => {
       const router = useRouter()
       //當api錯誤時，會執行的內容
@@ -130,7 +136,9 @@ export const useGlobalStore = defineStore(
       lobbyGroupConfig,
       tableConfig,
       systemConfigIsOk,
-      activityStep
+      activityStep,
+      hallChange,
+      lastRoute
     }
   },
   {
