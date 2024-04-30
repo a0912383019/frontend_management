@@ -387,6 +387,7 @@ export function sortTableData({ prop, order, tableData }) {
  * @returns {Array} 已排序的標籤陣列
  */
 export function orderTags(tagArr) {
+  let result = []
   // 取得各個數字的標籤
   const isSix = tagArr.filter((item) => String(item).startsWith('6'))
   const isThree = tagArr.filter((item) => String(item).startsWith('3'))
@@ -396,5 +397,5 @@ export function orderTags(tagArr) {
   const isNine = tagArr.filter((item) => String(item).startsWith('9'))
 
   // 根據標籤說明順序合併陣列
-  return isSix.concat(isThree).concat(isFour).concat(isFive).concat(isOne).concat(isNine)
+  return result.concat(isSix).concat(isThree).concat(isFour).concat(isFive).concat(isOne).concat(isNine)
 }
