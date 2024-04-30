@@ -72,9 +72,6 @@ const changeHeaderHall = (element) => {
   // 依據所選廳別產生對應的 sidebar功能
   sidebarStore.generateSidebarMenu()
 
-  // 關閉下拉
-  emit('update:drop', false)
-
   //導回首頁
   router.push({ path: '/home', replace: true }).then(() => {
     // const { hall_name, hall_code } = element
