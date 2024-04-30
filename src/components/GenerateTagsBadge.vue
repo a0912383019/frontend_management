@@ -15,17 +15,12 @@ const props = defineProps({
     default: ''
   }
 })
-// const tag_description_dict = computed(() => {
-//   return getSessionStorageEntity('system_config').tags_config[props.hall_name]
-// })
 
 const tag_description_dict = ref(getSessionStorageEntity('system_config').tags_config[props.hall_name])
 
 const get_tag_code = computed(() => {
   return tag_description_dict.value[props.tag_code]
 })
-
-// const get_tag_code = ref(tag_description_dict.value[props.tag_code])
 
 const badge_class = computed(() => {
   let badgeClass = 'badge'
