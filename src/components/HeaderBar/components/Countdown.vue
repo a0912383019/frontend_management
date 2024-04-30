@@ -124,7 +124,9 @@ const restartTimer = async (type) => {
 watch(
   () => globalStore.activeHall.hall_code,
   () => {
-    if (sessionStorage.system_config !== undefined) {
+    if (sessionStorage.system_config !== undefined && globalStore.lastRoute !== 'Home') {
+      restartTimer()
+    } else if (sessionStorage.system_config !== undefined) {
       restartTimer(true)
     }
   }

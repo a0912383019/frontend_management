@@ -107,8 +107,6 @@ const transformTargetGroups = (data) => {
       ...item,
       createTime: dayjs(item.created_time).format(t('date.format_datetime_rule'))
     }
-
-    console.log(tempObj)
     result.push(tempObj)
   })
 

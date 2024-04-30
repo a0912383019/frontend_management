@@ -286,7 +286,9 @@ const key = ref(systemConfigIsOk.value)
 watch(
   () => systemConfigIsOk.value,
   () => {
-    key.value = Math.floor(Math.random() * 100)
+    if (!globalStore.hallChange) {
+      key.value = Math.floor(Math.random() * 100)
+    }
   }
 )
 
@@ -301,7 +303,12 @@ onMounted(() => {
       <!-- justify-between -->
       <PageTitle icon="menuTag" :title="$t('sidebar.bbin_customer_tag_list')" />
       <div class="flex">
-        <ExportCSV v-if="tableData.length !== 0" class="mr-10" :formData="formData" :total="apiRecordsTotal" />
+        <ExportCSV
+          v-if="tableData.length !== 0"
+          class="mr-10"
+          :formData="formData"
+          :total="apiRecordsTotal"
+        />
         <Filter :key="key" @update:filter-submit="handleFilterSubmit" />
       </div>
     </div>
