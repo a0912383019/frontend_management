@@ -196,7 +196,9 @@ watch([() => apiObject.value.apiSuccess, () => apiObject.value.messageKey], () =
 watch(
   () => systemConfigIsOk.value,
   () => {
-    key.value = Math.floor(Math.random() * 100)
+    if (!globalStore.hallChange) {
+      key.value = Math.floor(Math.random() * 100)
+    }
   }
 )
 

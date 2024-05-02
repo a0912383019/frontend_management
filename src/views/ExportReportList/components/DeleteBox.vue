@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiDeleteUserExportList } from '@/api'
-import { useGlobalStore } from '@/stores/global.js'
+import { useGlobalStore } from '@/stores'
 import { ElNotification } from 'element-plus'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 
@@ -12,14 +12,14 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const props = defineProps({
-    confirmBoxVisible: {
-      type: Boolean,
-      default: false
-    },
-    confirmBoxTopVisible: {
-      type: Boolean,
-      default: false
-    },
+  confirmBoxVisible: {
+    type: Boolean,
+    default: false
+  },
+  confirmBoxTopVisible: {
+    type: Boolean,
+    default: false
+  },
   confirmInfo: {
     type: Object,
     default: {
@@ -98,19 +98,13 @@ const deleteUserExportList = async () => {
   }
 }
 
-
 //確認異動，送出編輯內容
 const deleteExecute = () => {
   deleteUserExportList()
 }
 </script>
 <template>
-  <ConfirmBox
-    name="delete"
-    v-model="visibleBox"
-    class="top15per"
-    @confirmExecute="deleteExecute"
-  >
+  <ConfirmBox name="delete" v-model="visibleBox" class="top15per" @confirmExecute="deleteExecute">
     <template v-slot:text-body>
       <div class="text-center">
         <span>{{ $t('modal.are_you_sure_to_delete') + '「' }}</span>

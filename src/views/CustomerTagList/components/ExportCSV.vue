@@ -8,7 +8,7 @@ import { ElNotification } from 'element-plus'
 import { errorRespond } from '@/utils/commonUtils.js'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import ExportDialog from '@/components/ExportDialog.vue'
-import ExportReport from '@/components/ExportReport.vue'
+import ExportReport from '@/components/Button/ExportReport.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 
 const { t, locale: i18nLocale } = useI18n()
@@ -87,6 +87,7 @@ const handelExportReport = async () => {
 
     if (return_code === '0000') {
       window.location.href = result.data.result.url
+      dialogVisible.value = false
     } else {
       const { error_code } = result.data.status
       if (error_code === '210400000') {

@@ -17,7 +17,7 @@ const props = defineProps({
   border: {
     //邊框
     type: Boolean,
-    default: false
+    default: true
   }
 })
 
@@ -53,7 +53,6 @@ const pageTableData = computed(() => {
           </template>
         </el-table-column>
       </template>
-
       <!-- append插槽：插入至表格最后一行之后的内容 -->
       <template #append><slot name="append"></slot></template>
       <template #empty>

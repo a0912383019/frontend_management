@@ -75,9 +75,8 @@ describe('ConfirmBox.vue', () => {
         modelValue: true
       }
     })
-
-    await wrapper.setProps({modelValue: false})
+    expect(wrapper.vm.visibleValue).toBeTruthy()
+    await wrapper.setProps({ modelValue: false })
     expect(wrapper.vm.visibleValue).toBeFalsy()
-
   })
 })

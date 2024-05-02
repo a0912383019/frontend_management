@@ -83,6 +83,11 @@ const props = defineProps({
     //上述的xxx
     type: Number,
     default: 0
+  },
+  // 做刪除列的操作時不加可能導致顯示錯誤
+  rowKey: {
+    type: String,
+    default: ''
   }
 })
 
@@ -142,6 +147,7 @@ defineExpose({ goToFirstPage, showTableLoading })
   <div class="relative">
     <el-table
       :data="pageTableData"
+      :row-key="props.rowKey"
       :default-sort="defaultSort"
       :height="tableHeight"
       :stripe="props.stripe"
@@ -173,7 +179,7 @@ defineExpose({ goToFirstPage, showTableLoading })
             </slot>
           </template>
           <template #default="scope">
-            <slot :name="column.prop" :row="scope.row">
+            <slot :name="column.prop" :row="scope.row" :idx="scope.$index">
               <div>{{ scope.row[column.prop] }}</div>
             </slot>
           </template>

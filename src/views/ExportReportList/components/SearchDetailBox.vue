@@ -52,7 +52,7 @@ const generateTags = (tagsString) => {
 
   let newSubStrings = result.split(',')
   let newMap = newSubStrings.map((ele) => {
-    if(ele.indexOf(' or ') !== -1) {
+    if (ele.indexOf(' or ') !== -1) {
       return '(' + ele + ')'
     }
     return ele
@@ -380,8 +380,6 @@ const handleCloseDialog = () => {
           v-if="tableData.length !== 0"
           :tableData="tableData"
           :tableColumns="tableColumns"
-          class="cdp-table"
-          border="border"
         >
           <template #contentData="scope">
             <div v-if="scope.row.slotKey === 'tags'">

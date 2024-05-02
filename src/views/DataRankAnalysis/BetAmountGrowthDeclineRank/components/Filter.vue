@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useGlobalStore, useDataRankAnalysisStore, useDateStore } from '@/stores'
+import { useGlobalStore, useDataRankAnalysisStore } from '@/stores'
 import { apiFinancialWeeks } from '@/api'
 import { storeToRefs } from 'pinia'
 import { errorRespond } from '@/utils/commonUtils.js'
@@ -16,9 +16,6 @@ const { t } = useI18n()
 
 const dataRankStore = useDataRankAnalysisStore()
 const { growthDecayFilter } = dataRankStore
-
-// const dateStore = useDateStore()
-// const { LAST_DATE } = dateStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -142,8 +139,10 @@ const handleWeekChange = (value) => {
 watch(
   () => systemConfigIsOk.value,
   () => {
-    key.value = Math.floor(Math.random() * 100)
-    handleDateChange()
+    if (!globalStore.hallChange) {
+      key.value = Math.floor(Math.random() * 100)
+      handleDateChange()
+    }
   }
 )
 </script>

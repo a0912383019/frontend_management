@@ -96,7 +96,9 @@
     "yes": "是",
     "no": "否",
 
-    "none": "無"
+    "none": "無",
+    "cancel_edit": "取消編輯",
+    "confirm_update": "確定修改"
   },
 
   "import_export_file": {
@@ -159,7 +161,8 @@
     "status": "狀態",
     "growth": "成長率",
 
-    "model_select": "AI模型"
+    "model_select": "AI模型",
+    "click_to_edit": "請點擊編輯按鈕後進行操作"
   },
 
   "nav": {
@@ -249,6 +252,7 @@
   "modal": {
     "not_yet_saved": "尚未儲存",
     "do_you_want_to_save_changes": "是否要儲存異動內容？",
+    "do_you_want_to_cancel_edit": "是否要取消編輯？",
     "do_not_save": "不儲存",
     "save": "儲存",
     "confirm": "確認",
@@ -665,7 +669,11 @@
     "daily_payoff": "每日損益",
     "total_people": "總人數",
     "daily_active_people": "每日實動人數",
-    "daily_deposit_people": "每日存款人數"
+    "daily_deposit_people": "每日存款人數",
+
+    "analysis_overview": "分析總覽",
+    "tag_groups_setting": "標籤群組設定",
+    "tag_groups_name": "標籤群組名稱"
   },
 
   "game_tag_analysis": {
