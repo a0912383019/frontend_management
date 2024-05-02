@@ -28,12 +28,12 @@ export default ({ mode }) => {
     server: {
       proxy: {
         '/php-api': {
-          target: 'https://qa-cdp-api.caino.club',
+          target: 'https://dev-cdp.caino.team/v1',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/php-api/, '')
         },
         '/go-api': {
-          target: 'https://qa-cdp-v-api.caino.club',
+          target: 'https://dev-cdp.caino.team/v2',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/go-api/, '')
         }
