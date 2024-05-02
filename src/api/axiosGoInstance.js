@@ -16,12 +16,12 @@ axiosGoInstance.interceptors.request.use(
       request.headers['Authorization'] = accessToken
     }
 
-    if (request.method === 'post' || request.method === 'put' || request.method === 'delete') {
+    if (request.method === 'post' || request.method === 'put') {
       request.data = request.data || {}
       request.data.platform = 'bbin' // 預設platform為bbin
     }
 
-    if (request.method === 'get') {
+    if (request.method === 'get' || request.method === 'delete') {
       request.params = request.params || {}
       request.params.platform = 'bbin' // 預設platform為bbin
     }

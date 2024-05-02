@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryTargetGroups } from '@/api'
+import { apiQueryTargetGroups, apiDeleteTargetGroups } from '@/api'
 import { useGlobalStore, useTargetGroupStore } from '@/stores'
 import { dayjs } from 'element-plus'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
@@ -9,10 +9,12 @@ import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import AddTarget from '@/components/Button/AddButton.vue'
-import Filter from '@/views/TargetGroupAnalysis/components/Filter.vue'
+import Filter from '@/views/TargetGroupAnalysis/Filter.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import TargetGroupDetail from '@/views/TargetGroupAnalysis/components/TargetGroupDetail.vue'
 import AddTargetGroup from '@/views/TargetGroupAnalysis/components/AddTargetGroup.vue'
+import ConfirmBox from '@/components/Button/ConfirmBox.vue'
+import { ElNotification } from 'element-plus'
 
 const { t } = useI18n()
 
@@ -114,7 +116,7 @@ const transformTargetGroups = (data) => {
 }
 
 const dialogVisible = ref(false)
-const targetId = ref(0)
+const targetId = ref('')
 
 const openTargetDetail = (data) => {
   targetId.value = data
@@ -134,17 +136,76 @@ const searchWithTargetName = (targetName) => {
 const addDialogVisible = ref(false)
 
 const openAddDialog = () => {
-  targetGroup.tagGroupList = [{
-    custom_tag_str: '',
-    custom_tags_name: '',
-    groupNameValid: true,
-    tagGroupValid: true
-  }]
+  targetGroup.tagGroupList = [
+    {
+      custom_tag_str: '',
+      custom_tags_name: '',
+      groupNameValid: true,
+      tagGroupValid: true
+    }
+  ]
   addDialogVisible.value = true
 }
 
 const closeAddDialog = () => {
   addDialogVisible.value = false
+}
+
+// 刪除目標
+const deleteTargetGroups = async (id) => {
+  try {
+    const result = await apiDeleteTargetGroups({
+      hall_name: activeHall.hall_code,
+      id: id
+    })
+
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      ElNotification({
+        title: t('msg.delete_successful'),
+        type: 'success'
+      })
+      queryTargetGroups()
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
+  }
+}
+
+const deleteBox = ref(false) // 刪除彈窗
+const deleteName = ref('') // 要刪除的名稱
+const deleteId = ref('') // 要刪除的id
+const openDeleteBox = (name, id) => {
+  deleteName.value = name
+  deleteId.value = id
+  deleteBox.value = true
+}
+
+const cancelDelete = () => {
+  deleteBox.value = false
+}
+
+const confirmDelete = () => {
+  deleteTargetGroups(deleteId.value)
+  deleteBox.value = false
 }
 
 onMounted(() => {
@@ -156,7 +217,11 @@ onMounted(() => {
     <div class="flex items-center justify-between mb-20" ref="refContent">
       <PageTitle icon="menuExport" :title="$t('sidebar.target_group_analysis_list')" />
       <div class="flex">
-        <AddTarget class="mr-10" name="target_group_analysis.add_target_group"  @click="openAddDialog"/>
+        <AddTarget
+          class="mr-10"
+          name="target_group_analysis.add_target_group"
+          @click="openAddDialog"
+        />
         <Filter @searchWithTargetName="searchWithTargetName" />
       </div>
     </div>
@@ -200,13 +265,25 @@ onMounted(() => {
               icon="trash"
               :isSvg="true"
               :name="$t('common.delete')"
-              @click="bbb(scope.row)"
+              @click="openDeleteBox(scope.row.target_group_name, scope.row.target_group_id)"
             />
           </div>
         </template>
       </CustomTable>
       <TargetGroupDetail v-model="dialogVisible" :targetId="targetId" @closeDialog="closeDialog" />
-      <AddTargetGroup v-model="addDialogVisible" @closeDialog="closeAddDialog" />
+      <AddTargetGroup v-model="addDialogVisible" @closeDialog="closeAddDialog" @addSuccess="queryTargetGroups()" />
+      <ConfirmBox
+        color="red"
+        v-model="deleteBox"
+        class="top15per"
+        :content="'gogogogo'"
+        @cancelExecute="cancelDelete"
+        @confirmExecute="confirmDelete"
+      >
+        <template v-slot:text-body>
+          {{ $t('modal.are_you_sure_to_delete') + '「' + deleteName + '」?' }}
+        </template>
+      </ConfirmBox>
     </div>
   </section>
 </template>

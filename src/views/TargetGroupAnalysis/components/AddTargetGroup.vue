@@ -1,24 +1,24 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useTargetGroupStore } from '@/stores'
-import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TagGroupSetting.vue'
+import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TargetData/TagGroupSetting.vue'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/Button/ConfirmBox.vue'
+import { apiAddTargetGroups } from '@/api'
+import { storeToRefs } from 'pinia'
 
 const targetGroup = useTargetGroupStore()
+const { tagGroupList } = storeToRefs(targetGroup)
 
 const props = defineProps({
   modelValue: {
     type: Boolean,
     default: false
-  },
-  targetId: {
-    type: Number
   }
 })
 
-const emit = defineEmits(['closeDialog'])
+const emit = defineEmits(['closeDialog', 'addSuccess'])
 
 const tagGroups = ref(null)
 const isOpen = ref(false)
@@ -32,6 +32,48 @@ const validateForm = reactive({
 const handleDialogClosed = () => {
   validateForm.newTargetName = ''
   emit('closeDialog')
+}
+
+// 取得資料
+const addTargetGroups = async () => {
+  try {
+    const result = await apiAddTargetGroups({
+      hall_name: activeHall.hall_code,
+      custom_tags: tagGroupList.value,
+      is_open: isOpen.value,
+      target_group_name: validateForm.newTargetName
+    })
+
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      ElNotification({
+        title: t('msg.delete_successful'),
+        type: 'success'
+      })
+      emit('addSuccess')
+      confirmSaveBox.value = false
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
+  }
 }
 
 const tagsGroupsValid = ref(false)
@@ -58,7 +100,8 @@ const cancelSaved = () => {
 }
 
 const confirmSaved = () => {
-  confirmSaveBox.value = false
+  addTargetGroups()
+  // confirmSaveBox.value = false
 }
 </script>
 <template>

@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Tab from '@/components/Tab.vue'
-import TargetData from '@/views/TargetGroupAnalysis/components/TargetData.vue'
+import TargetData from '@/views/TargetGroupAnalysis/components/TargetData/TargetData.vue'
 
 const { t } = useI18n()
 const props = defineProps({
@@ -11,7 +11,7 @@ const props = defineProps({
     default: false
   },
   targetId: {
-    type: Number
+    type: String
   }
 })
 

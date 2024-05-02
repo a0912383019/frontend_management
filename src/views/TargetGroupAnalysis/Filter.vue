@@ -1,19 +1,8 @@
 <script setup>
-import { ref, watch } from 'vue'
-import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
-import { storeToRefs } from 'pinia'
-import { useRoute } from 'vue-router'
+import { ref } from 'vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 
-import ImportCSV from '@/components/Filter/ImportCSV.vue'
-
-const route = useRoute()
-
-const manageAnalysisStore = useManageAnalysisStore()
-const { filterCustomUserList } = storeToRefs(manageAnalysisStore)
 const searchName = ref('') //搜尋的名稱
-const useCustomList = ref(manageAnalysisStore.useCustomList) //手動匯入名單
-const fuzzySearch = ref(manageAnalysisStore.fuzzySearch) //模糊搜尋
 
 const popover = ref(null) //popover
 

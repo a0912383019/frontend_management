@@ -74,7 +74,7 @@ const handleComfirm = () => {
         <CdpButton class="cdp__modal-btn__cancel" :name="$t(props.leftBtn)" @click="handleCancel" />
         <CdpButton
           class="cdp__modal-btn__submit"
-          :class="{ 'red-bg': props.name === 'red' }"
+          :class="{ 'red-bg': props.color === 'red' }"
           :name="$t(props.rightBtn)"
           @click="handleComfirm"
         />

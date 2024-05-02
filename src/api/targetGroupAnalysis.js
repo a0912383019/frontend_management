@@ -16,14 +16,21 @@ export const apiQueryTargetGroupsWithId = (params) => {
   })
 }
 
-// // 刪除匯出報表清單
-// export const apiDeleteUserExportList = (params) => {
-//   const { hall_name, download_urls } = params
-//   return axiosGoInstance.post(
-//     '/api/auth/export_report/delete_user_export_report',
-//     {
-//       hall_name,
-//       download_urls
-//     }
-//   )
-// }
+// 新增目標族群
+export const apiAddTargetGroups = (params) => {
+  const { hall_name, custom_tags, is_open, target_group_name } = params
+  return axiosGoInstance.post('/api/auth/target_groups', {
+    hall_name,
+    custom_tags,
+    is_open,
+    target_group_name
+  })
+}
+
+// 刪除匯出報表清單
+export const apiDeleteTargetGroups = (params) => {
+  const { hall_name, id } = params
+  return axiosGoInstance.delete(`/api/auth/target_groups/${id}`, {
+    params: { hall_name }
+  })
+}
