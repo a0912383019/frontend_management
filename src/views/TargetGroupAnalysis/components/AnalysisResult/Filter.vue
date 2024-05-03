@@ -2,8 +2,12 @@
 import { ref } from 'vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
+import DatepickerRange from '@/components/Date/DatepickerRange.vue'
+import { useTargetGroupStore } from '@/stores'
+import { storeToRefs } from 'pinia'
 
-const searchName = ref('') //搜尋的名稱
+const targetGroup = useTargetGroupStore()
+const { groupFilterDate, filtered } = storeToRefs(targetGroup)
 
 const popover = ref(null) //popover
 
@@ -12,11 +16,14 @@ const closePopover = () => {
   popover.value.hide()
 }
 
-const emit = defineEmits(['searchWithTargetName'])
+const searchDate = ref('')
+
+const emit = defineEmits(['searchWithDate'])
 
 // 確認篩選
 const handleClick = () => {
-  emit('searchWithTargetName', searchName.value)
+  groupFilterDate.value = searchDate.value
+  filtered.value = Date.now()
   closePopover()
 }
 </script>
@@ -39,16 +46,15 @@ const handleClick = () => {
         />
       </template>
       <div class="drop">
-        <SectionTitle
-          size="small"
-          class="cdp-text-purple mb-4"
-          :title="$t('target_group_analysis.target_group_name')"
-        >
-        </SectionTitle>
-        <div class="drop__search">
-          <el-input
-            v-model="searchName"
-            :placeholder="$t('target_group_analysis.input_target_group_name')"
+        <div class="drop__top__item full">
+          <SectionTitle size="small" class="cdp-text-purple mb-4" :title="$t('date.date')">
+          </SectionTitle>
+          <DatepickerRange
+            v-model="searchDate"
+            :config="1"
+            :shortcutsConfig="1"
+            class="w-full filter-datepicker"
+            classColor="purple"
           />
         </div>
         <div class="drop__footer">

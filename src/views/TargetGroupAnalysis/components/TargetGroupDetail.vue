@@ -3,8 +3,11 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Tab from '@/components/Tab.vue'
 import TargetData from '@/views/TargetGroupAnalysis/components/TargetData/TargetData.vue'
+import AnalysisResult from '@/views/TargetGroupAnalysis/components/AnalysisResult/AnalysisResult.vue'
+import Filter from '@/views/TargetGroupAnalysis/components/AnalysisResult/Filter.vue'
 
 const { t } = useI18n()
+
 const props = defineProps({
   modelValue: {
     type: Boolean,
@@ -19,6 +22,7 @@ const emit = defineEmits(['closeDialog'])
 
 //當前顯示的tab
 const currentTabs = ref('TargetData')
+
 const tabList = computed(() => {
   return [
     {
@@ -48,6 +52,7 @@ const currentTabComponent = computed(() => {
 
 // 關閉 dialog
 const handleDialogClosed = () => {
+  currentTabs.value = 'TargetData'
   emit('closeDialog')
 }
 </script>
@@ -66,7 +71,7 @@ const handleDialogClosed = () => {
       </div>
     </template>
     <div class="cdp-dialog__content">
-      <el-row :gutter="20" class="mb-20">
+      <el-row :gutter="20" class="mb-16">
         <el-col :span="8">
           <Tab
             :tabData="tabList"
@@ -74,6 +79,9 @@ const handleDialogClosed = () => {
             class="tabs-manage-analysis"
             v-model="currentTabs"
           ></Tab>
+        </el-col>
+        <el-col :span="4" :offset="12" class="text-right">
+          <Filter v-if="currentTabs === 'AnalysisResult'"></Filter>
         </el-col>
       </el-row>
       <div class="cdp-dialog__component">
@@ -103,4 +111,3 @@ const handleDialogClosed = () => {
   overflow: visible !important;
 }
 </style>
-

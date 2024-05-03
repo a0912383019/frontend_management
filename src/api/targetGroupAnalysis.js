@@ -27,10 +27,26 @@ export const apiAddTargetGroups = (params) => {
   })
 }
 
-// 刪除匯出報表清單
+// 刪除目標族群
 export const apiDeleteTargetGroups = (params) => {
   const { hall_name, id } = params
   return axiosGoInstance.delete(`/api/auth/target_groups/${id}`, {
+    params: { hall_name }
+  })
+}
+
+// 取得目標族群每日貨量&損益
+export const apiQueryBetAmountAndPayoff = (params) => {
+  const { hall_name, id, search_date } = params
+  return axiosGoInstance.get(`/api/auth/target_groups/${id}/betAmount_and_payoff`, {
+    params: { hall_name, search_date }
+  })
+}
+
+// 取得目標族群總人數
+export const apiQueryTotalPeople = (params) => {
+  const { hall_name, id } = params
+  return axiosGoInstance.get(`/api/auth/target_groups/${id}/total_people`, {
     params: { hall_name }
   })
 }
