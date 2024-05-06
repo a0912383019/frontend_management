@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryTargetGroups, apiDeleteTargetGroups } from '@/api'
-import { useGlobalStore, useTargetGroupStore } from '@/stores'
+import { useGlobalStore, useTargetGroupStore, useDateStore } from '@/stores'
 import { dayjs } from 'element-plus'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -15,11 +15,14 @@ import TargetGroupDetail from '@/views/TargetGroupAnalysis/components/TargetGrou
 import AddTargetGroup from '@/views/TargetGroupAnalysis/components/AddTargetGroup.vue'
 import ConfirmBox from '@/components/Button/ConfirmBox.vue'
 import { ElNotification } from 'element-plus'
+import { formatDateDuration } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+
+const { date_range_picker_config_1 } = useDateStore()
 
 const targetGroup = useTargetGroupStore()
 
@@ -126,6 +129,11 @@ const openTargetDetail = (data) => {
 const closeDialog = () => {
   dialogVisible.value = false
   targetGroup.tagGroupList = []
+  targetGroup.groupFilterDate = formatDateDuration(
+    dayjs(date_range_picker_config_1.startDate).format('YYYY-MM-DD') +
+      ' ~ ' +
+      dayjs(date_range_picker_config_1.endDate).format('YYYY-MM-DD')
+  )
 }
 
 const searchWithTargetName = (targetName) => {
@@ -271,7 +279,11 @@ onMounted(() => {
         </template>
       </CustomTable>
       <TargetGroupDetail v-model="dialogVisible" :targetId="targetId" @closeDialog="closeDialog" />
-      <AddTargetGroup v-model="addDialogVisible" @closeDialog="closeAddDialog" @addSuccess="queryTargetGroups()" />
+      <AddTargetGroup
+        v-model="addDialogVisible"
+        @closeDialog="closeAddDialog"
+        @addSuccess="queryTargetGroups()"
+      />
       <ConfirmBox
         color="red"
         v-model="deleteBox"

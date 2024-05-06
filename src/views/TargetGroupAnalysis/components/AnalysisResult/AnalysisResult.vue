@@ -1,13 +1,13 @@
 <script setup>
 import DailyBetAmountProfit from '@/views/TargetGroupAnalysis/components/AnalysisResult/DailyBetAmountProfit.vue'
 import TotalPeople from '@/views/TargetGroupAnalysis/components/AnalysisResult/TotalPeople.vue'
+import ActiveDepositPeople from '@/views/TargetGroupAnalysis/components/AnalysisResult/ActiveDepositPeople.vue'
 
 const props = defineProps({
   targetId: {
     type: String
   }
 })
-
 </script>
 <template>
   <section>
@@ -16,7 +16,15 @@ const props = defineProps({
         <DailyBetAmountProfit :targetId="props.targetId" />
       </el-col>
       <el-col :span="8">
-        <TotalPeople :targetId="props.targetId"></TotalPeople>
+        <TotalPeople :targetId="props.targetId" />
+      </el-col>
+    </el-row>
+    <el-row :gutter="20" class="mb-20">
+      <el-col :span="12">
+        <ActiveDepositPeople :targetId="props.targetId" kind="ActivePeople" />
+      </el-col>
+      <el-col :span="12">
+        <ActiveDepositPeople :targetId="props.targetId" kind="DepositPeople" />
       </el-col>
     </el-row>
   </section>
