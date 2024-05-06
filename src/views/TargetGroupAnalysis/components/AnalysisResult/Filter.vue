@@ -9,7 +9,7 @@ import { storeToRefs } from 'pinia'
 const targetGroup = useTargetGroupStore()
 const { groupFilterDate, filtered } = storeToRefs(targetGroup)
 
-const popover = ref(null) //popover
+const popover = ref(null) // popover
 
 // 關閉 popover
 const closePopover = () => {

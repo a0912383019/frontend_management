@@ -25,7 +25,7 @@ const props = defineProps({
   }
 })
 
-//當前顯示的tab
+// 當前顯示的tab
 const currentTabs = ref('DailyBetAmount')
 const tabList = computed(() => {
   return [
@@ -109,11 +109,11 @@ const BetAmountOptions = reactive({
 
 const profitOptions = Object.assign({}, BetAmountOptions)
 
-const apiSuccess = ref(false) //會員生命週期階段api是否成功
-//依照不同的messageKey產生不同的message
+const apiSuccess = ref(false) // 會員生命週期階段api是否成功
+// 依照不同的messageKey產生不同的message
 const messageKey = ref('shortLoading')
 
-//取得資料
+// 取得資料
 const queryBetAmountAndPayoff = async () => {
   messageKey.value = 'shortLoading'
   apiSuccess.value = false
@@ -151,7 +151,7 @@ const queryBetAmountAndPayoff = async () => {
 const transformApiData = (data) => {
   clearChart()
 
-  //複製第一筆資料
+  // 複製第一筆資料
   let dataClone = { ...data[0].custom_tag_bet_amount_payoff_data }
   let dataKey = Object.keys(dataClone)
 
@@ -168,7 +168,7 @@ const transformApiData = (data) => {
       fillColor: generateRGBColors(chart_fixed_bgColor[idx], 0.3),
       color: generateRGBColors(chart_fixed_bgColor[idx], 1),
       data: data.map((item) => {
-          return parseFloat(item.custom_tag_bet_amount_payoff_data[ele].bet_amount)
+        return parseFloat(item.custom_tag_bet_amount_payoff_data[ele].bet_amount)
       })
     }
     dataSet2[ele] = {
@@ -180,12 +180,12 @@ const transformApiData = (data) => {
       fillColor: generateRGBColors(chart_fixed_bgColor[idx], 0.3),
       color: generateRGBColors(chart_fixed_bgColor[idx], 1),
       data: data.map((item) => {
-          return parseFloat(item.custom_tag_bet_amount_payoff_data[ele].payoff)
+        return parseFloat(item.custom_tag_bet_amount_payoff_data[ele].payoff)
       })
     }
   })
 
-  //當資料量太大時，關閉dataLabels
+  // 當資料量太大時，關閉dataLabels
   if (data.length > 40) {
     BetAmountOptions.plotOptions.series.dataLabels.enabled = false
     BetAmountOptions.xAxis.labels.style.fontSize = '12px'

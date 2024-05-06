@@ -24,8 +24,8 @@ const { activeHall } = globalStore
 const targetGroup = useTargetGroupStore()
 const { filtered } = storeToRefs(targetGroup)
 
-const apiSuccess = ref(true) //api是否成功
-//依照不同的messageKey產生不同的message
+const apiSuccess = ref(true) // api是否成功
+// 依照不同的messageKey產生不同的message
 const messageKey = ref('shortLoading')
 
 const chartOptions = reactive({
