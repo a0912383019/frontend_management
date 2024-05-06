@@ -50,3 +50,19 @@ export const apiQueryTotalPeople = (params) => {
     params: { hall_name }
   })
 }
+
+// 取得目標族群總人數
+export const apiQueryActivePeople = (params) => {
+  const { hall_name, id, search_date } = params
+  return axiosGoInstance.get(`/api/auth/target_groups/${id}/active_people`, {
+    params: { hall_name, search_date }
+  })
+}
+
+// 取得目標族群總人數
+export const apiQueryDepositPeople = (params) => {
+  const { hall_name, id, search_date } = params
+  return axiosGoInstance.get(`/api/auth/target_groups/${id}/deposit_people`, {
+    params: { hall_name, search_date }
+  })
+}

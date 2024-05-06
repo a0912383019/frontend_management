@@ -59,7 +59,7 @@ const handleDialogClosed = () => {
 <template>
   <el-dialog
     :model-value="props.modelValue"
-    class="cdp-dialog overflow-visible"
+    class="cdp-dialog overflow-visible dialog-mt-40"
     :append-to-body="true"
     width="1280"
     :destroy-on-close="true"
@@ -109,5 +109,8 @@ const handleDialogClosed = () => {
 <style lang="scss">
 .overflow-visible {
   overflow: visible !important;
+}
+.dialog-mt-40 {
+  margin-top: 40px;
 }
 </style>

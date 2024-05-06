@@ -31,7 +31,7 @@ const messageKey = ref('shortLoading')
 const chartOptions = reactive({
   chart: {
     type: 'pie',
-    height: 340
+    height: 280
   },
   legend: {
     layout: 'vertical',
@@ -159,7 +159,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section-in h-400">
+  <section class="cdp-section-in h-350">
     <SectionTitle class="mb-5" :title="$t('target_group_analysis.total_people')"></SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" :height="320" v-if="apiSuccess === false" />
     <template v-else>
