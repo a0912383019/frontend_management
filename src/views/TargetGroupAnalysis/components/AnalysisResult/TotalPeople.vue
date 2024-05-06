@@ -60,7 +60,7 @@ const chartOptions = reactive({
     ...tooltipDarkConfig,
     useHTML: true,
     formatter() {
-      return tooltipFormatter({ data: this, unit: t('unit.people'), tooltipIconBorder: true })
+      return tooltipFormatter({ data: this, unit: t('unit.people'), tooltipIconBorder: false })
     }
   },
   plotOptions: {
@@ -160,7 +160,7 @@ onMounted(() => {
 </script>
 <template>
   <section class="cdp-section-in h-400">
-    <SectionTitle class="mb-15" :title="$t('target_group_analysis.total_people')"></SectionTitle>
+    <SectionTitle class="mb-5" :title="$t('target_group_analysis.total_people')"></SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" :height="320" v-if="apiSuccess === false" />
     <template v-else>
       <highcharts :options="chartOptions"></highcharts>

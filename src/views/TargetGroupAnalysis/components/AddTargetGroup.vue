@@ -1,12 +1,19 @@
 <script setup>
 import { ref, reactive } from 'vue'
-import { useTargetGroupStore } from '@/stores'
+import { useTargetGroupStore, useGlobalStore } from '@/stores'
 import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TargetData/TagGroupSetting.vue'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/Button/ConfirmBox.vue'
 import { apiAddTargetGroups } from '@/api'
 import { storeToRefs } from 'pinia'
+import { ElNotification } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const globalStore = useGlobalStore()
+const { activeHall } = globalStore
 
 const targetGroup = useTargetGroupStore()
 const { tagGroupList } = storeToRefs(targetGroup)
@@ -31,6 +38,7 @@ const validateForm = reactive({
 // 關閉 dialog
 const handleDialogClosed = () => {
   validateForm.newTargetName = ''
+  tagGroupList.value = []
   emit('closeDialog')
 }
 
@@ -39,7 +47,7 @@ const addTargetGroups = async () => {
   try {
     const result = await apiAddTargetGroups({
       hall_name: activeHall.hall_code,
-      custom_tags: tagGroupList.value,
+      custom_tags: customTags.value,
       is_open: isOpen.value,
       target_group_name: validateForm.newTargetName
     })
@@ -50,8 +58,9 @@ const addTargetGroups = async () => {
         title: t('msg.delete_successful'),
         type: 'success'
       })
-      emit('addSuccess')
       confirmSaveBox.value = false
+      handleDialogClosed()
+      emit('addSuccess')
     } else {
       ElNotification({
         title: t('msg.delete_failed'),
@@ -100,8 +109,20 @@ const cancelSaved = () => {
 }
 
 const confirmSaved = () => {
+  transformCustomTags()
   addTargetGroups()
-  // confirmSaveBox.value = false
+}
+
+const customTags = ref([])
+
+const transformCustomTags = () => {
+  customTags.value = []
+  tagGroupList.value.forEach((ele) => {
+    let newGroup = {}
+    newGroup.tags_name = ele.custom_tags_name
+    newGroup.tags_str = ele.custom_tag_str
+    customTags.value.push(newGroup)
+  })
 }
 </script>
 <template>
