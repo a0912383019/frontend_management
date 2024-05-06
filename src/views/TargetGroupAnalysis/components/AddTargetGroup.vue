@@ -1,24 +1,31 @@
 <script setup>
 import { ref, reactive } from 'vue'
-import { useTargetGroupStore } from '@/stores'
-import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TagGroupSetting.vue'
+import { useTargetGroupStore, useGlobalStore } from '@/stores'
+import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TargetData/TagGroupSetting.vue'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/Button/ConfirmBox.vue'
+import { apiAddTargetGroups } from '@/api'
+import { storeToRefs } from 'pinia'
+import { ElNotification } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const globalStore = useGlobalStore()
+const { activeHall } = globalStore
 
 const targetGroup = useTargetGroupStore()
+const { tagGroupList } = storeToRefs(targetGroup)
 
 const props = defineProps({
   modelValue: {
     type: Boolean,
     default: false
-  },
-  targetId: {
-    type: Number
   }
 })
 
-const emit = defineEmits(['closeDialog'])
+const emit = defineEmits(['closeDialog', 'addSuccess'])
 
 const tagGroups = ref(null)
 const isOpen = ref(false)
@@ -31,7 +38,51 @@ const validateForm = reactive({
 // 關閉 dialog
 const handleDialogClosed = () => {
   validateForm.newTargetName = ''
+  tagGroupList.value = []
   emit('closeDialog')
+}
+
+// 取得資料
+const addTargetGroups = async () => {
+  try {
+    const result = await apiAddTargetGroups({
+      hall_name: activeHall.hall_code,
+      custom_tags: customTags.value,
+      is_open: isOpen.value,
+      target_group_name: validateForm.newTargetName
+    })
+
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      ElNotification({
+        title: t('msg.delete_successful'),
+        type: 'success'
+      })
+      confirmSaveBox.value = false
+      handleDialogClosed()
+      emit('addSuccess')
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
+  }
 }
 
 const tagsGroupsValid = ref(false)
@@ -58,7 +109,20 @@ const cancelSaved = () => {
 }
 
 const confirmSaved = () => {
-  confirmSaveBox.value = false
+  transformCustomTags()
+  addTargetGroups()
+}
+
+const customTags = ref([])
+
+const transformCustomTags = () => {
+  customTags.value = []
+  tagGroupList.value.forEach((ele) => {
+    let newGroup = {}
+    newGroup.tags_name = ele.custom_tags_name
+    newGroup.tags_str = ele.custom_tag_str
+    customTags.value.push(newGroup)
+  })
 }
 </script>
 <template>

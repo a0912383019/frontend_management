@@ -1,19 +1,9 @@
 <script setup>
-import { ref, watch } from 'vue'
-import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
-import { storeToRefs } from 'pinia'
-import { useRoute } from 'vue-router'
+import { ref } from 'vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
+import SectionTitle from '@/components/Title/SectionTitle.vue'
 
-import ImportCSV from '@/components/Filter/ImportCSV.vue'
-
-const route = useRoute()
-
-const manageAnalysisStore = useManageAnalysisStore()
-const { filterCustomUserList } = storeToRefs(manageAnalysisStore)
 const searchName = ref('') //搜尋的名稱
-const useCustomList = ref(manageAnalysisStore.useCustomList) //手動匯入名單
-const fuzzySearch = ref(manageAnalysisStore.fuzzySearch) //模糊搜尋
 
 const popover = ref(null) //popover
 
@@ -29,15 +19,12 @@ const handleClick = () => {
   emit('searchWithTargetName', searchName.value)
   closePopover()
 }
-
-
 </script>
 <template>
   <div class="cdp-popover-container">
     <el-popover
       ref="popover"
       placement="bottom-end"
-      :title="$t('target_group_analysis.target_group_name')"
       :width="320"
       trigger="click"
       :teleported="false"
@@ -52,8 +39,17 @@ const handleClick = () => {
         />
       </template>
       <div class="drop">
+        <SectionTitle
+          size="small"
+          class="cdp-text-purple mb-4"
+          :title="$t('target_group_analysis.target_group_name')"
+        >
+        </SectionTitle>
         <div class="drop__search">
-          <el-input v-model="searchName" :placeholder="$t('target_group_analysis.input_target_group_name')" />
+          <el-input
+            v-model="searchName"
+            :placeholder="$t('target_group_analysis.input_target_group_name')"
+          />
         </div>
         <div class="drop__footer">
           <ButtonIcon

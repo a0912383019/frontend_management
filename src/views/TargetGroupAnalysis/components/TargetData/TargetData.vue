@@ -6,7 +6,7 @@ import { apiQueryTargetGroupsWithId } from '@/api'
 import { dayjs } from 'element-plus'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
-import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TagGroupSetting.vue'
+import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TargetData/TagGroupSetting.vue'
 import ConfirmBox from '@/components/Button/ConfirmBox.vue'
 import { storeToRefs } from 'pinia'
 
@@ -20,7 +20,7 @@ const { targetNameRule } = storeToRefs(targetGroup)
 
 const props = defineProps({
   targetId: {
-    type: Number
+    type: String
   }
 })
 
@@ -100,6 +100,7 @@ const cancelEditBox = ref(false)
 const formRef = ref(null)
 
 const handleTagIsEdit = () => {
+  forTargetNameClass.value = false
   edit.value = true
 }
 
@@ -142,8 +143,11 @@ const tagGroups = ref(null)
 
 const forTargetNameClass = ref(false)
 const handleEditConfirm = () => {
+  forTargetNameClass.value = false
   formRef.value.validate((valid) => {
-    forTargetNameClass.value = valid
+    if (!valid && validateForm.newTargetName.trim() !== '') {
+      forTargetNameClass.value = true
+    }
     if (valid && tagsGroupsValid.value) {
       confirmEditBox.value = true
     } else {
@@ -177,7 +181,7 @@ onMounted(() => {
           >
             <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
           </el-input>
-          <el-form v-else ref="formRef" :model="validateForm" :class="{ 'is-en': locale === 'en' && !forTargetNameClass }">
+          <el-form v-else ref="formRef" :model="validateForm" :class="{ 'is-en': locale === 'en' && forTargetNameClass }">
             <el-form-item prop="newTargetName" :rules="targetNameRule">
               <el-input
                 v-model="validateForm.newTargetName"

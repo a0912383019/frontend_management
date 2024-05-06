@@ -78,7 +78,8 @@ const validTable = () => {
     tagGroupList.value[idx].validType = ''
     if (ele.custom_tags_name.trim() === '' || ele.custom_tags_name.trim().length > 10) {
       tagGroupList.value[idx].groupNameValid = false
-      tagGroupList.value[idx].validType = ele.custom_tags_name.trim() === ''? 'onlySpace' : 'overTen'
+      tagGroupList.value[idx].validType =
+        ele.custom_tags_name.trim() === '' ? 'onlySpace' : 'overTen'
       isError = true
       isValid = false
     }
@@ -90,7 +91,9 @@ const validTable = () => {
     }
 
     const cellsInSecondRow = document.querySelectorAll(`.el-table tr:nth-child(${idx + 1}) .cell`)
-    const classType = locale.value === 'en' ? 'en-row' : 'ch-row'
+    const classType =
+      locale.value === 'en' ? (ele.custom_tags_name.trim() === '' ? 'ch-row' : 'en-row') : 'ch-row'
+
     for (var i = 0; i < cellsInSecondRow.length; ++i) {
       if (isError) {
         cellsInSecondRow[i].classList.add(classType)
@@ -155,13 +158,13 @@ watch(
             v-if="!scope.row.groupNameValid && scope.row.validType === 'onlySpace'"
             class="cdp-text-candypink font-size-12 line-1-5"
           >
-            {{$t('target_group_analysis.blank_custom_tags_name_error_msg')}}
+            {{ $t('target_group_analysis.blank_custom_tags_name_error_msg') }}
           </div>
           <div
             v-if="!scope.row.groupNameValid && scope.row.validType === 'overTen'"
             class="cdp-text-candypink font-size-12 line-1-5"
           >
-            {{$t('target_group_analysis.custom_tags_name_length_limit_error_msg')}}
+            {{ $t('target_group_analysis.custom_tags_name_length_limit_error_msg') }}
           </div>
         </div>
       </template>
