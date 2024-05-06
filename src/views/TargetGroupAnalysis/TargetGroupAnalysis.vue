@@ -288,7 +288,7 @@ onMounted(() => {
         color="red"
         v-model="deleteBox"
         class="top15per"
-        :content="'gogogogo'"
+        :title="$t('modal.delete')"
         @cancelExecute="cancelDelete"
         @confirmExecute="confirmDelete"
       >

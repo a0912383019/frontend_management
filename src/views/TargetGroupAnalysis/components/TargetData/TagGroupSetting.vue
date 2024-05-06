@@ -26,8 +26,6 @@ const props = defineProps({
   }
 })
 
-const maxLength = ref(10)
-
 const renderComplete = ref(false)
 
 const tableColumns = computed(() => {
@@ -57,6 +55,7 @@ const tableColumns = computed(() => {
 })
 
 const addTagGroup = () => {
+  if (tagGroupList.value.length)
   tagGroupList.value.push({
     custom_tag_str: '',
     custom_tags_name: '',
@@ -132,7 +131,6 @@ watch(
       :serverSide="false"
       :tableData="tagGroupList"
       :tableColumns="tableColumns"
-      :pageSize="maxLength"
       :hasPagination="false"
       :stripe="false"
       rowKey="custom_tags_id"

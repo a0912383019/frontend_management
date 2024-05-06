@@ -7,7 +7,7 @@ import { useGlobalStore, useTargetGroupStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
-import { FormatNumber, errorRespond, generateRGBColors } from '@/utils/commonUtils.js'
+import { errorRespond, generateRGBColors } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipShared } from '@/utils/highchartsConfig.js'
 import { dayjs } from 'element-plus'
 
