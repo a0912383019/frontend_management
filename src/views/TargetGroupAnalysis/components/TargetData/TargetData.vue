@@ -73,7 +73,8 @@ const transformTargetDetails = (data) => {
   apiTargetData.memberName = data.member_name
   apiTargetData.createdTime = dayjs(data.created_time).format(t('date.format_datetime_rule'))
   apiTargetData.updaterName = data.updater_name
-  apiTargetData.updatedTime = dayjs(data.updated_time).format(t('date.format_datetime_rule'))
+  apiTargetData.updatedTime =
+    data.updated_time !== '' ? dayjs(data.updated_time).format(t('date.format_datetime_rule')) : ''
 
   validateForm.newTargetName = data.target_group_name
 

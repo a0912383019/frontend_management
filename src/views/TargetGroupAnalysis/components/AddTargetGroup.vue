@@ -55,7 +55,7 @@ const addTargetGroups = async () => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       ElNotification({
-        title: t('msg.delete_successful'),
+        title: t('msg.add_successful'),
         type: 'success'
       })
       confirmSaveBox.value = false
@@ -63,7 +63,7 @@ const addTargetGroups = async () => {
       emit('addSuccess')
     } else {
       ElNotification({
-        title: t('msg.delete_failed'),
+        title: t('msg.add_failed'),
         type: 'error'
       })
     }
@@ -78,7 +78,7 @@ const addTargetGroups = async () => {
       globalStore.storeHandleApiError()
     } else {
       ElNotification({
-        title: t('msg.delete_failed'),
+        title: t('msg.add_failed'),
         type: 'error'
       })
     }
