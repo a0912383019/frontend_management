@@ -55,14 +55,17 @@ const tableColumns = computed(() => {
 })
 
 const addTagGroup = () => {
-  if (tagGroupList.value.length)
-  tagGroupList.value.push({
-    custom_tag_str: '',
-    custom_tags_name: '',
-    groupNameValid: true,
-    validType: '',
-    tagGroupValid: true
-  })
+  const rowKey = (tagGroupList.value.length).toString()
+  if (tagGroupList.value.length < 10) {
+    tagGroupList.value.push({
+      custom_tags_id: rowKey,
+      custom_tag_str: '',
+      custom_tags_name: '',
+      groupNameValid: true,
+      validType: '',
+      tagGroupValid: true
+    })
+  }
 }
 
 const deleteGroup = (idx) => {
