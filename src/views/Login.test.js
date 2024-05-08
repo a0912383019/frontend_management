@@ -1,4 +1,4 @@
-import { it, describe, expect, beforeEach, afterEach, vi } from 'vitest'
+import { it, describe, expect, afterEach, vi } from 'vitest'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { i18n } from '@/global/i18n'
@@ -16,7 +16,15 @@ describe('Login', () => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
   const globalStore = useGlobalStore(pinia)
 
-  beforeEach(() => {
+  // mock console
+  const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => {})
+  const consoleErrMock = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
+  it('hideErrorMsg', async () => {
     wrapper = shallowMount(Login, {
       global: {
         plugins: [i18n, ElementPlus, router],
@@ -30,13 +38,6 @@ describe('Login', () => {
         }
       }
     })
-  })
-
-  afterEach(() => {
-    wrapper.unmount()
-  })
-
-  it('hideErrorMsg', async () => {
     wrapper.vm.hideErrorMsg()
     await wrapper.vm.$nextTick()
 
@@ -47,6 +48,19 @@ describe('Login', () => {
   })
 
   it('shake', async () => {
+    wrapper = shallowMount(Login, {
+      global: {
+        plugins: [i18n, ElementPlus, router],
+        stubs: {
+          GoogleLogin: {
+            template: '<div><slot /></div>'
+          }
+        },
+        components: {
+          FontAwesomeIcon
+        }
+      }
+    })
     vi.useFakeTimers()
 
     wrapper.vm.shake()
@@ -58,6 +72,19 @@ describe('Login', () => {
   })
 
   it('googleLoginCallback', async () => {
+    wrapper = shallowMount(Login, {
+      global: {
+        plugins: [i18n, ElementPlus, router],
+        stubs: {
+          GoogleLogin: {
+            template: '<div><slot /></div>'
+          }
+        },
+        components: {
+          FontAwesomeIcon
+        }
+      }
+    })
     const data = {
       credential: 'asdjio12j'
     }
@@ -125,5 +152,55 @@ describe('Login', () => {
     // 驗證 accsee token
     expect(sessionStorage.access_token).toBe('bearer phptoken')
     expect(sessionStorage.access_token_go).toBe('bearer gotoken')
+  })
+
+  it('apiRelease success', async () => {
+    vi.spyOn(axiosGoInstance, 'get').mockImplementation((url) => {
+      switch (url) {
+        case '/api/auth/release':
+          return Promise.resolve({ data: { status: 200 } })
+      }
+    })
+
+    wrapper = shallowMount(Login, {
+      global: {
+        plugins: [i18n, ElementPlus, router],
+        stubs: {
+          GoogleLogin: {
+            template: '<div><slot /></div>'
+          }
+        },
+        components: {
+          FontAwesomeIcon
+        }
+      }
+    })
+    await flushPromises()
+    expect(consoleMock).toHaveBeenCalledWith({ data: { status: 200 } })
+  })
+
+  it('apiRelease fail', async () => {
+    vi.spyOn(axiosGoInstance, 'get').mockImplementation((url) => {
+      switch (url) {
+        case '/api/auth/release':
+          return Promise.reject(new Error('API error'))
+      }
+    })
+
+    wrapper = shallowMount(Login, {
+      global: {
+        plugins: [i18n, ElementPlus, router],
+        stubs: {
+          GoogleLogin: {
+            template: '<div><slot /></div>'
+          }
+        },
+        components: {
+          FontAwesomeIcon
+        }
+      }
+    })
+    await flushPromises()
+    expect(consoleErrMock).toHaveBeenCalledWith(new Error('API error'))
   })
 })

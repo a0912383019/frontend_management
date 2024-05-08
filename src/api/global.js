@@ -62,3 +62,7 @@ export const apiFinancialWeeks = (params) => {
     }
   })
 }
+
+export const apiRelease = () => {
+  return axiosGoInstance.get('/api/auth/release')
+}
