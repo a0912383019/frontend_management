@@ -3,7 +3,8 @@ import {
   tooltipFormatter,
   tooltipShared,
   tooltipSingleShared,
-  tooltipAddSign
+  tooltipAddSign,
+  tooltipAddSignForCol
 } from '@/utils/highchartsConfig.js'
 
 describe('Tooltip Utils', () => {
@@ -58,6 +59,21 @@ describe('Tooltip Utils', () => {
       }
     ]
     const result = tooltipAddSign({ data: testData, date: '2323/11/11', sign: '@' })
+    expect(result).toMatchSnapshot()
+  })
+
+  it('should format tooltip with added sign using tooltipAddSignForCol', () => {
+    const testData = {
+      color: 'rgb(245,105,84,0.7)',
+      x: '21點',
+      y: 6,
+      series: {
+        options: {
+          borderColor: 'rgb(245,105,84,1)'
+        }
+      }
+    }
+    const result = tooltipAddSignForCol({ data: testData, sign: '@' })
     expect(result).toMatchSnapshot()
   })
 })
