@@ -4,7 +4,7 @@ import { useTargetGroupStore, useGlobalStore } from '@/stores'
 import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TargetData/TagGroupSetting.vue'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
-import ConfirmBox from '@/components/Button/ConfirmBox.vue'
+import ConfirmBox from '@/components/ConfirmBox.vue'
 import { apiAddTargetGroups } from '@/api'
 import { storeToRefs } from 'pinia'
 import { ElNotification } from 'element-plus'
@@ -186,7 +186,7 @@ const transformCustomTags = () => {
     color="blue"
     v-model="confirmSaveBox"
     :width="350"
-    title="modal.confirm_correct_desc"
+    :title="$t('modal.confirm_correct_desc')"
     class="top15per"
     @cancelExecute="cancelSaved"
     @confirmExecute="confirmSaved"

@@ -13,7 +13,7 @@ import Filter from '@/views/TargetGroupAnalysis/Filter.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import TargetGroupDetail from '@/views/TargetGroupAnalysis/components/TargetGroupDetail.vue'
 import AddTargetGroup from '@/views/TargetGroupAnalysis/components/AddTargetGroup.vue'
-import ConfirmBox from '@/components/Button/ConfirmBox.vue'
+import ConfirmBox from '@/components/ConfirmBox.vue'
 import { ElNotification } from 'element-plus'
 import { formatDateDuration } from '@/utils/commonUtils.js'
 
@@ -289,7 +289,7 @@ onMounted(() => {
         color="red"
         v-model="deleteBox"
         class="top15per"
-        title="modal.delete"
+        :title="$t('modal.delete')"
         @cancelExecute="cancelDelete"
         @confirmExecute="confirmDelete"
       >

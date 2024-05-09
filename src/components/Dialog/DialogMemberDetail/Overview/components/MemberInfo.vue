@@ -1,25 +1,14 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import {
-  apiQueryMemberInfo,
-  apiQueryMemberLifeCycle,
-  apiUpdateMemberTagsEnable
-} from '@/api/dialogMemberDetail.js'
+import { apiQueryMemberInfo, apiQueryMemberLifeCycle } from '@/api/dialogMemberDetail.js'
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
-import {
-  getSessionStorageEntity,
-  checkTagUsage,
-  generateTagMultiSelect,
-  errorRespond
-} from '@/utils/commonUtils.js'
+import { getSessionStorageEntity, checkTagUsage, errorRespond } from '@/utils/commonUtils.js'
 import { system_admin } from '@/../public/js/system_config.js'
 import { dayjs, ElNotification } from 'element-plus'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
-import CdpButton from '@/components/Button/CdpButton.vue'
-import ConfirmBox from '@/components/ConfirmBox.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
 
 const { t } = useI18n()
@@ -79,14 +68,7 @@ const queryMemberInfo = async () => {
   }
 }
 
-const tagSelectValue = ref([]) //標籤下拉選擇的內容
-const tagSelectOptions = ref([]) //標籤下拉選單
-let tagDict = reactive({})
 //會員明細標籤處理
-const includeTags = ref('')
-const includeTagsText = ref('')
-const confirmTagsText = ref('') //修改後的標籤
-const tagIsEdit = ref(false) //確認標籤目前是否為編輯狀態
 const tagStrList = ref([])
 const transformMemberInfoTagStr = (data) => {
   let has_tag_ary = data ? data.split(',') : []
@@ -94,166 +76,6 @@ const transformMemberInfoTagStr = (data) => {
     //  若標籤代碼禁用，則跳過不顯示
     if (checkTagUsage(activeHall.hall_code, item)) {
       tagStrList.value.push(item)
-    }
-  })
-
-  //取得標籤
-  tagDict = generateTagMultiSelect({ hall_name: activeHall.hall_code }) //檢查標籤，排除禁用
-  //產生標籤下拉選單
-  generateSelectData()
-
-  // 取得包含標籤
-  get_include_tags(has_tag_ary)
-}
-
-const handleTagIsEdit = (status) => {
-  if (status) {
-    //true 進入編輯內容
-    tagIsEdit.value = status
-  } else {
-    // false 送出編輯內容
-    tagInnerDialogVisible.value = true
-    transformConfirmTagsText()
-  }
-}
-
-//點擊取消彈出確認框
-const confirmBoxVisible = ref(false)
-const cancelTagEdit = () => {
-  confirmBoxVisible.value = true
-}
-
-//確定取消，恢復成異動前
-const handleCancel = () => {
-  confirmBoxVisible.value = false
-  tagIsEdit.value = false
-  tagSelectValue.value = originalSelects.value
-}
-
-//確認異動，送出編輯內容
-const handleConfirm = () => {
-  confirmBoxVisible.value = false
-  handleTagIsEdit(false)
-}
-
-const tagInnerDialogVisible = ref(false) //inner dialog開啟狀態
-const handleInnerTagIsEdit = (status) => {
-  tagInnerDialogVisible.value = false
-  switch (status) {
-    case 'confirm':
-      updateMemberTagsEnable()
-      break
-  }
-}
-
-//取得修改後標籤的文字
-const transformConfirmTagsText = () => {
-  let lastIndex = tagSelectValue.value.length - 1
-  confirmTagsText.value = []
-  tagSelectValue.value.forEach((item, index) => {
-    confirmTagsText.value = confirmTagsText.value + tagDict[item]['tag_name']
-    if (index !== lastIndex) {
-      confirmTagsText.value = confirmTagsText.value + '、'
-    }
-  })
-}
-
-const updateMemberTagsEnable = async () => {
-  apiSuccess.value = false
-  try {
-    const result = await apiUpdateMemberTagsEnable({
-      hall_name: activeHall.hall_code,
-      user_id: dialogMemberDetailStore.state.memberData.user_id,
-      user_name: apiMemberData.user_name,
-      user_tags_original: includeTags.value,
-      user_tags_new: tagSelectValue.value.join(',')
-    })
-    const { return_code } = result.data.status
-    if (return_code === '0000') {
-      pageInit()
-      ElNotification({
-        message: t('msg.updated_successfully'),
-        type: 'success'
-      })
-      tagIsEdit.value = false // 將標籤切回一般狀態顯示
-    } else {
-      apiSuccess.value = true
-    }
-  } catch (error) {
-    apiSuccess.value = true
-    console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
-      globalStore.storeHandleApiError()
-    } else {
-      ElNotification({
-        title: t('msg.update_failed'),
-        type: 'error'
-      })
-    }
-  }
-}
-
-//產生標籤下拉選單
-const generateSelectData = () => {
-  let result = []
-  Object.entries(tagDict).map((item) => {
-    result.push({
-      label: item[1]['tag_name'],
-      value: item[1]['tag_key'],
-      disabled: false,
-      ...item[1]
-    })
-  })
-  tagSelectOptions.value = []
-  tagSelectOptions.value = result
-}
-
-// 標籤select change事件
-const handleTagChange = () => {
-  // 取得config
-  let tagConfig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
-
-  // 將選項全部先取消disabled
-  for (let i = 0; i < tagSelectOptions.value.length; i++) {
-    tagSelectOptions.value[i]['disabled'] = false
-  }
-
-  // 目前選擇的標籤list
-  for (let i = 0; i < tagSelectValue.value.length; i++) {
-    // 該標籤的互斥標籤list
-    if (tagConfig[tagSelectValue.value[i]].mutual_tags_code != null) {
-      // 互斥表
-      let mutualTagAry = tagConfig[tagSelectValue.value[i]].mutual_tags_code.split(',')
-      for (let j = 0; j < tagSelectOptions.value.length; j++) {
-        // 該option有在互斥列表裡面就disable
-        if (mutualTagAry.indexOf(tagSelectOptions.value[j]['value']) !== -1) {
-          tagSelectOptions.value[j]['disabled'] = true
-        }
-      }
-    }
-  }
-}
-
-const originalSelects = ref([])
-// 取得包含標籤
-const get_include_tags = (hasTags) => {
-  hasTags.forEach((item) => {
-    if (tagDict[item] !== undefined) {
-      if (includeTagsText.value !== '') {
-        includeTags.value = includeTags.value + ',' + item
-        includeTagsText.value = includeTagsText.value + '、' + tagDict[item]['tag_name']
-      } else {
-        includeTags.value = item
-        includeTagsText.value = tagDict[item]['tag_name']
-      }
-      //下拉選單塞入預設值
-      originalSelects.value.push(item)
-      tagSelectValue.value.push(item)
     }
   })
 }
@@ -300,10 +122,6 @@ const pageInit = () => {
 
 //清空資料
 const handleEmptyData = () => {
-  tagSelectValue.value = []
-  tagSelectOptions.value = []
-  includeTags.value = ''
-  includeTagsText.value = ''
   tagStrList.value = []
 }
 
@@ -359,7 +177,7 @@ onMounted(() => {
         <div class="loading-tag" v-show="!apiSuccess">
           <LoadingBox size="md" color="blue" />
         </div>
-        <div v-show="!tagIsEdit && apiSuccess">
+        <div v-show="apiSuccess">
           <div class="tags relative">
             <div class="tags__box">
               <ul class="tags__list">
@@ -368,112 +186,10 @@ onMounted(() => {
                 </li>
               </ul>
             </div>
-            <!-- <CdpButton
-              class="tags__button custom-bg-dark__blue"
-              :name="$t('common.edit')"
-              size="sm-60"
-              @click="handleTagIsEdit(true)"
-            /> -->
-          </div>
-        </div>
-        <div v-show="tagIsEdit && apiSuccess">
-          <div class="tags minH-80">
-            <el-select
-              v-model="tagSelectValue"
-              @change="handleTagChange"
-              @focus="handleTagChange"
-              multiple
-              class="cdp-tag-select mr-20"
-            >
-              <el-option
-                v-for="item in tagSelectOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-                :disabled="item.disabled"
-              />
-            </el-select>
-            <div>
-              <div class="mb-12">
-                <CdpButton
-                  class="tags__button custom-bg-light__grey"
-                  :name="$t('modal.cancel')"
-                  size="sm-60"
-                  @click="cancelTagEdit()"
-                />
-              </div>
-              <div>
-                <CdpButton
-                  class="tags__button custom-bg-dark__blue"
-                  :name="$t('modal.confirm')"
-                  size="sm-60"
-                  @click="handleTagIsEdit(false)"
-                />
-              </div>
-            </div>
           </div>
         </div>
       </el-col>
     </el-row>
-    <ConfirmBox
-      name="notSaved"
-      :confirmBoxVisible="confirmBoxVisible"
-      @cancel="handleCancel"
-      @confirm="handleConfirm"
-      class="top15per"
-    ></ConfirmBox>
-    <el-dialog
-      v-model="tagInnerDialogVisible"
-      width="300"
-      :show-close="false"
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
-      append-to-body
-      class="cdp-confirm-dialog"
-    >
-      <div class="inner-dialog">
-        <div class="inner-dialog__icon"><img src="@/assets/images/alert-2.png" alt="" /></div>
-        <div class="inner-dialog__title cdp-text-light-blue">
-          {{ $t('modal.confirm_correct_desc') }}
-        </div>
-        <ul class="inner-dialog__list ul-reset">
-          <li>
-            <div class="inner-dialog__list__title">
-              {{ $t('customer_detail_info.member_name') }}
-            </div>
-            <div class="inner-dialog__list__text">{{ apiMemberData.user_name }}</div>
-          </li>
-          <li>
-            <div class="inner-dialog__list__title">
-              {{ $t('customer_detail_info.updated_tags') }}：
-            </div>
-            <div class="inner-dialog__list__text">
-              {{ confirmTagsText }}
-            </div>
-          </li>
-          <li>
-            <div class="inner-dialog__list__title">
-              {{ $t('customer_detail_info.original_tags') }}：
-            </div>
-            <div class="inner-dialog__list__text">
-              {{ includeTagsText }}
-            </div>
-          </li>
-        </ul>
-        <div class="inner-dialog__button">
-          <CdpButton
-            class="cdp__modal-btn__cancel"
-            :name="$t('modal.modify')"
-            @click="handleInnerTagIsEdit('modify')"
-          />
-          <CdpButton
-            class="cdp__modal-btn__submit"
-            :name="$t('modal.confirm')"
-            @click="handleInnerTagIsEdit('confirm')"
-          />
-        </div>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <style lang="scss" scoped>

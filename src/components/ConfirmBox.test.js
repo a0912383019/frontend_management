@@ -12,7 +12,7 @@ describe('ConfirmBox.vue', () => {
     wrapper.unmount()
   })
 
-  it('name = delete, emits cancel event when cancel button is clicked', async () => {
+  it('props & var & emit correct', async () => {
     wrapper = shallowMount(ConfirmBox, {
       global: {
         plugins: [i18n, ElementPlus],
@@ -23,60 +23,37 @@ describe('ConfirmBox.vue', () => {
         }
       },
       props: {
-        modelValue: true
+        modelValue: true,
+        title: 'cdp title',
+        content: 'cdp content',
+        leftBtn: 'cdp left btn',
+        rightBtn: 'cdp right btn'
       }
     })
-    expect(wrapper.find('.inner-dialog__title').classes()).toContain('delete-color')
-    expect(wrapper.findAllComponents(CdpButton)[1].classes()).toContain('delete-bg')
-    //觸發取消按鈕點擊事件
-    await wrapper.find('.cdp__modal-btn__cancel').trigger('click')
 
-    //檢查是否觸發了名為 'cancel' 的事件
-    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
-  })
+    expect(wrapper.findComponent(CdpButton).exists()).toBe(true)
+    expect(wrapper.props('title')).toStrictEqual('cdp title')
+    expect(wrapper.props('content')).toStrictEqual('cdp content')
+    expect(wrapper.vm.leftBtnName).toStrictEqual('cdp left btn')
+    expect(wrapper.vm.rightBtnName).toStrictEqual('cdp right btn')
 
-  it('name = notSaved, emits confirm event when confirm button is clicked', async () => {
-    wrapper = shallowMount(ConfirmBox, {
-      global: {
-        plugins: [i18n, ElementPlus],
-        stubs: {
-          ElDialog: {
-            template: '<div><slot /></div>'
-          }
-        }
-      },
-      props: {
-        name: 'notSaved',
-        modelValue: true
-      }
-    })
-    expect(wrapper.find('.inner-dialog__title').classes()).not.toContain('delete-color')
-    expect(wrapper.findAllComponents(CdpButton)[1].classes()).not.toContain('delete-bg')
+    await wrapper.vm.handleCancel()
+    expect(wrapper.emitted('cancelExecute')).toBeTruthy()
 
-    //觸發確認按鈕點擊事件
-    await wrapper.find('.cdp__modal-btn__submit').trigger('click')
-
-    //檢查是否觸發了名為 'confirm' 的事件
+    await wrapper.vm.handleComfirm()
     expect(wrapper.emitted('confirmExecute')).toBeTruthy()
-  })
 
-  it('name = notSaved, set modelValue to change visibleValue', async () => {
-    wrapper = shallowMount(ConfirmBox, {
-      global: {
-        plugins: [i18n, ElementPlus],
-        stubs: {
-          ElDialog: {
-            template: '<div><slot /></div>'
-          }
-        }
-      },
-      props: {
-        name: 'notSaved',
-        modelValue: true
-      }
-    })
-    expect(wrapper.vm.visibleValue).toBeTruthy()
-    await wrapper.setProps({ modelValue: false })
-    expect(wrapper.vm.visibleValue).toBeFalsy()
+    expect(wrapper.find('.inner-dialog__icon img').attributes().src).toStrictEqual(
+      '/src/assets/images/alert-2.png'
+    )
+    expect(wrapper.find('.inner-dialog__title').classes()).not.toContain('red-color')
+    expect(wrapper.findComponent('.cdp__modal-btn__submit').classes()).not.toContain('red-bg')
+
+    await wrapper.setProps({ color: 'red' })
+    expect(wrapper.find('.inner-dialog__icon img').attributes().src).toStrictEqual(
+      '/src/assets/images/alert-1.png'
+    )
+    expect(wrapper.find('.inner-dialog__title').classes()).toContain('red-color')
+    expect(wrapper.findComponent('.cdp__modal-btn__submit').classes()).toContain('red-bg')
   })
 })

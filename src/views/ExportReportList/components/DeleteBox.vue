@@ -102,9 +102,21 @@ const deleteUserExportList = async () => {
 const deleteExecute = () => {
   deleteUserExportList()
 }
+
+const cancelDelete = () => {
+  visibleBox.value = false
+  visibleTopBox.value = false
+}
 </script>
 <template>
-  <ConfirmBox name="delete" v-model="visibleBox" class="top15per" @confirmExecute="deleteExecute">
+  <ConfirmBox
+    color="red"
+    v-model="visibleBox"
+    class="top15per"
+    :title="$t('modal.delete')"
+    @cancelExecute="cancelDelete"
+    @confirmExecute="deleteExecute"
+  >
     <template v-slot:text-body>
       <div class="text-center">
         <span>{{ $t('modal.are_you_sure_to_delete') + '「' }}</span>
@@ -125,14 +137,17 @@ const deleteExecute = () => {
     </template>
   </ConfirmBox>
   <ConfirmBox
+    color="red"
     name="delete"
     v-model="visibleTopBox"
     class="top15per"
+    :title="$t('modal.delete')"
+    @cancelExecute="cancelDelete"
     @confirmExecute="deleteExecute"
   >
     <template v-slot:text-body>
       <div class="text-center table-total">
-        <span>{{ $t('modal.are_you_sure_to_delete') + ' ' + $t('common.select_all') + '？' }}</span>
+        <span>{{ $t('modal.are_you_sure_to_delete') + $t('common.select_all') + '？' }}</span>
       </div>
     </template>
   </ConfirmBox>
