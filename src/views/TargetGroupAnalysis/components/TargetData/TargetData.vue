@@ -7,7 +7,7 @@ import { dayjs } from 'element-plus'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TargetData/TagGroupSetting.vue'
-import ConfirmBox from '@/components/Button/ConfirmBox.vue'
+import ConfirmBox from '@/components/ConfirmBox.vue'
 import { storeToRefs } from 'pinia'
 
 const { t, locale } = useI18n()
@@ -269,6 +269,8 @@ onMounted(() => {
     <ConfirmBox
       color="blue"
       v-model="cancelEditBox"
+      :title="$t('modal.not_yet_saved')"
+      :content="$t('modal.do_you_want_to_cancel_edit')"
       class="top15per"
       @cancelExecute="cancelExecute"
       @confirmExecute="confirmExecute"
@@ -278,7 +280,7 @@ onMounted(() => {
       color="blue"
       v-model="confirmEditBox"
       :width="350"
-      title="modal.confirm_correct_desc"
+      :title="$t('modal.confirm_correct_desc')"
       class="top15per"
       @cancelExecute="cancelSaved"
       @confirmExecute="confirmSaved"
