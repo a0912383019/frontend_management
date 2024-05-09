@@ -18,8 +18,6 @@ const closePopover = () => {
 
 const searchDate = ref('')
 
-const emit = defineEmits(['searchWithDate'])
-
 // 確認篩選
 const handleClick = () => {
   groupFilterDate.value = searchDate.value

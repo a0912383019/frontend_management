@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiDeleteUserExportList } from '@/api'
 import { useGlobalStore } from '@/stores'
@@ -34,26 +33,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['deleteBoxClose', 'deleteSuccess'])
-
-const visibleBox = computed({
-  get() {
-    return props.confirmBoxVisible
-  },
-  set(newValue) {
-    emit('deleteBoxClose')
-    return newValue
-  }
-})
-
-const visibleTopBox = computed({
-  get() {
-    return props.confirmBoxTopVisible
-  },
-  set(newValue) {
-    emit('deleteBoxClose')
-    return newValue
-  }
-})
 
 // 取得資料
 const deleteUserExportList = async () => {
@@ -104,14 +83,13 @@ const deleteExecute = () => {
 }
 
 const cancelDelete = () => {
-  visibleBox.value = false
-  visibleTopBox.value = false
+  emit('deleteBoxClose')
 }
 </script>
 <template>
   <ConfirmBox
     color="red"
-    v-model="visibleBox"
+    :model-value="props.confirmBoxVisible"
     class="top15per"
     :title="$t('modal.delete')"
     @cancelExecute="cancelDelete"
@@ -139,7 +117,7 @@ const cancelDelete = () => {
   <ConfirmBox
     color="red"
     name="delete"
-    v-model="visibleTopBox"
+    :model-value="props.confirmBoxTopVisible"
     class="top15per"
     :title="$t('modal.delete')"
     @cancelExecute="cancelDelete"
