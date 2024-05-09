@@ -146,6 +146,7 @@ const addDialogVisible = ref(false)
 const openAddDialog = () => {
   targetGroup.tagGroupList = [
     {
+      custom_tags_id: '0',
       custom_tag_str: '',
       custom_tags_name: '',
       groupNameValid: true,
@@ -288,7 +289,7 @@ onMounted(() => {
         color="red"
         v-model="deleteBox"
         class="top15per"
-        :content="'gogogogo'"
+        title="modal.delete"
         @cancelExecute="cancelDelete"
         @confirmExecute="confirmDelete"
       >

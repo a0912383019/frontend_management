@@ -6,8 +6,8 @@ import { useGlobalStore, useTargetGroupStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
-import { FormatNumber, errorRespond, generateRGBColors } from '@/utils/commonUtils.js'
-import { tooltipDarkConfig, tooltipShared, tooltipAddSign } from '@/utils/highchartsConfig.js'
+import { errorRespond, generateRGBColors } from '@/utils/commonUtils.js'
+import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
 import { dayjs } from 'element-plus'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 
@@ -262,10 +262,10 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section-in h-320">
+  <section class="cdp-section-in h-325">
     <SectionTitle class="mb-5" :title="$t(title)"></SectionTitle>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" class="mt-100" />
-    <div v-if="apiSuccess" class="cursor-pointer">
+    <div v-else class="cursor-pointer">
       <highcharts :options="chartOptions"></highcharts>
     </div>
   </section>
@@ -284,6 +284,6 @@ onMounted(() => {
   }
 }
 .mt-100 {
-  margin-top: 100px;
+  margin-top: 90px;
 }
 </style>

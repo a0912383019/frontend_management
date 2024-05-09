@@ -26,8 +26,6 @@ const props = defineProps({
   }
 })
 
-const maxLength = ref(10)
-
 const renderComplete = ref(false)
 
 const tableColumns = computed(() => {
@@ -57,13 +55,17 @@ const tableColumns = computed(() => {
 })
 
 const addTagGroup = () => {
-  tagGroupList.value.push({
-    custom_tag_str: '',
-    custom_tags_name: '',
-    groupNameValid: true,
-    validType: '',
-    tagGroupValid: true
-  })
+  const rowKey = (tagGroupList.value.length).toString()
+  if (tagGroupList.value.length < 10) {
+    tagGroupList.value.push({
+      custom_tags_id: rowKey,
+      custom_tag_str: '',
+      custom_tags_name: '',
+      groupNameValid: true,
+      validType: '',
+      tagGroupValid: true
+    })
+  }
 }
 
 const deleteGroup = (idx) => {
@@ -132,7 +134,6 @@ watch(
       :serverSide="false"
       :tableData="tagGroupList"
       :tableColumns="tableColumns"
-      :pageSize="maxLength"
       :hasPagination="false"
       :stripe="false"
       rowKey="custom_tags_id"

@@ -73,7 +73,8 @@ const transformTargetDetails = (data) => {
   apiTargetData.memberName = data.member_name
   apiTargetData.createdTime = dayjs(data.created_time).format(t('date.format_datetime_rule'))
   apiTargetData.updaterName = data.updater_name
-  apiTargetData.updatedTime = dayjs(data.updated_time).format(t('date.format_datetime_rule'))
+  apiTargetData.updatedTime =
+    data.updated_time !== '' ? dayjs(data.updated_time).format(t('date.format_datetime_rule')) : ''
 
   validateForm.newTargetName = data.target_group_name
 
@@ -181,7 +182,12 @@ onMounted(() => {
           >
             <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
           </el-input>
-          <el-form v-else ref="formRef" :model="validateForm" :class="{ 'is-en': locale === 'en' && forTargetNameClass }">
+          <el-form
+            v-else
+            ref="formRef"
+            :model="validateForm"
+            :class="{ 'is-en': locale === 'en' && forTargetNameClass }"
+          >
             <el-form-item prop="newTargetName" :rules="targetNameRule">
               <el-input
                 v-model="validateForm.newTargetName"
@@ -220,7 +226,12 @@ onMounted(() => {
       </el-col>
     </div>
     <section class="cdp-section-in mb-20">
-      <TagGroupSetting ref="tagGroups" :isDisabled="!edit" @vertifyPassed="vertifyPassed" />
+      <TagGroupSetting
+        ref="tagGroups"
+        :isDisabled="!edit"
+        rowKey="custom_tags_id"
+        @vertifyPassed="vertifyPassed"
+      />
     </section>
     <div class="mb-20 flex justify-end">
       <span v-if="!edit" class="mr-10 pt-5 font-size-13 cdp-text-blue"

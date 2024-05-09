@@ -161,7 +161,7 @@ onMounted(() => {
 <template>
   <section class="cdp-section-in h-350">
     <SectionTitle class="mb-5" :title="$t('target_group_analysis.total_people')"></SectionTitle>
-    <CdpMessage :messageKey="messageKey" bg="white" :height="320" v-if="apiSuccess === false" />
+    <CdpMessage :messageKey="messageKey" bg="white" :height="290" v-if="apiSuccess === false" />
     <template v-else>
       <highcharts :options="chartOptions"></highcharts>
     </template>
