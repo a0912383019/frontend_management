@@ -15,7 +15,7 @@ import TargetGroupDetail from '@/views/TargetGroupAnalysis/components/TargetGrou
 import AddTargetGroup from '@/views/TargetGroupAnalysis/components/AddTargetGroup.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import { ElNotification } from 'element-plus'
-import { formatDateDuration } from '@/utils/commonUtils.js'
+import { formatDateDuration, sortTableDate } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
 
@@ -51,7 +51,7 @@ const tableColumns = computed(() => {
       headerAlign: 'center',
       align: 'center',
       minWidth: '20%',
-      sortable: true
+      sortable: 'custom'
     },
     {
       label: t('target_group_analysis.is_open_or_not'),
@@ -90,6 +90,7 @@ const queryTargetGroups = async () => {
       apiSuccess.value = true
       if (result.data.result.length !== 0) {
         tableData.value = transformTargetGroups(result.data.result)
+        upadteCurrentSort({ prop: 'createTime', order: 'descending' })
       }
     }
   } catch (error) {
@@ -217,6 +218,11 @@ const confirmDelete = () => {
   deleteBox.value = false
 }
 
+// 自定義排序執行的內容
+const upadteCurrentSort = ({ prop, order }) => {
+  sortTableDate({ prop, order, tableData: tableData.value })
+}
+
 onMounted(() => {
   queryTargetGroups()
 })
@@ -241,12 +247,12 @@ onMounted(() => {
         :title="$t('target_group_analysis.analysis_overview')"
       ></SectionTitle>
       <CustomTable
-        :defaultSort="{ prop: 'createTime', order: 'descending' }"
         :serverSide="false"
         :tableData="tableData"
         :tableColumns="tableColumns"
         :pageSize="10"
         :stripe="true"
+        @sort="upadteCurrentSort"
         class="customTable2 customTagListTable"
       >
         <template #is_open="scope">

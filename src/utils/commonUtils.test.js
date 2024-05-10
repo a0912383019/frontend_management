@@ -22,6 +22,7 @@ import {
   extractNumberValue,
   stringToIntArray,
   sortTableData,
+  sortTableDate,
   orderTags
 } from '@/utils/commonUtils.js'
 
@@ -407,11 +408,87 @@ describe('Utility Functions', () => {
     ])
   })
 
+  // 測試 sortTableDate 函數
+  it('sortTableDate should return the correct value', () => {
+    const tableData = [
+      {
+        date: '2024-05-01 07:04:32',
+        user_name: 'ballguest',
+        total_login_count: 47
+      },
+      {
+        date: '2024-05-01 07:04:33',
+        user_name: 'dballguest',
+        total_login_count: 5
+      },
+      {
+        date: '2024-05-03 10:04:33',
+        user_name: 'bballguest',
+        total_login_count: 14
+      },
+      {
+        date: '2024-05-02 11:05:33',
+        user_name: 'dcash888',
+        total_login_count: 89
+      }
+    ]
+
+    // 測試 欄位：date 排序：descending
+    const result1 = sortTableDate({ prop: 'date', order: 'descending', tableData })
+    expect(result1).toStrictEqual([
+      {
+        date: '2024-05-03 10:04:33',
+        total_login_count: 14,
+        user_name: 'bballguest'
+      },
+      {
+        date: '2024-05-02 11:05:33',
+        total_login_count: 89,
+        user_name: 'dcash888'
+      },
+      {
+        date: '2024-05-01 07:04:33',
+        total_login_count: 5,
+        user_name: 'dballguest'
+      },
+      {
+        date: '2024-05-01 07:04:32',
+        total_login_count: 47,
+        user_name: 'ballguest'
+      }
+    ])
+
+    // 測試 欄位：date 排序：descending
+    const result2 = sortTableDate({ prop: 'date', order: 'ascending', tableData })
+    expect(result2).toStrictEqual([
+      {
+        date: '2024-05-01 07:04:32',
+        total_login_count: 47,
+        user_name: 'ballguest'
+      },
+      {
+        date: '2024-05-01 07:04:33',
+        total_login_count: 5,
+        user_name: 'dballguest'
+      },
+      {
+        date: '2024-05-02 11:05:33',
+        total_login_count: 89,
+        user_name: 'dcash888'
+      },
+      {
+        date: '2024-05-03 10:04:33',
+        total_login_count: 14,
+        user_name: 'bballguest'
+      }
+    ])
+  })
+
   // 測試 orderTags 函數
   it('orderTags should return the correct value', () => {
-    const tagsArr = [10009,30001,40005,90001,60002,500005]
+    const tagsArr = [10009, 30001, 40005, 90001, 60002, 500005]
 
     const result = orderTags(tagsArr)
-    expect(result).toStrictEqual([60002,30001,40005,500005,10009,90001])
+    expect(result).toStrictEqual([60002, 30001, 40005, 500005, 10009, 90001])
   })
 })
