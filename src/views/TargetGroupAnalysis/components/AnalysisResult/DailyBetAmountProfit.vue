@@ -40,7 +40,7 @@ const tabList = computed(() => {
   ]
 })
 
-const BetAmountOptions = reactive({
+const betAmountOptions = reactive({
   chart: {
     type: 'line',
     height: 250
@@ -146,7 +146,7 @@ const BetAmountOptions = reactive({
   series: []
 })
 
-const profitOptions = Object.assign({}, BetAmountOptions)
+const profitOptions = Object.assign({}, betAmountOptions)
 
 const apiSuccess = ref(false) // 會員生命週期階段api是否成功
 // 依照不同的messageKey產生不同的message
@@ -224,11 +224,11 @@ const transformApiData = (data) => {
     }
   })
 
-  BetAmountOptions.xAxis.categories = dateArr
+  betAmountOptions.xAxis.categories = dateArr
   profitOptions.xAxis.categories = dateArr
 
   Object.keys(dataSet).forEach((item) => {
-    BetAmountOptions.series.push(dataSet[item])
+    betAmountOptions.series.push(dataSet[item])
   })
   Object.keys(dataSet2).forEach((item) => {
     profitOptions.series.push(dataSet2[item])
@@ -236,8 +236,8 @@ const transformApiData = (data) => {
 }
 
 const clearChart = () => {
-  BetAmountOptions.xAxis.categories = []
-  BetAmountOptions.series = []
+  betAmountOptions.xAxis.categories = []
+  betAmountOptions.series = []
   profitOptions.xAxis.categories = []
   profitOptions.series = []
 }
@@ -268,7 +268,7 @@ onMounted(() => {
       </el-row>
       <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" class="mt-100" />
       <div v-if="apiSuccess && currentTabs === 'DailyBetAmount'" class="cursor-pointer">
-        <highcharts :options="BetAmountOptions"></highcharts>
+        <highcharts :options="betAmountOptions"></highcharts>
       </div>
       <div v-if="apiSuccess && currentTabs === 'DailtProfit'" class="cursor-pointer">
         <highcharts :options="profitOptions"></highcharts>

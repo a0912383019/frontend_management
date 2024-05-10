@@ -6,7 +6,7 @@ import { useGlobalStore, useTargetGroupStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
-import { errorRespond, generateRGBColors } from '@/utils/commonUtils.js'
+import { generateRGBColors } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
 import { dayjs } from 'element-plus'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -164,14 +164,13 @@ const queryActiveDeposit = async () => {
       if (return_code === '0000') {
         transformApiData(result.data.result)
         apiSuccess.value = true
-      } else if (return_code === '0001') {
-        messageKey.value = 'noResult'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
       } else {
-        messageKey.value = 'chartFailed'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
+        const { error_code } = result.data.status
+        if (error_code === '210400000') {
+          messageKey.value = 'noResult'
+        } else {
+          messageKey.value = 'chartFailed'
+        }
       }
     } else if (props.kind === 'DepositPeople') {
       result = await apiQueryDepositPeople({
@@ -183,14 +182,13 @@ const queryActiveDeposit = async () => {
       if (return_code === '0000') {
         transformApiData(result.data.result)
         apiSuccess.value = true
-      } else if (return_code === '0001') {
-        messageKey.value = 'noResult'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
       } else {
-        messageKey.value = 'chartFailed'
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
+        const { error_code } = result.data.status
+        if (error_code === '210400000') {
+          messageKey.value = 'noResult'
+        } else {
+          messageKey.value = 'chartFailed'
+        }
       }
     }
   } catch (error) {

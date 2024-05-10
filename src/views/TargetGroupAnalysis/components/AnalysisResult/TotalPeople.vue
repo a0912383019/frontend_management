@@ -24,7 +24,7 @@ const { activeHall } = globalStore
 const targetGroup = useTargetGroupStore()
 const { filtered } = storeToRefs(targetGroup)
 
-const apiSuccess = ref(true) // api是否成功
+const apiSuccess = ref(false) // api是否成功
 // 依照不同的messageKey產生不同的message
 const messageKey = ref('shortLoading')
 
@@ -80,12 +80,12 @@ const chartOptions = reactive({
         filter: {
           property: 'percentage',
           operator: '>',
-          value: 5
+          value: 4
         }
       }
     }
   },
-  series: [{ data: [] }]
+  series: [{ startAngle: 45, data: [] }]
 })
 
 // 取得資料
