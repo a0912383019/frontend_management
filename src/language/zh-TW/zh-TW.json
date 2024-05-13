@@ -934,6 +934,7 @@
   },
 
   "user_detail_info": {
+    "personal_account_data": "個人帳戶資訊",
     "account_name": "帳戶名稱",
     "account_name_with_colon": "帳戶名稱：",
     "enabled_edit": "$t(common.enabled)$t(common.edit)",
