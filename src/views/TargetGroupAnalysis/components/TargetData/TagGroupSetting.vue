@@ -2,12 +2,12 @@
 import { computed, ref, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useTargetGroupStore } from '@/stores'
+import { storeToRefs } from 'pinia'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import SelectTag from '@/components/Filter/SelectTag.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import AddGroup from '@/components/Button/AddButton.vue'
-import { storeToRefs } from 'pinia'
 import CdpMessage from '@/components/CdpMessage.vue'
 
 const { t, locale } = useI18n()
@@ -25,8 +25,6 @@ const props = defineProps({
     default: false
   }
 })
-
-const renderComplete = ref(false)
 
 const tableColumns = computed(() => {
   return [
@@ -55,15 +53,16 @@ const tableColumns = computed(() => {
 })
 
 const addTagGroup = () => {
-  const rowKey = (tagGroupList.value.length).toString()
+  // 必須給一個不會重複的唯一值當作列的key，不然刪除會有問題
+  const rowKey = Date.now().toString()
   if (tagGroupList.value.length < 10) {
     tagGroupList.value.push({
       custom_tags_id: rowKey,
       custom_tag_str: '',
       custom_tags_name: '',
       groupNameValid: true,
-      validType: '',
-      tagGroupValid: true
+      tagGroupValid: true,
+      validType: ''
     })
   }
 }
@@ -92,6 +91,7 @@ const validTable = () => {
       isValid = false
     }
 
+    // 根據語系去變化驗證文字的高度
     const cellsInSecondRow = document.querySelectorAll(`.el-table tr:nth-child(${idx + 1}) .cell`)
     const classType =
       locale.value === 'en' ? (ele.custom_tags_name.trim() === '' ? 'ch-row' : 'en-row') : 'ch-row'
@@ -110,6 +110,9 @@ const validTable = () => {
 
 const emit = defineEmits(['vertifyPassed'])
 defineExpose({ validTable })
+
+const renderComplete = ref(false)
+
 watch(
   () => tagGroupList.value,
   () => {

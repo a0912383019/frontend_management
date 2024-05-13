@@ -42,7 +42,7 @@ const handleDialogClosed = () => {
   emit('closeDialog')
 }
 
-// 取得資料
+// 新增族群
 const addTargetGroups = async () => {
   try {
     const result = await apiAddTargetGroups({
@@ -165,8 +165,8 @@ const transformCustomTags = () => {
         </section>
         <div class="flex justify-end">
           <SwitchWithTooltip
-            name="target_group_analysis.is_open"
-            content="target_group_analysis.is_open_reminder"
+            :name="$t('target_group_analysis.is_open')"
+            :tooltipContent="$t('target_group_analysis.is_open_reminder')"
             v-model="isOpen"
             :isDisabled="false"
           />
