@@ -151,7 +151,8 @@ const openAddDialog = () => {
       custom_tag_str: '',
       custom_tags_name: '',
       groupNameValid: true,
-      tagGroupValid: true
+      tagGroupValid: true,
+      validType: ''
     }
   ]
   addDialogVisible.value = true

@@ -42,7 +42,7 @@ const handleDialogClosed = () => {
   emit('closeDialog')
 }
 
-// 取得資料
+// 新增族群
 const addTargetGroups = async () => {
   try {
     const result = await apiAddTargetGroups({
