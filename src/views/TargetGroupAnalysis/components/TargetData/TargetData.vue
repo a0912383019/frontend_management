@@ -137,12 +137,14 @@ const cancelSaved = () => {
 }
 
 const confirmSaved = () => {
+  console.log('api update')
   confirmEditBox.value = false
 }
 
 const tagGroups = ref(null)
 
 const forTargetNameClass = ref(false)
+
 const handleEditConfirm = () => {
   forTargetNameClass.value = false
   formRef.value.validate((valid) => {
@@ -238,8 +240,8 @@ onMounted(() => {
         >*{{ $t('data_name.click_to_edit') }}</span
       >
       <SwitchWithTooltip
-        name="target_group_analysis.is_open"
-        content="target_group_analysis.is_open_reminder"
+        :name="$t('target_group_analysis.is_open')"
+        :tooltipContent="$t('target_group_analysis.is_open_reminder')"
         v-model="isOpen"
         :isDisabled="!edit"
       />

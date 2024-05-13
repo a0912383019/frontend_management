@@ -1,15 +1,10 @@
 <script setup>
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
-
 const props = defineProps({
   name: {
     type: String,
     required: true
   },
-  content: {
+  tooltipContent: {
     type: String,
     default: ''
   },
@@ -41,16 +36,16 @@ const handleSwitchChange = (data) => {
     <el-switch
       :model-value="props.modelValue"
       @change="handleSwitchChange"
-      :active-text="$t(props.name)"
+      :active-text="props.name"
       class="mr-5"
       :class="switchColor"
       :disabled="props.isDisabled"
     />
     <el-tooltip
-      v-if="props.content !== ''"
+      v-if="props.tooltipContent !== ''"
       class="box-item"
       effect="dark"
-      :content="$t(props.content)"
+      :content="props.tooltipContent"
       placement="top"
     >
       <font-awesome-icon :class="{'dilute': props.isDisabled}" icon="fa-solid fa-circle-info" />
@@ -61,6 +56,7 @@ const handleSwitchChange = (data) => {
 :deep(.el-switch__label--right) {
   margin-left: 5px;
 }
+// 淡化
 .dilute {
   opacity: 0.5;
 }
