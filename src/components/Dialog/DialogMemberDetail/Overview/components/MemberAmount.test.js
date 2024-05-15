@@ -24,7 +24,7 @@ describe('MemberAmount.vue', () => {
     }
   })
 
-  //讓console.error不要洗版
+  // 讓console.error不要洗版
   vi.spyOn(console, 'error').mockImplementation(() => {})
 
   afterEach(() => {

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useSystemStore } from '@/stores/system'
+import DailogMemberAccount from '@/components/Dialog/DailogMemberAccount/DailogMemberAccount.vue'
 
 const systemStore = useSystemStore()
 
@@ -9,6 +10,8 @@ const { user_name, picture } = JSON.parse(sessionStorage.user_info)
 const dropdownMenu = ref(null)
 const dropdownVisible = ref(false)
 
+const accountVisible = ref(false)
+
 //開啟下拉
 const handleDocumentClick = (e) => {
   if (e.target.closest('.targetDropDown')) {
@@ -16,6 +19,15 @@ const handleDocumentClick = (e) => {
   } else if (!dropdownMenu.value.contains(e.target)) {
     dropdownVisible.value = false
   }
+}
+
+const showPersonalAccount = () => {
+  accountVisible.value = true
+  dropdownVisible.value = false
+}
+
+const closePersonalAccount = () => {
+  accountVisible.value = false
 }
 
 onMounted(() => {
@@ -38,6 +50,9 @@ onUnmounted(() => {
         </div>
         <transition name="slide-up-fade">
           <div class="accountbox__dropdown" ref="dropdownMenu" v-show="dropdownVisible">
+            <button class="btn-reset border-bottom" @click="showPersonalAccount">
+              {{ $t('sidebar.user_detail_info') }}
+            </button>
             <button class="btn-reset" @click="systemStore.storeLogout">
               {{ $t('nav.log_out') }}
             </button>
@@ -47,6 +62,11 @@ onUnmounted(() => {
     </div>
     <div class="lineUger"></div>
   </div>
+  <DailogMemberAccount
+    v-model="accountVisible"
+    :memberName="user_name"
+    @closeDialog="closePersonalAccount"
+  ></DailogMemberAccount>
 </template>
 <style lang="scss" scoped>
 .accountbox {
@@ -100,6 +120,9 @@ onUnmounted(() => {
         color: #4f84cf;
         background-color: rgba(79, 132, 207, 0.1);
       }
+    }
+    .border-bottom {
+      border-bottom: 1px solid #e9ecef;
     }
   }
 }

@@ -79,7 +79,7 @@ export function roundDecimal(val, precision = 2) {
   const multiplier = Math.pow(10, precision)
   if (val > 0) {
     const roundedValue = Math.round(val * multiplier) / multiplier
-    return (roundedValue).toString()
+    return roundedValue.toString()
   } else {
     const roundedValue = Math.round(Math.abs(val) * multiplier) / multiplier
     return (roundedValue * -1).toString()
@@ -382,6 +382,25 @@ export function sortTableData({ prop, order, tableData }) {
 }
 
 /**
+ * 對表格指定的欄位做排序（日期）
+ * @param {String} prop 要排序的表格表格欄位
+ * @param {String} order 排序方式 'ascending' 或 'descending'
+ * @param {Array} tableData 要排序的表格資料
+ * @returns {Array} 已排序的表格資料
+ */
+export function sortTableDate({ prop, order, tableData }) {
+  return tableData.sort((a, b) => {
+    const valueA = new Date(a[prop]).getTime()
+    const valueB = new Date(b[prop]).getTime()
+
+    if (isNaN(valueA)) return 1
+    if (isNaN(valueB)) return -1
+
+    return order === 'descending' ? valueB - valueA : valueA - valueB
+  })
+}
+
+/**
  * 對會員標籤做排序
  * @param {Array} tagArr 要排序的標籤陣列
  * @returns {Array} 已排序的標籤陣列
@@ -397,5 +416,11 @@ export function orderTags(tagArr) {
   const isNine = tagArr.filter((item) => String(item).startsWith('9'))
 
   // 根據標籤說明順序合併陣列
-  return result.concat(isSix).concat(isThree).concat(isFour).concat(isFive).concat(isOne).concat(isNine)
+  return result
+    .concat(isSix)
+    .concat(isThree)
+    .concat(isFour)
+    .concat(isFive)
+    .concat(isOne)
+    .concat(isNine)
 }

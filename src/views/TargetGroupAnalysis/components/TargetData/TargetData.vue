@@ -6,8 +6,8 @@ import { apiQueryTargetGroupsWithId } from '@/api'
 import { dayjs } from 'element-plus'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
-import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TagGroupSetting.vue'
-import ConfirmBox from '@/components/Button/ConfirmBox.vue'
+import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TargetData/TagGroupSetting.vue'
+import ConfirmBox from '@/components/ConfirmBox.vue'
 import { storeToRefs } from 'pinia'
 
 const { t, locale } = useI18n()
@@ -20,7 +20,7 @@ const { targetNameRule } = storeToRefs(targetGroup)
 
 const props = defineProps({
   targetId: {
-    type: Number
+    type: String
   }
 })
 
@@ -73,7 +73,8 @@ const transformTargetDetails = (data) => {
   apiTargetData.memberName = data.member_name
   apiTargetData.createdTime = dayjs(data.created_time).format(t('date.format_datetime_rule'))
   apiTargetData.updaterName = data.updater_name
-  apiTargetData.updatedTime = dayjs(data.updated_time).format(t('date.format_datetime_rule'))
+  apiTargetData.updatedTime =
+    data.updated_time !== '' ? dayjs(data.updated_time).format(t('date.format_datetime_rule')) : ''
 
   validateForm.newTargetName = data.target_group_name
 
@@ -100,6 +101,7 @@ const cancelEditBox = ref(false)
 const formRef = ref(null)
 
 const handleTagIsEdit = () => {
+  forTargetNameClass.value = false
   edit.value = true
 }
 
@@ -135,15 +137,20 @@ const cancelSaved = () => {
 }
 
 const confirmSaved = () => {
+  console.log('api update')
   confirmEditBox.value = false
 }
 
 const tagGroups = ref(null)
 
 const forTargetNameClass = ref(false)
+
 const handleEditConfirm = () => {
+  forTargetNameClass.value = false
   formRef.value.validate((valid) => {
-    forTargetNameClass.value = valid
+    if (!valid && validateForm.newTargetName.trim() !== '') {
+      forTargetNameClass.value = true
+    }
     if (valid && tagsGroupsValid.value) {
       confirmEditBox.value = true
     } else {
@@ -177,7 +184,12 @@ onMounted(() => {
           >
             <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
           </el-input>
-          <el-form v-else ref="formRef" :model="validateForm" :class="{ 'is-en': locale === 'en' && !forTargetNameClass }">
+          <el-form
+            v-else
+            ref="formRef"
+            :model="validateForm"
+            :class="{ 'is-en': locale === 'en' && forTargetNameClass }"
+          >
             <el-form-item prop="newTargetName" :rules="targetNameRule">
               <el-input
                 v-model="validateForm.newTargetName"
@@ -216,15 +228,20 @@ onMounted(() => {
       </el-col>
     </div>
     <section class="cdp-section-in mb-20">
-      <TagGroupSetting ref="tagGroups" :isDisabled="!edit" @vertifyPassed="vertifyPassed" />
+      <TagGroupSetting
+        ref="tagGroups"
+        :isDisabled="!edit"
+        rowKey="custom_tags_id"
+        @vertifyPassed="vertifyPassed"
+      />
     </section>
     <div class="mb-20 flex justify-end">
       <span v-if="!edit" class="mr-10 pt-5 font-size-13 cdp-text-blue"
         >*{{ $t('data_name.click_to_edit') }}</span
       >
       <SwitchWithTooltip
-        name="target_group_analysis.is_open"
-        content="target_group_analysis.is_open_reminder"
+        :name="$t('target_group_analysis.is_open')"
+        :tooltipContent="$t('target_group_analysis.is_open_reminder')"
         v-model="isOpen"
         :isDisabled="!edit"
       />
@@ -254,6 +271,8 @@ onMounted(() => {
     <ConfirmBox
       color="blue"
       v-model="cancelEditBox"
+      :title="$t('modal.not_yet_saved')"
+      :content="$t('modal.do_you_want_to_cancel_edit')"
       class="top15per"
       @cancelExecute="cancelExecute"
       @confirmExecute="confirmExecute"
@@ -263,7 +282,7 @@ onMounted(() => {
       color="blue"
       v-model="confirmEditBox"
       :width="350"
-      title="modal.confirm_correct_desc"
+      :title="$t('modal.confirm_correct_desc')"
       class="top15per"
       @cancelExecute="cancelSaved"
       @confirmExecute="confirmSaved"

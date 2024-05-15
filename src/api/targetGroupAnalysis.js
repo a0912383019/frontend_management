@@ -16,14 +16,53 @@ export const apiQueryTargetGroupsWithId = (params) => {
   })
 }
 
-// // 刪除匯出報表清單
-// export const apiDeleteUserExportList = (params) => {
-//   const { hall_name, download_urls } = params
-//   return axiosGoInstance.post(
-//     '/api/auth/export_report/delete_user_export_report',
-//     {
-//       hall_name,
-//       download_urls
-//     }
-//   )
-// }
+// 新增目標族群
+export const apiAddTargetGroups = (params) => {
+  const { hall_name, custom_tags, is_open, target_group_name } = params
+  return axiosGoInstance.post('/api/auth/target_groups', {
+    hall_name,
+    custom_tags,
+    is_open,
+    target_group_name
+  })
+}
+
+// 刪除目標族群
+export const apiDeleteTargetGroups = (params) => {
+  const { hall_name, id } = params
+  return axiosGoInstance.delete(`/api/auth/target_groups/${id}`, {
+    params: { hall_name }
+  })
+}
+
+// 取得目標族群每日貨量&損益
+export const apiQueryBetAmountAndPayoff = (params) => {
+  const { hall_name, id, search_date } = params
+  return axiosGoInstance.get(`/api/auth/target_groups/${id}/betAmount_and_payoff`, {
+    params: { hall_name, search_date }
+  })
+}
+
+// 取得目標族群總人數
+export const apiQueryTotalPeople = (params) => {
+  const { hall_name, id } = params
+  return axiosGoInstance.get(`/api/auth/target_groups/${id}/total_people`, {
+    params: { hall_name }
+  })
+}
+
+// 取得目標族群總人數
+export const apiQueryActivePeople = (params) => {
+  const { hall_name, id, search_date } = params
+  return axiosGoInstance.get(`/api/auth/target_groups/${id}/active_people`, {
+    params: { hall_name, search_date }
+  })
+}
+
+// 取得目標族群總人數
+export const apiQueryDepositPeople = (params) => {
+  const { hall_name, id, search_date } = params
+  return axiosGoInstance.get(`/api/auth/target_groups/${id}/deposit_people`, {
+    params: { hall_name, search_date }
+  })
+}

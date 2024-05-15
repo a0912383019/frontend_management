@@ -222,30 +222,30 @@ watch(
 )
 </script>
 <template>
-  <div class="select-tag">
+  <div class="select-tag-single">
     <div class="select-tag__box">
       <div
-        class="select-tag__box__tag"
+        class="select-tag-single__box__tag"
         v-for="(item, index) in currentTagAry"
         :key="index"
         @click="handleTagDelete({ item, index })"
       >
-        <div class="select-tag__box__tag__item" :class="{ isActive: item.active }">
+        <div class="select-tag-single__box__tag__item" :class="{ isActive: item.active }">
           {{ item.label }}
-          <div class="select-tag__box__tag__close"></div>
+          <div class="select-tag-single__box__tag__close"></div>
         </div>
       </div>
-      <div class="select-tag__box__text" v-for="(item, index) in tagTextAry" :key="index">
-        <div class="select-tag__box__text__item" :class="{ isActive: item.active }">
+      <div class="select-tag-single__box__text" v-for="(item, index) in tagTextAry" :key="index">
+        <div class="select-tag-single__box__text__item" :class="{ isActive: item.active }">
           {{ item.label }} :
         </div>
       </div>
     </div>
-    <div class="select-tag__inputbox">
+    <div class="select-tag-single__inputbox">
       <input
         type="text"
         v-model="tagInputText"
-        class="select-tag__input"
+        class="select-tag-single__input"
         :class="dropClass"
         :placeholder="$t('tags.filter')"
         ref="refTagInput"

@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiDeleteUserExportList } from '@/api'
 import { useGlobalStore } from '@/stores'
@@ -34,26 +33,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['deleteBoxClose', 'deleteSuccess'])
-
-const visibleBox = computed({
-  get() {
-    return props.confirmBoxVisible
-  },
-  set(newValue) {
-    emit('deleteBoxClose')
-    return newValue
-  }
-})
-
-const visibleTopBox = computed({
-  get() {
-    return props.confirmBoxTopVisible
-  },
-  set(newValue) {
-    emit('deleteBoxClose')
-    return newValue
-  }
-})
 
 // 取得資料
 const deleteUserExportList = async () => {
@@ -102,9 +81,20 @@ const deleteUserExportList = async () => {
 const deleteExecute = () => {
   deleteUserExportList()
 }
+
+const cancelDelete = () => {
+  emit('deleteBoxClose')
+}
 </script>
 <template>
-  <ConfirmBox name="delete" v-model="visibleBox" class="top15per" @confirmExecute="deleteExecute">
+  <ConfirmBox
+    color="red"
+    :model-value="props.confirmBoxVisible"
+    class="top15per"
+    :title="$t('modal.delete')"
+    @cancelExecute="cancelDelete"
+    @confirmExecute="deleteExecute"
+  >
     <template v-slot:text-body>
       <div class="text-center">
         <span>{{ $t('modal.are_you_sure_to_delete') + '「' }}</span>
@@ -125,14 +115,17 @@ const deleteExecute = () => {
     </template>
   </ConfirmBox>
   <ConfirmBox
+    color="red"
     name="delete"
-    v-model="visibleTopBox"
+    :model-value="props.confirmBoxTopVisible"
     class="top15per"
+    :title="$t('modal.delete')"
+    @cancelExecute="cancelDelete"
     @confirmExecute="deleteExecute"
   >
     <template v-slot:text-body>
       <div class="text-center table-total">
-        <span>{{ $t('modal.are_you_sure_to_delete') + ' ' + $t('common.select_all') + '？' }}</span>
+        <span>{{ $t('modal.are_you_sure_to_delete') + $t('common.select_all') + '？' }}</span>
       </div>
     </template>
   </ConfirmBox>

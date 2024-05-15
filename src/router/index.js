@@ -280,8 +280,8 @@ export const router = createRouter({
       children: [
         {
           path: '/admin-user-list',
-          name: 'admin-user-list'
-          // component: () => import('../views/Home/Home.vue')
+          name: 'admin-user-list',
+          component: () => import('../views/AdminUserList/AdminUserList.vue')
         }
       ]
     }

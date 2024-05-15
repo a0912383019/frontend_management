@@ -1,7 +1,7 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { apiLogin, apiGoLogin } from '@/api/system.js'
+import { apiLogin, apiGoLogin, apiRelease } from '@/api'
 import ErrorText from '@/components/ErrorText.vue'
 import { ElNotification } from 'element-plus'
 import { useGlobalStore } from '@/stores/global.js'
@@ -140,6 +140,19 @@ const handleLogin = async ({ credential }) => {
     throw error
   }
 }
+
+const queryApiRelease = async () => {
+  try {
+    const result = await apiRelease()
+    console.log(result)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+onMounted(() => {
+  queryApiRelease()
+})
 </script>
 <template>
   <section class="login__box">

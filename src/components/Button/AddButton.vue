@@ -1,8 +1,5 @@
 <script setup>
-import { useI18n } from 'vue-i18n'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
-
-const { t } = useI18n()
 
 const props = defineProps({
   name: {
@@ -26,7 +23,7 @@ const props = defineProps({
     :size="props.size"
     :bg="props.bg"
     color="blue"
-    :name="$t(props.name)"
+    :name="props.name"
   />
 </template>
 <style lang="scss" scoped></style>

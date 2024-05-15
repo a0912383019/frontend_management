@@ -2,12 +2,12 @@
 import { computed, ref, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useTargetGroupStore } from '@/stores'
+import { storeToRefs } from 'pinia'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import SelectTag from '@/components/Filter/SelectTag.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import AddGroup from '@/components/Button/AddButton.vue'
-import { storeToRefs } from 'pinia'
 import CdpMessage from '@/components/CdpMessage.vue'
 
 const { t, locale } = useI18n()
@@ -25,10 +25,6 @@ const props = defineProps({
     default: false
   }
 })
-
-const maxLength = ref(10)
-
-const renderComplete = ref(false)
 
 const tableColumns = computed(() => {
   return [
@@ -57,13 +53,18 @@ const tableColumns = computed(() => {
 })
 
 const addTagGroup = () => {
-  tagGroupList.value.push({
-    custom_tag_str: '',
-    custom_tags_name: '',
-    groupNameValid: true,
-    validType: '',
-    tagGroupValid: true
-  })
+  // 必須給一個不會重複的唯一值當作列的key，不然刪除會有問題
+  const rowKey = Date.now().toString()
+  if (tagGroupList.value.length < 10) {
+    tagGroupList.value.push({
+      custom_tags_id: rowKey,
+      custom_tag_str: '',
+      custom_tags_name: '',
+      groupNameValid: true,
+      tagGroupValid: true,
+      validType: ''
+    })
+  }
 }
 
 const deleteGroup = (idx) => {
@@ -78,7 +79,8 @@ const validTable = () => {
     tagGroupList.value[idx].validType = ''
     if (ele.custom_tags_name.trim() === '' || ele.custom_tags_name.trim().length > 10) {
       tagGroupList.value[idx].groupNameValid = false
-      tagGroupList.value[idx].validType = ele.custom_tags_name.trim() === ''? 'onlySpace' : 'overTen'
+      tagGroupList.value[idx].validType =
+        ele.custom_tags_name.trim() === '' ? 'onlySpace' : 'overTen'
       isError = true
       isValid = false
     }
@@ -89,8 +91,11 @@ const validTable = () => {
       isValid = false
     }
 
+    // 根據語系去變化驗證文字的高度
     const cellsInSecondRow = document.querySelectorAll(`.el-table tr:nth-child(${idx + 1}) .cell`)
-    const classType = locale.value === 'en' ? 'en-row' : 'ch-row'
+    const classType =
+      locale.value === 'en' ? (ele.custom_tags_name.trim() === '' ? 'ch-row' : 'en-row') : 'ch-row'
+
     for (var i = 0; i < cellsInSecondRow.length; ++i) {
       if (isError) {
         cellsInSecondRow[i].classList.add(classType)
@@ -105,6 +110,9 @@ const validTable = () => {
 
 const emit = defineEmits(['vertifyPassed'])
 defineExpose({ validTable })
+
+const renderComplete = ref(false)
+
 watch(
   () => tagGroupList.value,
   () => {
@@ -129,7 +137,6 @@ watch(
       :serverSide="false"
       :tableData="tagGroupList"
       :tableColumns="tableColumns"
-      :pageSize="maxLength"
       :hasPagination="false"
       :stripe="false"
       rowKey="custom_tags_id"
@@ -155,13 +162,13 @@ watch(
             v-if="!scope.row.groupNameValid && scope.row.validType === 'onlySpace'"
             class="cdp-text-candypink font-size-12 line-1-5"
           >
-            {{$t('target_group_analysis.blank_custom_tags_name_error_msg')}}
+            {{ $t('target_group_analysis.blank_custom_tags_name_error_msg') }}
           </div>
           <div
             v-if="!scope.row.groupNameValid && scope.row.validType === 'overTen'"
             class="cdp-text-candypink font-size-12 line-1-5"
           >
-            {{$t('target_group_analysis.custom_tags_name_length_limit_error_msg')}}
+            {{ $t('target_group_analysis.custom_tags_name_length_limit_error_msg') }}
           </div>
         </div>
       </template>
@@ -206,7 +213,7 @@ watch(
     <AddGroup
       v-if="!props.isDisabled"
       class="mt-5"
-      name="target_group_analysis.add_custom_tags"
+      :name="$t('target_group_analysis.add_custom_tags')"
       size="long"
       :bg="true"
       @click="addTagGroup()"
