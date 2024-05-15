@@ -76,15 +76,13 @@ button {
     &__medium {
       padding: 6px 8px;
       font-size: 13px;
-      line-height: 1.5;
+      line-height: 1.2;
       border-radius: 5px;
       min-width: 120px;
       min-height: 34px;
-      // 先強制上移svg（不加有些為跑版，不確定是什麼原因造成的，vertical middle沒有真的在中間)
-      :deep(svg) {
-        position: relative;
-        top: -2px;
-      }
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
     &__long {
       display: inline-flex;

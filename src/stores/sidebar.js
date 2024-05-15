@@ -11,11 +11,16 @@ export const useSidebarStore = defineStore(
       // 依據使用者選取的取廳別產生對應的sidebar廳別功能
       menuLists.value = []
       const storageMenu = getSessionStorageEntity('system_config').menu_config
-      menuLists.value = storageMenu.map((item) => {
-        return {
-          ...item
-        }
-      })
+      menuLists.value = storageMenu
+        .map((item) => {
+          if (item.item_id === 'user_detail_info') {
+            return null
+          }
+          return {
+            ...item
+          }
+        })
+        .filter(Boolean) // sidebar過濾帳戶資訊(user_detail_info),已移至上方會員名稱下拉,等正式上線後端拿掉欄位即可移除
     }
 
     const isSidebarClose = ref(false) //sidebar預設開啟
