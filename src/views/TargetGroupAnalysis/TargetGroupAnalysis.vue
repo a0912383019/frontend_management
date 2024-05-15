@@ -235,7 +235,7 @@ onMounted(() => {
       <div class="flex">
         <AddTarget
           class="mr-10"
-          name="target_group_analysis.add_target_group"
+          :name="$t('target_group_analysis.add_target_group')"
           @click="openAddDialog"
         />
         <Filter @searchWithTargetName="searchWithTargetName" />

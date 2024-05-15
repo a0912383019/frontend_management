@@ -213,7 +213,7 @@ watch(
     <AddGroup
       v-if="!props.isDisabled"
       class="mt-5"
-      name="target_group_analysis.add_custom_tags"
+      :name="$t('target_group_analysis.add_custom_tags')"
       size="long"
       :bg="true"
       @click="addTagGroup()"

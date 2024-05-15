@@ -936,6 +936,7 @@
   "user_detail_info": {
     "personal_account_data": "个人帐户资讯",
     "account_name": "帐户名称",
+    "account_overview": "帐户总览",
     "account_name_with_colon": "帐户名称：",
     "enabled_edit": "$t(common.enabled)$t(common.edit)",
     "input_google_email": "输入 Google 帐户 Email...",
