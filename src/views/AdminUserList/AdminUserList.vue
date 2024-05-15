@@ -1,11 +1,16 @@
 <script setup>
 import { ref, watch, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiListUserByAdmin } from '@/api'
+import { apiListUserByAdmin, apiSimulateUserData } from '@/api'
 import { useGlobalStore } from '@/stores'
 import { storeToRefs } from 'pinia'
-import { dayjs } from 'element-plus'
-import { sortTableDate, sortTableData } from '@/utils/commonUtils.js'
+import { ElNotification, dayjs } from 'element-plus'
+import {
+  sortTableDate,
+  sortTableData,
+  errorRespond,
+  getSessionStorageEntity
+} from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -87,18 +92,19 @@ const messageKey = ref('loading')
 
 const userType = ref('all')
 const userStatus = ref('all')
-const lastLogin = ref('')
+const lastLoginTime = ref('')
 
-const queryListUserByAdmin = async () => {
+const queryListUserByAdmin = async (filterData = null) => {
   apiSuccess.value = false
   messageKey.value = 'loading'
   tableData.value = []
   try {
     const result = await apiListUserByAdmin({
       hall_name: activeHall.hall_code,
-      user_type: userType.value,
-      user_status: userStatus.value,
-      last_login_date: lastLogin.value
+      user_name: filterData ? filterData.userName : '',
+      user_type: filterData ? filterData.userType : userType.value,
+      user_status: filterData ? filterData.userStatus : userStatus.value,
+      last_login_date: filterData ? filterData.lastLoginTime : lastLoginTime.value
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -152,18 +158,72 @@ const openAddDialog = () => {
   console.log('add account')
 }
 
-const searchAccount = () => {
-  console.log('filter')
+const searchAccount = (filterData) => {
+  queryListUserByAdmin(filterData)
 }
 
 const showAccountSetting = () => {
   console.log('user account')
 }
 
+const querySimulateUserData = (user_id) => {
+  return new Promise((resolve, reject) => {
+    apiSimulateUserData({ user_id })
+      .then((result) => {
+        const { return_code } = result.data.status
+        if (return_code === '0000') {
+          let userInfo = result.data.result
+          let userInfoEntity = {
+            user_id: userInfo.user_id,
+            user_name: userInfo.user_name,
+            user_type: userInfo.user_type,
+            access_hall: userInfo.access_hall,
+            user_picture: userInfo.picture,
+            access_token: userInfo.token_type + ' ' + userInfo.access_token
+          }
+          resolve(userInfoEntity)
+        } else {
+          const failMsg = errorRespond(result.data.status)
+          console.error(failMsg)
+          reject(new Error(failMsg))
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        if (error.response && error.response.status === 401) {
+          globalStore.storeHandleApiError()
+        }
+        reject(error)
+      })
+  })
+}
+
 const simulationRoute = router.resolve({ name: 'Home' })
-const simulationUser = () => {
-  console.log('simulate user')
-  //   window.open(routeData.href, 'CDP', 'height=960,width=1560')
+const simulationUser = (id) => {
+  querySimulateUserData(id)
+    .then((userInfoEntity) => {
+      let curUserData = getSessionStorageEntity('user_info')
+      let curUserToken = sessionStorage.access_token
+      let simulateUserToken = userInfoEntity.access_token
+      delete userInfoEntity.access_token
+
+      //  將模擬的使用者資料更新至sessionStorage
+      sessionStorage.setItem('user_info', JSON.stringify(userInfoEntity))
+      sessionStorage.access_token = simulateUserToken
+
+      //  開啟模擬視窗
+      window.open(simulationRoute.href, 'CDP', 'height=960,width=1560')
+
+      //  將目前的使用者資料更新回sessionStorage
+      sessionStorage.setItem('user_info', JSON.stringify(curUserData))
+      sessionStorage.access_token = curUserToken
+    })
+    .catch(() => {
+      ElNotification({
+        title: t('admin_user.demo_failed'),
+        type: 'error'
+      })
+    })
 }
 
 const openDeleteBox = (id) => {
@@ -243,7 +303,7 @@ onMounted(() => {
               icon="computer"
               :isSvg="true"
               :name="$t('admin_user.demo')"
-              @click="simulationUser()"
+              @click="simulationUser(scope.row.id)"
             />
             <ButtonIcon
               class="detail-button ml-5"
