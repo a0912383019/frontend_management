@@ -63,7 +63,14 @@ describe('Account', () => {
     await wrapper.vm.handleDocumentClick(etarget)
     expect(wrapper.vm.dropdownVisible).toBe(true)
 
-    await wrapper.find('.btn-reset').trigger('click')
+    expect(wrapper.vm.accountVisible).toBe(false)
+    await wrapper.findAll('.btn-reset').at(0).trigger('click')
+    expect(wrapper.vm.accountVisible).toBe(true)
+
+    await wrapper.vm.closePersonalAccount()
+    expect(wrapper.vm.accountVisible).toBe(false)
+
+    await wrapper.findAll('.btn-reset').at(1).trigger('click')
     expect(systemStore.storeLogout).toHaveBeenCalled()
   })
 })

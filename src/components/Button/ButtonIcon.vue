@@ -76,10 +76,13 @@ button {
     &__medium {
       padding: 6px 8px;
       font-size: 13px;
-      line-height: 1.5;
+      line-height: 1.2;
       border-radius: 5px;
       min-width: 120px;
       min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
     &__long {
       display: inline-flex;

@@ -934,7 +934,9 @@
   },
 
   "user_detail_info": {
+    "personal_account_data": "Personal account info",
     "account_name": "Name",
+    "account_overview": "Account overview",
     "account_name_with_colon": "Name：",
     "enabled_edit": "$t(common.enabled)$t(common.edit)",
     "input_google_email": "Enter a Google Account Email...",

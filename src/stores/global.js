@@ -1,7 +1,12 @@
 import { ref, reactive, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
-import { RFM_NAPL_step_config, iconStep } from '@/../public/js/system_config.js'
+import {
+  RFM_NAPL_step_config,
+  iconStep,
+  user_type_dict,
+  user_status_dict
+} from '@/../public/js/system_config.js'
 import { i18n } from '@/global/i18n'
 
 export const useGlobalStore = defineStore(
@@ -64,6 +69,30 @@ export const useGlobalStore = defineStore(
       config[6]['step_description'] = t('member_life_cycles.churning_description')
       config[7]['step_name'] = t('member_life_cycles.churned')
       config[7]['step_description'] = t('member_life_cycles.churned_description')
+      return config
+    })
+
+    // 使用者config
+    const general_user = 0 // 一般使用者
+    const advanced_user = 1 // 進階使用者
+    const hall_admin = 8 // 遊戲廳管理員
+    const system_admin = 9 // 系統管理員
+    const gm_user = -1;  // GM
+
+    const userTypeConfig = computed(() => {
+      const config = user_type_dict
+      config[general_user] = t('user_detail_info.user_type_0')
+      config[advanced_user] = t('user_detail_info.user_type_1')
+      config[hall_admin] = t('user_detail_info.user_type_8')
+      config[system_admin] = t('user_detail_info.user_type_9')
+      config[gm_user] = 'GM'
+      return config
+    })
+
+    const userStatusConfig = computed(() => {
+      const config = user_status_dict
+      config[0] = t('common.enabled')
+      config[1] = t('common.disabled')
       return config
     })
 
@@ -138,7 +167,9 @@ export const useGlobalStore = defineStore(
       systemConfigIsOk,
       activityStep,
       hallChange,
-      lastRoute
+      lastRoute,
+      userTypeConfig,
+      userStatusConfig
     }
   },
   {

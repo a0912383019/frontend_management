@@ -188,19 +188,19 @@ describe('useSystemStore', () => {
       svg_icon: 'menuExport',
       sub_menu: []
     },
-    {
-      item_id: 'user_detail_info',
-      item_name: '帳戶資訊',
-      folder_path: 'user/',
-      page_name: 'user_detail_info',
-      nav_icon: 'fas fa-user-cog',
-      is_loading_auto_hide: false,
-      status: 1,
-      status_description: '',
-      url_path: 'user-detail-info',
-      svg_icon: 'menuAccount',
-      sub_menu: []
-    },
+    // {
+    //   item_id: 'user_detail_info',
+    //   item_name: '帳戶資訊',
+    //   folder_path: 'user/',
+    //   page_name: 'user_detail_info',
+    //   nav_icon: 'fas fa-user-cog',
+    //   is_loading_auto_hide: false,
+    //   status: 1,
+    //   status_description: '',
+    //   url_path: 'user-detail-info',
+    //   svg_icon: 'menuAccount',
+    //   sub_menu: []
+    // },
     {
       item_id: 'admin_user_list',
       item_name: '使用者帳戶管理',
@@ -232,7 +232,7 @@ describe('useSystemStore', () => {
     expect(sidebarStore.menuLists).toStrictEqual([])
     // 調用 generateSidebarMenu 方法
     await sidebarStore.generateSidebarMenu()
-    
+
     expect(sidebarStore.menuLists).toStrictEqual(menu)
 
     expect(sidebarStore.isSidebarClose).toBe(false)

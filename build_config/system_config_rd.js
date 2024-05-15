@@ -1851,10 +1851,11 @@ RFM_NAPL_step_config['7'] = {
  * 使用者config
  */
 export const user_type_dict = {}
-export const general_user = 0 // 一般使用者
-export const advanced_user = 1 // 進階使用者
-export const hall_admin = 8 // 遊戲廳管理員
-export const system_admin = 9 // 系統管理員
+// export const general_user = 0 // 一般使用者
+// export const advanced_user = 1 // 進階使用者
+// export const hall_admin = 8 // 遊戲廳管理員
+// export const system_admin = 9 // 系統管理員
+// export const gm_user = -1;  // GM
 
 export const user_status_dict = {}
 export const user_config = {}
