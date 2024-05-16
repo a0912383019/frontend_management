@@ -56,7 +56,7 @@ const form = reactive({
   lastLoginTime: ''
 })
 
-const isLastLoginTimeCheck = ref(true)
+const isLastLoginTimeCheck = ref(false)
 
 // 確認篩選
 const handleClick = () => {
@@ -158,7 +158,7 @@ const handleClick = () => {
             </div>
             <DatepickerRange
               v-model="form.lastLoginTime"
-              :config="1"
+              :config="8"
               :shortcutsConfig="1"
               :disabled="!isLastLoginTimeCheck"
               class="w-full filter-datepicker"
