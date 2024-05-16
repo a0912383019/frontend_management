@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed, onMounted } from 'vue'
+import { ref, watch, computed, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiListUserByAdmin, apiSimulateUserData } from '@/api'
 import { useGlobalStore } from '@/stores'
@@ -18,6 +18,7 @@ import PageTitle from '@/components/Title/PageTitle.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import AddAccount from '@/components/Button/AddButton.vue'
 import Filter from '@/views/AdminUserList/Filter.vue'
+import UserAccountSetting from '@/views/AdminUserList/UserAccountSetting.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -162,8 +163,16 @@ const searchAccount = (filterData) => {
   queryListUserByAdmin(filterData)
 }
 
-const showAccountSetting = () => {
-  console.log('user account')
+const userAccountVisible = ref(false)
+const userData = reactive({})
+const showAccountSetting = (userId, userName) => {
+  console.log(userId, userName)
+  userData.userId = userId
+  userData.userName = userName
+  userAccountVisible.value = true
+}
+const closeUserDialog = () => {
+  userAccountVisible.value = false
 }
 
 const querySimulateUserData = (user_id) => {
@@ -263,7 +272,10 @@ onMounted(() => {
         @sort="upadteCurrentSort"
       >
         <template #account_name="scope">
-          <div class="font-size-14 cdp-link-click" @click="showAccountSetting">
+          <div
+            class="font-size-14 cdp-link-click"
+            @click="showAccountSetting(scope.row.id, scope.row.account_name)"
+          >
             <span>{{ scope.row.account_name }}</span>
           </div>
         </template>
@@ -316,6 +328,12 @@ onMounted(() => {
           </div>
         </template>
       </CustomTable>
+      <UserAccountSetting
+        v-model="userAccountVisible"
+        :userId="userData.userId"
+        :userName="userData.userName"
+        @closeDialog="closeUserDialog"
+      />
     </div>
   </section>
 </template>

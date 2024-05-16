@@ -17,3 +17,10 @@ export const apiSimulateUserData = (params) => {
     user_id
   })
 }
+
+export const apiUserByAdmin = (params) => {
+  const { user_id_hide } = params
+  return axiosInstance.post('/api/auth/user/query_user_by_admin', {
+    user_id_hide
+  })
+}
