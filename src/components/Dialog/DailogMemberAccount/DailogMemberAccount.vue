@@ -1,8 +1,15 @@
 <script setup>
 import { reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { apiQueryUserInfo } from '@/api'
+import { getSessionStorageEntity } from '@/utils/commonUtils.js'
+import { useGlobalStore } from '@/stores'
+import { ElNotification, dayjs } from 'element-plus'
 
 const { t } = useI18n()
+
+const globalStore = useGlobalStore()
+const { userTypeConfig } = globalStore
 
 const props = defineProps({
   modelValue: {
@@ -14,9 +21,78 @@ const props = defineProps({
   }
 })
 
+const memberData = reactive({
+  email: '',
+  accountType: '',
+  createdTime: '',
+  loginNum: '',
+  lastUpdateTime: '',
+  lastLoginTime: ''
+})
+
+//取得會員資訊
+const queryUserInfo = async () => {
+  let user_id = getSessionStorageEntity('user_info').user_id
+  try {
+    const result = await apiQueryUserInfo({
+      member_id: user_id
+    })
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      transformUserInfo(result.data.result)
+    } else {
+      initMemberData()
+    }
+  } catch (error) {
+    initMemberData()
+    console.error(error)
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.query_failed'),
+        type: 'error'
+      })
+    }
+  }
+}
+
+const initMemberData = () => {
+  memberData.email = ''
+  memberData.accountType = ''
+  memberData.createdTime = ''
+  memberData.loginNum = ''
+  memberData.lastUpdateTime = ''
+  memberData.lastLoginTime = ''
+}
+
+const transformUserInfo = (data) => {
+  memberData.email = data.email
+  memberData.accountType = userTypeConfig[data.user_type]
+  memberData.createdTime =
+    data.created_time === null
+      ? '-'
+      : dayjs(data.created_time).format(t('date.format_datetime_rule'))
+  memberData.loginNum = data.login_num.toString()
+  memberData.lastUpdateTime =
+    data.updated_time === null
+      ? '-'
+      : dayjs(data.updated_time).format(t('date.format_datetime_rule'))
+  memberData.lastLoginTime =
+    data.last_login_date === null
+      ? '-'
+      : dayjs(data.last_login_date).format(t('date.format_datetime_rule'))
+}
+
 // 開啟 dialog
-// const handleOpenDialog = () => {
-// }
+const handleOpenDialog = () => {
+  queryUserInfo()
+}
 
 const emit = defineEmits(['closeDialog'])
 
@@ -24,15 +100,6 @@ const emit = defineEmits(['closeDialog'])
 const handleDialogClosed = () => {
   emit('closeDialog')
 }
-
-const memberData = reactive({
-  email: 'abc@abc',
-  accountType: '系統管理員',
-  createdTime: '2023/05/12 17:18:42',
-  loginNum: '2067',
-  lastUpdateTime: '2024/01/19 15:13:24',
-  lastLoginTime: '2024/05/13 13:50:09'
-})
 </script>
 <template>
   <div>
@@ -42,6 +109,7 @@ const memberData = reactive({
       :append-to-body="true"
       :destroy-on-close="true"
       width="740"
+      @open="handleOpenDialog"
       @closed="handleDialogClosed"
     >
       <template #header>
@@ -61,7 +129,11 @@ const memberData = reactive({
             </el-col>
             <el-col :span="12">
               <div class="cdp-text-blue mb-3">{{ $t('user_detail_info.user_type') }}</div>
-              <el-input v-model="memberData.accountType" class="cdp-input cdp-input-disabled" readonly>
+              <el-input
+                v-model="memberData.accountType"
+                class="cdp-input cdp-input-disabled"
+                readonly
+              >
                 <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
               </el-input>
             </el-col>
@@ -69,7 +141,11 @@ const memberData = reactive({
           <el-row :gutter="20" class="mb-16">
             <el-col :span="12">
               <div class="cdp-text-blue mb-3">{{ $t('data_name.created_time') }}</div>
-              <el-input v-model="memberData.createdTime" class="cdp-input cdp-input-disabled" readonly>
+              <el-input
+                v-model="memberData.createdTime"
+                class="cdp-input cdp-input-disabled"
+                readonly
+              >
                 <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
               </el-input>
             </el-col>
@@ -83,13 +159,21 @@ const memberData = reactive({
           <el-row :gutter="20">
             <el-col :span="12">
               <div class="cdp-text-blue mb-3">{{ $t('user_detail_info.last_update_time') }}</div>
-              <el-input v-model="memberData.lastUpdateTime" class="cdp-input cdp-input-disabled" readonly>
+              <el-input
+                v-model="memberData.lastUpdateTime"
+                class="cdp-input cdp-input-disabled"
+                readonly
+              >
                 <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
               </el-input>
             </el-col>
             <el-col :span="12">
               <div class="cdp-text-blue mb-3">{{ $t('user_detail_info.last_login_time') }}</div>
-              <el-input v-model="memberData.lastLoginTime" class="cdp-input cdp-input-disabled" readonly>
+              <el-input
+                v-model="memberData.lastLoginTime"
+                class="cdp-input cdp-input-disabled"
+                readonly
+              >
                 <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
               </el-input>
             </el-col>

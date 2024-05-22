@@ -1,4 +1,14 @@
 import axiosInstance from './axiosInstance'
+import axiosGoInstance from './axiosGoInstance.js'
+
+export const apiQueryUserInfo = (params) => {
+  const { member_id } = params
+  return axiosGoInstance.get('/api/auth/user/user_info', {
+    params: {
+      member_id
+    }
+  })
+}
 
 export const apiListUserByAdmin = (params) => {
   const { hall_name, user_name, user_type, user_status, last_login_date } = params
