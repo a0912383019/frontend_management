@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryUserInfo } from '@/api'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
@@ -15,12 +15,10 @@ const props = defineProps({
   modelValue: {
     type: Boolean,
     default: false
-  },
-  memberName: {
-    type: String
   }
 })
 
+const userName = ref('')
 const memberData = reactive({
   email: '',
   accountType: '',
@@ -63,6 +61,7 @@ const queryUserInfo = async () => {
 }
 
 const initMemberData = () => {
+  userName.value = ''
   memberData.email = ''
   memberData.accountType = ''
   memberData.createdTime = ''
@@ -72,6 +71,7 @@ const initMemberData = () => {
 }
 
 const transformUserInfo = (data) => {
+  userName.value = data.name
   memberData.email = data.email
   memberData.accountType = userTypeConfig[data.user_type]
   memberData.createdTime =
@@ -115,7 +115,7 @@ const handleDialogClosed = () => {
       <template #header>
         <div class="cdp-dialog__header">
           {{ $t('user_detail_info.personal_account_data') }}
-          <div class="underline ml-10">{{ props.memberName }}</div>
+          <div class="underline ml-10">{{ userName }}</div>
         </div>
       </template>
       <div class="cdp-dialog__content">
