@@ -311,24 +311,6 @@ watch(
 }
 </style>
 <style lang="scss">
-.checkbox-label {
-  .el-checkbox {
-    &__label {
-      font-size: 16px;
-      font-weight: 500;
-      color: $purple;
-    }
-    &__input {
-      &.is-checked {
-        & + .el-checkbox {
-          &__label {
-            color: $purple;
-          }
-        }
-      }
-    }
-  }
-}
 .filter-datepicker {
   .el-date-editor {
     width: 100%;
