@@ -39,11 +39,12 @@ const queryUserInfo = async () => {
     if (return_code === '0000') {
       transformUserInfo(result.data.result)
     } else {
+      // 放在這可以讓只有資料異動才會初始化，只有第一次打開需要新渲染資料，之後只要資料沒有異動畫面就不會有斷點
       initMemberData()
     }
   } catch (error) {
-    initMemberData()
     console.error(error)
+    initMemberData()
     if (error.response.status === 403) {
       ElNotification({
         title: t('msg.no_permission'),
