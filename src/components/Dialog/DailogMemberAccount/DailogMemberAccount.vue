@@ -1,26 +1,25 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryUserInfo } from '@/api'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore } from '@/stores'
 import { ElNotification, dayjs } from 'element-plus'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
-const { userTypeConfig } = globalStore
+const { userTypeConfig } = storeToRefs(globalStore)
 
 const props = defineProps({
   modelValue: {
     type: Boolean,
     default: false
-  },
-  memberName: {
-    type: String
   }
 })
 
+const userName = ref('')
 const memberData = reactive({
   email: '',
   accountType: '',
@@ -41,11 +40,12 @@ const queryUserInfo = async () => {
     if (return_code === '0000') {
       transformUserInfo(result.data.result)
     } else {
+      // 放在這可以讓只有資料異動才會初始化，只有第一次打開需要新渲染資料，之後只要資料沒有異動畫面就不會有斷點
       initMemberData()
     }
   } catch (error) {
-    initMemberData()
     console.error(error)
+    initMemberData()
     if (error.response.status === 403) {
       ElNotification({
         title: t('msg.no_permission'),
@@ -63,6 +63,7 @@ const queryUserInfo = async () => {
 }
 
 const initMemberData = () => {
+  userName.value = ''
   memberData.email = ''
   memberData.accountType = ''
   memberData.createdTime = ''
@@ -72,8 +73,9 @@ const initMemberData = () => {
 }
 
 const transformUserInfo = (data) => {
+  userName.value = data.name
   memberData.email = data.email
-  memberData.accountType = userTypeConfig[data.user_type]
+  memberData.accountType = userTypeConfig.value[data.user_type]
   memberData.createdTime =
     data.created_time === null
       ? '-'
@@ -115,7 +117,7 @@ const handleDialogClosed = () => {
       <template #header>
         <div class="cdp-dialog__header">
           {{ $t('user_detail_info.personal_account_data') }}
-          <div class="underline ml-10">{{ props.memberName }}</div>
+          <div class="underline ml-10">{{ userName }}</div>
         </div>
       </template>
       <div class="cdp-dialog__content">
