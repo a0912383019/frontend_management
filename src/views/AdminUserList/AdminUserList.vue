@@ -39,21 +39,22 @@ const tableColumns = computed(() => {
       prop: 'account_name',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '20%'
+      minWidth: '14%'
     },
     {
       label: t('data_name.email'),
       prop: 'email',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '22%'
+      colClass: 'break-work',
+      minWidth: '20%'
     },
     {
       label: t('user_detail_info.user_type'),
       prop: 'user_type',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '12%'
     },
     {
       label: t('data_name.status'),
@@ -67,7 +68,7 @@ const tableColumns = computed(() => {
       prop: 'login_num',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '12%',
       sortable: 'custom'
     },
     {
@@ -75,7 +76,7 @@ const tableColumns = computed(() => {
       prop: 'last_login_time',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '14%',
+      minWidth: '13%',
       sortable: 'custom'
     },
     {
@@ -83,7 +84,7 @@ const tableColumns = computed(() => {
       prop: 'operation',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '17%'
+      minWidth: '21%'
     }
   ]
 })
@@ -354,6 +355,14 @@ onMounted(() => {
       justify-content: center;
       min-height: 62px;
     }
+  }
+}
+</style>
+<style lang="scss" scoped>
+// email 超出cell寬度會自己斷行
+:deep(.break-work) {
+  .cell {
+    word-break: break-all;
   }
 }
 </style>
