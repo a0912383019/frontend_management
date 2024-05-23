@@ -5,11 +5,12 @@ import { apiQueryUserInfo } from '@/api'
 import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore } from '@/stores'
 import { ElNotification, dayjs } from 'element-plus'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
-const { userTypeConfig } = globalStore
+const { userTypeConfig } = storeToRefs(globalStore)
 
 const props = defineProps({
   modelValue: {
@@ -74,7 +75,7 @@ const initMemberData = () => {
 const transformUserInfo = (data) => {
   userName.value = data.name
   memberData.email = data.email
-  memberData.accountType = userTypeConfig[data.user_type]
+  memberData.accountType = userTypeConfig.value[data.user_type]
   memberData.createdTime =
     data.created_time === null
       ? '-'
