@@ -45,7 +45,9 @@ const handleDialogClosed = () => {
       </div>
     </template>
     <div class="cdp-dialog__content">
-      <DialogContent />
+      <section class="cdp-section">
+        <DialogContent />
+      </section>
     </div>
   </el-dialog>
 </template>

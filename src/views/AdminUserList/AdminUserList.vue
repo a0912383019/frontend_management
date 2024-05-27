@@ -39,7 +39,7 @@ const tableColumns = computed(() => {
       prop: 'account_name',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '14%'
+      minWidth: '15%'
     },
     {
       label: t('data_name.email'),
@@ -84,7 +84,7 @@ const tableColumns = computed(() => {
       prop: 'operation',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '21%'
+      minWidth: '20%'
     }
   ]
 })
