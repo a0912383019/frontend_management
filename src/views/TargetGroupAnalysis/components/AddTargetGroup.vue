@@ -117,10 +117,11 @@ const customTags = ref([])
 
 const transformCustomTags = () => {
   customTags.value = []
-  tagGroupList.value.forEach((ele) => {
+  tagGroupList.value.forEach((ele, idx) => {
     let newGroup = {}
     newGroup.tags_name = ele.custom_tags_name
     newGroup.tags_str = ele.custom_tag_str
+    newGroup.sort = idx + 1
     customTags.value.push(newGroup)
   })
 }
