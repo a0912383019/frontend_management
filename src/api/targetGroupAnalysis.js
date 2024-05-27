@@ -27,6 +27,17 @@ export const apiAddTargetGroups = (params) => {
   })
 }
 
+// 修改目標族群
+export const apiUpdateTargetGroups = (params) => {
+  const { hall_name, target_id, custom_tags, is_open, target_group_name } = params
+  return axiosGoInstance.put(`/api/auth/target_groups/${target_id}`, {
+    hall_name,
+    custom_tags,
+    is_open,
+    target_group_name
+  })
+}
+
 // 刪除目標族群
 export const apiDeleteTargetGroups = (params) => {
   const { hall_name, id } = params

@@ -2,12 +2,13 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useTargetGroupStore } from '@/stores'
-import { apiQueryTargetGroupsWithId } from '@/api'
+import { apiQueryTargetGroupsWithId, apiUpdateTargetGroups } from '@/api'
 import { dayjs } from 'element-plus'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TargetData/TagGroupSetting.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
+import { ElNotification } from 'element-plus'
 import { storeToRefs } from 'pinia'
 
 const { t, locale } = useI18n()
@@ -67,6 +68,7 @@ const edit = ref(false)
 let copiedObject
 
 const transformTargetDetails = (data) => {
+  // 初始會員資料
   copiedObject = JSON.parse(JSON.stringify(data))
 
   apiTargetData.targetName = data.target_group_name
@@ -130,6 +132,61 @@ const confirmExecute = () => {
   }
 }
 
+const sortTargetGroups = (data) => {
+  let result = []
+  data.forEach((ele, idx) => {
+    let newGroup = {}
+    newGroup.tags_name = ele.custom_tags_name
+    newGroup.tags_str = ele.custom_tag_str
+    newGroup.sort = idx + 1
+    result.push(newGroup)
+  })
+  return result
+}
+
+const emit = defineEmits(['updateSuccess'])
+
+const updateTargetGroups = async () => {
+  try {
+    const result = await apiUpdateTargetGroups({
+      hall_name: activeHall.hall_code,
+      target_id: props.targetId,
+      custom_tags: sortTargetGroups(targetGroup.tagGroupList),
+      is_open: isOpen.value,
+      target_group_name: validateForm.newTargetName
+    })
+
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      ElNotification({
+        title: t('msg.updated_successfully'),
+        type: 'success'
+      })
+      emit('updateSuccess')
+    } else {
+      ElNotification({
+        title: t('msg.update_failed'),
+        type: 'error'
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.update_failed'),
+        type: 'error'
+      })
+    }
+  }
+}
+
 const confirmEditBox = ref(false)
 
 const cancelSaved = () => {
@@ -137,7 +194,7 @@ const cancelSaved = () => {
 }
 
 const confirmSaved = () => {
-  console.log('api update')
+  updateTargetGroups()
   confirmEditBox.value = false
 }
 
