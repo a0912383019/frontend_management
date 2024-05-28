@@ -88,6 +88,7 @@ const addTargetGroups = async () => {
 const tagsGroupsValid = ref(false)
 
 const handleTagGroupAdd = () => {
+  tagGroups.value.validTable()
   formRef.value.validate((valid) => {
     if (valid && tagsGroupsValid.value) {
       confirmSaveBox.value = true
@@ -95,7 +96,6 @@ const handleTagGroupAdd = () => {
       return false
     }
   })
-  tagGroups.value.validTable()
 }
 
 const vertifyPassed = (valid) => {

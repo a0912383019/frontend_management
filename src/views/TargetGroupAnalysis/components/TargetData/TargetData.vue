@@ -204,6 +204,7 @@ const forTargetNameClass = ref(false)
 
 const handleEditConfirm = () => {
   forTargetNameClass.value = false
+  tagGroups.value.validTable()
   formRef.value.validate((valid) => {
     if (!valid && validateForm.newTargetName.trim() !== '') {
       forTargetNameClass.value = true
@@ -214,7 +215,6 @@ const handleEditConfirm = () => {
       return false
     }
   })
-  tagGroups.value.validTable()
 }
 
 const tagsGroupsValid = ref(false)
@@ -225,6 +225,7 @@ const vertifyPassed = (valid) => {
 
 onMounted(() => {
   queryTargetGroupsId()
+  tagsGroupsValid.value = false
 })
 </script>
 <template>
