@@ -1,5 +1,5 @@
 import { it, describe, expect, vi, afterEach, beforeEach } from 'vitest'
-import { shallowMount } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
 import { useTargetGroupStore } from '@/stores'
@@ -141,7 +141,7 @@ describe('TargetData.vue', () => {
   })
 
   it('test api called correctly', async () => {
-    await wrapper.vm.$nextTick()
+    await flushPromises()
     expect(spyGet).toHaveBeenCalledWith(
       `/api/auth/target_groups/${wrapper.vm.targetId}`,
       expect.any(Object)
