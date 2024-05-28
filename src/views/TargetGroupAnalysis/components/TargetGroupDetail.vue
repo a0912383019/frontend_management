@@ -86,7 +86,7 @@ const handleDialogClosed = () => {
       </el-row>
       <div class="cdp-dialog__component">
         <keep-alive>
-          <component :is="currentTabComponent" :targetId="props.targetId"></component>
+          <component :is="currentTabComponent" :targetId="props.targetId" @updateSuccess="handleDialogClosed"></component>
         </keep-alive>
       </div>
     </div>
