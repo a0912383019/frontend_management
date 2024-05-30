@@ -686,6 +686,11 @@
   },
 
   "activity_analysis": {
+    "overview": "总览",
+    "activity_list_overview": "活动列表总览",
+    "growth_rate": "成长率",
+    "growth_gap": "成长差额",
+    "total": "总和",
     "activity_hall": "活动厅别",
     "activity_date": "活动日期",
     "activity_name": "活动名称",

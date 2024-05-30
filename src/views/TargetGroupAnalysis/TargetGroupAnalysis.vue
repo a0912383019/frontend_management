@@ -230,7 +230,7 @@ onMounted(() => {
 </script>
 <template>
   <section class="cdp-section mb-0">
-    <div class="flex items-center justify-between mb-20" ref="refContent">
+    <div class="flex items-center justify-between mb-20">
       <PageTitle icon="menuExport" :title="$t('sidebar.target_group_analysis_list')" />
       <div class="flex">
         <AddTarget
