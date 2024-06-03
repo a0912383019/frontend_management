@@ -72,7 +72,7 @@ onMounted(() => {
             <el-input
               v-model="searchActivity"
               class="cdp-input__purple"
-              :placeholder="$t('common.input_member_name_search')"
+              :placeholder="$t('activity_analysis.input_activity_name_to_search')"
             />
           </div>
         </div>
