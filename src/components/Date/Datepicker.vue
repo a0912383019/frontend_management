@@ -130,4 +130,9 @@ watch(i18nLocale, () => {
     />
   </div>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.el-popper.el-picker__popper) {
+  right: 0 !important;
+  inset: 80px 0 auto auto !important;
+}
+</style>

@@ -72,7 +72,8 @@ describe('MemberJourney.vue', () => {
       data: {
         result: [
           {
-            user_tag: '10001,40001,40004',
+            // 下架或不存在標籤不影響顯示ex 50001
+            user_tag: '10001,40001,40004, 50001',
             accumulate_deposit_amount: '45031',
             accumulate_deposit_amount_level: 1,
             accumulate_bet_amount: '184472',

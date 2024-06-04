@@ -60,7 +60,7 @@ const isLastLoginTimeCheck = ref(false)
 
 // 確認篩選
 const handleClick = () => {
-  let filterData = {...form}
+  let filterData = { ...form }
   if (!isLastLoginTimeCheck.value) {
     filterData.lastLoginTime = ''
   }
@@ -161,7 +161,7 @@ const handleClick = () => {
               :config="8"
               :shortcutsConfig="1"
               :disabled="!isLastLoginTimeCheck"
-              class="w-full filter-datepicker"
+              class="w-full filter-datepicker admin-date-picker"
               classColor="purple"
             />
           </el-col>
@@ -180,6 +180,11 @@ const handleClick = () => {
   </div>
 </template>
 <style lang="scss" scoped>
+.admin-date-picker {
+  :deep(.el-popper.el-picker__popper) {
+    inset: 145px -13px auto auto !important;
+  }
+}
 .drop {
   &__search {
     margin-top: 5px;

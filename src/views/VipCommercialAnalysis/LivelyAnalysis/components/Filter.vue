@@ -143,13 +143,11 @@ watch(
               class="cdp-input__purple"
             />
           </div>
-
           <div class="drop__top__item">
             <SectionTitle size="small" class="cdp-text-purple mb-4" :title="$t('date.date')">
             </SectionTitle>
             <Datepicker v-model="filterData.searchDate" classColor="purple" />
           </div>
-
           <div class="drop__top__item full">
             <SectionTitle
               size="small"
