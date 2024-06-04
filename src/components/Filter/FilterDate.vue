@@ -181,6 +181,6 @@ watch(
 }
 :deep(.el-popper.el-picker__popper.cdp-datepicker-range-popper__purple) {
   right: 0 !important;
-  inset: 90px 0 auto auto !important;
+  inset: 70px 0 auto auto !important;
 }
 </style>
