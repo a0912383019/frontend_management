@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { getSessionStorageEntity, checkTagUsage, errorRespond } from '@/utils/commonUtils.js'
-import { system_admin } from '@/../public/js/system_config.js'
+import { user_types } from '@/../public/js/system_config.js'
 import { dayjs, ElNotification } from 'element-plus'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
@@ -160,13 +160,13 @@ onMounted(() => {
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
       </el-col>
-      <el-col :span="8" class="mb-15" v-if="userType === system_admin">
+      <el-col :span="8" class="mb-15" v-if="userType === user_types.system_admin">
         <div class="cdp-text-blue mb-3">{{ $t('data_name.phone_number') }}</div>
         <el-input v-model="apiMemberData.user_phone" class="cdp-input cdp-input-disabled" readonly>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
       </el-col>
-      <el-col :span="8" class="mb-15" v-if="userType === system_admin">
+      <el-col :span="8" class="mb-15" v-if="userType === user_types.system_admin">
         <div class="cdp-text-blue mb-3">{{ $t('data_name.email') }}</div>
         <el-input v-model="apiMemberData.user_mail" class="cdp-input cdp-input-disabled" readonly>
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>

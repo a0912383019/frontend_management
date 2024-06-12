@@ -10,6 +10,7 @@ import {
   getHallCurrencySign,
   generateRGBColors,
   errorRespond,
+  checkTagUsage,
   getSessionStorageEntity
 } from '@/utils/commonUtils.js'
 import { ElNotification, dayjs } from 'element-plus'
@@ -263,6 +264,7 @@ const transformMemberJourney = (data) => {
     for (let j = 0; j < user_tag_ary.length; j++) {
       if (
         user_tag_ary[j] &&
+        checkTagUsage(activeHall.hall_code, user_tag_ary[j]) &&
         !Object.prototype.hasOwnProperty.call(chart_data_user_tag_flag_dict, user_tag_ary[j])
       ) {
         chart_data_user_tag_flag_dict[user_tag_ary[j]] = label

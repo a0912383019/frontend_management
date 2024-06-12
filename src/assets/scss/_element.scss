@@ -315,6 +315,17 @@
     .el-checkbox {
       &__label {
         font-size: 14px;
+        font-weight: 500;
+        color: $purple;
+      }
+      &__input {
+        &.is-checked {
+          & + .el-checkbox {
+            &__label {
+              color: $purple;
+            }
+          }
+        }
       }
     }
   }
@@ -784,7 +795,7 @@
 
 .cdp-datepicker-range-popper {
   &.el-picker__popper.el-popper  {
-    padding-right: 4px;
+    // padding-right: 4px;
     border-radius: 5px;
     overflow: hidden;
   }

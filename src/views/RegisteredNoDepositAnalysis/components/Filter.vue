@@ -135,7 +135,7 @@ onMounted(() => {
             v-model="updatedTimeDate"
             :config="8"
             :shortcutsConfig="1"
-            class="w-full filter-datepicker"
+            class="w-full filter-datepicker deposit-date-picker"
             classColor="purple"
           />
         </el-col>
@@ -202,6 +202,11 @@ onMounted(() => {
   </div>
 </template>
 <style lang="scss" scoped>
+.deposit-date-picker {
+  :deep(.el-popper.el-picker__popper) {
+    inset: 67px -13px auto auto !important;
+  }
+}
 .drop {
   display: flex;
   justify-content: flex-end;

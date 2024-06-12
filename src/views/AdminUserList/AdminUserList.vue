@@ -1,11 +1,16 @@
 <script setup>
-import { ref, watch, computed, onMounted } from 'vue'
+import { ref, watch, computed, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiListUserByAdmin } from '@/api'
+import { apiListUserByAdmin, apiSimulateUserData } from '@/api'
 import { useGlobalStore } from '@/stores'
 import { storeToRefs } from 'pinia'
-import { dayjs } from 'element-plus'
-import { sortTableDate, sortTableData } from '@/utils/commonUtils.js'
+import { ElNotification, dayjs } from 'element-plus'
+import {
+  sortTableDate,
+  sortTableData,
+  errorRespond,
+  getSessionStorageEntity
+} from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -13,6 +18,7 @@ import PageTitle from '@/components/Title/PageTitle.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import AddAccount from '@/components/Button/AddButton.vue'
 import Filter from '@/views/AdminUserList/Filter.vue'
+import UserAccountSetting from '@/views/AdminUserList/UserAccountSetting.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -33,21 +39,22 @@ const tableColumns = computed(() => {
       prop: 'account_name',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '20%'
+      minWidth: '15%'
     },
     {
       label: t('data_name.email'),
       prop: 'email',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '22%'
+      colClass: 'break-work',
+      minWidth: '20%'
     },
     {
       label: t('user_detail_info.user_type'),
       prop: 'user_type',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '12%'
     },
     {
       label: t('data_name.status'),
@@ -61,7 +68,7 @@ const tableColumns = computed(() => {
       prop: 'login_num',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '12%',
       sortable: 'custom'
     },
     {
@@ -69,7 +76,7 @@ const tableColumns = computed(() => {
       prop: 'last_login_time',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '14%',
+      minWidth: '13%',
       sortable: 'custom'
     },
     {
@@ -77,7 +84,7 @@ const tableColumns = computed(() => {
       prop: 'operation',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '17%'
+      minWidth: '20%'
     }
   ]
 })
@@ -87,18 +94,19 @@ const messageKey = ref('loading')
 
 const userType = ref('all')
 const userStatus = ref('all')
-const lastLogin = ref('')
+const lastLoginTime = ref('')
 
-const queryListUserByAdmin = async () => {
+const queryListUserByAdmin = async (filterData = null) => {
   apiSuccess.value = false
   messageKey.value = 'loading'
   tableData.value = []
   try {
     const result = await apiListUserByAdmin({
       hall_name: activeHall.hall_code,
-      user_type: userType.value,
-      user_status: userStatus.value,
-      last_login_date: lastLogin.value
+      user_name: filterData ? filterData.userName : '',
+      user_type: filterData ? filterData.userType : userType.value,
+      user_status: filterData ? filterData.userStatus : userStatus.value,
+      last_login_date: filterData ? filterData.lastLoginTime : lastLoginTime.value
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -152,18 +160,80 @@ const openAddDialog = () => {
   console.log('add account')
 }
 
-const searchAccount = () => {
-  console.log('filter')
+const searchAccount = (filterData) => {
+  queryListUserByAdmin(filterData)
 }
 
-const showAccountSetting = () => {
-  console.log('user account')
+const userAccountVisible = ref(false)
+const userData = reactive({})
+const showAccountSetting = (userId, userName) => {
+  console.log(userId, userName)
+  userData.userId = userId
+  userData.userName = userName
+  userAccountVisible.value = true
+}
+const closeUserDialog = () => {
+  userAccountVisible.value = false
+}
+
+const querySimulateUserData = (user_id) => {
+  return new Promise((resolve, reject) => {
+    apiSimulateUserData({ user_id })
+      .then((result) => {
+        const { return_code } = result.data.status
+        if (return_code === '0000') {
+          let userInfo = result.data.result
+          let userInfoEntity = {
+            user_id: userInfo.user_id,
+            user_name: userInfo.user_name,
+            user_type: userInfo.user_type,
+            access_hall: userInfo.access_hall,
+            user_picture: userInfo.picture,
+            access_token: userInfo.token_type + ' ' + userInfo.access_token
+          }
+          resolve(userInfoEntity)
+        } else {
+          const failMsg = errorRespond(result.data.status)
+          console.error(failMsg)
+          reject(new Error(failMsg))
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        if (error.response && error.response.status === 401) {
+          globalStore.storeHandleApiError()
+        }
+        reject(error)
+      })
+  })
 }
 
 const simulationRoute = router.resolve({ name: 'Home' })
-const simulationUser = () => {
-  console.log('simulate user')
-  //   window.open(routeData.href, 'CDP', 'height=960,width=1560')
+const simulationUser = (id) => {
+  querySimulateUserData(id)
+    .then((userInfoEntity) => {
+      let curUserData = getSessionStorageEntity('user_info')
+      let curUserToken = sessionStorage.access_token
+      let simulateUserToken = userInfoEntity.access_token
+      delete userInfoEntity.access_token
+
+      //  將模擬的使用者資料更新至sessionStorage
+      sessionStorage.setItem('user_info', JSON.stringify(userInfoEntity))
+      sessionStorage.access_token = simulateUserToken
+
+      //  開啟模擬視窗
+      window.open(simulationRoute.href, 'CDP', 'height=960,width=1560')
+
+      //  將目前的使用者資料更新回sessionStorage
+      sessionStorage.setItem('user_info', JSON.stringify(curUserData))
+      sessionStorage.access_token = curUserToken
+    })
+    .catch(() => {
+      ElNotification({
+        title: t('admin_user.demo_failed'),
+        type: 'error'
+      })
+    })
 }
 
 const openDeleteBox = (id) => {
@@ -203,7 +273,10 @@ onMounted(() => {
         @sort="upadteCurrentSort"
       >
         <template #account_name="scope">
-          <div class="font-size-14 cdp-link-click" @click="showAccountSetting">
+          <div
+            class="font-size-14 cdp-link-click"
+            @click="showAccountSetting(scope.row.id, scope.row.account_name)"
+          >
             <span>{{ scope.row.account_name }}</span>
           </div>
         </template>
@@ -243,7 +316,7 @@ onMounted(() => {
               icon="computer"
               :isSvg="true"
               :name="$t('admin_user.demo')"
-              @click="simulationUser()"
+              @click="simulationUser(scope.row.id)"
             />
             <ButtonIcon
               class="detail-button ml-5"
@@ -256,6 +329,12 @@ onMounted(() => {
           </div>
         </template>
       </CustomTable>
+      <UserAccountSetting
+        v-model="userAccountVisible"
+        :userId="userData.userId"
+        :userName="userData.userName"
+        @closeDialog="closeUserDialog"
+      />
     </div>
   </section>
 </template>
@@ -276,6 +355,14 @@ onMounted(() => {
       justify-content: center;
       min-height: 62px;
     }
+  }
+}
+</style>
+<style lang="scss" scoped>
+// email 超出cell寬度會自己斷行
+:deep(.break-work) {
+  .cell {
+    word-break: break-all;
   }
 }
 </style>

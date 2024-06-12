@@ -152,8 +152,8 @@ export const router = createRouter({
       children: [
         {
           path: '/activity-analysis-list',
-          name: 'activity-analysis-list'
-          // component: () => import('../views/Home/Home.vue')
+          name: 'activity-analysis-list',
+          component: () => import('../views/ActivityAnalysisList/ActivityAnalysisList.vue')
         }
       ]
     },
