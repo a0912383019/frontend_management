@@ -686,6 +686,11 @@
   },
 
   "activity_analysis": {
+    "overview": "Overview",
+    "activity_list_overview": "Event overview",
+    "growth_rate": "Growth rate",
+    "growth_gap": "Growth gap",
+    "total": "Total sum",
     "activity_hall": "Hall",
     "activity_date": "Campaign Duration",
     "activity_name": "Campaign Name",

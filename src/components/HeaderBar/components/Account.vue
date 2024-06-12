@@ -64,7 +64,6 @@ onUnmounted(() => {
   </div>
   <DailogMemberAccount
     v-model="accountVisible"
-    :memberName="user_name"
     @closeDialog="closePersonalAccount"
   ></DailogMemberAccount>
 </template>

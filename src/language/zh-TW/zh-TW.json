@@ -687,6 +687,11 @@
   },
 
   "activity_analysis": {
+    "overview": "總覽",
+    "activity_list_overview": "活動列表總覽",
+    "growth_rate": "成長率",
+    "growth_gap": "成長差額",
+    "total": "總和",
     "activity_hall": "活動廳別",
     "activity_date": "活動日期",
     "activity_name": "活動名稱",

@@ -94,11 +94,15 @@ const closePopover = () => {
     </el-popover>
   </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 .game-tag-analysis-datepicker {
-  .el-date-editor {
-    width: 100%;
-    height: 36px;
+  // alvin 時代，目前測試無影響，待之後確認無影響再刪除
+  // .el-date-editor {
+  //   width: 100%;
+  //   height: 36px;
+  // }
+  :deep(.el-popper.el-picker__popper) {
+    inset: 63px -21px auto auto !important;
   }
 }
 </style>

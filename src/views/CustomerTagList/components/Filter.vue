@@ -215,7 +215,7 @@ watch(
             :config="1"
             :shortcutsConfig="1"
             :disabled="formDisabled || !form.isActivedDateCheck"
-            class="w-full filter-datepicker"
+            class="w-full filter-datepicker custom-tag-date-picker"
             classColor="purple"
           />
         </el-col>
@@ -232,7 +232,7 @@ watch(
             :config="2"
             :shortcutsConfig="1"
             :disabled="formDisabled"
-            class="w-full filter-datepicker"
+            class="w-full filter-datepicker custom-tag-date-picker"
             classColor="purple"
           />
         </el-col>
@@ -309,26 +309,13 @@ watch(
 .cdp-checkbox {
   height: 25px;
 }
-</style>
-<style lang="scss">
-.checkbox-label {
-  .el-checkbox {
-    &__label {
-      font-size: 16px;
-      font-weight: 500;
-      color: $purple;
-    }
-    &__input {
-      &.is-checked {
-        & + .el-checkbox {
-          &__label {
-            color: $purple;
-          }
-        }
-      }
-    }
+.custom-tag-date-picker {
+  :deep(.el-popper.el-picker__popper) {
+    inset: 147px -13px auto auto !important;
   }
 }
+</style>
+<style lang="scss">
 .filter-datepicker {
   .el-date-editor {
     width: 100%;

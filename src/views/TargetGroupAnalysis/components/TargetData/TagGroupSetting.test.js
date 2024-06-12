@@ -5,7 +5,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { useTargetGroupStore } from '@/stores'
 import TagGroupSetting from '@/views/TargetGroupAnalysis/components/TargetData/TagGroupSetting.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
-import PageTitle from '@/components/Title/PageTitle.vue'
+import SectionTitle from '@/components/Title/SectionTitle.vue'
 import AddGroup from '@/components/Button/AddButton.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import ElementPlus from 'element-plus'
@@ -73,7 +73,7 @@ describe('TagGroupSetting.vue', () => {
         prop: 'delete'
       }
     ])
-    expect(wrapper.findComponent(PageTitle).exists()).toBe(true)
+    expect(wrapper.findComponent(SectionTitle).exists()).toBe(true)
     expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
     expect(wrapper.findComponent(CustomTable).exists()).toBe(true)
     expect(wrapper.findComponent(AddGroup).exists()).toBe(true)

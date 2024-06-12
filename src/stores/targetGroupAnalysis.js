@@ -39,5 +39,5 @@ export const useTargetGroupStore = defineStore('targetGroupAnalysis', () => {
 
   const filtered = ref(0)
 
-  return { tagGroupList, targetNameRule, groupFilterDate, filtered }
+  return { tagGroupList, targetNameRule, validateTargetName, groupFilterDate, filtered }
 })

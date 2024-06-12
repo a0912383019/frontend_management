@@ -51,7 +51,7 @@ describe('ConfirmBox.vue', () => {
 
     await wrapper.setProps({ color: 'red' })
     expect(wrapper.find('.inner-dialog__icon img').attributes().src).toStrictEqual(
-      '/src/assets/images/alert-1.png'
+      `${import.meta.env.BASE_URL}src/assets/images/alert-1.png`
     )
     expect(wrapper.find('.inner-dialog__title').classes()).toContain('red-color')
     expect(wrapper.findComponent('.cdp__modal-btn__submit').classes()).toContain('red-bg')

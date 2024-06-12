@@ -9,6 +9,7 @@ import SelectTag from '@/components/Filter/SelectTag.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import AddGroup from '@/components/Button/AddButton.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
+import SectionTitle from '@/components/Title/SectionTitle.vue'
 
 const { t, locale } = useI18n()
 
@@ -126,9 +127,8 @@ watch(
 </script>
 <template>
   <section>
-    <PageTitle
+    <SectionTitle
       class="mb-15"
-      icon="menuExport"
       :title="$t('target_group_analysis.tag_groups_setting')"
     />
     <CdpMessage messageKey="loading" v-show="renderComplete === false && !props.newTarget" />

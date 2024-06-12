@@ -167,6 +167,7 @@ defineExpose({ goToFirstPage, showTableLoading })
           :min-width="column.minWidth"
           :align="column.align"
           :header-align="column.headerAlign"
+          :class-name="column.colClass"
           :sort-orders="['descending', 'ascending']"
           :sortable="column.sortable"
           :resizable="false"

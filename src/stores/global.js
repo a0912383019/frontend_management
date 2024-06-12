@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import {
   RFM_NAPL_step_config,
   iconStep,
+  user_types,
   user_type_dict,
   user_status_dict
 } from '@/../public/js/system_config.js'
@@ -73,19 +74,19 @@ export const useGlobalStore = defineStore(
     })
 
     // 使用者config
-    const general_user = 0 // 一般使用者
-    const advanced_user = 1 // 進階使用者
-    const hall_admin = 8 // 遊戲廳管理員
-    const system_admin = 9 // 系統管理員
-    const gm_user = -1;  // GM
+    // const general_user = 0 // 一般使用者
+    // const advanced_user = 1 // 進階使用者
+    // const hall_admin = 8 // 遊戲廳管理員
+    // const system_admin = 9 // 系統管理員
+    // const gm_user = -1;  // GM
 
     const userTypeConfig = computed(() => {
       const config = user_type_dict
-      config[general_user] = t('user_detail_info.user_type_0')
-      config[advanced_user] = t('user_detail_info.user_type_1')
-      config[hall_admin] = t('user_detail_info.user_type_8')
-      config[system_admin] = t('user_detail_info.user_type_9')
-      config[gm_user] = 'GM'
+      config[user_types.general_user] = t('user_detail_info.user_type_0')
+      config[user_types.advanced_user] = t('user_detail_info.user_type_1')
+      config[user_types.hall_admin] = t('user_detail_info.user_type_8')
+      config[user_types.system_admin] = t('user_detail_info.user_type_9')
+      config[user_types.gm_user] = 'GM'
       return config
     })
 

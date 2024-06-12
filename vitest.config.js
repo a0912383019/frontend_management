@@ -13,7 +13,11 @@ export default defineConfig((configEnv) =>
         root: fileURLToPath(new URL('./', import.meta.url)),
         coverage: {
           provider: 'v8'
-        }
+        },
+        reporters: ['junit', 'json', 'verbose'],
+        outputFile: {
+          junit: './test/report.xml',
+        },
       }
     })
   )

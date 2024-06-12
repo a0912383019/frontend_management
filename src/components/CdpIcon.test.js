@@ -1,4 +1,4 @@
-import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
+import { it, describe, expect, beforeEach, afterEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import CdpIcon from '@/components/CdpIcon.vue'
 

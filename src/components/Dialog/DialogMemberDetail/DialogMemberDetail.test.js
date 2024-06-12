@@ -107,7 +107,7 @@ describe('DialogMemberDetail.vue', () => {
     await wrapper.vm.$nextTick()
     expect(window.open).toBeCalled()
     expect(window.open).toHaveBeenCalledWith(
-      '/member-details-popup',
+      `${import.meta.env.BASE_URL}member-details-popup`,
       '_blank',
       'width=1000,height=800,scrollbars=yes'
     )
