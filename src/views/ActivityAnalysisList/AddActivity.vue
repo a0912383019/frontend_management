@@ -59,24 +59,7 @@ const tableColumns = computed(() => {
   ]
 })
 
-const subActivities = ref([
-  {
-    detail_key: '0',
-    activity_detail_name: '',
-    activity_date: '',
-    promotion_list: '',
-    promotion_options: [],
-    api_success: false,
-    detail_valid: {
-      valid: true,
-      msg: ''
-    },
-    promotion_valid: {
-      valid: true,
-      msg: ''
-    }
-  }
-])
+const formRef = ref(null)
 
 const activityForm = reactive({
   activityName: '',
@@ -95,11 +78,32 @@ const rules = reactive({
   ]
 })
 
-const formRef = ref(null)
+const subActivities = ref([
+createSubActivity('0')
+])
+
+function createSubActivity(key) {
+  return {
+    detail_key: key.toString(),
+    activity_detail_name: '',
+    activity_date: '',
+    promotion_list: '',
+    promotion_options: [],
+    api_success: false,
+    detail_valid: { valid: true, msg: '' },
+    promotion_valid: { valid: true, msg: '' }
+  }
+}
+
+const addActivity = () => {
+  const rowKey = Date.now().toString()
+  subActivities.value.push(createSubActivity(rowKey))
+}
 
 const confirmBox = ref(false)
 
-const handleActivityAdd = () => {
+// 驗證資料
+const validActivityAdd = () => {
   activityForm.activityName = activityForm.activityName.trim()
   activityForm.purpose = activityForm.purpose.trim()
   activityForm.description = activityForm.description.trim()
@@ -173,6 +177,14 @@ const confirmSaved = () => {
 
 const emit = defineEmits(['closeDialog', 'addSuccess'])
 
+// 初始化資料
+const initActivity = () => {
+  activityForm.activityName = ''
+  activityForm.purpose = ''
+  activityForm.description = ''
+  subActivities.value = [createSubActivity('0')]
+}
+
 // 關閉 dialog
 const handleDialogClosed = () => {
   initActivity()
@@ -197,30 +209,6 @@ const organizeActivityDatail = () => {
   })
 
   return activity_detail
-}
-
-const initActivity = () => {
-  activityForm.activityName = ''
-  activityForm.purpose = ''
-  activityForm.description = ''
-  subActivities.value = [
-    {
-      detail_key: '0',
-      activity_detail_name: '',
-      activity_date: '',
-      promotion_list: '',
-      promotion_options: [],
-      api_success: false,
-      detail_valid: {
-        valid: true,
-        msg: ''
-      },
-      promotion_valid: {
-        valid: true,
-        msg: ''
-      }
-    }
-  ]
 }
 
 const queryAddActivity = async () => {
@@ -289,13 +277,13 @@ const generateOptions = (arr) => {
 const queryPromotionList = async (idx) => {
   subActivities.value[idx].api_success = false
   subActivities.value[idx].promotion_list = ''
-  let dateParams = subActivities.value[idx].activity_date.split('~')
+  const [start_date, end_date] = subActivities.value[idx].activity_date.split('~').map(date => date.trim())
 
   try {
     const result = await apiQueryPromotionList({
       hall_name: activeHall.hall_code,
-      start_date: dateParams[0].trim(),
-      end_date: dateParams[1].trim()
+      start_date: start_date,
+      end_date: end_date
     })
 
     const { return_code } = result.data.status
@@ -311,7 +299,6 @@ const queryPromotionList = async (idx) => {
   }
 }
 
-const isDeleting = ref(false)
 const updatePromotionList = (idx) => {
   if (isDeleting.value) return
   // 第一次渲染組件會有不同步問題，el-table 尚未渲染完畢 scope.$index 會是 -1
@@ -321,30 +308,13 @@ const updatePromotionList = (idx) => {
   }
 }
 
-const addActivity = () => {
-  const rowKey = Date.now().toString()
-  subActivities.value.push({
-    detail_key: rowKey,
-    activity_detail_name: '',
-    activity_date: '',
-    promotion_list: '',
-    promotion_options: [],
-    api_success: false,
-    detail_valid: {
-      valid: true,
-      msg: ''
-    },
-    promotion_valid: {
-      valid: true,
-      msg: ''
-    }
-  })
-}
+const isDeleting = ref(false)
 
 const deleteActivity = (idx) => {
+  // 刪除會觸發table重新渲染，導致組件也刷新觸發updatePromotionList
+  // 所以設定此參數擋住
   isDeleting.value = true
   subActivities.value.splice(idx, 1)
-  // 刪除會觸發table重新渲染，導致組件也刷新觸發updatePromotionList
   nextTick(() => {
     isDeleting.value = false
   })
@@ -526,7 +496,7 @@ onMounted(() => {
           class="custom-bg-dark__blue ml-20"
           :name="$t('modal.add')"
           size="sm-130"
-          @click="handleActivityAdd()"
+          @click="validActivityAdd()"
         />
       </section>
     </div>

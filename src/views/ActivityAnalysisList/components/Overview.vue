@@ -182,7 +182,6 @@ watch(
 watch(
   () => activityStore.activityAddChange,
   () => {
-    console.log(activityStore.activityAddChange)
     queryListActivity()
   }
 )
