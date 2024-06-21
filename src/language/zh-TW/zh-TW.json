@@ -98,7 +98,8 @@
 
     "none": "無",
     "cancel_edit": "取消編輯",
-    "confirm_update": "確定修改"
+    "confirm_update": "確定修改",
+    "select": "--- 請選擇 ---"
   },
 
   "import_export_file": {
@@ -697,7 +698,12 @@
     "activity_name": "活動名稱",
     "activity_purpose": "活動目的",
     "activity_description": "活動說明",
+    "activity_detail": "子活動",
+    "activity_detail_list": "子活動列表",
+    "activity_detail_name": "子活動名稱",
+    "activity_detail_connect_promotion_reminder": "連動的優惠名單",
     "input_activity_name_to_search": "輸入活動名稱搜尋...",
+    "promotion_list": "優惠名單",
 
     "reimport": "重新匯入",
 
@@ -712,6 +718,10 @@
     "activity_description_length_limit_error_msg": "活動說明內容過長(最多為1000個字元)",
 
     "activity_name_with_colon": "活動名稱：",
+    "add_activity_detail": "新增子活動",
+    "blank_activity_detail_name_error_msg": "請輸入子活動名稱",
+    "activity_detail_name_length_limit_error_msg": "子活動名稱過長(最多為100個字元)",
+    "blank_promotion_error_msg": "請選擇連動的優惠名單",
     "activity_info": "活動資料",
 
     "activity_analysis_result": "分析結果",

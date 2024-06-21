@@ -247,6 +247,7 @@ onMounted(() => {
             ref="formRef"
             :model="validateForm"
             :class="{ 'is-en': locale === 'en' && forTargetNameClass }"
+            @submit.prevent
           >
             <el-form-item prop="newTargetName" :rules="targetNameRule">
               <el-input
@@ -365,7 +366,7 @@ onMounted(() => {
               }}
             </td>
           </tr>
-          <tr class="align-baseline">
+          <tr class="vertical-baseline">
             <td width="35%" class="text-right">{{ $t('target_group_analysis.custom_tags') }}</td>
             <td width="2%" class="text-center">：</td>
             <td width="63%" class="text-left">
@@ -424,9 +425,6 @@ onMounted(() => {
     font-size: 14px;
     color: #404040;
     font-weight: normal;
-  }
-  .align-baseline {
-    vertical-align: baseline;
   }
 }
 :deep(.el-form-item__error) {

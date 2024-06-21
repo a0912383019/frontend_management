@@ -1,15 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-// import { i18n } from '@/global/i18n'
-// import { dayjs } from 'element-plus'
-// import { useDateStore } from '@/stores/dateConfig.js'
-// import { formatDateDuration } from '@/utils/commonUtils.js'
 
 export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
-  // const { t } = i18n.global
-
-  // const { date_range_picker_config_1 } = useDateStore()
-
   const searchActivity = ref('')
 
   const filtered = ref(0)
@@ -19,5 +11,8 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     searchActivity.value = ''
   }
 
-  return { searchActivity, filtered, initFilter }
+  // 用來監聽是否新增或是修改活動
+  const activityAddChange = 0
+
+  return { searchActivity, filtered, initFilter, activityAddChange }
 })

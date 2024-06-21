@@ -106,7 +106,7 @@ const transformActivityList = (data) => {
 }
 
 const openActivityDetail = (activityId) => {
-  console.log(activityId)
+  console.log('activity_id', activityId)
 }
 
 const deleteBox = ref(false) // 刪除彈窗
@@ -175,6 +175,14 @@ const upadteCurrentSort = ({ prop, order }) => {
 watch(
   () => activityStore.filtered,
   () => {
+    queryListActivity()
+  }
+)
+
+watch(
+  () => activityStore.activityAddChange,
+  () => {
+    console.log(activityStore.activityAddChange)
     queryListActivity()
   }
 )

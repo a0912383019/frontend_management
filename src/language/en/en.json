@@ -98,7 +98,8 @@
 
     "none": "None",
     "cancel_edit": "Cancel edit",
-    "confirm_update": "Confirm update"
+    "confirm_update": "Confirm update",
+    "select": "--- Please Select ---"
   },
 
   "import_export_file": {
@@ -696,7 +697,12 @@
     "activity_name": "Campaign Name",
     "activity_purpose": "Goals",
     "activity_description": "Content",
+    "activity_detail": "Dependent Campaign",
+    "activity_detail_list": "Dependent Campaign",
+    "activity_detail_name": "Dependent Campaign Name",
+    "activity_detail_connect_promotion_reminder": "The Promotion which is Campaign linked.",
     "input_activity_name_to_search": "Search by Campaign Name...",
+    "promotion_list": "Promotion List",
 
     "reimport": "Reimport",
 
@@ -711,6 +717,10 @@
     "activity_description_length_limit_error_msg": "Content is too long.(Maximum 1000 characters)",
 
     "activity_name_with_colon": "Campaign Name：",
+    "add_activity_detail": "Add a new dependent campaign",
+    "blank_activity_detail_name_error_msg": "Name this dependent campaign...",
+    "activity_detail_name_length_limit_error_msg": "Dependent Campaign Name is too long.(Maximum 100 characters)",
+    "blank_promotion_error_msg": "Please select the promotion which is campaign linked.",
     "activity_info": "Details",
 
     "activity_analysis_result": "Analysis",

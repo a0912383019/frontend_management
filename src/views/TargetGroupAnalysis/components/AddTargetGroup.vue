@@ -144,7 +144,7 @@ const transformCustomTags = () => {
       <section class="cdp-section">
         <div class="mb-20">
           <div class="cdp-text-blue mb-3">{{ $t('target_group_analysis.target_group_name') }}</div>
-          <el-form ref="formRef" :model="validateForm">
+          <el-form ref="formRef" :model="validateForm" @submit.prevent>
             <el-form-item prop="newTargetName" :rules="targetGroup.targetNameRule">
               <el-input
                 v-model="validateForm.newTargetName"
@@ -194,7 +194,7 @@ const transformCustomTags = () => {
   >
     <template v-slot:text-body>
       <table class="table-total">
-        <tr class="align-baseline">
+        <tr class="vertical-baseline">
           <td width="35%" class="text-right">
             {{ $t('target_group_analysis.target_group_name') }}
           </td>
@@ -212,7 +212,7 @@ const transformCustomTags = () => {
             }}
           </td>
         </tr>
-        <tr class="align-baseline">
+        <tr class="vertical-baseline">
           <td width="35%" class="text-right">{{ $t('target_group_analysis.custom_tags') }}</td>
           <td width="2%" class="text-center">：</td>
           <td width="63%" class="text-left">
@@ -248,9 +248,6 @@ const transformCustomTags = () => {
     font-size: 14px;
     color: #404040;
     font-weight: normal;
-  }
-  .align-baseline {
-    vertical-align: baseline;
   }
 }
 :deep(.el-form) {

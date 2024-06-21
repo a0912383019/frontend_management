@@ -2,7 +2,6 @@
 import { onMounted, ref } from 'vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import { useActivityAnalysisStore } from '@/stores'
 
 const activityStore = useActivityAnalysisStore()
