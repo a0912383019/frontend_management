@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, watch, computed, onMounted } from 'vue'
-import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
+import { findRootHall, getSessionStorageEntity, generateTagBySortIndex } from '@/utils/commonUtils'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
@@ -97,24 +97,22 @@ const transformTagsConfig = () => {
 
   let tagsConfigData = tagsConfig[activeHall.hall_code]
   if (tagsConfigData !== undefined) {
-    Object.entries(tagsConfigData).forEach((key) => {
-      let value = key[1]
-      if (value.tag_enabled && value.tag_category === 1) {
-        // 僅列出啟用及tag_category = 1(一般標籤)的標籤
+    let tagSortDict = generateTagBySortIndex({hall_name: activeHall.hall_code})
 
-        if (value.tag_type === 1) {
-          tagsData['type1'].push(value)
-        } else if (value.tag_type === 3) {
-          tagsData['type3'].push(value)
-        } else if (value.tag_type === 4) {
-          tagsData['type4'].push(value)
-        } else if (value.tag_type === 5) {
-          tagsData['type5'].push(value)
-        } else if (value.tag_type === 6) {
-          tagsData['type6'].push(value)
-        } else if (value.tag_type === 9) {
-          tagsData['type9'].push(value)
-        }
+    Object.entries(tagSortDict).forEach((item) => {
+      let value = item[1]
+      if (value.tag_type === 1) {
+        tagsData['type1'].push(value)
+      } else if (value.tag_type === 3) {
+        tagsData['type3'].push(value)
+      } else if (value.tag_type === 4) {
+        tagsData['type4'].push(value)
+      } else if (value.tag_type === 5) {
+        tagsData['type5'].push(value)
+      } else if (value.tag_type === 6) {
+        tagsData['type6'].push(value)
+      } else if (value.tag_type === 9) {
+        tagsData['type9'].push(value)
       }
     })
   }

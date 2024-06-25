@@ -15,7 +15,7 @@ import {
   dynamicBackgroundColors,
   generateMultipleColors,
   checkTagUsage,
-  generateTagMultiSelect,
+  generateTagBySortIndex,
   formatNumberWithK,
   // getRangeEveryDay,
   findHallIdMappingKey,
@@ -238,8 +238,8 @@ describe('Utility Functions', () => {
     expect(result2).toBe(false)
   })
 
-  //測試 generateTagMultiSelect 函數
-  it('generateTagMultiSelect should return the correct value', () => {
+  //測試 generateTagBySortIndex 函數
+  it('generateTagBySortIndex should return the correct value', () => {
     const system_config = {
       tags_config: {
         esb: {
@@ -275,26 +275,26 @@ describe('Utility Functions', () => {
       }
     }
     sessionStorage.setItem('system_config', JSON.stringify(system_config))
-    const result = generateTagMultiSelect({ hall_name: 'esb' })
+    const result = generateTagBySortIndex({ hall_name: 'esb' })
 
     const tag_sort_dict = {
-      10000: {
+      1000000: {
         mutual_tags_code: '',
+        tag_code: '10000',
         sort_index: 1000000,
         tag_category: 1,
         tag_description: '測試敘述',
         tag_enabled: true,
-        tag_key: '10000',
         tag_name: '測試',
         tag_type: 1
       },
-      10001: {
+      1000001: {
         mutual_tags_code: '',
+        tag_code: '10001',
         sort_index: 1000001,
         tag_category: 1,
         tag_description: '人工定義為高價值會員',
         tag_enabled: true,
-        tag_key: '10001',
         tag_name: 'VIP客',
         tag_type: 1
       }

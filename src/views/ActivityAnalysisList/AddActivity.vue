@@ -449,8 +449,8 @@ onMounted(() => {
                         :class="{ 'is-error': !scope.row.promotion_valid.valid }"
                         popper-class="cdp-select-popper cdp-select-popper__blue"
                         filterable
-                        placement="bottom-end"
-                        :teleported="false"
+                        :fallback-placements="['bottom-end', 'top-end']"
+                        :teleported="true"
                       >
                         <el-option
                           v-for="item in scope.row.promotion_options"
