@@ -106,11 +106,7 @@ const transformActivityList = (data) => {
 }
 
 const openActivityDetail = (activityId) => {
-<<<<<<< HEAD
   console.log('activity_id', activityId)
-=======
-  console.log(activityId)
->>>>>>> origin/originmain
 }
 
 const deleteBox = ref(false) // 刪除彈窗
@@ -183,7 +179,6 @@ watch(
   }
 )
 
-<<<<<<< HEAD
 watch(
   () => activityStore.activityAddChange,
   () => {
@@ -191,8 +186,6 @@ watch(
   }
 )
 
-=======
->>>>>>> origin/originmain
 onMounted(() => {
   queryListActivity()
 })
