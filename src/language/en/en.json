@@ -326,7 +326,7 @@
     "category_desc_6": "Valid bet decreased by ?? million from last week, range 1 million to 50 million.",
     "category_7": "MostlyDep",
     "category_desc_7": "$t(tags.category_desc_7, {\"context\": \"{{root_hall}}\"})",
-    "category_desc_7_BBIN": "Mostly deposited using a payment method, for the last 15 days of deposits. Include direct wire transfer、Crypto、Manual Deposit、GOPAY、GCPAY、online payment method、EPoints、e點富、OSPay payment, etc.",
+    "category_desc_7_BBIN": "Mostly deposited using a payment method, for the last 15 days of deposits. Include direct wire transfer, Crypto, Manual Deposit, GOPAY, CGPAY, online payment method, EPoints, e點富, OSPay payment, BB付, etc.",
     "category_desc_7_XBB": "Mostly deposited using a payment method, for the last 15 days of deposits. Include direct wire transfer、3rd party payment、CGPay/Wallet、GOPAY、e點富、USDT、OSPay、e點富、Google Wallet、Apple Pay、BitCoin, etc.",
     "category_8": "PreferPromo",
     "category_desc_8": "Mostly focused promotion type, for the last 15 days of promotion.",
