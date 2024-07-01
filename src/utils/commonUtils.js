@@ -247,14 +247,14 @@ export function checkTagUsage(hall_name, tag_code) {
 }
 
 /**
- * 產生標籤多選下拉選單
+ * 排序標籤
  * @param {string} element_id 要設定的下拉選單id
  * @param {string} root_hall_name 要設定的標籤根廳別
  * @param {string} hall_name 要設定的標籤廳別
  * @param {number[]} tag_category 要設定的標籤種類(1:一般標籤 2:週次標籤 3:時段標籤)
  * @param {boolean} is_check_tag_usage 是否檢查標籤可用性
  */
-export function generateTagMultiSelect({
+export function generateTagBySortIndex({
   hall_name,
   tag_category = [1],
   is_check_tag_usage = true
@@ -270,8 +270,8 @@ export function generateTagMultiSelect({
     if (!tag_category.includes(item[1].tag_category)) {
       return
     }
-    tag_sort_dict[item[0]] = item[1]
-    tag_sort_dict[item[0]]['tag_key'] = item[0]
+    tag_sort_dict[item[1].sort_index] = item[1]
+    tag_sort_dict[item[1].sort_index].tag_code = item[0]
   })
   return tag_sort_dict
 }

@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n'
 import { useTargetGroupStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
-import PageTitle from '@/components/Title/PageTitle.vue'
 import SelectTag from '@/components/Filter/SelectTag.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import AddGroup from '@/components/Button/AddButton.vue'
@@ -151,7 +150,7 @@ watch(
         >
           <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
         </el-input>
-        <div v-else style="width: 100%" class="text-left">
+        <div v-else class="text-left w-full">
           <el-input
             v-model="scope.row.custom_tags_name"
             class="cdp-input"

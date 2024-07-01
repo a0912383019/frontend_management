@@ -52,6 +52,10 @@ const props = defineProps({
   type: {
     type: String,
     default: 'daterange'
+  },
+  disableDate: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -145,6 +149,8 @@ const handleCalendarChange = (val) => {
 
 // 日曆禁用日期
 const disabledDate = (day) => {
+  if (!props.disableDate) return
+
   // 禁選條件一：選擇的起始日往前往後大於三個月的日期disabled
   let diff = null
   if (

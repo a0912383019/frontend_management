@@ -98,7 +98,8 @@
 
     "none": "无",
     "cancel_edit": "取消编辑",
-    "confirm_update": "确定修改"
+    "confirm_update": "确定修改",
+    "select": "--- 请选择 ---"
   },
 
   "import_export_file": {
@@ -696,7 +697,12 @@
     "activity_name": "活动名称",
     "activity_purpose": "活动目的",
     "activity_description": "活动说明",
+    "activity_detail": "子活动",
+    "activity_detail_list": "子活动列表",
+    "activity_detail_name": "子活动名称",
+    "activity_detail_connect_promotion_reminder": "连动的优惠名单",
     "input_activity_name_to_search": "输入活动名称搜寻...",
+    "promotion_list": "优惠名单",
 
     "reimport": "重新汇入",
 
@@ -711,6 +717,10 @@
     "activity_description_length_limit_error_msg": "活动说明内容过长(最多为1000个字元)",
 
     "activity_name_with_colon": "活动名称：",
+    "add_activity_detail": "新增子活动",
+    "blank_activity_detail_name_error_msg": "请输入子活动名称",
+    "activity_detail_name_length_limit_error_msg": "子活动名称过长(最多为100个字元)",
+    "blank_promotion_error_msg": "请选择连动的优惠名单",
     "activity_info": "活动资料",
 
     "activity_analysis_result": "分析结果",

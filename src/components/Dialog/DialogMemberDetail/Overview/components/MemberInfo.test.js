@@ -24,8 +24,8 @@ describe('MemberInfo.vue', () => {
       checkTagUsage.mockReturnValue(true)
 
       //模擬產生標籤
-      const generateTagMultiSelect = vi.fn()
-      generateTagMultiSelect.mockReturnValue({
+      const generateTagBySortIndex = vi.fn()
+      generateTagBySortIndex.mockReturnValue({
         10000: {
           tag_type: 1,
           tag_name: '測試',
@@ -101,7 +101,7 @@ describe('MemberInfo.vue', () => {
         ...actual, //包括原始模組中的其他方法
         getHallCurrencySign, //覆蓋函數
         checkTagUsage,
-        generateTagMultiSelect
+        generateTagBySortIndex
       }
     })
 

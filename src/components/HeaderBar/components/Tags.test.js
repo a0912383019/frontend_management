@@ -100,7 +100,7 @@ describe('Tags', () => {
     spy = vi.spyOn(module, 'findRootHall').mockImplementation(vi.fn())
 
     //模擬第一次與第二次呼叫getSessionStorageEntity
-    module.findRootHall.mockReturnValue("BBIN")
+    module.findRootHall.mockReturnValue('BBIN')
 
     wrapper = mount(Tags, {
       global: {
@@ -142,6 +142,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '',
           sort_index: 6011000,
+          tag_code: '60110',
           tag_category: 1,
           tag_description: 'AI 判定有對打嫌疑玩百家樂視訊的會員',
           tag_enabled: true,
@@ -151,6 +152,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '',
           sort_index: 6021000,
+          tag_code: '60210',
           tag_category: 1,
           tag_description: 'AI 判定有對打嫌疑玩龍虎鬥視訊的會員',
           tag_enabled: true,
@@ -160,6 +162,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '',
           sort_index: 6031000,
+          tag_code: '60310',
           tag_category: 1,
           tag_description: 'AI 判定有對打嫌疑玩骰寶視訊的會員',
           tag_enabled: true,
@@ -169,6 +172,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '30009,30010,30011,30013,30014',
           sort_index: 3000012,
+          tag_code: '30001',
           tag_category: 1,
           tag_description: '會員近15個實動日，在體育類遊戲總有效投註量最多',
           tag_enabled: true,
@@ -203,6 +207,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '',
           sort_index: 1000000,
+          tag_code: '10000',
           tag_category: 1,
           tag_description: '測試敘述',
           tag_enabled: true,
@@ -212,6 +217,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '',
           sort_index: 1000001,
+          tag_code: '10001',
           tag_category: 1,
           tag_description: '人工定義為高價值會員',
           tag_enabled: true,
@@ -223,6 +229,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '',
           sort_index: 1000000,
+          tag_code: '10000',
           tag_category: 1,
           tag_description: '測試敘述',
           tag_enabled: true,
@@ -232,6 +239,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '',
           sort_index: 1000001,
+          tag_code: '10001',
           tag_category: 1,
           tag_description: '人工定義為高價值會員',
           tag_enabled: true,
@@ -243,6 +251,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '30009,30010,30011,30013,30014',
           sort_index: 3000012,
+          tag_code: '30001',
           tag_category: 1,
           tag_description: '會員近15個實動日，在體育類遊戲總有效投註量最多',
           tag_enabled: true,
@@ -281,6 +290,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '',
           sort_index: 6011000,
+          tag_code: '60110',
           tag_category: 1,
           tag_description: 'AI 判定有對打嫌疑玩百家樂視訊的會員',
           tag_enabled: true,
@@ -290,6 +300,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '',
           sort_index: 6021000,
+          tag_code: '60210',
           tag_category: 1,
           tag_description: 'AI 判定有對打嫌疑玩龍虎鬥視訊的會員',
           tag_enabled: true,
@@ -299,6 +310,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '',
           sort_index: 6031000,
+          tag_code: '60310',
           tag_category: 1,
           tag_description: 'AI 判定有對打嫌疑玩骰寶視訊的會員',
           tag_enabled: true,
@@ -324,6 +336,7 @@ describe('Tags', () => {
         tag_description: '人工定義為高價值會員',
         tag_category: 1,
         sort_index: 1000001,
+        tag_code: '10001',
         tag_enabled: true,
         mutual_tags_code: ''
       }
@@ -383,6 +396,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '40006,40014',
           sort_index: 4000030,
+          tag_code: '40001',
           tag_category: 1,
           tag_description: 'AI 判定有對打玩AG視訊的會員',
           tag_enabled: true,
@@ -392,6 +406,7 @@ describe('Tags', () => {
         {
           mutual_tags_code: '',
           sort_index: 5000300,
+          tag_code: '50003',
           tag_category: 1,
           tag_description: '人工定義為代理傭金轉會員',
           tag_enabled: true,
@@ -431,6 +446,7 @@ describe('Tags', () => {
           tag_description: 'AI 判定有對打玩AG視訊的會員',
           tag_category: 1,
           sort_index: 4000030,
+          tag_code: '40001',
           tag_enabled: true,
           mutual_tags_code: '40006,40014'
         }
@@ -442,6 +458,7 @@ describe('Tags', () => {
           tag_description: '人工定義為代理傭金轉會員',
           tag_category: 1,
           sort_index: 5000300,
+          tag_code: '50003',
           tag_enabled: true,
           mutual_tags_code: ''
         }

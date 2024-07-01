@@ -2,7 +2,7 @@
 import { ref, reactive, watch, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
-import { findRootHall, getSessionStorageEntity, checkTagUsage } from '@/utils/commonUtils.js'
+import { generateTagBySortIndex } from '@/utils/commonUtils.js'
 import SelectTagDropdown from '@/components/Filter/SelectTagDropdown.vue'
 import { dayjs } from 'element-plus'
 import { useRouter } from 'vue-router'
@@ -27,14 +27,14 @@ const props = defineProps({
     default: false
   },
   color: {
-    type:String,
+    type: String,
     default: 'purple'
   }
 })
 
 const placeholder = computed(() => {
   let placeholder = ''
-  if(props.isDisabled) {
+  if (props.isDisabled) {
     placeholder = ''
   } else {
     placeholder = t('tags.filter')
@@ -164,7 +164,7 @@ const changeGenerateCategoryLists = () => {
 // 標籤下拉
 const selectTagLists = ref([])
 const originalSelectTagLists = ref([])
-const tagsConfig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+const tagsConfig = generateTagBySortIndex({ hall_name: activeHall.hall_code })
 const tagsConfigTransformData = reactive({})
 // 轉換資料，優化tagsConfig
 const transformTagsConfig = () => {
@@ -177,14 +177,12 @@ const transformTagsConfig = () => {
       if (!tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']]) {
         tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']] = []
       }
-      if (checkTagUsage(activeHall.hall_code, item[0])) {
-        let tempObj = {
-          ...item[1],
-          value: item[0],
-          label: item[1]['tag_name']
-        }
-        tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']].push(tempObj)
+      let tempObj = {
+        ...item[1],
+        value: item[1].tag_code,
+        label: item[1].tag_name
       }
+      tagsConfigTransformData[item[1]['tag_category']][item[1]['tag_type']].push(tempObj)
     })
   } catch (err) {
     console.log(err)
@@ -393,7 +391,10 @@ watch(
 )
 </script>
 <template>
-  <div class="select-tag" :class="{[`select-tag-${props.color}`]:true, 'select-tag-disabled':props.isDisabled}">
+  <div
+    class="select-tag"
+    :class="{ [`select-tag-${props.color}`]: true, 'select-tag-disabled': props.isDisabled }"
+  >
     <div class="select-tag__box" :class="`select-tag-${props.color}__box`">
       <div
         class="select-tag__box__tag"
@@ -402,7 +403,10 @@ watch(
         :key="index"
         @click="handleTagDelete({ item, index })"
       >
-        <div class="select-tag__box__tag__item" :class="{ isActive: item.active, [`select-tag-${props.color}__box__tag__item`]: true }">
+        <div
+          class="select-tag__box__tag__item"
+          :class="{ isActive: item.active, [`select-tag-${props.color}__box__tag__item`]: true }"
+        >
           {{ item.label }}
           <div class="select-tag__box__tag__close" v-if="!props.isDisabled"></div>
         </div>
