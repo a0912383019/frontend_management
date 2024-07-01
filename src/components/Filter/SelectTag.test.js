@@ -401,7 +401,7 @@ describe('SelectTag', () => {
         { value: 1, label: '一般' },
         { value: 2, label: '週次' },
         { value: 4, label: '最後平均單筆存款' },
-        { value: 5, label: '最大投注金額' },
+        { value: 5, label: '最大有效投注金額' },
         { value: 6, label: '有效投注下降幅度' },
         { value: 7, label: '常用入款方式' },
         { value: 9, label: '常登入地區(省)' }
@@ -614,7 +614,7 @@ describe('SelectTag', () => {
         },
         {
           value: 5,
-          label: '最大投注金額'
+          label: '最大有效投注金額'
         },
         {
           value: 6,
