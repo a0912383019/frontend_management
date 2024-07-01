@@ -18,48 +18,14 @@ const activityStore = useActivityAnalysisStore()
 
 const { t } = useI18n()
 
+<<<<<<< HEAD
 const dialogVisible = ref(false)
 
+=======
+>>>>>>> origin/originmain
 //tabs列表
-const tabData = computed(() => {
-  return [
-    {
-      name: 'Overview',
-      label: t('activity_analysis.overview')
-    },
-    {
-      name: 'GrowthRate',
-      label: t('activity_analysis.growth_rate')
-    },
-    {
-      name: 'GrowthGap',
-      label: t('activity_analysis.growth_gap')
-    },
-    {
-      name: 'TotalSum',
-      label: t('activity_analysis.total')
-    }
-  ]
-})
-
-// 當前顯示的tab
-const currentTabs = ref('Overview')
-
-// 整理所有 component
-const componentMap = {
-  Overview
-}
-
-// 當前使用的 component
-const currentTabComponent = computed(() => {
-  return componentMap[currentTabs.value] || null
-})
-
 const openAddDialog = () => {
-  dialogVisible.value = true
 }
-
-const closeDialog = () => {
   dialogVisible.value = false
 }
 
@@ -103,6 +69,9 @@ const queryImportActivity = async (data, functionId) => {
       })
     }
   }
+=======
+  console.log('add')
+>>>>>>> origin/originmain
 }
 
 onUnmounted(() => {
@@ -131,6 +100,8 @@ onUnmounted(() => {
       <component :is="currentTabComponent"></component>
     </keep-alive>
   </section>
+<<<<<<< HEAD
   <AddDialog v-model="dialogVisible" @closeDialog="closeDialog" @addSuccess="addSuccess" />
+=======
+>>>>>>> origin/originmain
 </template>
-<style lang="scss" scoped></style>
