@@ -52,6 +52,7 @@
     "filter": "Filter",
     "advanced_filter": "Advanced Filter",
     "select_all": "All",
+    "select_all_option": "Select all",
     "select_all_manual": "All【Manual】Tags",
     "select_all_rule_based": "All【Rule Based】Tags",
     "select_all_ai": "All【AI】Tags",

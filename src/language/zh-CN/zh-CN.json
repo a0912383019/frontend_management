@@ -52,6 +52,7 @@
     "filter": "筛选",
     "advanced_filter": "进阶筛选",
     "select_all": "全部",
+    "select_all_option": "全选",
     "select_all_manual": "全部【人工】标签",
     "select_all_rule_based": "全部【规则】标签",
     "select_all_ai": "全部【机器】标签",

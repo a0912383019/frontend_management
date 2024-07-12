@@ -221,22 +221,22 @@ export const router = createRouter({
         }
       ]
     },
-    {
-      path: '/tag-synchronization',
-      name: 'tag-synchronization',
-      component: MainLayout,
-      meta: {
-        pageName: '標籤同步管理',
-        fromPage: 'tag_synchronization'
-      },
-      children: [
-        {
-          path: '/tag-synchronization',
-          name: 'tag-synchronization'
-          // component: () => import('../views/Home/Home.vue')
-        }
-      ]
-    },
+    // {
+    //   path: '/tag-synchronization',
+    //   name: 'tag-synchronization',
+    //   component: MainLayout,
+    //   meta: {
+    //     pageName: '標籤同步管理',
+    //     fromPage: 'tag_synchronization'
+    //   },
+    //   children: [
+    //     {
+    //       path: '/tag-synchronization',
+    //       name: 'tag-synchronization'
+    //       // component: () => import('../views/Home/Home.vue')
+    //     }
+    //   ]
+    // },
     {
       path: '/user-export-report',
       name: 'user-export-report',
@@ -253,22 +253,22 @@ export const router = createRouter({
         }
       ]
     },
-    {
-      path: '/user-detail-info',
-      name: 'user-detail-info',
-      component: MainLayout,
-      meta: {
-        pageName: '帳戶資訊',
-        fromPage: 'user_detail_info'
-      },
-      children: [
-        {
-          path: '/user-detail-info',
-          name: 'user-detail-info'
-          // component: () => import('../views/Home/Home.vue')
-        }
-      ]
-    },
+    // {
+    //   path: '/user-detail-info',
+    //   name: 'user-detail-info',
+    //   component: MainLayout,
+    //   meta: {
+    //     pageName: '帳戶資訊',
+    //     fromPage: 'user_detail_info'
+    //   },
+    //   children: [
+    //     {
+    //       path: '/user-detail-info',
+    //       name: 'user-detail-info'
+    //       // component: () => import('../views/Home/Home.vue')
+    //     }
+    //   ]
+    // },
     {
       path: '/admin-user-list',
       name: 'admin-user-list',

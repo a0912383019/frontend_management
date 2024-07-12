@@ -113,7 +113,6 @@ const handleClick = () => {
               v-model="form.userType"
               class="cdp-select cdp-select__purple w-full"
               popper-class="cdp-select-popper cdp-select-popper__purple"
-              filterable
               :teleported="false"
             >
               <el-option
@@ -136,7 +135,6 @@ const handleClick = () => {
               v-model="form.userStatus"
               class="cdp-select cdp-select__purple w-full"
               popper-class="cdp-select-popper cdp-select-popper__purple"
-              filterable
               :teleported="false"
             >
               <el-option
@@ -195,6 +193,10 @@ const handleClick = () => {
     justify-content: flex-end;
     padding-top: 15px;
   }
+}
+:deep(.cdp-select-popper.el-select-dropdown) {
+  box-shadow: 0 0 6px rgba(#000, 0.15);
+  border-radius: 5px;
 }
 :deep(.el-checkbox) {
   height: 25px;

@@ -217,6 +217,7 @@
   &__purple {
     .el-select {
       &__wrapper {
+        min-height: 38px;
         box-shadow: 0 0 0 1px $purple-light inset;
         &.is-hovering {
           &:not(.is-focused) {
@@ -238,6 +239,7 @@
 }
 
 .cdp-select-popper {
+  width: 100% !important;
   .el-select-dropdown__list {
     padding: 0;
     &.el-vl__window {
@@ -251,6 +253,7 @@
   // }
   &__blue {
     .el-select-dropdown {
+      min-width: 100% !important;
       &__item {
         &.is-selected {
           color: $blue;
@@ -264,6 +267,7 @@
   }
   &__purple {
     .el-select-dropdown {
+      min-width: 100% !important;
       &__item {
         &.is-selected {
           color: $purple;
@@ -327,6 +331,64 @@
           & + .el-checkbox {
             &__label {
               color: $purple;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.cdp-checkbox__blue {
+  .el-checkbox {
+    &__input {
+      &.is-checked {
+        &+.el-checkbox {
+          &__label {
+            color: #000;
+          }
+        }
+        .el-checkbox {
+          &__inner {
+            background-color: $blue;
+            border-color: $blue;
+          }
+        }
+      }
+    }
+    &__label {
+      color: #000;
+    }
+    &__inner {
+      width: 20px;
+      height: 20px;
+      box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      border-radius: 3px;
+      &:hover {
+          border-color: $blue;
+      }
+      &::after {
+        left: 6px;
+        top: 2px;
+        width: 5px;
+        height: 9px;
+        border-width: 2px;
+      }
+    }
+  }
+  &.checkbox-label {
+    .el-checkbox {
+      &__label {
+        font-size: 14px;
+        font-weight: 500;
+        color: $blue;
+      }
+      &__input {
+        &.is-checked {
+          & + .el-checkbox {
+            &__label {
+              color: $blue;
             }
           }
         }
@@ -1103,5 +1165,13 @@
       background-color: transparent;
       color: #C3C5CA;
     }
+  }
+}
+.cdp-confirm-box {
+  width: 100%;
+  td {
+    font-size: 14px;
+    color: #404040;
+    font-weight: normal;
   }
 }

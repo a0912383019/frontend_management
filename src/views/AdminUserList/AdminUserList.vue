@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiListUserByAdmin, apiSimulateUserData } from '@/api'
 import { useGlobalStore } from '@/stores'
@@ -27,7 +27,6 @@ const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall, userTypeConfig, userStatusConfig } = globalStore
-const { systemConfigIsOk } = storeToRefs(globalStore)
 
 const tableData = ref([])
 const apiLength = ref(10) //一頁幾筆
@@ -121,7 +120,7 @@ const queryListUserByAdmin = async (filterData = null) => {
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      //   messageKey.value = 'noPermission' //更改message內容
+      messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
@@ -167,7 +166,6 @@ const searchAccount = (filterData) => {
 const userAccountVisible = ref(false)
 const userData = reactive({})
 const showAccountSetting = (userId, userName) => {
-  console.log(userId, userName)
   userData.userId = userId
   userData.userName = userName
   userAccountVisible.value = true
@@ -239,13 +237,6 @@ const simulationUser = (id) => {
 const openDeleteBox = (id) => {
   console.log('delete ', id)
 }
-
-watch(
-  () => systemConfigIsOk.value,
-  () => {
-    // queryAgNameUserLevel()
-  }
-)
 
 onMounted(() => {
   queryListUserByAdmin()

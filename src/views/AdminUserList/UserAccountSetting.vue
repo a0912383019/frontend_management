@@ -1,13 +1,17 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import Tab from '@/components/Tab.vue'
-import TargetData from '@/views/TargetGroupAnalysis/components/TargetData/TargetData.vue'
-import AnalysisResult from '@/views/TargetGroupAnalysis/components/AnalysisResult/AnalysisResult.vue'
-import Filter from '@/views/TargetGroupAnalysis/components/AnalysisResult/Filter.vue'
-import DialogContent from '@/views/AdminUserList/components/DialogContent.vue'
+import { apiUserByAdmin } from '@/api'
+import { useGlobalStore } from '@/stores'
+import AccessHall from '@/views/AdminUserList/components/AccessHall.vue'
+import CdpButton from '@/components/Button/CdpButton.vue'
+import ConfirmBox from '@/components/ConfirmBox.vue'
+import { dayjs } from 'element-plus'
 
 const { t } = useI18n()
+
+const globalStore = useGlobalStore()
+const { userTypeConfig, userStatusConfig } = globalStore
 
 const props = defineProps({
   modelValue: {
@@ -22,21 +26,180 @@ const props = defineProps({
   }
 })
 
+const accessHallRef = ref(null)
+
+const selectUserTypeOptions = computed(() => {
+  return appendOptions(userTypeConfig)
+})
+
+const selectUserStatusOptions = computed(() => {
+  return appendOptions(userStatusConfig)
+})
+
+const appendOptions = (obj) => {
+  let options = []
+  const keys = Object.keys(obj)
+
+  keys.forEach((key) => {
+    options.push({
+      value: key,
+      label: obj[key]
+    })
+  })
+
+  return options
+}
+
+const form = reactive({
+  userType: '',
+  userStatus: ''
+})
+
+const userDetail = reactive({
+  userId: '',
+  email: '',
+  userType: '',
+  userStatus: '',
+  createTime: '',
+  loginNum: '',
+  updateTime: '',
+  lastLoginTime: ''
+})
+
 const emit = defineEmits(['closeDialog'])
+
+const edit = ref(false)
+
+const handleUserEdit = () => {
+  edit.value = true
+}
+
+const handleEditCancel = () => {
+  cancelEditBox.value = true
+}
+
+const newAccessHalls = ref([])
+
+const handleEditConfirm = () => {
+  newAccessHalls.value = []
+  let accessHalls = accessHallRef.value.checkHallNodes()
+  if (accessHalls.length === 0) return
+
+  newAccessHalls.value = accessHalls.map((ele) => {
+    return ele.label
+  })
+  confirmEditBox.value = true
+}
+
+const queryUserByAdmin = async () => {
+  try {
+    const result = await apiUserByAdmin({
+      user_id_hide: props.userId
+    })
+
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      if (result.data.result.length !== 0) {
+        transformUserData(result.data.result)
+      }
+    } else {
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+    }
+  } catch (error) {
+    console.error(error)
+    if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    }
+  }
+}
+
+const originUserData = ref(null)
+
+const startRender = ref(false)
+const userHalls = ref([])
+const transformUserData = (data) => {
+  originUserData.value = JSON.parse(JSON.stringify(data))
+
+  userDetail.userId = data.id
+  userDetail.email = data.email
+  form.userType = data.user_type.toString()
+  userDetail.userType = userTypeConfig[data.user_type]
+  form.userStatus = data.user_status.toString()
+  userDetail.userStatus = userStatusConfig[data.user_status]
+  userDetail.createTime = dayjs(data.created_at).format(t('date.format_datetime_rule'))
+  userDetail.loginNum = data.login_num
+  userDetail.updateTime =
+    data.updated_at === null ? '-' : dayjs(data.updated_at).format(t('date.format_datetime_rule'))
+  userDetail.lastLoginTime =
+    data.last_login_date === null
+      ? '-'
+      : dayjs(data.last_login_date).format(t('date.format_datetime_rule'))
+
+  userHalls.value = data.access_hall_name.split(',')
+  startRender.value = true
+}
+
+const initUserTypeStatus = () => {
+  let userData = originUserData.value
+  form.userType = userData.user_type.toString()
+  form.userStatus = userData.user_status.toString()
+}
+
+const initUser = () => {
+  for (let val in form) {
+    userDetail[val] = ''
+  }
+
+  for (let val in userDetail) {
+    userDetail[val] = ''
+  }
+}
+
+const handleOpenDialog = () => {
+  initUser()
+  queryUserByAdmin()
+}
 
 // 關閉 dialog
 const handleDialogClosed = () => {
+  edit.value = false
+  startRender.value = false
   emit('closeDialog')
+}
+
+const cancelEditBox = ref(false)
+
+const cancelExecute = () => {
+  cancelEditBox.value = false
+}
+
+const confirmExecute = () => {
+  initUserTypeStatus()
+  accessHallRef.value.initHalls()
+  edit.value = false
+  cancelEditBox.value = false
+}
+
+const confirmEditBox = ref(false)
+
+const cancelSaved = () => {
+  confirmEditBox.value = false
+}
+
+const confirmSaved = () => {
+  confirmEditBox.value = false
 }
 </script>
 <template>
   <el-dialog
     :model-value="props.modelValue"
-    class="cdp-dialog dialog-mt-40"
+    class="cdp-dialog dialog-mt-25"
     :append-to-body="true"
     width="1150"
-    :destroy-on-close="true"
+    :destroy-on-close="false"
     @closed="handleDialogClosed"
+    @open="handleOpenDialog"
   >
     <template #header>
       <div class="cdp-dialog__header">
@@ -46,14 +209,189 @@ const handleDialogClosed = () => {
     </template>
     <div class="cdp-dialog__content">
       <section class="cdp-section">
-        <DialogContent />
+        <div class="mb-20 justify-between">
+          <el-row :gutter="20" class="mb-16">
+            <el-col :span="12" class="mb-20">
+              <div class="cdp-text-blue mb-3">{{ $t('admin_user.user_id') }}</div>
+              <el-input v-model="userDetail.userId" class="cdp-input cdp-input-disabled" readonly>
+                <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+              </el-input>
+            </el-col>
+            <el-col :span="12" class="mb-20">
+              <div class="cdp-text-blue mb-3">{{ $t('data_name.email') }}</div>
+              <el-input v-model="userDetail.email" class="cdp-input cdp-input-disabled" readonly>
+                <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+              </el-input>
+            </el-col>
+            <el-col :span="12" class="mb-20">
+              <div class="cdp-text-blue mb-3">{{ $t('user_detail_info.user_type') }}</div>
+              <el-input
+                v-if="!edit"
+                v-model="userDetail.userType"
+                class="cdp-input cdp-input-disabled"
+                readonly
+              >
+                <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+              </el-input>
+              <el-select
+                v-else
+                v-model="form.userType"
+                class="cdp-select cdp-select__blue w-full"
+                popper-class="cdp-select-popper cdp-select-popper__blue"
+                :teleported="false"
+              >
+                <el-option
+                  v-for="item in selectUserTypeOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  :selected="item.selected"
+                />
+              </el-select>
+            </el-col>
+            <el-col :span="12" class="mb-20">
+              <div class="cdp-text-blue mb-3">{{ $t('data_name.status') }}</div>
+              <el-input
+                v-if="!edit"
+                v-model="userDetail.userStatus"
+                class="cdp-input cdp-input-disabled"
+                readonly
+              >
+                <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+              </el-input>
+              <el-select
+                v-else
+                v-model="form.userStatus"
+                class="cdp-select cdp-select__blue w-full"
+                popper-class="cdp-select-popper cdp-select-popper__blue"
+                :teleported="false"
+              >
+                <el-option
+                  v-for="item in selectUserStatusOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  :selected="item.selected"
+                />
+              </el-select>
+            </el-col>
+            <el-col :span="12" class="mb-20">
+              <div class="cdp-text-blue mb-3">{{ $t('data_name.created_time') }}</div>
+              <el-input
+                v-model="userDetail.createTime"
+                class="cdp-input cdp-input-disabled"
+                readonly
+              >
+                <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+              </el-input>
+            </el-col>
+            <el-col :span="12" class="mb-20">
+              <div class="cdp-text-blue mb-3">{{ $t('data_name.login_num') }}</div>
+              <el-input v-model="userDetail.loginNum" class="cdp-input cdp-input-disabled" readonly>
+                <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+              </el-input>
+            </el-col>
+            <el-col :span="12">
+              <div class="cdp-text-blue mb-3">{{ $t('user_detail_info.last_update_time') }}</div>
+              <el-input
+                v-model="userDetail.updateTime"
+                class="cdp-input cdp-input-disabled"
+                readonly
+              >
+                <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+              </el-input>
+            </el-col>
+            <el-col :span="12">
+              <div class="cdp-text-blue mb-3">{{ $t('user_detail_info.last_login_time') }}</div>
+              <el-input
+                v-model="userDetail.lastLoginTime"
+                class="cdp-input cdp-input-disabled"
+                readonly
+              >
+                <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+              </el-input>
+            </el-col>
+          </el-row>
+        </div>
+        <AccessHall v-if="startRender" ref="accessHallRef" :userHalls="userHalls" :edit="edit" />
+        <div class="flex justify-end mt-20">
+          <div v-if="!edit">
+            <CdpButton
+              class="custom-bg-dark__blue ml-20"
+              :name="$t('common.edit')"
+              size="sm-130"
+              @click="handleUserEdit()"
+            />
+          </div>
+          <div v-else>
+            <CdpButton
+              class="custom-bg-white ml-15"
+              :name="$t('common.cancel_edit')"
+              size="sm-130"
+              @click="handleEditCancel()"
+            />
+            <CdpButton
+              class="custom-bg-dark__blue ml-10"
+              :name="$t('common.confirm_update')"
+              size="sm-130"
+              @click="handleEditConfirm()"
+            />
+          </div>
+        </div>
       </section>
     </div>
   </el-dialog>
+  <ConfirmBox
+    color="blue"
+    v-model="cancelEditBox"
+    :title="$t('modal.not_yet_saved')"
+    :content="$t('modal.do_you_want_to_cancel_edit')"
+    class="top15per"
+    @cancelExecute="cancelExecute"
+    @confirmExecute="confirmExecute"
+  >
+  </ConfirmBox>
+  <ConfirmBox
+    color="blue"
+    v-model="confirmEditBox"
+    :width="350"
+    :title="$t('modal.confirm_correct_desc')"
+    class="top15per"
+    @cancelExecute="cancelSaved"
+    @confirmExecute="confirmSaved"
+  >
+    <template v-slot:text-body>
+      <table class="cdp-confirm-box">
+        <tr>
+          <td width="35%" class="text-right">
+            {{ $t('user_detail_info.user_type') }}
+          </td>
+          <td width="2%" class="text-center">：</td>
+          <td width="63%" class="text-left">{{ userTypeConfig[form.userType] }}</td>
+        </tr>
+        <tr>
+          <td width="35%" class="text-right">{{ $t('data_name.status') }}</td>
+          <td width="2%" class="text-center">：</td>
+          <td width="63%" class="text-left">{{ userStatusConfig[form.userStatus] }}</td>
+        </tr>
+        <tr class="vertical-baseline">
+          <td width="35%" class="text-right">{{ $t('admin_user.can_access_hall') }}</td>
+          <td width="2%" class="text-center">：</td>
+          <td width="63%" class="text-left">
+            <div class="max-box">
+              <div v-for="(item, idx) in newAccessHalls" :key="idx">
+                {{ item }}
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </template>
+  </ConfirmBox>
 </template>
 <style lang="scss" scoped>
 .cdp-dialog {
-    height: 810px;
+  height: 810px;
   &__component {
     padding: 20px;
     padding-bottom: 0;
@@ -67,5 +405,20 @@ const handleDialogClosed = () => {
 }
 .underline {
   text-decoration: underline;
+}
+.max-box {
+  max-height: 400px;
+  overflow: scroll;
+}
+:deep(.el-input .el-input__wrapper) {
+  box-shadow: none !important;
+  .el-input__inner {
+    cursor: auto;
+  }
+}
+</style>
+<style lang="scss">
+.dialog-mt-25 {
+  margin-top: 25px;
 }
 </style>
