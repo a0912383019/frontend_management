@@ -8,7 +8,8 @@ import {
   sortTableDate,
   sortTableData,
   errorRespond,
-  getSessionStorageEntity
+  getSessionStorageEntity,
+  findRootHall
 } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -19,6 +20,7 @@ import AddAccount from '@/components/Button/AddButton.vue'
 import Filter from '@/views/AdminUserList/Filter.vue'
 import UserAccountSetting from '@/views/AdminUserList/UserAccountSetting.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
+import { hall_config_dict } from '@/../public/js/system_config.js'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -204,7 +206,12 @@ const querySimulateUserData = (user_id) => {
   })
 }
 
-const simulationRoute = router.resolve({ name: 'Home' })
+const simulationRoute = router.resolve({
+  name: 'Home',
+  query: {
+    simulate: true
+  }
+})
 const simulationUser = (id) => {
   querySimulateUserData(id)
     .then((userInfoEntity) => {
