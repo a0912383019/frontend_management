@@ -1,9 +1,8 @@
 <script setup>
 import { ref, computed, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiListUserByAdmin, apiSimulateUserData } from '@/api'
+import { apiListUserByAdmin, apiSimulateUserData, apiDeleteUserByAdmin } from '@/api'
 import { useGlobalStore } from '@/stores'
-import { storeToRefs } from 'pinia'
 import { ElNotification, dayjs } from 'element-plus'
 import {
   sortTableDate,
@@ -19,6 +18,7 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import AddAccount from '@/components/Button/AddButton.vue'
 import Filter from '@/views/AdminUserList/Filter.vue'
 import UserAccountSetting from '@/views/AdminUserList/UserAccountSetting.vue'
+import ConfirmBox from '@/components/ConfirmBox.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -234,8 +234,64 @@ const simulationUser = (id) => {
     })
 }
 
-const openDeleteBox = (id) => {
-  console.log('delete ', id)
+const updateSuccess = () => {
+  userAccountVisible.value = false
+  queryListUserByAdmin()
+}
+
+const deleteUserByAdmin = async (id) => {
+  try {
+    const result = await apiDeleteUserByAdmin({
+      delete_user_id_hide: id
+    })
+
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      ElNotification({
+        title: t('msg.delete_successful'),
+        type: 'success'
+      })
+      queryListUserByAdmin()
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
+  }
+}
+
+const deleteBox = ref(false) // 刪除彈窗
+const deleteName = ref('') // 要刪除的名稱
+const deleteId = ref(null)
+const openDeleteBox = (id, name) => {
+  deleteId.value = id
+  deleteName.value = name
+  deleteBox.value = true
+}
+
+const cancelDelete = () => {
+  deleteBox.value = false
+}
+
+const confirmDelete = () => {
+  deleteUserByAdmin(deleteId.value)
+  deleteBox.value = false
 }
 
 onMounted(() => {
@@ -315,19 +371,32 @@ onMounted(() => {
               icon="trash"
               :isSvg="true"
               :name="$t('common.delete')"
-              @click="openDeleteBox(scope.row.id)"
+              @click="openDeleteBox(scope.row.id, scope.row.account_name)"
             />
           </div>
         </template>
       </CustomTable>
-      <UserAccountSetting
-        v-model="userAccountVisible"
-        :userId="userData.userId"
-        :userName="userData.userName"
-        @closeDialog="closeUserDialog"
-      />
     </div>
   </section>
+  <UserAccountSetting
+    v-model="userAccountVisible"
+    :userId="userData.userId"
+    :userName="userData.userName"
+    @closeDialog="closeUserDialog"
+    @updateSuccess="updateSuccess"
+  />
+  <ConfirmBox
+    color="red"
+    v-model="deleteBox"
+    class="top15per"
+    :title="$t('modal.delete')"
+    @cancelExecute="cancelDelete"
+    @confirmExecute="confirmDelete"
+  >
+    <template v-slot:text-body>
+      {{ $t('modal.are_you_sure_to_delete') + '「' + deleteName + '」?' }}
+    </template>
+  </ConfirmBox>
 </template>
 <style lang="scss" scoped>
 .mb-0 {

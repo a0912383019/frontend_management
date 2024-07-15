@@ -139,6 +139,9 @@ onMounted(() => {
     flex: 0 0 50%;
     &__content {
       cursor: default;
+      .el-tree-node__expand-icon{
+        display: none;
+      }
     }
   }
   .el-checkbox {

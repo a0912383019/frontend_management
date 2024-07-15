@@ -1,12 +1,12 @@
 <script setup>
 import { ref, computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiUserByAdmin } from '@/api'
+import { apiUserByAdmin, apiUpdateUserByAdmin } from '@/api'
 import { useGlobalStore } from '@/stores'
 import AccessHall from '@/views/AdminUserList/components/AccessHall.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
-import { dayjs } from 'element-plus'
+import { dayjs, ElNotification } from 'element-plus'
 
 const { t } = useI18n()
 
@@ -66,7 +66,7 @@ const userDetail = reactive({
   lastLoginTime: ''
 })
 
-const emit = defineEmits(['closeDialog'])
+const emit = defineEmits(['closeDialog', 'updateSuccess'])
 
 const edit = ref(false)
 
@@ -78,16 +78,23 @@ const handleEditCancel = () => {
   cancelEditBox.value = true
 }
 
-const newAccessHalls = ref([])
+const newAccessHallsLable = ref([])
+const newAccessHallsValue = ref('')
 
 const handleEditConfirm = () => {
-  newAccessHalls.value = []
+  newAccessHallsLable.value = []
   let accessHalls = accessHallRef.value.checkHallNodes()
   if (accessHalls.length === 0) return
 
-  newAccessHalls.value = accessHalls.map((ele) => {
+  newAccessHallsLable.value = accessHalls.map((ele) => {
     return ele.label
   })
+
+  let newHallArr = accessHalls.map((ele) => {
+    return ele.hallCode
+  })
+  newAccessHallsValue.value = newHallArr.join(',')
+
   confirmEditBox.value = true
 }
 
@@ -188,7 +195,48 @@ const cancelSaved = () => {
 }
 
 const confirmSaved = () => {
-  confirmEditBox.value = false
+  updateUserByAdmin()
+}
+
+const updateUserByAdmin = async () => {
+  try {
+    const result = await apiUpdateUserByAdmin({
+      user_type: form.userType,
+      user_status: form.userStatus,
+      access_hall_hide: newAccessHallsValue.value,
+      user_id_hide: props.userId
+    })
+
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      ElNotification({
+        title: t('msg.updated_successfully'),
+        type: 'success'
+      })
+      confirmEditBox.value = false
+      emit('updateSuccess')
+    } else {
+      ElNotification({
+        title: t('msg.update_failed'),
+        type: 'error'
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.update_failed'),
+        type: 'error'
+      })
+    }
+  }
 }
 </script>
 <template>
@@ -356,12 +404,30 @@ const confirmSaved = () => {
     v-model="confirmEditBox"
     :width="350"
     :title="$t('modal.confirm_correct_desc')"
-    class="top15per"
+    class="top15per confirm-box"
     @cancelExecute="cancelSaved"
     @confirmExecute="confirmSaved"
   >
     <template v-slot:text-body>
       <table class="cdp-confirm-box">
+        <tr>
+          <td width="35%" class="text-right">
+            {{ $t('user_detail_info.account_name') }}
+          </td>
+          <td width="2%" class="text-center">：</td>
+          <td width="63%" class="text-left">{{ props.userName }}</td>
+        </tr>
+        <tr>
+          <td width="35%" class="text-right">
+            {{ $t('data_name.email') }}
+          </td>
+          <td width="2%" class="text-center">：</td>
+          <td width="63%" class="text-left">
+            <div>
+              {{ userDetail.email }}
+            </div>
+          </td>
+        </tr>
         <tr>
           <td width="35%" class="text-right">
             {{ $t('user_detail_info.user_type') }}
@@ -379,7 +445,7 @@ const confirmSaved = () => {
           <td width="2%" class="text-center">：</td>
           <td width="63%" class="text-left">
             <div class="max-box">
-              <div v-for="(item, idx) in newAccessHalls" :key="idx">
+              <div v-for="(item, idx) in newAccessHallsLable" :key="idx">
                 {{ item }}
               </div>
             </div>
@@ -414,6 +480,17 @@ const confirmSaved = () => {
   box-shadow: none !important;
   .el-input__inner {
     cursor: auto;
+  }
+}
+.confirm-box {
+  width: 100%;
+  td {
+    font-size: 14px;
+    color: #404040;
+    font-weight: normal;
+    div {
+      word-break: break-all;
+    }
   }
 }
 </style>
