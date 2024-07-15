@@ -328,29 +328,29 @@ onMounted(() => {
         <template #user_type="scope">
           <div class="font-size-14">
             <span v-if="scope.row.user_type === 0" class="cdp-text-shamrockgreen">{{
-              userTypeConfig[scope.row.user_type]
+              globalStore.userTypeConfig[scope.row.user_type]
             }}</span>
             <span v-if="scope.row.user_type === 1" class="cdp-text-celticblue">{{
-              userTypeConfig[scope.row.user_type]
+              globalStore.userTypeConfig[scope.row.user_type]
             }}</span>
             <span v-if="scope.row.user_type === 8" class="cdp-text-harvestgold">{{
-              userTypeConfig[scope.row.user_type]
+              globalStore.userTypeConfig[scope.row.user_type]
             }}</span>
             <span v-if="scope.row.user_type === 9" class="cdp-text-red">{{
-              userTypeConfig[scope.row.user_type]
+              globalStore.userTypeConfig[scope.row.user_type]
             }}</span>
             <span v-if="scope.row.user_type === -1" class="cdp-text-eggmeal">{{
-              userTypeConfig[scope.row.user_type]
+              globalStore.userTypeConfig[scope.row.user_type]
             }}</span>
           </div>
         </template>
         <template #status="scope">
           <div class="font-size-14">
             <span v-if="scope.row.status === 0" class="cdp-text-lightgreen">{{
-              userStatusConfig[scope.row.status]
+              globalStore.userStatusConfig[scope.row.status]
             }}</span>
             <span v-if="scope.row.status === 1" class="cdp-text-red">{{
-              userStatusConfig[scope.row.status]
+              globalStore.userStatusConfig[scope.row.status]
             }}</span>
           </div>
         </template>
