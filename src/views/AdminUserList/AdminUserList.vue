@@ -26,7 +26,6 @@ const router = useRouter()
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
-const { activeHall, userTypeConfig, userStatusConfig } = globalStore
 
 const tableData = ref([])
 const apiLength = ref(10) //一頁幾筆
@@ -101,7 +100,6 @@ const queryListUserByAdmin = async (filterData = null) => {
   tableData.value = []
   try {
     const result = await apiListUserByAdmin({
-      hall_name: activeHall.hall_code,
       user_name: filterData ? filterData.userName : '',
       user_type: filterData ? filterData.userType : userType.value,
       user_status: filterData ? filterData.userStatus : userStatus.value,
@@ -277,8 +275,8 @@ const deleteUserByAdmin = async (id) => {
 }
 
 const deleteBox = ref(false) // 刪除彈窗
-const deleteName = ref('') // 要刪除的名稱
 const deleteId = ref(null)
+const deleteName = ref('') // 要刪除的名稱
 const openDeleteBox = (id, name) => {
   deleteId.value = id
   deleteName.value = name

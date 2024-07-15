@@ -74,10 +74,6 @@ const handleUserEdit = () => {
   edit.value = true
 }
 
-const handleEditCancel = () => {
-  cancelEditBox.value = true
-}
-
 const newAccessHallsLable = ref([])
 const newAccessHallsValue = ref('')
 
@@ -176,6 +172,10 @@ const handleDialogClosed = () => {
 }
 
 const cancelEditBox = ref(false)
+
+const handleEditCancel = () => {
+  cancelEditBox.value = true
+}
 
 const cancelExecute = () => {
   cancelEditBox.value = false
