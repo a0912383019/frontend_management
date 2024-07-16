@@ -6,7 +6,7 @@ import { apiLogout } from '@/api/system.js'
 import { apiRefresh, apiGoRefresh, apiGetSystemConfig } from '@/api/system.js'
 import { i18n } from '@/global/i18n'
 import { hall_config_dict } from '@/../public/js/system_config.js'
-import { errorRespond, getSessionStorageEntity } from '@/utils/commonUtils.js'
+import { errorRespond, getSessionStorageEntity, findRootHall } from '@/utils/commonUtils.js'
 
 export const useSystemStore = defineStore('system', () => {
   const router = useRouter()
@@ -40,14 +40,29 @@ export const useSystemStore = defineStore('system', () => {
   }
 
   // call system config
-  const storeGetSystemConfig = async (fromRoute = 1) => {
+  const storeGetSystemConfig = async (fromRoute = 1, simulate = false) => {
     globalStore.isLoading = true // 顯示Loading視窗
 
     // global hall_code 為空，從sessionStorage user_info中取得資料中的第一個廳別
-    if (globalStore.activeHall.hall_code === '') {
+    // 模擬畫面需要重新抓取，因為每個使用者的hall 不一樣
+    if (globalStore.activeHall.hall_code === '' || simulate) {
       let { access_hall } = getSessionStorageEntity('user_info')
-      let firstHall = access_hall.split(',')[0]
-      let { hall_name, hall_code } = hall_config_dict['BBIN'][firstHall]
+      let accessHalls = access_hall.split(',')
+      let hall_name, hall_code
+
+      // 取得第一個有效的廳
+      for (let i = 0; i < accessHalls.length; i++) {
+        if (
+          hall_config_dict[findRootHall(accessHalls[i])] &&
+          hall_config_dict[findRootHall(accessHalls[i])][accessHalls[i]]
+        ) {
+          const { hall_name: hn, hall_code: hc } =
+            hall_config_dict[findRootHall(accessHalls[i])][accessHalls[i]]
+          hall_name = hn
+          hall_code = hc
+          break
+        }
+      }
       globalStore.activeHall.hall_name = hall_name
       globalStore.activeHall.hall_code = hall_code
     }

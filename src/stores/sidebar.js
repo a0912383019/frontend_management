@@ -13,7 +13,8 @@ export const useSidebarStore = defineStore(
       const storageMenu = getSessionStorageEntity('system_config').menu_config
       menuLists.value = storageMenu
         .map((item) => {
-          if (item.item_id === 'user_detail_info') {
+          // 待舊版 php捨棄從資料庫移除
+          if (item.item_id === 'user_detail_info' || item.item_id === 'tag_synchronization') {
             return null
           }
           return {

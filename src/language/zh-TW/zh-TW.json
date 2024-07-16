@@ -52,6 +52,7 @@
     "filter": "篩選",
     "advanced_filter": "進階篩選",
     "select_all": "全部",
+    "select_all_option": "全選",
     "select_all_manual": "全部【人工】標籤",
     "select_all_rule_based": "全部【規則】標籤",
     "select_all_ai": "全部【機器】標籤",

@@ -222,22 +222,6 @@ export const router = createRouter({
       ]
     },
     {
-      path: '/tag-synchronization',
-      name: 'tag-synchronization',
-      component: MainLayout,
-      meta: {
-        pageName: '標籤同步管理',
-        fromPage: 'tag_synchronization'
-      },
-      children: [
-        {
-          path: '/tag-synchronization',
-          name: 'tag-synchronization'
-          // component: () => import('../views/Home/Home.vue')
-        }
-      ]
-    },
-    {
       path: '/user-export-report',
       name: 'user-export-report',
       component: MainLayout,
@@ -250,22 +234,6 @@ export const router = createRouter({
           path: '/user-export-report',
           name: 'user-export-report',
           component: () => import('../views/ExportReportList/ExportReportList.vue')
-        }
-      ]
-    },
-    {
-      path: '/user-detail-info',
-      name: 'user-detail-info',
-      component: MainLayout,
-      meta: {
-        pageName: '帳戶資訊',
-        fromPage: 'user_detail_info'
-      },
-      children: [
-        {
-          path: '/user-detail-info',
-          name: 'user-detail-info'
-          // component: () => import('../views/Home/Home.vue')
         }
       ]
     },
@@ -302,7 +270,12 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   if (isLogin || whiteList.includes(to.path)) {
-    if (to.name !== 'Login') {
+    if (to.name === 'Home' && to.query && to.query.simulate) {
+      const systemStore = useSystemStore()
+      await systemStore.storeGetSystemConfig(0, true)
+      systemStore.storeRefreshToken()
+      next()
+    } else if (to.name !== 'Login') {
       const systemStore = useSystemStore()
       await systemStore.storeGetSystemConfig(0)
       systemStore.storeRefreshToken()

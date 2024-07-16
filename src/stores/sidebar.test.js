@@ -163,19 +163,6 @@ describe('useSystemStore', () => {
       sub_menu: []
     },
     {
-      item_id: 'tag_synchronization',
-      item_name: '標籤同步管理',
-      folder_path: 'common/',
-      page_name: 'tag_synchronization',
-      nav_icon: 'fas fa-sync-alt',
-      is_loading_auto_hide: false,
-      status: 1,
-      status_description: '',
-      url_path: 'tag-synchronization',
-      svg_icon: 'menuSynchronize',
-      sub_menu: []
-    },
-    {
       item_id: 'user_export_report',
       item_name: '匯出報表清單',
       folder_path: 'common/',
@@ -188,19 +175,6 @@ describe('useSystemStore', () => {
       svg_icon: 'menuExport',
       sub_menu: []
     },
-    // {
-    //   item_id: 'user_detail_info',
-    //   item_name: '帳戶資訊',
-    //   folder_path: 'user/',
-    //   page_name: 'user_detail_info',
-    //   nav_icon: 'fas fa-user-cog',
-    //   is_loading_auto_hide: false,
-    //   status: 1,
-    //   status_description: '',
-    //   url_path: 'user-detail-info',
-    //   svg_icon: 'menuAccount',
-    //   sub_menu: []
-    // },
     {
       item_id: 'admin_user_list',
       item_name: '使用者帳戶管理',

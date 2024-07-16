@@ -31,10 +31,15 @@ const generateHeaderHallDropdown = () => {
   hallDropdownList.value = []
   //根據storage內的可檢視廳別，產生出對應的廳別資料
   for (let i = 0; i < hallAry.length; i++) {
-    const hallData = hall_config_dict[findRootHall(hallAry[i])][hallAry[i]]
-    hallDropdownList.value.push(hallData)
-    //將選取狀態預設為false
-    hallDropdownList.value[i]['is_active'] = false
+    if (
+      hall_config_dict[findRootHall(hallAry[i])] &&
+      hall_config_dict[findRootHall(hallAry[i])][hallAry[i]]
+    ) {
+      const hallData = hall_config_dict[findRootHall(hallAry[i])][hallAry[i]]
+      hallDropdownList.value.push(hallData)
+      //將選取狀態預設為false
+      hallDropdownList.value[hallDropdownList.value.length - 1]['is_active'] = false
+    }
   }
 
   let hasHall = checkActiveHall()

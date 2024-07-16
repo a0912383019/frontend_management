@@ -1,9 +1,8 @@
 <script setup>
-import { ref, watch, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiListUserByAdmin, apiSimulateUserData } from '@/api'
+import { apiListUserByAdmin, apiSimulateUserData, apiDeleteUserByAdmin } from '@/api'
 import { useGlobalStore } from '@/stores'
-import { storeToRefs } from 'pinia'
 import { ElNotification, dayjs } from 'element-plus'
 import {
   sortTableDate,
@@ -19,6 +18,7 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import AddAccount from '@/components/Button/AddButton.vue'
 import Filter from '@/views/AdminUserList/Filter.vue'
 import UserAccountSetting from '@/views/AdminUserList/UserAccountSetting.vue'
+import ConfirmBox from '@/components/ConfirmBox.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -26,8 +26,6 @@ const router = useRouter()
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
-const { activeHall, userTypeConfig, userStatusConfig } = globalStore
-const { systemConfigIsOk } = storeToRefs(globalStore)
 
 const tableData = ref([])
 const apiLength = ref(10) //一頁幾筆
@@ -102,7 +100,6 @@ const queryListUserByAdmin = async (filterData = null) => {
   tableData.value = []
   try {
     const result = await apiListUserByAdmin({
-      hall_name: activeHall.hall_code,
       user_name: filterData ? filterData.userName : '',
       user_type: filterData ? filterData.userType : userType.value,
       user_status: filterData ? filterData.userStatus : userStatus.value,
@@ -121,7 +118,7 @@ const queryListUserByAdmin = async (filterData = null) => {
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      //   messageKey.value = 'noPermission' //更改message內容
+      messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
@@ -167,7 +164,6 @@ const searchAccount = (filterData) => {
 const userAccountVisible = ref(false)
 const userData = reactive({})
 const showAccountSetting = (userId, userName) => {
-  console.log(userId, userName)
   userData.userId = userId
   userData.userName = userName
   userAccountVisible.value = true
@@ -208,7 +204,12 @@ const querySimulateUserData = (user_id) => {
   })
 }
 
-const simulationRoute = router.resolve({ name: 'Home' })
+const simulationRoute = router.resolve({
+  name: 'Home',
+  query: {
+    simulate: true
+  }
+})
 const simulationUser = (id) => {
   querySimulateUserData(id)
     .then((userInfoEntity) => {
@@ -236,23 +237,72 @@ const simulationUser = (id) => {
     })
 }
 
-const openDeleteBox = (id) => {
-  console.log('delete ', id)
+const updateSuccess = () => {
+  userAccountVisible.value = false
+  queryListUserByAdmin()
 }
 
-watch(
-  () => systemConfigIsOk.value,
-  () => {
-    // queryAgNameUserLevel()
+const deleteUserByAdmin = async (id) => {
+  try {
+    const result = await apiDeleteUserByAdmin({
+      delete_user_id_hide: id
+    })
+
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      ElNotification({
+        title: t('msg.delete_successful'),
+        type: 'success'
+      })
+      queryListUserByAdmin()
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
   }
-)
+}
+
+const deleteBox = ref(false) // 刪除彈窗
+const deleteId = ref(null)
+const deleteName = ref('') // 要刪除的名稱
+const openDeleteBox = (id, name) => {
+  deleteId.value = id
+  deleteName.value = name
+  deleteBox.value = true
+}
+
+const cancelDelete = () => {
+  deleteBox.value = false
+}
+
+const confirmDelete = () => {
+  deleteUserByAdmin(deleteId.value)
+  deleteBox.value = false
+}
 
 onMounted(() => {
   queryListUserByAdmin()
 })
 </script>
 <template>
-  <section class="cdp-section mb-0">
+  <section class="cdp-section">
     <div class="flex items-center justify-between mb-20" ref="refContent">
       <PageTitle icon="menuUser" :title="$t('sidebar.admin_user_list')" />
       <div class="flex">
@@ -283,29 +333,29 @@ onMounted(() => {
         <template #user_type="scope">
           <div class="font-size-14">
             <span v-if="scope.row.user_type === 0" class="cdp-text-shamrockgreen">{{
-              userTypeConfig[scope.row.user_type]
+              globalStore.userTypeConfig[scope.row.user_type]
             }}</span>
             <span v-if="scope.row.user_type === 1" class="cdp-text-celticblue">{{
-              userTypeConfig[scope.row.user_type]
+              globalStore.userTypeConfig[scope.row.user_type]
             }}</span>
             <span v-if="scope.row.user_type === 8" class="cdp-text-harvestgold">{{
-              userTypeConfig[scope.row.user_type]
+              globalStore.userTypeConfig[scope.row.user_type]
             }}</span>
             <span v-if="scope.row.user_type === 9" class="cdp-text-red">{{
-              userTypeConfig[scope.row.user_type]
+              globalStore.userTypeConfig[scope.row.user_type]
             }}</span>
             <span v-if="scope.row.user_type === -1" class="cdp-text-eggmeal">{{
-              userTypeConfig[scope.row.user_type]
+              globalStore.userTypeConfig[scope.row.user_type]
             }}</span>
           </div>
         </template>
         <template #status="scope">
           <div class="font-size-14">
             <span v-if="scope.row.status === 0" class="cdp-text-lightgreen">{{
-              userStatusConfig[scope.row.status]
+              globalStore.userStatusConfig[scope.row.status]
             }}</span>
             <span v-if="scope.row.status === 1" class="cdp-text-red">{{
-              userStatusConfig[scope.row.status]
+              globalStore.userStatusConfig[scope.row.status]
             }}</span>
           </div>
         </template>
@@ -324,27 +374,41 @@ onMounted(() => {
               icon="trash"
               :isSvg="true"
               :name="$t('common.delete')"
-              @click="openDeleteBox(scope.row.id)"
+              @click="openDeleteBox(scope.row.id, scope.row.account_name)"
             />
           </div>
         </template>
       </CustomTable>
-      <UserAccountSetting
-        v-model="userAccountVisible"
-        :userId="userData.userId"
-        :userName="userData.userName"
-        @closeDialog="closeUserDialog"
-      />
     </div>
   </section>
+  <UserAccountSetting
+    v-model="userAccountVisible"
+    :userId="userData.userId"
+    :userName="userData.userName"
+    @closeDialog="closeUserDialog"
+    @updateSuccess="updateSuccess"
+  />
+  <ConfirmBox
+    color="red"
+    v-model="deleteBox"
+    class="top15per"
+    :title="$t('modal.delete')"
+    @cancelExecute="cancelDelete"
+    @confirmExecute="confirmDelete"
+  >
+    <template v-slot:text-body>
+      {{ $t('modal.are_you_sure_to_delete') + '「' + deleteName + '」?' }}
+    </template>
+  </ConfirmBox>
 </template>
 <style lang="scss" scoped>
-.mb-0 {
-  margin-bottom: 0 !important;
+// email 超出cell寬度會自己斷行
+:deep(.break-work) {
+  .cell {
+    word-break: break-all;
+  }
 }
-</style>
-<style lang="scss">
-.customAdminTable {
+:deep(.customAdminTable) {
   button.detail-button {
     min-width: 80px;
   }
@@ -358,11 +422,4 @@ onMounted(() => {
   }
 }
 </style>
-<style lang="scss" scoped>
-// email 超出cell寬度會自己斷行
-:deep(.break-work) {
-  .cell {
-    word-break: break-all;
-  }
-}
-</style>
+
