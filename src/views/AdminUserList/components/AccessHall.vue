@@ -8,7 +8,6 @@ const { generateHalls, allHallCode } = userAccountSettingStore
 
 const props = defineProps({
   edit: {
-    //自定義資料總數，遇到每次換頁都需要call api，但又需要顯示資料總數逾頁面上
     type: Boolean,
     default: false
   },

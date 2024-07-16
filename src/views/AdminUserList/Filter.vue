@@ -180,7 +180,7 @@ const handleClick = () => {
 <style lang="scss" scoped>
 .admin-date-picker {
   :deep(.el-popper.el-picker__popper) {
-    inset: 145px -13px auto auto !important;
+    inset: 155px 7px auto auto !important;
   }
 }
 .drop {

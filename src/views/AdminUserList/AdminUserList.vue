@@ -8,8 +8,7 @@ import {
   sortTableDate,
   sortTableData,
   errorRespond,
-  getSessionStorageEntity,
-  findRootHall
+  getSessionStorageEntity
 } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -20,7 +19,6 @@ import AddAccount from '@/components/Button/AddButton.vue'
 import Filter from '@/views/AdminUserList/Filter.vue'
 import UserAccountSetting from '@/views/AdminUserList/UserAccountSetting.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
-import { hall_config_dict } from '@/../public/js/system_config.js'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -304,7 +302,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section mb-0">
+  <section class="cdp-section">
     <div class="flex items-center justify-between mb-20" ref="refContent">
       <PageTitle icon="menuUser" :title="$t('sidebar.admin_user_list')" />
       <div class="flex">
@@ -404,12 +402,13 @@ onMounted(() => {
   </ConfirmBox>
 </template>
 <style lang="scss" scoped>
-.mb-0 {
-  margin-bottom: 0 !important;
+// email 超出cell寬度會自己斷行
+:deep(.break-work) {
+  .cell {
+    word-break: break-all;
+  }
 }
-</style>
-<style lang="scss">
-.customAdminTable {
+:deep(.customAdminTable) {
   button.detail-button {
     min-width: 80px;
   }
@@ -423,11 +422,4 @@ onMounted(() => {
   }
 }
 </style>
-<style lang="scss" scoped>
-// email 超出cell寬度會自己斷行
-:deep(.break-work) {
-  .cell {
-    word-break: break-all;
-  }
-}
-</style>
+
