@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiCreateUserByAdmin } from '@/api'
 import { useGlobalStore, useUserAccountSettingStore } from '@/stores'
@@ -42,7 +42,6 @@ const handleDialogClosed = () => {
 
 const initUser = () => {
   formRef.value.resetFields()
-  validateForm.userEmail = ''
   user.userType = '0'
   user.userStatus = '0'
   accessHallRef.value.initHalls([])
@@ -56,9 +55,13 @@ const user = reactive({
 const formRef = ref(null)
 const accessHallRef = ref(null)
 
+const emailDuplicate = ref(false)
 const validateForm = reactive({
-  userEmail: '',
-  emailRule: [
+  userEmail: ''
+})
+
+const formRules = computed(() => {
+  return [
     {
       required: true,
       message: t('user_detail_info.blank_email_error_msg')
@@ -66,6 +69,15 @@ const validateForm = reactive({
     {
       type: 'email',
       message: t('user_detail_info.wrong_email_formation_error_msg')
+    },
+    {
+      validator: (rule, value, callback) => {
+        if (emailDuplicate.value) {
+          callback(new Error(t('user_detail_info.email_exist_error_msg')))
+        } else {
+          callback()
+        }
+      }
     }
   ]
 })
@@ -76,6 +88,7 @@ const newAccessHallsLable = ref([])
 const newAccessHallsValue = ref('')
 
 const handleUserAdd = () => {
+  formRef.value.clearValidate()
   newAccessHallsLable.value = []
 
   let accessHalls = accessHallRef.value.checkHallNodes()
@@ -128,11 +141,16 @@ const createUserByAdmin = async () => {
     }
   } catch (error) {
     console.error(error)
+    const errStatus = error.response.data.errors
     if (error.response.status === 403) {
       ElNotification({
         title: t('msg.no_permission'),
         type: 'error'
       })
+    } else if (error.response.status === 422 && errStatus.hasOwnProperty('email')) {
+      emailDuplicate.value = true
+      formRef.value.validate(() => {})
+      confirmAddBox.value = false
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
@@ -142,6 +160,10 @@ const createUserByAdmin = async () => {
       })
     }
   }
+}
+
+const emailChange = () => {
+  emailDuplicate.value = false
 }
 </script>
 <template>
@@ -170,12 +192,13 @@ const createUserByAdmin = async () => {
                 </template>
               </SectionTitle>
               <el-form ref="formRef" :model="validateForm" @submit.prevent>
-                <el-form-item prop="userEmail" :rules="validateForm.emailRule">
+                <el-form-item prop="userEmail" :rules="formRules">
                   <el-input
                     v-model="validateForm.userEmail"
                     type="email"
                     class="cdp-input"
                     :placeholder="$t('user_detail_info.input_google_email')"
+                    @input="emailChange"
                     :validate-event="false"
                   >
                   </el-input>

@@ -120,7 +120,7 @@ onMounted(() => {
       @check="checkOption"
     />
   </section>
-  <div v-if="!validHallBox" class="cdp-text-candypink font-size-12 mt-5">
+  <div v-if="!validHallBox" class="cdp-text-candypink font-size-12">
     {{ $t('admin_user.not_select_access_hall_error_msg') }}
   </div>
 </template>

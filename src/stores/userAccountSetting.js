@@ -1,4 +1,4 @@
-import { defineStore, storeToRefs } from 'pinia'
+import { defineStore } from 'pinia'
 import { hall_config_dict } from '@/../public/js/system_config.js'
 import { computed, ref } from 'vue'
 import { useGlobalStore } from '@/stores'
