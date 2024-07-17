@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed, reactive } from 'vue'
+import { ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiUserByAdmin, apiUpdateUserByAdmin } from '@/api'
-import { useGlobalStore } from '@/stores'
+import { useGlobalStore, useUserAccountSettingStore } from '@/stores'
 import AccessHall from '@/views/AdminUserList/components/AccessHall.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
@@ -12,6 +12,8 @@ const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { userTypeConfig, userStatusConfig } = globalStore
+
+const userAccountSettingStore = useUserAccountSettingStore()
 
 const props = defineProps({
   modelValue: {
@@ -27,28 +29,6 @@ const props = defineProps({
 })
 
 const accessHallRef = ref(null)
-
-const selectUserTypeOptions = computed(() => {
-  return appendOptions(userTypeConfig)
-})
-
-const selectUserStatusOptions = computed(() => {
-  return appendOptions(userStatusConfig)
-})
-
-const appendOptions = (obj) => {
-  let options = []
-  const keys = Object.keys(obj)
-
-  keys.forEach((key) => {
-    options.push({
-      value: key,
-      label: obj[key]
-    })
-  })
-
-  return options
-}
 
 const form = reactive({
   userType: '',
@@ -289,7 +269,7 @@ const updateUserByAdmin = async () => {
                 :teleported="false"
               >
                 <el-option
-                  v-for="item in selectUserTypeOptions"
+                  v-for="item in userAccountSettingStore.selectUserTypeOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -315,7 +295,7 @@ const updateUserByAdmin = async () => {
                 :teleported="false"
               >
                 <el-option
-                  v-for="item in selectUserStatusOptions"
+                  v-for="item in userAccountSettingStore.selectUserStatusOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -394,7 +374,6 @@ const updateUserByAdmin = async () => {
     v-model="cancelEditBox"
     :title="$t('modal.not_yet_saved')"
     :content="$t('modal.do_you_want_to_cancel_edit')"
-    class="top15per"
     @cancelExecute="cancelExecute"
     @confirmExecute="confirmExecute"
   >
@@ -404,7 +383,7 @@ const updateUserByAdmin = async () => {
     v-model="confirmEditBox"
     :width="350"
     :title="$t('modal.confirm_correct_desc')"
-    class="top15per confirm-box"
+    class="confirm-box"
     @cancelExecute="cancelSaved"
     @confirmExecute="confirmSaved"
   >
@@ -472,10 +451,6 @@ const updateUserByAdmin = async () => {
 .underline {
   text-decoration: underline;
 }
-.max-box {
-  max-height: 400px;
-  overflow: scroll;
-}
 :deep(.el-input .el-input__wrapper) {
   box-shadow: none !important;
   .el-input__inner {
@@ -491,6 +466,10 @@ const updateUserByAdmin = async () => {
     div {
       word-break: break-all;
     }
+  }
+  .max-box {
+    max-height: 300px;
+    overflow: scroll;
   }
 }
 </style>

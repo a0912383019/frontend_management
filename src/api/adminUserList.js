@@ -50,3 +50,16 @@ export const apiDeleteUserByAdmin = (params) => {
     delete_user_id_hide
   })
 }
+
+export const apiCreateUserByAdmin = (params) => {
+  const { email, user_type, user_status, access_hall_hide } = params
+  return axiosInstance.post('/api/auth/user/create_user_by_admin', {
+    name: email,
+    email,
+    user_type,
+    user_status,
+    access_hall_hide,
+    password: 'qwer1234',
+    password_confirmation: 'qwer1234'
+  })
+}

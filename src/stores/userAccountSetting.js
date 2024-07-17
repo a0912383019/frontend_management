@@ -1,8 +1,11 @@
-import { defineStore } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
 import { hall_config_dict } from '@/../public/js/system_config.js'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useGlobalStore } from '@/stores'
 
 export const useUserAccountSettingStore = defineStore('userAccountSetting', () => {
+  const globalStore = useGlobalStore()
+
   /**
    * 產生廳別
    * @param {Array} halls 要勾選的廳
@@ -47,5 +50,27 @@ export const useUserAccountSettingStore = defineStore('userAccountSetting', () =
 
   const allHallCode = ref([])
 
-  return { generateHalls, allHallCode }
+  const selectUserTypeOptions = computed(() => {
+    return appendOptions(globalStore.userTypeConfig)
+  })
+
+  const selectUserStatusOptions = computed(() => {
+    return appendOptions(globalStore.userStatusConfig)
+  })
+
+  const appendOptions = (obj) => {
+    let options = []
+    const keys = Object.keys(obj)
+
+    keys.forEach((key) => {
+      options.push({
+        value: key,
+        label: obj[key]
+      })
+    })
+
+    return options
+  }
+
+  return { generateHalls, allHallCode, selectUserTypeOptions, selectUserStatusOptions }
 })
