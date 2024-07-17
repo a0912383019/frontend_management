@@ -149,7 +149,7 @@ const createUserByAdmin = async () => {
       })
     } else if (error.response.status === 422 && errStatus.hasOwnProperty('email')) {
       emailDuplicate.value = true
-      formRef.value.validate(() => {})
+      formRef.value.validate()
       confirmAddBox.value = false
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
