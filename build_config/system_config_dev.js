@@ -1208,13 +1208,13 @@ export const hall_config_dict_bbin = {
     hall_name: '金沙國際貴賓會',
     currency_sign: '¥'
   },
-  31: {
-    hall_id: 3820455,
-    domain_id: 0,
-    hall_code: '31',
-    hall_name: '银河娱乐城',
-    currency_sign: '¥'
-  },
+  // 31: {
+  //   hall_id: 3820455,
+  //   domain_id: 0,
+  //   hall_code: '31',
+  //   hall_name: '银河娱乐城',
+  //   currency_sign: '¥'
+  // },
   www: {
     hall_id: 3820454,
     domain_id: 0,
