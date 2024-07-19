@@ -11,20 +11,24 @@ const tagsList = computed(() => {
       name: t('tags.type_6')
     },
     {
+      color: 'green',
+      name: t('tags.type_1')
+    },
+    {
       color: 'blue',
       name: t('tags.type_3')
+    },
+    {
+      color: 'tree-green',
+      name: t('tags.type_9')
     },
     {
       color: 'orange',
       name: t('tags.type_4')
     },
     {
-      color: 'green',
-      name: t('tags.type_1')
-    },
-    {
-      color: 'tree-green',
-      name: t('tags.type_9')
+      color: 'sky-blue',
+      name: t('tags.type_8')
     }
   ]
 })
@@ -32,7 +36,7 @@ const tagsList = computed(() => {
 <template>
   <el-tooltip effect="dark" placement="right">
     <template #content>
-      <div class="page-customtag-type">
+      <div class="page-customtag-type flex flex-wrap justify-between">
         <template v-for="item in tagsList" :key="item.color">
           <div class="page-customtag-type__item" :class="item.color">{{ item.name }}</div>
         </template>
@@ -43,10 +47,13 @@ const tagsList = computed(() => {
 </template>
 <style lang="scss" scoped>
 .page-customtag-type {
+  width: 175px;
+  word-break: break-all;
   font-size: 14px;
   &__item {
     display: flex;
     align-items: center;
+    width: 48%;
     margin-top: 2px;
     margin-bottom: 2px;
     &::before {
@@ -79,6 +86,11 @@ const tagsList = computed(() => {
     &.tree-green {
       &::before {
         background-color: $tree-green;
+      }
+    }
+    &.sky-blue {
+      &::before {
+        background-color: $sky-blue;
       }
     }
   }

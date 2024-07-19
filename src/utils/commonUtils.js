@@ -402,7 +402,7 @@ export function sortTableDate({ prop, order, tableData }) {
 
 /**
  * 對會員標籤做排序
- * @param {Array} tagArr 要排序的標籤陣列
+ * @param {Array} tagArr 要排序的標籤陣列 (tag_type)
  * @returns {Array} 已排序的標籤陣列
  */
 export function orderTags(tagArr) {
@@ -412,6 +412,7 @@ export function orderTags(tagArr) {
   const isThree = tagArr.filter((item) => String(item).startsWith('3'))
   const isFour = tagArr.filter((item) => String(item).startsWith('4'))
   const isFive = tagArr.filter((item) => String(item).startsWith('5'))
+  const isEight = tagArr.filter((item) => String(item).startsWith('8'))
   const isOne = tagArr.filter((item) => String(item).startsWith('1'))
   const isNine = tagArr.filter((item) => String(item).startsWith('9'))
 
@@ -421,6 +422,7 @@ export function orderTags(tagArr) {
     .concat(isThree)
     .concat(isFour)
     .concat(isFive)
+    .concat(isEight)
     .concat(isOne)
     .concat(isNine)
 }

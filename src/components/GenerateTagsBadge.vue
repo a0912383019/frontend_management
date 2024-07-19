@@ -16,7 +16,9 @@ const props = defineProps({
   }
 })
 
-const tag_description_dict = ref(getSessionStorageEntity('system_config').tags_config[props.hall_name])
+const tag_description_dict = ref(
+  getSessionStorageEntity('system_config').tags_config[props.hall_name]
+)
 
 const get_tag_code = computed(() => {
   return tag_description_dict.value[props.tag_code]
@@ -39,6 +41,9 @@ const badge_class = computed(() => {
         break
       case 6:
         badgeClass += ' badge-custom-danger'
+        break
+      case 8:
+        badgeClass += ' badge-custom-sky-blue'
         break
       case 9:
         badgeClass += ' badge-custom-tree-green'
