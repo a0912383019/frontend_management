@@ -12,7 +12,8 @@ const props = defineProps({
     default: false
   },
   userHalls: {
-    type: Array
+    type: Array,
+    default: []
   }
 })
 
@@ -36,6 +37,7 @@ const treeProps = reactive({
 })
 
 const initHalls = () => {
+  validHallBox.value = true
   checkIsAllHallAccess()
   allHalls.value = generateHalls(props.userHalls)
   treeRef.value.setCheckedKeys(props.userHalls)
@@ -88,7 +90,11 @@ onMounted(() => {
 </script>
 <template>
   <div class="flex">
-    <FormTitle class="cdp-text-blue" :class="{'mb-5': !props.edit}" :title="$t('admin_user.can_access_hall')">
+    <FormTitle
+      class="cdp-text-blue"
+      :class="{ 'mb-5': !props.edit }"
+      :title="$t('admin_user.can_access_hall')"
+    >
       <template #tooltip>
         {{ $t('admin_user.can_access_hall_drag_order_reminder') }}
       </template>
@@ -114,10 +120,7 @@ onMounted(() => {
       @check="checkOption"
     />
   </section>
-  <div
-    v-if="!validHallBox"
-    class="cdp-text-candypink font-size-12 mt-5"
-  >
+  <div v-if="!validHallBox" class="cdp-text-candypink font-size-12">
     {{ $t('admin_user.not_select_access_hall_error_msg') }}
   </div>
 </template>
@@ -138,7 +141,7 @@ onMounted(() => {
     flex: 0 0 50%;
     &__content {
       cursor: default;
-      .el-tree-node__expand-icon{
+      .el-tree-node__expand-icon {
         display: none;
       }
     }

@@ -46,14 +46,6 @@ describe('HallDropDown', () => {
       is_active: false
     },
     {
-      hall_id: 3820431,
-      domain_id: 0,
-      hall_code: '15',
-      hall_name: '新葡京娱乐城',
-      currency_sign: '¥',
-      is_active: false
-    },
-    {
       hall_id: 3820240,
       domain_id: 0,
       hall_code: '18',
@@ -69,14 +61,14 @@ describe('HallDropDown', () => {
       currency_sign: '¥',
       is_active: false
     },
-    {
-      hall_id: 3820455,
-      domain_id: 0,
-      hall_code: '31',
-      hall_name: '银河娱乐城',
-      currency_sign: '¥',
-      is_active: false
-    }
+    // {
+    //   hall_id: 3820455,
+    //   domain_id: 0,
+    //   hall_code: '31',
+    //   hall_name: '银河娱乐城',
+    //   currency_sign: '¥',
+    //   is_active: false
+    // }
   ]
 
   beforeEach(() => {
@@ -159,14 +151,6 @@ describe('HallDropDown', () => {
         is_active: false
       },
       {
-        hall_id: 3820431,
-        domain_id: 0,
-        hall_code: '15',
-        hall_name: '新葡京娱乐城',
-        currency_sign: '¥',
-        is_active: false
-      },
-      {
         hall_id: 3820240,
         domain_id: 0,
         hall_code: '18',
@@ -182,14 +166,14 @@ describe('HallDropDown', () => {
         currency_sign: '¥',
         is_active: false
       },
-      {
-        hall_id: 3820455,
-        domain_id: 0,
-        hall_code: '31',
-        hall_name: '银河娱乐城',
-        currency_sign: '¥',
-        is_active: false
-      }
+      // {
+      //   hall_id: 3820455,
+      //   domain_id: 0,
+      //   hall_code: '31',
+      //   hall_name: '银河娱乐城',
+      //   currency_sign: '¥',
+      //   is_active: false
+      // }
     ]
     wrapper.vm.changeHeaderHall(changeHallObj)
     await router.isReady()

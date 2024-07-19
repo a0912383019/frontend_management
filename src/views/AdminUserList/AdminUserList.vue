@@ -18,6 +18,7 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import AddAccount from '@/components/Button/AddButton.vue'
 import Filter from '@/views/AdminUserList/Filter.vue'
 import UserAccountSetting from '@/views/AdminUserList/UserAccountSetting.vue'
+import AddUserAccount from '@/views/AdminUserList/AddUserAccount.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import { useRouter } from 'vue-router'
 
@@ -153,8 +154,14 @@ const upadteCurrentSort = ({ prop, order }) => {
   }
 }
 
+const addAccountVisible = ref(false)
+
+const closeAddDialog = () => {
+  addAccountVisible.value = false
+}
+
 const openAddDialog = () => {
-  console.log('add account')
+  addAccountVisible.value = true
 }
 
 const searchAccount = (filterData) => {
@@ -237,8 +244,9 @@ const simulationUser = (id) => {
     })
 }
 
-const updateSuccess = () => {
+const reloadList = () => {
   userAccountVisible.value = false
+  addAccountVisible.value = false
   queryListUserByAdmin()
 }
 
@@ -386,12 +394,16 @@ onMounted(() => {
     :userId="userData.userId"
     :userName="userData.userName"
     @closeDialog="closeUserDialog"
-    @updateSuccess="updateSuccess"
+    @updateSuccess="reloadList"
+  />
+  <AddUserAccount
+    v-model="addAccountVisible"
+    @closeAddDialog="closeAddDialog"
+    @addSuccess="reloadList"
   />
   <ConfirmBox
     color="red"
     v-model="deleteBox"
-    class="top15per"
     :title="$t('modal.delete')"
     @cancelExecute="cancelDelete"
     @confirmExecute="confirmDelete"
@@ -422,4 +434,3 @@ onMounted(() => {
   }
 }
 </style>
-

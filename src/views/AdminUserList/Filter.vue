@@ -99,7 +99,7 @@ const handleClick = () => {
             <el-input
               v-model="form.userName"
               class="cdp-input__purple"
-              :placeholder="$t('common.input_member_name_search')"
+              :placeholder="$t('admin_user.input_account_name_or_email_to_search')"
             />
           </el-col>
           <el-col :span="12" class="mb-17">
