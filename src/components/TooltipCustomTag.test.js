@@ -27,20 +27,24 @@ describe('CustomTagTooltip.vue', () => {
         name: '風控'
       },
       {
+        color: 'green',
+        name: '人工'
+      },
+      {
         color: 'blue',
         name: '規則'
+      },
+      {
+        color: 'tree-green',
+        name: '人工(管端)'
       },
       {
         color: 'orange',
         name: '機器'
       },
       {
-        color: 'green',
-        name: '人工'
-      },
-      {
-        color: 'tree-green',
-        name: '人工(管端)'
+        color: 'sky-blue',
+        name: '自訂(管端)'
       }
     ]
 

@@ -121,6 +121,10 @@ const selectTypeLists = ref([
     label: t('tags.type_5')
   },
   {
+    value: 8,
+    label: t('tags.type_8')
+  },
+  {
     value: 1,
     label: t('tags.type_1')
   },

@@ -582,6 +582,7 @@ describe('SelectTag', () => {
         { value: 3, label: '規則' },
         { value: 4, label: '機器' },
         { value: 5, label: '自訂' },
+        { value: 8, label: '自訂(管端)' },
         { value: 1, label: '人工' },
         { value: 9, label: '人工(管端)' }
       ]

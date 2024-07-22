@@ -21,7 +21,7 @@ const tableColumns = computed(() => {
     {
       label: t('tags.tag_name'),
       prop: 'tag_name',
-      width: 200,
+      width: 250,
       align: 'center'
     },
     {
@@ -62,6 +62,10 @@ const tabData = computed(() => {
       name: 'type5'
     },
     {
+      label: t('tags.type_8'),
+      name: 'type8'
+    },
+    {
       label: t('tags.type_1'),
       name: 'type1'
     },
@@ -80,6 +84,7 @@ const tagsData = reactive({
   type4: [],
   type5: [],
   type6: [],
+  type8: [],
   type9: []
 })
 let tagsDataOriginal = reactive({})
@@ -111,6 +116,8 @@ const transformTagsConfig = () => {
         tagsData['type5'].push(value)
       } else if (value.tag_type === 6) {
         tagsData['type6'].push(value)
+      } else if (value.tag_type === 8) {
+        tagsData['type8'].push(value)
       } else if (value.tag_type === 9) {
         tagsData['type9'].push(value)
       }
@@ -149,6 +156,7 @@ const transformTagsConfig = () => {
     .concat(tagsData['type3'])
     .concat(tagsData['type4'])
     .concat(tagsData['type5'])
+    .concat(tagsData['type8'])
     .concat(tagsData['type1'])
     .concat(tagsData['type9'])
 
@@ -251,7 +259,7 @@ watch(
     <div class="lineUger"></div>
     <el-dialog
       v-model="dialogTableVisible"
-      class="cdp-dialog"
+      class="cdp-dialog dialog-mt-50"
       :append-to-body="true"
       width="1000"
       :title="$t('tags.tag_description')"
@@ -331,6 +339,9 @@ watch(
 }
 </style>
 <style lang="scss">
+.dialog-mt-50 {
+  margin-top: 50px !important;
+}
 .lineUger {
   width: 3px;
   height: 15px;
@@ -344,11 +355,15 @@ watch(
   .el-table {
     td:first-child,
     th:first-child {
+      padding-left: 50px;
       border-radius: 5px 0 0 5px;
+      text-align: left;
     }
     td:last-child,
     th:last-child {
+      padding-left: 50px;
       border-radius: 0 5px 5px 0;
+      text-align: left;
     }
     th.el-table__cell.is-leaf {
       background-color: #e9eef6;
