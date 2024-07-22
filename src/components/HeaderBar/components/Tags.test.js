@@ -318,6 +318,7 @@ describe('Tags', () => {
           tag_type: 6
         }
       ],
+      type8: [],
       type9: []
     }
     expect(wrapper.vm.tagsData).toStrictEqual(tagConfigEsb)
@@ -464,6 +465,7 @@ describe('Tags', () => {
         }
       ],
       type6: [],
+      type8: [],
       type9: []
     }
     wrapper.vm.activeHall.hall_code = 'bmw'
