@@ -3,7 +3,6 @@ import { setActivePinia, createPinia } from 'pinia'
 import { useTargetGroupStore } from '@/stores/targetGroupAnalysis.js'
 import { useDateStore } from '@/stores/dateConfig.js'
 import { dayjs } from 'element-plus'
-import { validateTargetName } from '@/stores/targetGroupAnalysis.js'
 
 describe('useSystemStore', () => {
   beforeEach(() => {
