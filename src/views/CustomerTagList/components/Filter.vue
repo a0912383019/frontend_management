@@ -25,7 +25,7 @@ const emit = defineEmits(['update:filter-submit'])
 // 代理帳號 options
 const selectAccountOptions = ref([
   {
-    value: '',
+    value: '0',
     label: t('common.select_all'),
     selected: true
   }
@@ -34,7 +34,7 @@ const selectAccountOptions = ref([
 // 會員層級 options
 const selectLevelOptions = ref([
   {
-    value: '',
+    value: '0',
     label: t('common.select_all'),
     selected: true
   }
@@ -48,8 +48,8 @@ const formDisabled = ref(false)
 
 const form = reactive({
   member: '', //會員名稱
-  selectAcount: '', //代理帳號
-  selectLevel: '', //會員層級
+  selectAcount: '0', //代理帳號
+  selectLevel: '0', //會員層級
   isActivedDateCheck: true, //實動日期checkbox
   activatedDate: '', //實動日期
   registerDate: '', //註冊日期
