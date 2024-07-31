@@ -17,13 +17,16 @@ const props = defineProps({
     default: false
   },
   tagCode: {
-    type: String
+    type: String,
+    required: true
   },
   tagName: {
-    type: String
+    type: String,
+    required: true
   },
   tagDescription: {
-    type: String
+    type: String,
+    required: true
   }
 })
 
