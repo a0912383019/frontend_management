@@ -69,7 +69,7 @@ describe('Filter', () => {
   it('queryAgNameUserLevel', () => {
     // 代理帳號
     const accountOptions = [
-      { value: '', label: '全部', selected: true },
+      { value: '0', label: '全部', selected: true },
       { value: 'aapprmb', label: 'aapprmb' },
       { value: 'acandy', label: 'acandy' },
       { value: 'acash888', label: 'acash888' },
@@ -79,7 +79,7 @@ describe('Filter', () => {
 
     // 會員層級
     const levelOptions = [
-      { value: '', label: '全部', selected: true },
+      { value: '0', label: '全部', selected: true },
       { value: 15608, label: '控管層-一般(內)-B' },
       { value: 15610, label: '未分層' },
       { value: 15613, label: '第0-0層' }

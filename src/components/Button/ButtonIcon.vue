@@ -132,6 +132,10 @@ button {
       background-color: $blue;
       border-color: $blue;
     }
+    &__slateblue {
+      background-color: $slateblue;
+      border-color: $slateblue;
+    }
     &__white {
       background-color: #f4f4f4;
       border-color: #f4f4f4;

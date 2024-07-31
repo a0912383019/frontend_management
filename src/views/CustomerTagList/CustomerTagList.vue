@@ -135,7 +135,7 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
   try {
     const result = await apiListMemberTags({
       activated_date: formData['activatedDate'], //實動日期
-      ag_name: formData['selectAcount'], //代理帳號
+      ag_name: formData['selectAcount'] === '0' ? '' : formData['selectAcount'], //代理帳號
       custom_user_list: formData['customUserList'], // 手動匯入名單的帳號
       exclude_tag: formData['excludeTag'], //排除標籤
       fuzzy_search: formData['fuzzySearch'], //模糊搜尋
@@ -147,7 +147,7 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
       search_name: formData['member'], //會員名稱
       search_tag: trimBack(formData['searchTag']), //包含標籤
       start: apiStart.value,
-      user_level_id: formData['selectLevel'] //會員層級
+      user_level_id: parseInt(formData['selectLevel']) //會員層級
     })
 
     const { return_code } = result.data.status
@@ -202,8 +202,10 @@ const transformListMemberTags = (data) => {
       tag_transfrom_obj: [],
       tag_show: false,
       tag_button_show: false, // 按鈕是否顯示
-      register_date: dayjs(item.register_date).format(t('date.format_datetime_rule')),
-      operation: item.operation
+      register_date:
+        item.register_date === ''
+          ? ''
+          : dayjs(item.register_date).format(t('date.format_datetime_rule'))
     }
 
     let tag_str_ary = item.tag_str ? item.tag_str.split(',') : []
@@ -327,7 +329,11 @@ onMounted(() => {
         @update:currentPage="updateCurrentPage"
       >
         <template #user_name="scope">
-          <div class="cdp-link-click" @click="updateMemberData(scope.row)">
+          <div
+            class="cdp-link-click"
+            :class="{ 'line-through': scope.row.is_deleted === 1 }"
+            @click="updateMemberData(scope.row)"
+          >
             {{ scope.row.user_name }}
           </div>
         </template>
