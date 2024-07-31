@@ -78,9 +78,7 @@ const rules = reactive({
   ]
 })
 
-const subActivities = ref([
-createSubActivity('0')
-])
+const subActivities = ref([createSubActivity('0')])
 
 function createSubActivity(key) {
   return {
@@ -277,7 +275,9 @@ const generateOptions = (arr) => {
 const queryPromotionList = async (idx) => {
   subActivities.value[idx].api_success = false
   subActivities.value[idx].promotion_list = ''
-  const [start_date, end_date] = subActivities.value[idx].activity_date.split('~').map(date => date.trim())
+  const [start_date, end_date] = subActivities.value[idx].activity_date
+    .split('~')
+    .map((date) => date.trim())
 
   try {
     const result = await apiQueryPromotionList({

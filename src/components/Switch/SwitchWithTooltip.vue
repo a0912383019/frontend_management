@@ -2,7 +2,7 @@
 const props = defineProps({
   name: {
     type: String,
-    required: true
+    default: ''
   },
   tooltipContent: {
     type: String,
