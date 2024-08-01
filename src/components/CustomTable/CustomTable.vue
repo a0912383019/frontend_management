@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, nextTick } from 'vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
 import TotalPagination from '@/components/Pagination/TotalPagination.vue'
@@ -141,11 +141,20 @@ const goToFirstPage = () => {
 
 const showTableLoading = ref(false) // loading是否顯示
 
-defineExpose({ goToFirstPage, showTableLoading })
+const tableRef = ref(null)
+
+const sortByFather = async (data) => {
+  if (!data) return
+  await nextTick()
+  tableRef.value.sort(data.prop, data.order)
+}
+
+defineExpose({ goToFirstPage, showTableLoading, sortByFather })
 </script>
 <template>
   <div class="relative">
     <el-table
+      ref="tableRef"
       :data="pageTableData"
       :row-key="props.rowKey"
       :default-sort="defaultSort"
