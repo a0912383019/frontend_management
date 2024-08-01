@@ -1,7 +1,6 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { apiCustomTagsHistory, apiDownloadHistoryFile } from '@/api'
@@ -183,6 +182,7 @@ const queryDownloadHistoryFile = async (file) => {
   }
 }
 
+// 打開連結直接下載，不會彈出新視窗
 const downloadFile = (url) => {
   const link = document.createElement('a')
   link.href = url
