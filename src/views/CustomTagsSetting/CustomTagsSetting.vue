@@ -7,6 +7,7 @@ import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import EditDetail from '@/views/CustomTagsSetting/components/EditDetail.vue'
+import History from '@/views/CustomTagsSetting/components/History.vue'
 import { apiListCustomTagsSetting, apiUpdateTagConfig } from '@/api'
 import { ElNotification, dayjs } from 'element-plus'
 import { getSessionStorageEntity } from '@/utils/commonUtils'
@@ -18,11 +19,6 @@ const { activeHall } = globalStore
 
 const systemStore = useSystemStore()
 const { storeGetSystemConfig } = systemStore
-
-const apiSuccess = ref(false) //api是否成功
-
-//依照不同的messageKey產生不同的message
-const messageKey = ref('loading')
 
 const tableData = ref([])
 const apiLength = ref(10) //一頁幾筆
@@ -85,28 +81,23 @@ const tableColumns = computed(() => {
 
 // 呼叫 api
 const queryListCustomTagsSetting = async () => {
-  apiSuccess.value = false
-  messageKey.value = 'loading'
   try {
     const result = await apiListCustomTagsSetting({
       hall_name: activeHall.hall_code
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
-      apiSuccess.value = true
       tableData.value = transformCustomTagData(result.data.result)
+      tableRef.value.sortByFather(sortData.value)
+      globalStore.isLoading = false
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 403) {
-      messageKey.value = 'noPermission' //更改message內容
-    } else if (error.response.status === 401) {
+    if (error.response.status === 401) {
       globalStore.storeHandleApiError()
-    } else {
-      messageKey.value = 'queryFailed' //更改message內容
     }
   }
 }
@@ -131,8 +122,6 @@ const transformCustomTagData = (data) => {
 
     result.push(tempObj)
   })
-
-  globalStore.isLoading = false
 
   return result
 }
@@ -181,6 +170,8 @@ const updateTagConfig = async (tagCode, enabled) => {
 }
 
 const tagDetailOpen = ref(false)
+const tagHistoryOpen = ref(false)
+
 const tagDetail = reactive({
   tagCode: '',
   tagName: '',
@@ -191,6 +182,10 @@ const closeDetail = () => {
   tagDetailOpen.value = false
 }
 
+const closeHistory = () => {
+  tagHistoryOpen.value = false
+}
+
 const openDetail = (data) => {
   tagDetail.tagCode = data.tag_code.toString()
   tagDetail.tagName = data.tag_name
@@ -198,11 +193,24 @@ const openDetail = (data) => {
   tagDetailOpen.value = true
 }
 
+const openHistory = (data) => {
+  tagDetail.tagCode = data.tag_code.toString()
+  tagDetail.tagName = data.tag_name
+  tagHistoryOpen.value = true
+}
+
 const reloadPage = async () => {
   await storeGetSystemConfig()
   // queryListCustomTagsSetting 的transformCustomTagData 會有短暫的資料延遲
   globalStore.isLoading = true
   queryListCustomTagsSetting()
+}
+
+const tableRef = ref(null)
+const sortData = ref(null)
+
+const storeSortData = (data) => {
+  sortData.value = data
 }
 
 onMounted(() => {
@@ -215,11 +223,13 @@ onMounted(() => {
       <PageTitle icon="menuLabel" :title="$t('sidebar.custom_tags_setting')" />
     </div>
     <CustomTable
+      ref="tableRef"
       :serverSide="false"
       :tableData="tableData"
       :tableColumns="tableColumns"
       :pageSize="apiLength"
       :stripe="true"
+      @sort="storeSortData"
       class="customTable2 customTagSettingTable"
     >
       <template #status="scope">
@@ -273,7 +283,7 @@ onMounted(() => {
           @click="openHistory(scope.row)"
         />
         <ButtonIcon
-          class="detail-button mr-5 ot-btn"
+          class="detail-button ml-5 ot-btn"
           color="red"
           size="small"
           icon="trash"
@@ -290,6 +300,12 @@ onMounted(() => {
       :tagDescription="tagDetail.tagDescription"
       @closeDetail="closeDetail"
       @updateSuccess="reloadPage"
+    />
+    <History
+      v-model="tagHistoryOpen"
+      :tagCode="tagDetail.tagCode"
+      :tagName="tagDetail.tagName"
+      @closeHistory="closeHistory"
     />
   </section>
 </template>
