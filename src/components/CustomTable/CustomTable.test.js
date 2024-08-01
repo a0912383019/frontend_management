@@ -189,4 +189,33 @@ describe('CustomTable', () => {
     expect(wrapper.vm.page.currentPage).toBe(2)
     expect(wrapper.emitted('update:currentPage')).toBeTruthy()
   })
+
+  it('test updatePageSize', () => {
+    expect(wrapper.vm.page.pageSize).toStrictEqual(10)
+
+    wrapper.vm.updatePageSize(19)
+    expect(wrapper.vm.page.pageSize).toStrictEqual(19)
+  })
+
+  it('test goToFirstPage', () => {
+    wrapper.vm.page.currentPage = 22
+    expect(wrapper.vm.page.currentPage).toStrictEqual(22)
+
+    wrapper.vm.goToFirstPage()
+    expect(wrapper.vm.page.currentPage).toStrictEqual(1)
+  })
+
+  it('test sortByFather', async () => {
+    const sort = vi.fn()
+    wrapper.vm.$refs.tableRef.sort = sort
+    expect(sort).toHaveBeenCalledTimes(0)
+
+    const sortData = {
+      prop: 'title',
+      order: 'descending'
+    }
+    await wrapper.vm.sortByFather(sortData)
+    expect(sort).toHaveBeenCalledTimes(1)
+    expect(sort).toHaveBeenCalledWith(sortData.prop, sortData.order)
+  })
 })
