@@ -143,6 +143,7 @@ const showTableLoading = ref(false) // loading是否顯示
 
 const tableRef = ref(null)
 
+// 用於保持更新 tableData資料前的排序
 const sortByFather = async (data) => {
   if (!data) return
   await nextTick()
