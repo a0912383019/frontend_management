@@ -14,7 +14,9 @@ const fileName = ref('')
 // 檔案
 const fileData = ref(null)
 
-const errorText = ref('')
+const errorAccountText = ref('')
+const errorDateText = ref('')
+const errorEnableText = ref('')
 
 // 判斷檔案副檔名
 const isCSVFile = ref(true)
@@ -43,7 +45,10 @@ const checkCSVFile = (data) => {
 const handleFileChange = (element) => {
   const file = element.target.files[0]
   notOkAccountData.value = []
-  errorText.value = ''
+  errorAccountText.value = ''
+  errorDateText.value = ''
+  errorEnableText.value = ''
+
   if (file !== undefined) {
     fileData.value = file
     fileName.value = file['name']
@@ -51,6 +56,8 @@ const handleFileChange = (element) => {
   } else {
     dialogClose()
   }
+
+  refInputFile.value.value = ''
 }
 
 // 檢查 CSV內的 帳號是否符合規定
@@ -59,13 +66,20 @@ const parseFile = (file) => {
     header: true,
     skipEmptyLines: true,
     complete: function (results) {
-      if (results.meta.fields[0] === 'user_name') {
-        checkAccount(results.data)
+      checkCSVFile(fileName.value)
+      if (
+        results.meta.fields[0] === 'user_name' &&
+        results.meta.fields[1] === 'data_date' &&
+        results.meta.fields[2] === 'enable'
+      ) {
+        checkFileDetail(results.data)
       } else {
         isParseFile.value = false
-        errorText.value = t('import_export_file.header_needs_to_be_user_name')
+        errorAccountText.value = t(
+          'custom_tags_setting.header_needs_to_be_user_name_data_date_enable'
+        )
       }
-      checkCSVFile(fileName.value)
+
       if (isParseFile.value && isCSVFile.value) {
         isSubmit.value = true
       } else {
@@ -76,17 +90,28 @@ const parseFile = (file) => {
 }
 
 // 檢查帳號
-const checkAccount = (data) => {
-  let isAllOk = true
+const checkFileDetail = (data) => {
+  let isDateOk = true
+  let isEnableOk = true
+  let isAccountOk = true
   data.forEach((item, index) => {
-    let isOk = regex(item['user_name'])
-    if (isOk === false) {
+    let isRegexDateOk = regexDate(item['data_date'])
+    let isRegexEnableOk = regexEnable(item['enable'])
+    let isRegexAccountOk = regexAccount(item['user_name'])
+
+    if (isRegexDateOk === false) {
+      isDateOk = false
+    }
+    if (isRegexEnableOk === false) {
+      isEnableOk = false
+    }
+    if (isRegexAccountOk === false) {
       let tempObj = {
         no: index + 2,
         name: item['user_name'],
         note: ''
       }
-      isAllOk = false
+      isAccountOk = false
 
       tempObj['note'] = t('import_export_file.user_account_illegal')
       if (regexSpace(item['user_name'])) {
@@ -97,13 +122,14 @@ const checkAccount = (data) => {
     }
   })
 
-  if (isAllOk === false) errorText.value = t('import_export_file.user_name_is_invalid')
-  isParseFile.value = isAllOk
+  if (isDateOk === false) errorDateText.value = t('import_export_file.validator_date')
+  if (isEnableOk === false) errorEnableText.value = t('import_export_file.validator_enable')
+  if (isAccountOk === false) errorAccountText.value = t('import_export_file.user_name_is_invalid')
+  isParseFile.value = isDateOk && isEnableOk && isAccountOk
 }
 
 // 檢查帳號的正規表達式
-const regex = (val) => {
-  console.log(val)
+const regexAccount = (val) => {
   // 合法帳號為小寫英文字母＋數字
   const validate = /^[a-z0-9]*$/
   return validate.test(val)
@@ -115,13 +141,29 @@ const regexSpace = (val) => {
   return validate.test(val)
 }
 
+// 檢查日期的正規表達式
+const regexDate = (val) => {
+  // 合法帳號為小寫英文字母＋數字
+  const validate = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
+  return validate.test(val)
+}
+
+// 檢查Enable的正規表達式
+const regexEnable = (val) => {
+  // 合法帳號為小寫英文字母＋數字
+  const validate = /^[01]$/
+  return validate.test(val)
+}
+
 // dialog close
 const dialogClose = () => {
   //dialod 關閉 清空檔案
   fileName.value = ''
   fileData.value = ''
   notOkAccountData.value = []
-  errorText.value = ''
+  errorAccountText.value = ''
+  errorDateText.value = ''
+  errorEnableText.value = ''
   isCSVFile.value = true
   //清空 input file value
   refInputFile.value.value = ''
@@ -156,8 +198,14 @@ defineExpose({ dialogClose })
       accept=".csv"
     />
     <div class="upload__text">{{ $t('import_export_file.only_csv_file') }}</div>
-    <div class="upload__error-text">
-      {{ errorText }}
+    <div class="upload__error-text" v-if="errorDateText">
+      {{ errorDateText }}
+    </div>
+    <div class="upload__error-text" v-if="errorEnableText">
+      {{ errorEnableText }}
+    </div>
+    <div class="upload__error-text" v-if="errorAccountText">
+      {{ errorAccountText }}
     </div>
     <el-table :data="notOkAccountData" style="width: 100%" v-if="notOkAccountData.length > 0">
       <el-table-column prop="no" :label="$t('data_name.item_number')" width="80" align="center" />

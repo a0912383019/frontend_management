@@ -122,7 +122,9 @@
     "not_select_file_error_msg": "Please select a file.",
     "header_needs_to_be_user_name": "The header needs to be user_name",
     "user_name_is_invalid": "以下會員名稱不合規定，需為小寫英文或數字",
-    "user_name_contains_spaces": "(帳號含有空格)"
+    "user_name_contains_spaces": "(帳號含有空格)",
+    "validator_date": "Data_date format error, ex: 2024-01-01",
+    "validator_enable": "enable format error, only 0 or 1"
   },
 
   "data_name": {
