@@ -6,11 +6,11 @@ import UploadFile from '@/components/Filter/UploadFile.vue'
 import fs from 'fs'
 import path from 'path'
 
-// 讀取文件內容
-const filePath = path.join(__dirname, 'upload-demo.csv') // 替換為實際文件路徑
-const fileContent = fs.readFileSync(filePath, 'utf8')
-// 創建file
-const fileData = new File([fileContent], 'upload-demo.csv', { type: 'text/csv' })
+// // 讀取文件內容
+// const filePath = path.join(__dirname, 'upload-demo.csv') // 替換為實際文件路徑
+// const fileContent = fs.readFileSync(filePath, 'utf8')
+// // 創建file
+// const fileData = new File([fileContent], 'upload-demo.csv', { type: 'text/csv' })
 
 describe.skip('UploadFile', () => {
   // let wrapper = null
