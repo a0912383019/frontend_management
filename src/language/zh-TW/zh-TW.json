@@ -121,6 +121,7 @@
     "only_csv_file": "僅接受上傳.csv檔案",
     "not_select_file_error_msg": "請選擇檔案",
     "header_needs_to_be_user_name": "表頭需為user_name",
+    "header_needs_to_be_user_name_data_date_enable": "表頭需為user_name, data_date, enable",
     "user_name_is_invalid": "以下會員名稱不合規定，需為小寫英文或數字",
     "user_name_contains_spaces": "(帳號含有空格)",
     "user_account_illegal": "(帳號不合法)",
@@ -850,9 +851,7 @@
     "file": "檔案",
     "operator": "操作者",
     "add_member_num": "新增人數",
-    "delete_member_num": "刪除人數",
-
-    "header_needs_to_be_user_name_data_date_enable": "表頭需為user_name, data_date, enable"
+    "delete_member_num": "刪除人數"
   },
 
   "user_export_report": {

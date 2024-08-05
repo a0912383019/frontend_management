@@ -103,7 +103,6 @@ const checkAccount = (data) => {
 
 // 檢查帳號的正規表達式
 const regex = (val) => {
-  console.log(val)
   // 合法帳號為小寫英文字母＋數字
   const validate = /^[a-z0-9]*$/
   return validate.test(val)
