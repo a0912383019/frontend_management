@@ -121,8 +121,12 @@
     "only_csv_file": "仅接受上传.csv文档",
     "not_select_file_error_msg": "请选择文档",
     "header_needs_to_be_user_name": "表头需为user_name",
+    "header_needs_to_be_user_name_data_date_enable": "表头需为user_name, data_date, enable",
     "user_name_is_invalid": "以下会员名称不合规定，需为小写英文或数字",
-    "user_name_contains_spaces": "(帐号含有空格)"
+    "user_name_contains_spaces": "(帐号含有空格)",
+    "user_account_illegal": "(帐号不合法)",
+    "validator_date": "日期格式错误, ex: 2024-01-01",
+    "validator_enable": "enable 格式错误, 0或1"
   },
 
   "data_name": {

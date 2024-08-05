@@ -8,6 +8,7 @@ import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import EditDetail from '@/views/CustomTagsSetting/components/EditDetail.vue'
 import History from '@/views/CustomTagsSetting/components/History.vue'
+import ImportCSV from '@/views/CustomTagsSetting/components/upload/ImportCSV.vue'
 import { apiListCustomTagsSetting, apiUpdateTagConfig } from '@/api'
 import { ElNotification, dayjs } from 'element-plus'
 import { getSessionStorageEntity } from '@/utils/commonUtils'
@@ -213,6 +214,17 @@ const storeSortData = (data) => {
   sortData.value = data
 }
 
+const importCsvBox = ref(false)
+
+const openImportCsv = (data) => {
+  tagDetail.tagCode = data.tag_code.toString()
+  importCsvBox.value = true
+}
+
+const closeImportCsv = () => {
+  importCsvBox.value = false
+}
+
 onMounted(() => {
   queryListCustomTagsSetting()
 })
@@ -262,7 +274,7 @@ onMounted(() => {
           icon="union"
           :isSvg="true"
           :name="$t('custom_tags_setting.update_list')"
-          @click="openUpdateBox(scope.row)"
+          @click="openImportCsv(scope.row)"
         />
         <ButtonIcon
           class="detail-button ml-5 op-btn"
@@ -293,6 +305,12 @@ onMounted(() => {
         />
       </template>
     </CustomTable>
+    <ImportCSV
+      v-model="importCsvBox"
+      :tagCode="tagDetail.tagCode"
+      @closeImportCsv="closeImportCsv"
+      @update:success="reloadPage"
+    />
     <EditDetail
       v-model="tagDetailOpen"
       :tagCode="tagDetail.tagCode"

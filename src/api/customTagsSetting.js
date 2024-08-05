@@ -41,3 +41,19 @@ export const apiDownloadHistoryFile = (params) => {
     file_name
   })
 }
+
+export const apiUploadCustomTagsList = (params) => {
+  const { hall_name, tag_code, upload_file } = params
+
+  const formData = new FormData()
+  formData.append('hall_name', hall_name)
+  formData.append('tag_code', tag_code)
+  formData.append('upload_file', upload_file)
+
+  return (
+    axiosInstance.post('/api/auth/custom_tags/upload_custom_tags_list', formData,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' } //upload_file為binary，須改headers content-type
+    })
+  )
+}
