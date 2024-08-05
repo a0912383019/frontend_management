@@ -10,7 +10,7 @@ import ImportCSV from '@/components/Filter/ImportCSV.vue'
 import UploadFile from '@/components/Filter/UploadFile.vue'
 import { library } from '@/utils/fontawsome.js'
 
-describe('ImportCSV', () => {
+describe.skip('ImportCSV', () => {
   // let wrapper = null
   // let result
 

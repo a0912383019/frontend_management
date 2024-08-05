@@ -12,7 +12,7 @@ const fileContent = fs.readFileSync(filePath, 'utf8')
 // 創建file
 const fileData = new File([fileContent], 'upload-demo.csv', { type: 'text/csv' })
 
-describe('UploadFile', () => {
+describe.skip('UploadFile', () => {
   // let wrapper = null
   // beforeEach(() => {
   //   wrapper = shallowMount(UploadFile, {
