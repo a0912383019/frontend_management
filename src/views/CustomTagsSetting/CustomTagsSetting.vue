@@ -243,7 +243,7 @@ const openDeleteBox = (data) => {
   deleteBox.value = true
 }
 
-const cancelDelete = () => {
+const closeDelete = () => {
   initTagDetail()
   deleteBox.value = false
 }
@@ -266,8 +266,7 @@ const deleteCustomTags = async () => {
         title: t('msg.delete_successful'),
         type: 'success'
       })
-      initTagDetail()
-      deleteBox.value = false
+      closeDelete()
       globalStore.isLoading = false
       reloadPage()
     } else {
@@ -401,7 +400,7 @@ onMounted(() => {
       v-model="deleteBox"
       :title="$t('modal.delete')"
       class="top15per"
-      @cancelExecute="cancelDelete"
+      @cancelExecute="closeDelete"
       @confirmExecute="confirmDelete"
     >
       <template v-slot:text-body>
