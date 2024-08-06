@@ -271,7 +271,4 @@ onMounted(() => {
     }
   }
 }
-.top15per {
-  top: 15%;
-}
 </style>

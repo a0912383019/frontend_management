@@ -9,7 +9,8 @@ import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
 import EditDetail from '@/views/CustomTagsSetting/components/EditDetail.vue'
 import History from '@/views/CustomTagsSetting/components/History.vue'
 import ImportCSV from '@/views/CustomTagsSetting/components/upload/ImportCSV.vue'
-import { apiListCustomTagsSetting, apiUpdateTagConfig } from '@/api'
+import ConfirmBox from '@/components/ConfirmBox.vue'
+import { apiListCustomTagsSetting, apiUpdateTagConfig, apiDeleteCustomTags } from '@/api'
 import { ElNotification, dayjs } from 'element-plus'
 import { getSessionStorageEntity } from '@/utils/commonUtils'
 
@@ -179,11 +180,19 @@ const tagDetail = reactive({
   tagDescription: ''
 })
 
+const initTagDetail = () => {
+  tagDetail.tagCode = ''
+  tagDetail.tagName = ''
+  tagDetail.tagDescription = ''
+}
+
 const closeDetail = () => {
+  initTagDetail()
   tagDetailOpen.value = false
 }
 
 const closeHistory = () => {
+  initTagDetail()
   tagHistoryOpen.value = false
 }
 
@@ -222,7 +231,68 @@ const openImportCsv = (data) => {
 }
 
 const closeImportCsv = () => {
+  initTagDetail()
   importCsvBox.value = false
+}
+
+const deleteBox = ref(false)
+
+const openDeleteBox = (data) => {
+  tagDetail.tagCode = data.tag_code.toString()
+  tagDetail.tagName = data.tag_name
+  deleteBox.value = true
+}
+
+const cancelDelete = () => {
+  initTagDetail()
+  deleteBox.value = false
+}
+
+const confirmDelete = () => {
+  deleteCustomTags()
+}
+
+const deleteCustomTags = async () => {
+  globalStore.isLoading = true
+  try {
+    const result = await apiDeleteCustomTags({
+      hall_name: activeHall.hall_code,
+      tag_code: tagDetail.tagCode
+    })
+
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      ElNotification({
+        title: t('msg.delete_successful'),
+        type: 'success'
+      })
+      initTagDetail()
+      deleteBox.value = false
+      globalStore.isLoading = false
+      reloadPage()
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    globalStore.isLoading = false
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.delete_failed'),
+        type: 'error'
+      })
+    }
+  }
 }
 
 onMounted(() => {
@@ -270,6 +340,7 @@ onMounted(() => {
       <template #manage="scope">
         <ButtonIcon
           class="detail-button mr-5 op-btn"
+          :disabled="scope.row.status === 3"
           color="blue"
           icon="union"
           :isSvg="true"
@@ -325,6 +396,18 @@ onMounted(() => {
       :tagName="tagDetail.tagName"
       @closeHistory="closeHistory"
     />
+    <ConfirmBox
+      color="red"
+      v-model="deleteBox"
+      :title="$t('modal.delete')"
+      class="top15per"
+      @cancelExecute="cancelDelete"
+      @confirmExecute="confirmDelete"
+    >
+      <template v-slot:text-body>
+        {{ $t('modal.are_you_sure_to_delete') + '「' + tagDetail.tagName + '」?' }}
+      </template>
+    </ConfirmBox>
   </section>
 </template>
 <style lang="scss" scoped>
