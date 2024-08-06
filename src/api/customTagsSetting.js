@@ -50,10 +50,15 @@ export const apiUploadCustomTagsList = (params) => {
   formData.append('tag_code', tag_code)
   formData.append('upload_file', upload_file)
 
-  return (
-    axiosInstance.post('/api/auth/custom_tags/upload_custom_tags_list', formData,
-    {
-      headers: { 'Content-Type': 'multipart/form-data' } //upload_file為binary，須改headers content-type
-    })
-  )
+  return axiosInstance.post('/api/auth/custom_tags/upload_custom_tags_list', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' } //upload_file為binary，須改headers content-type
+  })
+}
+
+export const apiDeleteCustomTags = (params) => {
+  const { hall_name, tag_code } = params
+  return axiosInstance.post('/api/auth/custom_tags/delete_custom_tags', {
+    hall_name,
+    tag_code
+  })
 }

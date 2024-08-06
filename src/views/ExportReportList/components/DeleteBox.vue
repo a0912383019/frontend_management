@@ -34,7 +34,6 @@ const props = defineProps({
 
 const emit = defineEmits(['deleteBoxClose', 'deleteSuccess'])
 
-// 取得資料
 const deleteUserExportList = async () => {
   emit('deleteBoxClose')
   globalStore.isLoading = true
