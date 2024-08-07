@@ -91,20 +91,28 @@ const tableColumns = computed(() => {
 const apiSuccess = ref(false)
 const messageKey = ref('loading')
 
-const userType = ref('all')
-const userStatus = ref('all')
-const lastLoginTime = ref('')
-
 const queryListUserByAdmin = async (filterData = null) => {
+  let userName = null
+  let userType = null
+  let userStatus = null
+  let lastLoginTime = null
+
+  if (filterData !== null) {
+    userName = filterData.userName
+    userType = filterData.userType === 'all' ? null : filterData.userType
+    userStatus = filterData.userStatus === 'all' ? null : filterData.userStatus
+    lastLoginTime = filterData.lastLoginTime
+  }
+
   apiSuccess.value = false
   messageKey.value = 'loading'
   tableData.value = []
   try {
     const result = await apiListUserByAdmin({
-      user_name: filterData ? filterData.userName : '',
-      user_type: filterData ? filterData.userType : userType.value,
-      user_status: filterData ? filterData.userStatus : userStatus.value,
-      last_login_date: filterData ? filterData.lastLoginTime : lastLoginTime.value
+      name: userName,
+      user_type: userType,
+      user_status: userStatus,
+      last_login_date: lastLoginTime
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -112,6 +120,12 @@ const queryListUserByAdmin = async (filterData = null) => {
       if (result.data.result.length !== 0) {
         tableData.value = transformUserList(result.data.result)
       }
+    } else if (return_code === '0001') {
+      messageKey.value = 'noResult'
+      apiSuccess.value = false
+      tableData.value = []
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
