@@ -339,9 +339,9 @@ onMounted(() => {
       <template #manage="scope">
         <ButtonIcon
           class="detail-button mr-5 op-btn"
-          :disabled="scope.row.status === 3"
           color="blue"
           icon="union"
+          :disabled="scope.row.status === 3"
           :isSvg="true"
           :name="$t('custom_tags_setting.update_list')"
           @click="openImportCsv(scope.row)"
@@ -369,6 +369,7 @@ onMounted(() => {
           color="red"
           size="small"
           icon="trash"
+          :disabled="scope.row.status === 3"
           :isSvg="true"
           :name="$t('common.delete')"
           @click="openDeleteBox(scope.row)"
