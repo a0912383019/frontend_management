@@ -2,7 +2,6 @@
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryUserInfo } from '@/api'
-// import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { useGlobalStore } from '@/stores'
 import { ElNotification, dayjs } from 'element-plus'
 import { storeToRefs } from 'pinia'
@@ -31,7 +30,6 @@ const memberData = reactive({
 
 //取得會員資訊
 const queryUserInfo = async () => {
-  // let user_id = getSessionStorageEntity('user_info').user_id
   try {
     const result = await apiQueryUserInfo()
     const { return_code } = result.data.status
