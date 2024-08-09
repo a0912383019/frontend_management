@@ -16,7 +16,6 @@ import CdpMessage from '@/components/CdpMessage.vue'
 describe('AccessHall', () => {
   let wrapper = null
   let spyGet
-  // let assignMock
 
   beforeEach(() => {
     const getResult = {
@@ -46,9 +45,6 @@ describe('AccessHall', () => {
     wrapper = shallowMount(AccessHall, {
       global: {
         plugins: [i18n, ElementPlus]
-        // components: {
-        //   FontAwesomeIcon
-        // }
       },
       props: {
         userHalls: ['bmw']
@@ -57,8 +53,7 @@ describe('AccessHall', () => {
   })
 
   afterEach(() => {
-    // wrapper.unmount()
-    // assignMock.mockClear()
+    wrapper.unmount()
   })
 
   it('expect components', async () => {
