@@ -44,7 +44,7 @@ const initUser = () => {
   formRef.value.resetFields()
   user.userType = '0'
   user.userStatus = '0'
-  accessHallRef.value.initHalls([])
+  accessHallRef.value.initHalls()
 }
 
 const user = reactive({

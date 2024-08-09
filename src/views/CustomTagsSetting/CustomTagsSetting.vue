@@ -12,7 +12,7 @@ import ImportCSV from '@/views/CustomTagsSetting/components/upload/ImportCSV.vue
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import { apiListCustomTagsSetting, apiUpdateTagConfig, apiDeleteCustomTags } from '@/api'
 import { ElNotification, dayjs } from 'element-plus'
-import { getSessionStorageEntity } from '@/utils/commonUtils'
+import { getSessionStorageEntity, errorRespond } from '@/utils/commonUtils'
 
 const { t } = useI18n()
 

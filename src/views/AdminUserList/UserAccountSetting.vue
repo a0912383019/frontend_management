@@ -7,6 +7,7 @@ import AccessHall from '@/views/AdminUserList/components/AccessHall.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import { dayjs, ElNotification } from 'element-plus'
+import { errorRespond } from '@/utils/commonUtils'
 
 const { t } = useI18n()
 
@@ -106,9 +107,9 @@ const transformUserData = (data) => {
 
   userDetail.userId = data.id
   userDetail.email = data.email
-  form.userType = data.user_type
+  form.userType = data.user_type.toString()
   userDetail.userType = userTypeConfig[data.user_type]
-  form.userStatus = data.user_status
+  form.userStatus = data.user_status.toString()
   userDetail.userStatus = userStatusConfig[data.user_status]
   userDetail.createTime = dayjs(data.created_time).format(t('date.format_datetime_rule'))
   userDetail.loginNum = data.login_num
@@ -127,8 +128,8 @@ const transformUserData = (data) => {
 
 const initUserTypeStatus = () => {
   let userData = originUserData.value
-  form.userType = userData.user_type
-  form.userStatus = userData.user_status
+  form.userType = userData.user_type.toString()
+  form.userStatus = userData.user_status.toString()
 }
 
 const initUser = () => {
@@ -183,8 +184,8 @@ const confirmSaved = () => {
 const updateUserByAdmin = async () => {
   try {
     const result = await apiUpdateUserByAdmin({
-      user_type: form.userType,
-      user_status: form.userStatus,
+      user_type: parseInt(form.userType),
+      user_status: parseInt(form.userStatus),
       access_hall_name: newAccessHallsValue.value,
       user_id: props.userId
     })
