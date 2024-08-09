@@ -7,6 +7,7 @@ import AccessHall from '@/views/AdminUserList/components/AccessHall.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import { dayjs, ElNotification } from 'element-plus'
+import { errorRespond } from '@/utils/commonUtils'
 
 const { t } = useI18n()
 
@@ -31,8 +32,8 @@ const props = defineProps({
 const accessHallRef = ref(null)
 
 const form = reactive({
-  userType: '',
-  userStatus: ''
+  userType: null,
+  userStatus: null
 })
 
 const userDetail = reactive({
@@ -77,7 +78,7 @@ const handleEditConfirm = () => {
 const queryUserByAdmin = async () => {
   try {
     const result = await apiUserByAdmin({
-      user_id_hide: props.userId
+      member_id: props.userId
     })
 
     const { return_code } = result.data.status
@@ -110,10 +111,12 @@ const transformUserData = (data) => {
   userDetail.userType = userTypeConfig[data.user_type]
   form.userStatus = data.user_status.toString()
   userDetail.userStatus = userStatusConfig[data.user_status]
-  userDetail.createTime = dayjs(data.created_at).format(t('date.format_datetime_rule'))
+  userDetail.createTime = dayjs(data.created_time).format(t('date.format_datetime_rule'))
   userDetail.loginNum = data.login_num
   userDetail.updateTime =
-    data.updated_at === null ? '-' : dayjs(data.updated_at).format(t('date.format_datetime_rule'))
+    data.updated_time === null
+      ? '-'
+      : dayjs(data.updated_time).format(t('date.format_datetime_rule'))
   userDetail.lastLoginTime =
     data.last_login_date === null
       ? '-'
@@ -181,10 +184,10 @@ const confirmSaved = () => {
 const updateUserByAdmin = async () => {
   try {
     const result = await apiUpdateUserByAdmin({
-      user_type: form.userType,
-      user_status: form.userStatus,
-      access_hall_hide: newAccessHallsValue.value,
-      user_id_hide: props.userId
+      user_type: parseInt(form.userType),
+      user_status: parseInt(form.userStatus),
+      access_hall_name: newAccessHallsValue.value,
+      user_id: props.userId
     })
 
     const { return_code } = result.data.status

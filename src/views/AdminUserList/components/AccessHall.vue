@@ -1,10 +1,9 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { useUserAccountSettingStore } from '@/stores'
 import FormTitle from '@/components/Title/FormTitle.vue'
-
-const userAccountSettingStore = useUserAccountSettingStore()
-const { generateHalls, allHallCode } = userAccountSettingStore
+import CdpMessage from '@/components/CdpMessage.vue'
+import { apiHalls } from '@/api'
+import { errorRespond } from '@/utils/commonUtils'
 
 const props = defineProps({
   edit: {
@@ -17,7 +16,11 @@ const props = defineProps({
   }
 })
 
-const allHalls = ref(generateHalls(props.userHalls))
+const apiSuccess = ref(false)
+const messageKey = ref('loading')
+
+const allHallsTree = ref([])
+const allHallCode = ref([])
 
 const allowDrop = (draggingNode, dropNode, type) => {
   // 只允許放置在根節點
@@ -36,10 +39,8 @@ const treeProps = reactive({
   }
 })
 
-const initHalls = () => {
+const initHalls = async () => {
   validHallBox.value = true
-  checkIsAllHallAccess()
-  allHalls.value = generateHalls(props.userHalls)
   treeRef.value.setCheckedKeys(props.userHalls)
 }
 
@@ -59,33 +60,76 @@ defineExpose({
   checkHallNodes
 })
 
-const allCheckBtn = ref(false)
+const apiHallsArr = ref([])
+const queryHalls = async () => {
+  apiSuccess.value = false
+  messageKey.value = 'loading'
+  try {
+    const result = await apiHalls()
 
-const checkAllChange = () => {
-  if (allCheckBtn.value === true) {
-    treeRef.value.setCheckedKeys(allHallCode)
-  } else {
-    treeRef.value.setCheckedKeys([])
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      if (result.data.result.length !== 0) {
+        apiSuccess.value = true
+        apiHallsArr.value = result.data.result
+      }
+    } else if (return_code === '0001') {
+      messageKey.value = 'noResult'
+      apiHallsArr.value = []
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+    } else {
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+    }
+  } catch (error) {
+    console.error(error)
+    if (error.response.status === 403) {
+      messageKey.value = 'noPermission' //更改message內容
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      messageKey.value = 'queryFailed' //更改message內容
+    }
   }
 }
 
-const checkOption = (data, item) => {
-  if (item.checkedKeys.length === allHalls.value.length) {
-    allCheckBtn.value = true
-  } else {
-    allCheckBtn.value = false
-  }
-}
+const generateHallsFromApi = async (halls) => {
+  await queryHalls()
+  let allHalls = []
+  let accessHalls = []
+  apiHallsArr.value.forEach((ele) => {
+    allHallCode.value.push(ele.login_code)
 
-const checkIsAllHallAccess = () => {
-  allCheckBtn.value = false
-  if (props.userHalls.length === allHalls.value.length) {
-    allCheckBtn.value = true
-  }
+    let sortToIndex = halls.findIndex((val) => val === ele.login_code)
+    if (sortToIndex != -1) {
+      accessHalls[sortToIndex] = {
+        hallCode: ele.login_code,
+        label: 'BBIN' + ' －【' + ele.login_code + '】' + ele.name
+      }
+    } else {
+      allHalls.push({
+        hallCode: ele.login_code,
+        label: 'BBIN' + ' －【' + ele.login_code + '】' + ele.name
+      })
+    }
+  })
+
+  // 如果有不存在的廳，accessHalls的index會出現跳碼，造成非預期錯誤
+  const compactArray = accessHalls.reduce((acc, curr) => {
+    if (curr !== undefined) {
+      acc.push(curr)
+    }
+    return acc
+  }, [])
+
+  allHallsTree.value = compactArray.concat(allHalls)
+
+  return
 }
 
 onMounted(() => {
-  checkIsAllHallAccess()
+  generateHallsFromApi(props.userHalls)
 })
 </script>
 <template>
@@ -99,25 +143,20 @@ onMounted(() => {
         {{ $t('admin_user.can_access_hall_drag_order_reminder') }}
       </template>
     </FormTitle>
-    <el-checkbox
-      v-show="props.edit"
-      v-model="allCheckBtn"
-      @change="checkAllChange"
-      :label="$t('common.select_all_option')"
-      class="ml-20 cdp-checkbox__blue checkbox-label"
-    />
   </div>
   <section class="cdp-section" :class="{ 'invalid-box': !validHallBox }">
+    <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
     <el-tree
+      v-else
       ref="treeRef"
-      :data="allHalls"
+      :data="allHallsTree"
       show-checkbox
+      empty-text=""
       node-key="hallCode"
       :default-checked-keys="props.userHalls"
       :draggable="props.edit"
       :allow-drop="allowDrop"
       :props="treeProps"
-      @check="checkOption"
     />
   </section>
   <div v-if="!validHallBox" class="cdp-text-candypink font-size-12">
@@ -126,12 +165,15 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 .cdp-section {
-  height: 350px;
+  max-height: 350px;
   overflow: scroll;
   margin-bottom: 0px !important;
 }
 .invalid-box {
   border: #f94956 1px solid;
+}
+:deep(.message) {
+  margin-bottom: 0px;
 }
 :deep(.el-tree) {
   cursor: default;

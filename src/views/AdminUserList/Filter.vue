@@ -62,7 +62,7 @@ const isLastLoginTimeCheck = ref(false)
 const handleClick = () => {
   let filterData = { ...form }
   if (!isLastLoginTimeCheck.value) {
-    filterData.lastLoginTime = ''
+    filterData.lastLoginTime = null
   }
 
   emit('searchAccount', filterData)

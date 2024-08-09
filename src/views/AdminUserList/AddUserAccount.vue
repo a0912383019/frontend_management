@@ -44,7 +44,7 @@ const initUser = () => {
   formRef.value.resetFields()
   user.userType = '0'
   user.userStatus = '0'
-  accessHallRef.value.initHalls([])
+  accessHallRef.value.initHalls()
 }
 
 const user = reactive({
@@ -120,9 +120,9 @@ const createUserByAdmin = async () => {
   try {
     const result = await apiCreateUserByAdmin({
       email: validateForm.userEmail,
-      user_type: user.userType,
-      user_status: user.userStatus,
-      access_hall_hide: newAccessHallsValue.value
+      user_type: parseInt(user.userType),
+      user_status: parseInt(user.userStatus),
+      access_hall_name: newAccessHallsValue.value
     })
 
     const { return_code } = result.data.status
