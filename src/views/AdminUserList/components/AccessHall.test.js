@@ -1,14 +1,8 @@
 import { it, describe, expect, afterEach, vi, beforeEach } from 'vitest'
-import { shallowMount, flushPromises } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
+import { shallowMount } from '@vue/test-utils'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
-import { useGlobalStore } from '@/stores/global.js'
 import { i18n } from '@/global/i18n'
 import ElementPlus from 'element-plus'
-import ExportCSV from '@/views/CustomerTagList/components/ExportCSV.vue'
-import router from '@/router'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import ExportDialog from '@/components/ExportDialog.vue'
 import AccessHall from '@/views/AdminUserList/components/AccessHall.vue'
 import FormTitle from '@/components/Title/FormTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -116,5 +110,35 @@ describe('AccessHall', () => {
     expect(wrapper.vm.treeProps.disabled()).toBeTruthy()
     await wrapper.setProps({ edit: true })
     expect(wrapper.vm.treeProps.disabled()).toBeFalsy()
+  })
+
+  it('initHalls', async () => {
+    wrapper.vm.validHallBox = false
+    expect(wrapper.vm.validHallBox).toBeFalsy()
+
+    const setCheckedKeys = vi.fn()
+    wrapper.vm.$refs.treeRef.setCheckedKeys = setCheckedKeys
+    expect(setCheckedKeys).toBeCalledTimes(0)
+
+    await wrapper.vm.initHalls()
+    expect(wrapper.vm.validHallBox).toBeTruthy()
+    expect(setCheckedKeys).toBeCalledTimes(1)
+    expect(setCheckedKeys).toBeCalledWith(wrapper.vm.props.userHalls)
+  })
+
+  it('checkHallNodes', async () => {
+    const getCheckedNodes = vi.fn().mockReturnValue(['a', 'b', 'c'])
+    wrapper.vm.$refs.treeRef.getCheckedNodes = getCheckedNodes
+
+    const accessHalls = wrapper.vm.checkHallNodes()
+    expect(accessHalls).toStrictEqual(['a', 'b', 'c'])
+    expect(wrapper.vm.validHallBox).toBeTruthy()
+
+    const getCheckedNodesNone = vi.fn().mockReturnValue([])
+    wrapper.vm.$refs.treeRef.getCheckedNodes = getCheckedNodesNone
+
+    const accessHallsNone = wrapper.vm.checkHallNodes()
+    expect(accessHallsNone).toStrictEqual([])
+    expect(wrapper.vm.validHallBox).toBeFalsy()
   })
 })

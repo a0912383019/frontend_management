@@ -262,9 +262,9 @@ const handleSearch = (kind) => {
   if (handleSearchText !== '') {
     let result = convertTableDatas[kind].filter((value) => {
       return (
-        value['content'].toLowerCase().indexOf(handleSearchText) != -1 ||
-        value['category'].toLowerCase().indexOf(handleSearchText) != -1 ||
-        value['date'].toLowerCase().indexOf(handleSearchText) != -1
+        value['content'].toLowerCase().indexOf(handleSearchText) !== -1 ||
+        value['category'].toLowerCase().indexOf(handleSearchText) !== -1 ||
+        value['date'].toLowerCase().indexOf(handleSearchText) !== -1
       )
     })
     tableData.value = result

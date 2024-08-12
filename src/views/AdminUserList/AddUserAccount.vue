@@ -2,18 +2,16 @@
 import { ref, reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiCreateUserByAdmin } from '@/api'
-import { useGlobalStore, useUserAccountSettingStore } from '@/stores'
+import { useGlobalStore } from '@/stores'
 import AccessHall from '@/views/AdminUserList/components/AccessHall.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
-import { ElNotification } from 'element-plus'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
+import { ElNotification } from 'element-plus'
 
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
-
-const userAccountSettingStore = useUserAccountSettingStore()
 
 const props = defineProps({
   modelValue: {
@@ -90,10 +88,11 @@ const newAccessHallsValue = ref('')
 const handleUserAdd = () => {
   formRef.value.clearValidate()
   newAccessHallsLable.value = []
+  newAccessHallsValue.value = ''
 
   let accessHalls = accessHallRef.value.checkHallNodes()
   formRef.value.validate((valid) => {
-    if (accessHalls.length != 0 && valid) {
+    if (accessHalls.length !== 0 && valid) {
       newAccessHallsLable.value = accessHalls.map((ele) => {
         return ele.label
       })

@@ -179,8 +179,8 @@ const handleSearch = () => {
   if (handleSearchText !== '') {
     let result = tagsDataOriginal[currentTabs.value].filter((value) => {
       return (
-        value['tag_name'].toLowerCase().indexOf(handleSearchText) != -1 ||
-        value['tag_description'].toLowerCase().indexOf(handleSearchText) != -1
+        value['tag_name'].toLowerCase().indexOf(handleSearchText) !== -1 ||
+        value['tag_description'].toLowerCase().indexOf(handleSearchText) !== -1
       )
     })
     tagsData[currentTabs.value] = result

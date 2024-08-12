@@ -64,7 +64,7 @@ git push
 echo "\n建立image檔案..."
 docker build -t $AREA$PROJECT:"$BUILDENV"_"$VERSION" .
 
-if [ "$BUILDENV" != "local" ]; then
+if [ "$BUILDENV" !== "local" ]; then
   echo "\n上傳至gcp..."
   docker push $AREA$PROJECT:"$BUILDENV"_"$VERSION"
 fi

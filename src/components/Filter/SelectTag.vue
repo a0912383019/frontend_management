@@ -195,7 +195,7 @@ const transformTagsConfig = () => {
 }
 const changeGenerateTagLists = () => {
   selectTagLists.value = []
-  if (selectCategoryValue.value != '') {
+  if (selectCategoryValue.value !== '') {
     selectTagLists.value =
       tagsConfigTransformData[selectCategoryValue.value][selectTypeValue.value].slice(0)
     originalSelectTagLists.value = selectTagLists.value.slice(0)
