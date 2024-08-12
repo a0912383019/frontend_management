@@ -89,12 +89,6 @@ describe('UserAccountSetting', () => {
           ElDialog: {
             template: '<div><slot /></div>'
           }
-          // ElRow: {
-          //   template: '<div><slot /></div>'
-          // },
-          // ElCol: {
-          //   template: '<div><slot /></div>'
-          // }
         }
       },
       props: {
