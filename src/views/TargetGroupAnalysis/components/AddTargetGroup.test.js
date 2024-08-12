@@ -103,7 +103,7 @@ describe('AddTargetGroup.vue', () => {
 
   it('test tag group add', async () => {
     const validTable = vi.fn()
-    let validate = vi.fn((callback) => callback(true))
+    const validate = vi.fn((callback) => callback(true))
     wrapper.vm.$refs.tagGroups.validTable = validTable
     wrapper.vm.$refs.formRef.validate = validate
 

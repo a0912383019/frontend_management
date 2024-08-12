@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'node:url'
-import { mergeConfig } from 'vite'
+import { mergeConfig, loadEnv } from 'vite'
 import { configDefaults, defineConfig } from 'vitest/config'
 import viteConfig from './vite.config'
 
@@ -14,10 +14,13 @@ export default defineConfig((configEnv) =>
         coverage: {
           provider: 'v8'
         },
-        reporters: ['junit', 'json', 'verbose'],
+        reporters:
+          loadEnv(configEnv, process.cwd()).VITE_ENV !== 'local'
+            ? ['default']
+            : ['junit', 'json', 'verbose'],
         outputFile: {
-          junit: './test/report.xml',
-        },
+          junit: './test/report.xml'
+        }
       }
     })
   )

@@ -14,7 +14,7 @@ import SearchDetailBox from '@/views/ExportReportList/components/SearchDetailBox
 describe('ExportReportList.vue', () => {
   let wrapper = null
   let spyGet
-  let storeApiSpy = vi.fn()
+  const storeApiSpy = vi.fn()
   let globalStore
   let exportListStore
 

@@ -303,7 +303,7 @@ const updatePromotionList = (idx) => {
   if (isDeleting.value) return
   // 第一次渲染組件會有不同步問題，el-table 尚未渲染完畢 scope.$index 會是 -1
   // 但是 daterangepicker 已開始渲染，所以在跑 onMounted 這邊的idx 會是-1
-  if (idx != -1) {
+  if (idx !== -1) {
     queryPromotionList(idx)
   }
 }

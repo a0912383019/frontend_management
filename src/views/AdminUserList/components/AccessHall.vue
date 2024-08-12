@@ -39,7 +39,7 @@ const treeProps = reactive({
   }
 })
 
-const initHalls = async () => {
+const initHalls = () => {
   validHallBox.value = true
   treeRef.value.setCheckedKeys(props.userHalls)
 }
@@ -102,7 +102,7 @@ const generateHallsFromApi = async (halls) => {
     allHallCode.value.push(ele.login_code)
 
     let sortToIndex = halls.findIndex((val) => val === ele.login_code)
-    if (sortToIndex != -1) {
+    if (sortToIndex !== -1) {
       accessHalls[sortToIndex] = {
         hallCode: ele.login_code,
         label: 'BBIN' + ' －【' + ele.login_code + '】' + ele.name
