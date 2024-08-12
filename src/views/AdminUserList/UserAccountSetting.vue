@@ -75,6 +75,21 @@ const handleEditConfirm = () => {
   confirmEditBox.value = true
 }
 
+const handleOpenDialog = () => {
+  initUser()
+  queryUserByAdmin()
+}
+
+const initUser = () => {
+  for (let val in form) {
+    form[val] = null
+  }
+
+  for (let val in userDetail) {
+    userDetail[val] = ''
+  }
+}
+
 const queryUserByAdmin = async () => {
   try {
     const result = await apiUserByAdmin({
@@ -83,9 +98,7 @@ const queryUserByAdmin = async () => {
 
     const { return_code } = result.data.status
     if (return_code === '0000') {
-      if (result.data.result.length !== 0) {
-        transformUserData(result.data.result)
-      }
+      transformUserData(result.data.result)
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
@@ -126,27 +139,6 @@ const transformUserData = (data) => {
   startRender.value = true
 }
 
-const initUserTypeStatus = () => {
-  let userData = originUserData.value
-  form.userType = userData.user_type.toString()
-  form.userStatus = userData.user_status.toString()
-}
-
-const initUser = () => {
-  for (let val in form) {
-    userDetail[val] = ''
-  }
-
-  for (let val in userDetail) {
-    userDetail[val] = ''
-  }
-}
-
-const handleOpenDialog = () => {
-  initUser()
-  queryUserByAdmin()
-}
-
 // 關閉 dialog
 const handleDialogClosed = () => {
   edit.value = false
@@ -169,6 +161,12 @@ const confirmExecute = () => {
   accessHallRef.value.initHalls()
   edit.value = false
   cancelEditBox.value = false
+}
+
+const initUserTypeStatus = () => {
+  let userData = originUserData.value
+  form.userType = userData.user_type.toString()
+  form.userStatus = userData.user_status.toString()
 }
 
 const confirmEditBox = ref(false)

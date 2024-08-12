@@ -61,7 +61,7 @@ describe('AddUserAccount', () => {
     wrapper.unmount()
   })
 
-  it('Expected components render correctly', async () => {
+  it('Expected components render correctly', () => {
     expect(wrapper.findComponent(AccessHall).exists()).toBe(true)
     expect(wrapper.findComponent(CdpButton).exists()).toBe(true)
     expect(wrapper.findComponent(ConfirmBox).exists()).toBe(true)
