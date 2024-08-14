@@ -251,7 +251,11 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
     >
       <template #user_name="scope">
         <!-- 存款 -->
-        <div class="cdp-link-click" @click="updateMemberData(scope.row)">
+        <div
+          class="cdp-link-click"
+          :class="{ 'line-through': scope.row.is_deleted === 1 }"
+          @click="updateMemberData(scope.row)"
+        >
           {{ scope.row.user_name }}
         </div>
       </template>

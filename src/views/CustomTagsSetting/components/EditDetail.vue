@@ -67,6 +67,7 @@ const handleDialogClosed = () => {
 }
 
 const handleDialogOpen = () => {
+  submitBtnDisabled.value = true
   tagForm.tagDescription = props.tagDescription
 }
 
