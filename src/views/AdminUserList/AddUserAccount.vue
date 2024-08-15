@@ -89,7 +89,7 @@ const handleUserAdd = () => {
 
   let accessHalls = accessHallRef.value.checkHallNodes()
   formRef.value.validate((valid) => {
-    if (accessHalls.length !== 0 && valid) {
+    if (accessHalls.length !== 0 && valid && accessHalls.length < 30) {
       newAccessHallsLable.value = accessHalls.map((ele) => {
         return ele.label
       })
