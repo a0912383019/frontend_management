@@ -61,7 +61,7 @@ const newAccessHallsValue = ref('')
 const handleEditConfirm = () => {
   newAccessHallsLable.value = []
   let accessHalls = accessHallRef.value.checkHallNodes()
-  if (accessHalls.length === 0) return
+  if (accessHalls.length === 0 || accessHalls.length > 30) return
 
   newAccessHallsLable.value = accessHalls.map((ele) => {
     return ele.label
