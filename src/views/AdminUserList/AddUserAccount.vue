@@ -29,10 +29,6 @@ const props = defineProps({
 
 const emit = defineEmits(['closeAddDialog', 'addSuccess'])
 
-const handleOpenDialog = () => {
-  initUser()
-}
-
 // 關閉 dialog
 const handleDialogClosed = () => {
   initUser()
@@ -174,7 +170,6 @@ const emailChange = () => {
     width="1150"
     :destroy-on-close="false"
     @closed="handleDialogClosed"
-    @open="handleOpenDialog"
   >
     <template #header>
       <div class="cdp-dialog__header">

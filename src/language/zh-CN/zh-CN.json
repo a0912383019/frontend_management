@@ -999,7 +999,8 @@
     "can_access_hall_drag_order_reminder": "拖拉可更改厅别列表顺序",
 
     "blank_account_name_error_msg": "请输入帐户名称",
-    "not_select_access_hall_error_msg": "请至少勾选一个游戏厅",
+    "not_select_access_hall_error_msg": "请至少勾选一个厅别",
+    "access_hall_over_30_error_msg": "厅别不可超过30个",
     "duplicate_account_name_error_msg": "此帐户名称已注册",
 
     "user_id": "ID",
