@@ -188,13 +188,20 @@ const searchAccount = (filterData) => {
 }
 
 const userAccountVisible = ref(false)
-const userData = reactive({})
+const userData = reactive({
+  userId: null,
+  userName: ''
+})
+
 const showAccountSetting = (userId, userName) => {
   userData.userId = userId
   userData.userName = userName
   userAccountVisible.value = true
 }
+
 const closeUserDialog = () => {
+  userData.userId = null
+  userData.userName = ''
   userAccountVisible.value = false
 }
 
@@ -207,6 +214,7 @@ const querySimulateUserData = async (user_id) => {
       user_id
     })
   ])
+
   const { return_code: phpReturnCode } = phpResponse.data.status
   const { return_code: goReturnCode } = goResponse.data.status
 
@@ -222,12 +230,14 @@ const querySimulateUserData = async (user_id) => {
   }
 }
 
+// 設定模擬畫面要倒轉的路由
 const simulationRoute = router.resolve({
   name: 'Home',
   query: {
     simulate: true
   }
 })
+
 const simulationUser = (phpData, goData) => {
   const { token_type: phpTokenType, access_token: phpAccessToken } = phpData
   const {
@@ -286,6 +296,7 @@ const deleteUserByAdmin = async (user_id) => {
         title: t('msg.delete_successful'),
         type: 'success'
       })
+      initDeleteUser()
       queryListUserByAdmin()
     } else {
       ElNotification({
@@ -321,12 +332,18 @@ const openDeleteBox = (id, name) => {
 }
 
 const cancelDelete = () => {
+  initDeleteUser()
   deleteBox.value = false
 }
 
 const confirmDelete = () => {
   deleteUserByAdmin(deleteId.value)
   deleteBox.value = false
+}
+
+const initDeleteUser = () => {
+  deleteId.value = null
+  deleteName.value = ''
 }
 
 onMounted(() => {
@@ -411,15 +428,15 @@ onMounted(() => {
           </div>
         </template>
       </CustomTable>
+      <UserAccountSetting
+        v-model="userAccountVisible"
+        :userId="userData.userId"
+        :userName="userData.userName"
+        @closeDialog="closeUserDialog"
+        @updateSuccess="reloadList"
+      />
     </div>
   </section>
-  <UserAccountSetting
-    v-model="userAccountVisible"
-    :userId="userData.userId"
-    :userName="userData.userName"
-    @closeDialog="closeUserDialog"
-    @updateSuccess="reloadList"
-  />
   <AddUserAccount
     v-model="addAccountVisible"
     @closeAddDialog="closeAddDialog"
