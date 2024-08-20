@@ -1,4 +1,5 @@
 import axiosInstance from './axiosInstance'
+import axiosGoInstance from './axiosGoInstance.js'
 
 export const apiListCustomTagsSetting = (params) => {
   const { hall_name } = params
@@ -26,10 +27,9 @@ export const apiUpdateTagDescription = (params) => {
 }
 
 export const apiCustomTagsHistory = (params) => {
-  const { hall_name, tag_code } = params
-  return axiosInstance.post('/api/auth/custom_tags/query_custom_tags_history', {
-    hall_name,
-    tag_code
+  const { hall_name, tag_code, length, start } = params
+  return axiosGoInstance.get(`/api/auth/member_custom_tags/${tag_code}/logs`, {
+    params: { hall_name, length, start }
   })
 }
 
