@@ -1,10 +1,11 @@
 import axiosInstance from './axiosInstance'
 import axiosGoInstance from './axiosGoInstance.js'
 
+// 取得自訂標籤列表
 export const apiListCustomTagsSetting = (params) => {
   const { hall_name } = params
-  return axiosInstance.post('/api/auth/custom_tags/list_custom_tags_setting', {
-    hall_name
+  return axiosGoInstance.get('/api/auth/member_custom_tags', {
+    params: { hall_name }
   })
 }
 
@@ -26,6 +27,7 @@ export const apiUpdateTagDescription = (params) => {
   })
 }
 
+// 取得自訂標籤歷程紀錄
 export const apiCustomTagsHistory = (params) => {
   const { hall_name, tag_code, length, start } = params
   return axiosGoInstance.get(`/api/auth/member_custom_tags/${tag_code}/logs`, {
@@ -55,10 +57,10 @@ export const apiUploadCustomTagsList = (params) => {
   })
 }
 
+// 刪除自訂標籤
 export const apiDeleteCustomTags = (params) => {
   const { hall_name, tag_code } = params
-  return axiosInstance.post('/api/auth/custom_tags/delete_custom_tags', {
-    hall_name,
-    tag_code
+  return axiosGoInstance.delete(`/api/auth/member_custom_tags/${tag_code}`, {
+    params: { hall_name }
   })
 }
