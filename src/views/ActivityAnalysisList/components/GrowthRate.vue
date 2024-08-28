@@ -280,13 +280,6 @@ const upadteCurrentSort = ({ prop, order }) => {
 }
 
 watch(
-  () => activityStore.filtered,
-  () => {
-    queryGrowthActivity()
-  }
-)
-
-watch(
   () => activityStore.activityAddChange,
   () => {
     queryGrowthActivity()
