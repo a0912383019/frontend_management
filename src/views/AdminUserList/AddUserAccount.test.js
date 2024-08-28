@@ -80,17 +80,13 @@ describe('AddUserAccount', () => {
     expect(wrapper.vm.user.userType).toStrictEqual('1')
     expect(wrapper.vm.user.userStatus).toStrictEqual('1')
     expect(initHalls).toBeCalledTimes(0)
-
-    wrapper.vm.handleOpenDialog()
-    expect(resetFields).toBeCalledTimes(1)
-    expect(wrapper.vm.user.userType).toStrictEqual('0')
-    expect(wrapper.vm.user.userStatus).toStrictEqual('0')
-    expect(initHalls).toBeCalledTimes(1)
     expect(wrapper.emitted('closeAddDialog')).toBeFalsy()
 
     wrapper.vm.handleDialogClosed()
-    expect(resetFields).toBeCalledTimes(2)
-    expect(initHalls).toBeCalledTimes(2)
+    expect(wrapper.vm.user.userType).toStrictEqual('0')
+    expect(wrapper.vm.user.userStatus).toStrictEqual('0')
+    expect(resetFields).toBeCalledTimes(1)
+    expect(initHalls).toBeCalledTimes(1)
     expect(wrapper.emitted('closeAddDialog')).toBeTruthy()
   })
 

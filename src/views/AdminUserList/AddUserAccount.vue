@@ -29,10 +29,6 @@ const props = defineProps({
 
 const emit = defineEmits(['closeAddDialog', 'addSuccess'])
 
-const handleOpenDialog = () => {
-  initUser()
-}
-
 // 關閉 dialog
 const handleDialogClosed = () => {
   initUser()
@@ -93,7 +89,7 @@ const handleUserAdd = () => {
 
   let accessHalls = accessHallRef.value.checkHallNodes()
   formRef.value.validate((valid) => {
-    if (accessHalls.length !== 0 && valid) {
+    if (accessHalls.length !== 0 && valid && accessHalls.length < 30) {
       newAccessHallsLable.value = accessHalls.map((ele) => {
         return ele.label
       })
@@ -174,7 +170,6 @@ const emailChange = () => {
     width="1150"
     :destroy-on-close="false"
     @closed="handleDialogClosed"
-    @open="handleOpenDialog"
   >
     <template #header>
       <div class="cdp-dialog__header">

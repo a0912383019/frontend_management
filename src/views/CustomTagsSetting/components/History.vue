@@ -6,7 +6,6 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import { apiCustomTagsHistory, apiDownloadHistoryFile } from '@/api'
 import { useGlobalStore } from '@/stores'
 import { dayjs } from 'element-plus'
-import { errorRespond } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
 
@@ -30,6 +29,10 @@ const props = defineProps({
 
 const emit = defineEmits(['closeHistory'])
 
+const apiDraw = ref(1) //第幾頁
+const apiStart = ref(0) //起始筆數
+const apiLength = ref(10) //一頁幾筆
+const apiRecordsTotal = ref(0) //資料總數
 const tableData = ref([])
 
 const tableColumns = computed(() => {
@@ -81,25 +84,46 @@ const tableColumns = computed(() => {
   ]
 })
 
+const refCustomTable = ref(null) //table ref
+
 const apiSuccess = ref(false)
 const messageKey = ref('loading')
 
 // 呼叫 api
-const queryCustomTagsHistory = async () => {
-  apiSuccess.value = false
-  messageKey.value = 'loading'
+const queryCustomTagsHistory = async (searchType = '') => {
+  tableData.value = []
+  if (searchType !== 'page') {
+    apiSuccess.value = false
+    messageKey.value = 'loading'
+  } else {
+    refCustomTable.value.showTableLoading = true
+  }
   try {
     const result = await apiCustomTagsHistory({
       hall_name: activeHall.hall_code,
-      tag_code: props.tagCode
+      tag_code: props.tagCode,
+      length: apiLength.value,
+      start: apiStart.value
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
+      if (searchType !== 'page') {
+        apiSuccess.value = true
+      } else {
+        refCustomTable.value.showTableLoading = false
+      }
       apiSuccess.value = true
       tableData.value = transformHistoryData(result.data.result)
+      apiRecordsTotal.value = result.data.result.records_total
     } else {
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        apiRecordsTotal.value = 0
+        messageKey.value = 'noResult'
+      } else {
+        apiRecordsTotal.value = 0
+        messageKey.value = 'queryFailed'
+      }
     }
   } catch (error) {
     console.error(error)
@@ -133,6 +157,12 @@ const transformHistoryData = (data) => {
   })
 
   return result
+}
+
+const updateCurrentPage = (data) => {
+  apiDraw.value = data
+  apiStart.value = apiDraw.value * apiLength.value - apiLength.value
+  queryCustomTagsHistory('page')
 }
 
 const handleDialogClosed = () => {
@@ -215,14 +245,17 @@ const downloadFile = (url) => {
           <div class="cdp-text-blue mb-3">{{ props.tagName }}</div>
         </div>
         <div>
-          <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
+          <CdpMessage :messageKey="messageKey" v-show="apiSuccess === false" />
           <CustomTable
-            v-else
-            :serverSide="false"
+            v-show="apiSuccess === true"
+            :serverSide="true"
             :tableData="tableData"
             :tableColumns="tableColumns"
-            :pageSize="10"
+            :pageSize="apiLength"
             :stripe="true"
+            :tableTotal="apiRecordsTotal"
+            ref="refCustomTable"
+            @update:currentPage="updateCurrentPage"
             class="customTable2 customTagSettingTable"
           >
             <template #file="scope">

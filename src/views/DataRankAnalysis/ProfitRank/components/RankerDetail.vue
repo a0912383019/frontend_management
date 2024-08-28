@@ -232,7 +232,11 @@ onMounted(() => {
           </div>
         </template>
         <template #user_name="scope">
-          <div class="cdp-link-click" @click="updateMemberData(scope.row)">
+          <div
+            class="cdp-link-click"
+            :class="{ 'line-through': scope.row.is_deleted === 1 }"
+            @click="updateMemberData(scope.row)"
+          >
             {{ scope.row.user_name }}
           </div>
         </template>

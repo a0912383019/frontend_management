@@ -1000,6 +1000,7 @@
 
     "blank_account_name_error_msg": "Please enter Name.",
     "not_select_access_hall_error_msg": "Please select a Hall at least.",
+    "access_hall_over_30_error_msg": "Hall can't over 30",
     "duplicate_account_name_error_msg": "Name already exist.",
 
     "user_id": "ID",

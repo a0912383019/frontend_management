@@ -1,7 +1,12 @@
 <script setup>
 import { ref, computed, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiListUserByAdmin, apiSimulateUserData, apiDeleteUserByAdmin } from '@/api'
+import {
+  apiListUserByAdmin,
+  apiSimulateUserDataPhp,
+  apiSimulateUserDataGo,
+  apiDeleteUserByAdmin
+} from '@/api'
 import { useGlobalStore } from '@/stores'
 import { ElNotification, dayjs } from 'element-plus'
 import {
@@ -183,79 +188,94 @@ const searchAccount = (filterData) => {
 }
 
 const userAccountVisible = ref(false)
-const userData = reactive({})
+const userData = reactive({
+  userId: null,
+  userName: ''
+})
+
 const showAccountSetting = (userId, userName) => {
   userData.userId = userId
   userData.userName = userName
   userAccountVisible.value = true
 }
+
 const closeUserDialog = () => {
+  userData.userId = null
+  userData.userName = ''
   userAccountVisible.value = false
 }
 
-const querySimulateUserData = (user_id) => {
-  return new Promise((resolve, reject) => {
-    apiSimulateUserData({ user_id })
-      .then((result) => {
-        const { return_code } = result.data.status
-        if (return_code === '0000') {
-          let userInfo = result.data.result
-          let userInfoEntity = {
-            user_id: userInfo.user_id,
-            user_name: userInfo.user_name,
-            user_type: userInfo.user_type,
-            access_hall: userInfo.access_hall,
-            user_picture: userInfo.picture,
-            access_token: userInfo.token_type + ' ' + userInfo.access_token
-          }
-          resolve(userInfoEntity)
-        } else {
-          const failMsg = errorRespond(result.data.status)
-          console.error(failMsg)
-          reject(new Error(failMsg))
-        }
-      })
-      .catch((error) => {
-        console.error(error)
-        if (error.response && error.response.status === 401) {
-          globalStore.storeHandleApiError()
-        }
-        reject(error)
-      })
-  })
+const querySimulateUserData = async (user_id) => {
+  const [phpResponse, goResponse] = await Promise.all([
+    apiSimulateUserDataPhp({
+      user_id
+    }),
+    apiSimulateUserDataGo({
+      user_id
+    })
+  ])
+
+  const { return_code: phpReturnCode } = phpResponse.data.status
+  const { return_code: goReturnCode } = goResponse.data.status
+
+  if (phpReturnCode === '0000' && goReturnCode === '0000') {
+    simulationUser(phpResponse.data.result, goResponse.data.result)
+  } else {
+    const failMsg = errorRespond(result.data.status)
+    console.error(failMsg)
+    ElNotification({
+      title: t('admin.demo_failed'),
+      type: 'error'
+    })
+  }
 }
 
+// 設定模擬畫面要倒轉的路由
 const simulationRoute = router.resolve({
   name: 'Home',
   query: {
     simulate: true
   }
 })
-const simulationUser = (id) => {
-  querySimulateUserData(id)
-    .then((userInfoEntity) => {
-      let curUserData = getSessionStorageEntity('user_info')
-      let curUserToken = sessionStorage.access_token
-      let simulateUserToken = userInfoEntity.access_token
-      delete userInfoEntity.access_token
 
-      //  將模擬的使用者資料更新至sessionStorage
-      sessionStorage.setItem('user_info', JSON.stringify(userInfoEntity))
-      sessionStorage.access_token = simulateUserToken
+const simulationUser = (phpData, goData) => {
+  const { token_type: phpTokenType, access_token: phpAccessToken } = phpData
+  const {
+    user_id,
+    user_name,
+    user_type,
+    access_hall,
+    picture,
+    token_type: goTokenType,
+    access_token: goAccessToken
+  } = goData
+  let user_info_entity = {
+    user_id,
+    user_name,
+    user_type,
+    access_hall,
+    picture
+  }
 
-      //  開啟模擬視窗
-      window.open(simulationRoute.href, 'CDP', 'height=960,width=1560')
+  let curUserData = getSessionStorageEntity('user_info')
+  let curUserTokenPhp = sessionStorage.access_token
+  let curUserTokenGo = sessionStorage.access_token_go
 
-      //  將目前的使用者資料更新回sessionStorage
-      sessionStorage.setItem('user_info', JSON.stringify(curUserData))
-      sessionStorage.access_token = curUserToken
-    })
-    .catch(() => {
-      ElNotification({
-        title: t('admin_user.demo_failed'),
-        type: 'error'
-      })
-    })
+  let simulateUserTokenPhp = phpTokenType + ' ' + phpAccessToken
+  let simulateUserTokenGo = goTokenType + ' ' + goAccessToken
+
+  //  將模擬的使用者資料更新至sessionStorage
+  sessionStorage.setItem('user_info', JSON.stringify(user_info_entity))
+  sessionStorage.setItem('access_token', simulateUserTokenPhp)
+  sessionStorage.setItem('access_token_go', simulateUserTokenGo)
+
+  //  開啟模擬視窗
+  window.open(simulationRoute.href, 'CDP', 'height=960,width=1560')
+
+  //  將目前的使用者資料更新回sessionStorage
+  sessionStorage.setItem('user_info', JSON.stringify(curUserData))
+  sessionStorage.setItem('access_token', curUserTokenPhp)
+  sessionStorage.setItem('access_token_go', curUserTokenGo)
 }
 
 const reloadList = () => {
@@ -264,10 +284,10 @@ const reloadList = () => {
   queryListUserByAdmin()
 }
 
-const deleteUserByAdmin = async (id) => {
+const deleteUserByAdmin = async (user_id) => {
   try {
     const result = await apiDeleteUserByAdmin({
-      delete_user_id_hide: id
+      user_id
     })
 
     const { return_code } = result.data.status
@@ -276,6 +296,7 @@ const deleteUserByAdmin = async (id) => {
         title: t('msg.delete_successful'),
         type: 'success'
       })
+      initDeleteUser()
       queryListUserByAdmin()
     } else {
       ElNotification({
@@ -311,12 +332,18 @@ const openDeleteBox = (id, name) => {
 }
 
 const cancelDelete = () => {
+  initDeleteUser()
   deleteBox.value = false
 }
 
 const confirmDelete = () => {
   deleteUserByAdmin(deleteId.value)
   deleteBox.value = false
+}
+
+const initDeleteUser = () => {
+  deleteId.value = null
+  deleteName.value = ''
 }
 
 onMounted(() => {
@@ -388,7 +415,7 @@ onMounted(() => {
               icon="computer"
               :isSvg="true"
               :name="$t('admin_user.demo')"
-              @click="simulationUser(scope.row.id)"
+              @click="querySimulateUserData(scope.row.id)"
             />
             <ButtonIcon
               class="detail-button ml-5"
@@ -401,15 +428,15 @@ onMounted(() => {
           </div>
         </template>
       </CustomTable>
+      <UserAccountSetting
+        v-model="userAccountVisible"
+        :userId="userData.userId"
+        :userName="userData.userName"
+        @closeDialog="closeUserDialog"
+        @updateSuccess="reloadList"
+      />
     </div>
   </section>
-  <UserAccountSetting
-    v-model="userAccountVisible"
-    :userId="userData.userId"
-    :userName="userData.userName"
-    @closeDialog="closeUserDialog"
-    @updateSuccess="reloadList"
-  />
   <AddUserAccount
     v-model="addAccountVisible"
     @closeAddDialog="closeAddDialog"

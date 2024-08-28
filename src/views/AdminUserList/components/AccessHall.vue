@@ -39,20 +39,32 @@ const treeProps = reactive({
   }
 })
 
-const initHalls = () => {
-  validHallBox.value = true
-  treeRef.value.setCheckedKeys(props.userHalls)
-}
-
 const validHallBox = ref(true)
+const isEmptyHall = ref(false)
+const isOverThirty = ref(false)
 
 const checkHallNodes = () => {
   validHallBox.value = true
+  isEmptyHall.value = false
+  isOverThirty.value = false
+
   if (treeRef.value.getCheckedNodes().length === 0) {
+    isEmptyHall.value = true
+    validHallBox.value = false
+  }
+  if (treeRef.value.getCheckedNodes().length > 30) {
+    isOverThirty.value = true
     validHallBox.value = false
   }
 
   return treeRef.value.getCheckedNodes()
+}
+
+const initHalls = () => {
+  validHallBox.value = true
+  isEmptyHall.value = false
+  isOverThirty.value = false
+  treeRef.value.setCheckedKeys(props.userHalls)
 }
 
 defineExpose({
@@ -159,8 +171,11 @@ onMounted(() => {
       :props="treeProps"
     />
   </section>
-  <div v-if="!validHallBox" class="cdp-text-candypink font-size-12">
+  <div v-if="!validHallBox && isEmptyHall" class="cdp-text-candypink font-size-12">
     {{ $t('admin_user.not_select_access_hall_error_msg') }}
+  </div>
+  <div v-if="!validHallBox && isOverThirty" class="cdp-text-candypink font-size-12">
+    {{ $t('admin_user.access_hall_over_30_error_msg') }}
   </div>
 </template>
 <style lang="scss" scoped>

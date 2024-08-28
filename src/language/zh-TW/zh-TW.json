@@ -999,7 +999,8 @@
     "can_access_hall_drag_order_reminder": "拖拉可更改廳別列表順序",
 
     "blank_account_name_error_msg": "請輸入帳戶名稱",
-    "not_select_access_hall_error_msg": "請至少勾選一個遊戲廳",
+    "not_select_access_hall_error_msg": "請至少勾選一個廳別",
+    "access_hall_over_30_error_msg": "廳別不可超過30個",
     "duplicate_account_name_error_msg": "此帳戶名稱已註冊",
 
     "user_id": "ID",
