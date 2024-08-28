@@ -1,14 +1,11 @@
 <script setup>
-import { ref, computed, onMounted, watch, reactive } from 'vue'
+import { ref, onMounted, watch, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryGrowthActivity } from '@/api'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import { dayjs } from 'element-plus'
-import ButtonIcon from '@/components/Button/ButtonIcon.vue'
-import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import ConfirmBox from '@/components/ConfirmBox.vue'
 import { sortTableDate } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipShared } from '@/utils/highchartsConfig.js'
 
@@ -47,7 +44,6 @@ const chartOptions = reactive({
     tickmarkPlacement: 'on',
     tickColor: '#e8e8e8',
     tickWidth: 1,
-    categories: ['2024-05-20~2024-05-26', '2024-05-27~2024-06-02', '2024-06-03~2024-06-09'],
     labels: {
       style: {
         fontSize: '14px'
@@ -100,128 +96,125 @@ const chartOptions = reactive({
   },
   series: [
     {
-      name: '測試',
+      name: '(1) qazosya',
       type: 'line',
-      data: [0, -27, 30],
+      data: [0, 0, 1235, 239852, 0, 0, 0],
       color: 'rgb(241,78,78,1)',
-      lineWidth: 2,
+      lineWidth: 3,
       marker: {
         symbol: 'circle',
-        radius: 3
+        radius: 5
       },
       yAxis: 0
-      // tooltip: {
-      //   valueSuffix: '%'
-      // }
+    },
+    {
+      name: '(2) lilytest2',
+      type: 'line',
+      data: [0, 21878.2617, 39133.548, 20.1, 54239.295, 0, 0],
+      color: 'rgb(0,192,236,1)',
+      lineWidth: 3,
+      marker: {
+        symbol: 'circle',
+        radius: 5
+      },
+      yAxis: 0
+    },
+    {
+      name: '(3) angel999',
+      type: 'line',
+      data: [0, 0, 0, 71200, 0, 0, 0],
+      color: 'rgb(69,137,166,1)',
+      lineWidth: 3,
+      marker: {
+        symbol: 'circle',
+        radius: 5
+      },
+      yAxis: 0
+    },
+    {
+      name: '(4) testdenny723',
+      type: 'line',
+      data: [0, 0, 0, 11115.6776, 32986.8, 0, 0],
+      color: 'rgb(251,201,201,1)',
+      lineWidth: 3,
+      marker: {
+        symbol: 'circle',
+        radius: 5
+      },
+      yAxis: 0
+    },
+    {
+      name: '(5) eurzosy',
+      type: 'line',
+      data: [0, 0, 0, 0, 38843.226, 0, 0],
+      color: 'rgb(209,214,222,1)',
+      lineWidth: 3,
+      marker: {
+        symbol: 'circle',
+        radius: 5
+      },
+      yAxis: 0
+    },
+    {
+      name: '(6) vengo',
+      type: 'line',
+      data: [0, 0, 0, 0, 32060, 0, 0],
+      color: 'rgb(200,200,240,1)',
+      lineWidth: 3,
+      marker: {
+        symbol: 'circle',
+        radius: 5
+      },
+      yAxis: 0
+    },
+    {
+      name: '(7) vndzosy',
+      type: 'line',
+      data: [0, 0, 0, 31074, 61.2, 0, 0],
+      color: 'rgb(255,107,0,1)',
+      lineWidth: 3,
+      marker: {
+        symbol: 'circle',
+        radius: 5
+      },
+      yAxis: 0
+    },
+    {
+      name: '(8) rmbalvis',
+      type: 'line',
+      data: [0, 0, 1100, 1750, 5200, 0, 100],
+      color: 'rgb(235,214,173,1)',
+      lineWidth: 3,
+      marker: {
+        symbol: 'circle',
+        radius: 5
+      },
+      yAxis: 0
+    },
+    {
+      name: '(9) chihesb001',
+      type: 'line',
+      data: [2047.1808, 0, 2455.0256, 0, 0, 0, 1710.3156],
+      color: 'rgb(255,172,112,1)',
+      lineWidth: 3,
+      marker: {
+        symbol: 'circle',
+        radius: 5
+      },
+      yAxis: 0
+    },
+    {
+      name: '(10) fxxdavan',
+      type: 'line',
+      data: [0, 0, 3204.72, 2800, 0, 0, 0],
+      color: 'rgb(12,197,195,1)',
+      lineWidth: 3,
+      marker: {
+        symbol: 'circle',
+        radius: 5
+      },
+      yAxis: 0
     }
-    // {
-    //   name: '(2) jeffhsu',
-    //   type: 'line',
-    //   data: [-719, -384, -398, -475, -475, -475, -2795],
-    //   color: 'rgb(0,192,236,1)',
-    //   lineWidth: 3,
-    //   marker: {
-    //     symbol: 'circle',
-    //     radius: 5
-    //   },
-    //   yAxis: 0
-    // },
-    // {
-    //   name: '(3) mike',
-    //   type: 'line',
-    //   data: [-1813.55, -1798.22, -1798.22, -1798.22, -1798.22, -1798.22, -1799.22],
-    //   color: 'rgb(69,137,166,1)',
-    //   lineWidth: 3,
-    //   marker: {
-    //     symbol: 'circle',
-    //     radius: 5
-    //   },
-    //   yAxis: 0
-    // },
-    // {
-    //   name: '(4) hope04',
-    //   type: 'line',
-    //   data: [0, 0, -1500, -1500, -1500, -1500, -1500],
-    //   color: 'rgb(251,201,201,1)',
-    //   lineWidth: 3,
-    //   marker: {
-    //     symbol: 'circle',
-    //     radius: 5
-    //   },
-    //   yAxis: 0
-    // },
-    // {
-    //   name: '(5) chihpkr01',
-    //   type: 'line',
-    //   data: [-903.468, -903.468, -903.468, -903.468, -903.468, -903.468, -903.468],
-    //   color: 'rgb(209,214,222,1)',
-    //   lineWidth: 3,
-    //   marker: {
-    //     symbol: 'circle',
-    //     radius: 5
-    //   },
-    //   yAxis: 0
-    // },
-    // {
-    //   name: '(6) chihkhr2',
-    //   type: 'line',
-    //   data: [-903.1187, -903.1187, -903.1187, -903.1187, -903.1187, -903.1187, -903.1187],
-    //   color: 'rgb(200,200,240,1)',
-    //   lineWidth: 3,
-    //   marker: {
-    //     symbol: 'circle',
-    //     radius: 5
-    //   },
-    //   yAxis: 0
-    // },
-    // {
-    //   name: '(7) chihesb002',
-    //   type: 'line',
-    //   data: [0, 0, -448, -448, -448, -448, -448],
-    //   color: 'rgb(255,107,0,1)',
-    //   lineWidth: 3,
-    //   marker: {
-    //     symbol: 'circle',
-    //     radius: 5
-    //   },
-    //   yAxis: 0
-    // },
-    // {
-    //   name: '(8) rmb14',
-    //   type: 'line',
-    //   data: [0, 0, -429.3, -430.16, -430.16, -430.16, -430.16],
-    //   color: 'rgb(235,214,173,1)',
-    //   lineWidth: 3,
-    //   marker: {
-    //     symbol: 'circle',
-    //     radius: 5
-    //   },
-    //   yAxis: 0
-    // },
-    // {
-    //   name: '(9) guspig43',
-    //   type: 'line',
-    //   data: [138, -1137.64, -405.08, -405.08, -405.08, -405.08, -405.08],
-    //   color: 'rgb(255,172,112,1)',
-    //   lineWidth: 3,
-    //   marker: {
-    //     symbol: 'circle',
-    //     radius: 5
-    //   },
-    //   yAxis: 0
-    // },
-    // {
-    //   name: '(10) chihjpy01',
-    //   type: 'line',
-    //   data: [-387.703, -387.703, -387.703, -387.703, -387.703, -387.703, -387.703],
-    //   color: 'rgb(12,197,195,1)',
-    //   lineWidth: 3,
-    //   marker: {
-    //     symbol: 'circle',
-    //     radius: 5
-    //   },
-    //   yAxis: 0
-    // }
   ]
 })
 
@@ -233,30 +226,28 @@ const queryGrowthActivity = async () => {
 
   try {
     const result = await apiQueryGrowthActivity({
-      hall_name: 'esb',
+      hall_name: 'esx',
       start_search_year: 2024,
-      start_search_month: 5,
-      start_search_week: 3,
-      start_date: '2024-05-24',
+      start_search_month: 7,
+      start_search_week: 5,
+      start_date: '2024-07-31',
       end_search_year: 2024,
       end_search_month: 8,
-      end_search_week: 3,
-      end_date: '2024-08-23',
+      end_search_week: 1,
+      end_date: '2024-08-08',
       cut_type: 'week',
-      reward_flag: 1,
+      reward_flag: 0,
       reward_date_flag: 0,
-      search_activity: [1]
+      search_activity: []
     })
 
     const { return_code } = result.data.status
-    console.log(return_code)
-    // if (return_code === '0000') {
-    //   apiSuccess.value = true
-    //   if (result.data.result.length !== 0) {
-    //     tableData.value = transformActivityList(result.data.result)
-    //     upadteCurrentSort({ prop: 'createdTime', order: 'descending' })
-    //   }
-    // }
+    if (return_code === '0000') {
+      apiSuccess.value = true
+      if (result.data.result.length !== 0) {
+        tableData.value = transformActivityList(result.data.result)
+      }
+    }
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
@@ -269,38 +260,38 @@ const queryGrowthActivity = async () => {
   }
 }
 
-// const transformActivityList = (data) => {
-//   let activityList = []
-//   data.forEach((ele) => {
-//     activityList.push({
-//       activityName: ele.activity_name,
-//       operator: ele.operator_name,
-//       createdTime: dayjs(ele.created_time).format(t('date.format_datetime_rule')),
-//       activityId: ele.activity_id,
-//       canOperate: ele.can_operate
-//     })
-//   })
-//   return activityList
-// }
+const transformActivityList = (data) => {
+  let activityList = []
+  data.forEach((ele) => {
+    activityList.push({
+      activityName: ele.activity_name,
+      operator: ele.operator_name,
+      createdTime: dayjs(ele.created_time).format(t('date.format_datetime_rule')),
+      activityId: ele.activity_id,
+      canOperate: ele.can_operate
+    })
+  })
+  return activityList
+}
 
-// 自定義排序執行的內容
-// const upadteCurrentSort = ({ prop, order }) => {
-//   sortTableDate({ prop, order, tableData: tableData.value })
-// }
+//自定義排序執行的內容
+const upadteCurrentSort = ({ prop, order }) => {
+  sortTableDate({ prop, order, tableData: tableData.value })
+}
 
-// watch(
-//   () => activityStore.filtered,
-//   () => {
-//     queryGrowthActivity()
-//   }
-// )
+watch(
+  () => activityStore.filtered,
+  () => {
+    queryGrowthActivity()
+  }
+)
 
-// watch(
-//   () => activityStore.activityAddChange,
-//   () => {
-//     queryGrowthActivity()
-//   }
-// )
+watch(
+  () => activityStore.activityAddChange,
+  () => {
+    queryGrowthActivity()
+  }
+)
 
 onMounted(() => {
   queryGrowthActivity()
