@@ -6,9 +6,10 @@ import { i18n } from '@/global/i18n'
 import ElementPlus from 'element-plus'
 import router from '@/router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import ImportCSV from '@/components/Filter/ImportCSV.vue'
+// import ImportCSV from '@/components/Filter/ImportCSV.vue'
 import UploadFile from '@/components/Filter/UploadFile.vue'
 import { library } from '@/utils/fontawsome.js'
+import ImportCSV from '@/views/CustomTagsSetting/components/upload/ImportCSV.vue'
 
 describe.skip('ImportCSV', () => {
   // let wrapper = null

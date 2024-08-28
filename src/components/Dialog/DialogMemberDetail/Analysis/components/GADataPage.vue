@@ -236,7 +236,6 @@ onMounted(() => {
               :hasPagination="true"
               :pageSize="5"
               class="cdp-table"
-              border="border"
             ></CustomTable>
           </div>
           <div v-show="currentTabs === 'sourceData'">
@@ -253,7 +252,6 @@ onMounted(() => {
               :hasPagination="true"
               :pageSize="5"
               class="cdp-table"
-              border="border"
             ></CustomTable>
           </div>
         </el-col>

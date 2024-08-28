@@ -9,21 +9,21 @@ export const apiListCustomTagsSetting = (params) => {
   })
 }
 
+// 修改自訂標籤啟用停用狀態
 export const apiUpdateTagConfig = (params) => {
-  const { hall_name, tag_code, tag_enabled } = params
-  return axiosInstance.post('/api/auth/custom_tags/update_tag_config', {
+  const { hall_name, tag_code, enabled } = params
+  return axiosGoInstance.put(`/api/auth/member_custom_tags/${tag_code}`, {
     hall_name,
-    tag_code,
-    tag_enabled
+    enabled
   })
 }
 
+// 修改自訂標籤說明
 export const apiUpdateTagDescription = (params) => {
-  const { hall_name, tag_code, tag_description } = params
-  return axiosInstance.post('/api/auth/custom_tags/update_tag_config', {
+  const { hall_name, tag_code, description } = params
+  return axiosGoInstance.put(`/api/auth/member_custom_tags/${tag_code}`, {
     hall_name,
-    tag_code,
-    tag_description
+    description
   })
 }
 

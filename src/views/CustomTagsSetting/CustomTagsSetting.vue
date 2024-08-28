@@ -128,16 +128,12 @@ const transformCustomTagData = (data) => {
   return result
 }
 
-const tagEnableClick = (event, tagCode) => {
-  updateTagConfig(tagCode, event)
-}
-
-const updateTagConfig = async (tagCode, enabled) => {
+const updateTagConfig = async (enabled, tagCode) => {
   try {
     const result = await apiUpdateTagConfig({
       hall_name: activeHall.hall_code,
       tag_code: tagCode,
-      tag_enabled: enabled
+      enabled: enabled
     })
 
     const { return_code } = result.data.status
@@ -333,7 +329,7 @@ onMounted(() => {
         <SwitchWithTooltip
           v-model="scope.row.enabled_and_disabled"
           :isDisabled="false"
-          @update:modelValue="tagEnableClick($event, scope.row.tag_code)"
+          @update:modelValue="updateTagConfig($event, scope.row.tag_code)"
         />
       </template>
       <template #manage="scope">

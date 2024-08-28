@@ -73,16 +73,12 @@ const handleDialogOpen = () => {
 
 const submitBtnDisabled = ref(true)
 
-const handleSubmit = () => {
-  updateTagDescription()
-}
-
 const updateTagDescription = async () => {
   try {
     const result = await apiUpdateTagDescription({
       hall_name: activeHall.hall_code,
       tag_code: parseInt(props.tagCode),
-      tag_description: tagForm.tagDescription
+      description: tagForm.tagDescription
     })
 
     const { return_code } = result.data.status
@@ -120,18 +116,13 @@ const updateTagDescription = async () => {
 watch(
   () => tagForm.tagDescription,
   () => {
-    let tagError = false
-    formRef.value
-      .validate((valid) => {
-        tagError = valid
-      })
-      .then(() => {
-        if (tagForm.tagDescription === props.tagDescription || !tagError) {
-          submitBtnDisabled.value = true
-        } else {
-          submitBtnDisabled.value = false
-        }
-      })
+    formRef.value.validate((valid) => {
+      if (tagForm.tagDescription === props.tagDescription || !valid) {
+        submitBtnDisabled.value = true
+      } else {
+        submitBtnDisabled.value = false
+      }
+    })
   }
 )
 </script>
@@ -178,7 +169,7 @@ watch(
             color="blue"
             :disabled="submitBtnDisabled"
             :name="$t('modal.save')"
-            @click="handleSubmit()"
+            @click="updateTagDescription()"
           />
         </div>
       </section>
