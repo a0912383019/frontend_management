@@ -1,25 +1,20 @@
 <script setup>
-import { ref, onMounted, watch, reactive } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryGrowthActivity } from '@/api'
-import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
-import { dayjs } from 'element-plus'
+import { apiQueryGrowthGapActiveProfit } from '@/api'
+import { useGlobalStore } from '@/stores'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import { sortTableDate } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipShared } from '@/utils/highchartsConfig.js'
+import { errorRespond } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const activityStore = useActivityAnalysisStore()
-
 const apiSuccess = ref(false)
 const messageKey = ref('loading')
-
-const tableData = ref([])
 
 const chartOptions = reactive({
   chart: {
@@ -43,6 +38,7 @@ const chartOptions = reactive({
     lineColor: '#e8e8e8',
     tickmarkPlacement: 'on',
     tickColor: '#e8e8e8',
+    categories: [],
     tickWidth: 1,
     labels: {
       style: {
@@ -219,13 +215,12 @@ const chartOptions = reactive({
 })
 
 // 取得資料
-const queryGrowthActivity = async () => {
+const queryGrowthGapActiveProfit = async () => {
   messageKey.value = 'loading'
   apiSuccess.value = false
-  tableData.value = []
 
   try {
-    const result = await apiQueryGrowthActivity({
+    const result = await apiQueryGrowthGapActiveProfit({
       hall_name: 'esx',
       start_search_year: 2024,
       start_search_month: 7,
@@ -242,11 +237,18 @@ const queryGrowthActivity = async () => {
     })
 
     const { return_code } = result.data.status
+
     if (return_code === '0000') {
       apiSuccess.value = true
-      if (result.data.result.length !== 0) {
-        tableData.value = transformActivityList(result.data.result)
-      }
+      // transformActivityMemberPeriodBetAmount(result.data.result)
+    } else if (return_code === '0001') {
+      messageKey.value = 'noResult'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+    } else {
+      messageKey.value = 'chartFailed'
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
     }
   } catch (error) {
     console.error(error)
@@ -255,47 +257,18 @@ const queryGrowthActivity = async () => {
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      messageKey.value = 'queryFailed' //更改message內容
+      messageKey.value = 'chartFailed' //更改message內容
     }
   }
 }
 
-const transformActivityList = (data) => {
-  let activityList = []
-  data.forEach((ele) => {
-    activityList.push({
-      activityName: ele.activity_name,
-      operator: ele.operator_name,
-      createdTime: dayjs(ele.created_time).format(t('date.format_datetime_rule')),
-      activityId: ele.activity_id,
-      canOperate: ele.can_operate
-    })
-  })
-  return activityList
-}
-
-//自定義排序執行的內容
-const upadteCurrentSort = ({ prop, order }) => {
-  sortTableDate({ prop, order, tableData: tableData.value })
-}
-
-watch(
-  () => activityStore.activityAddChange,
-  () => {
-    queryGrowthActivity()
-  }
-)
-
 onMounted(() => {
-  queryGrowthActivity()
+  queryGrowthGapActiveProfit()
 })
 </script>
 <template>
   <section class="cdp-section-in">
-    <SectionTitle
-      class="mb-16"
-      :title="$t('activity_analysis.activity_commissionable')"
-    ></SectionTitle>
+    <SectionTitle class="mb-16" :title="$t('activity_analysis.activity_net_profit')"></SectionTitle>
     <highcharts :options="chartOptions"></highcharts>
     <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
   </section>

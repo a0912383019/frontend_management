@@ -1,7 +1,280 @@
 import axiosInstance from './axiosInstance'
 import axiosGoInstance from './axiosGoInstance.js'
 
-export const apiQueryGrowthActivity = (params) => {
+//總和_活動中-淨利
+export const apiQueryTotalActiveProfit = (params) => {
+  const {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_total_profit_loss', {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  })
+}
+
+//總和_活動中-實動人數
+export const apiQueryTotalActiveReal = (params) => {
+  const {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_total_real_activate', {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  })
+}
+
+//總和_活動中-有效投注
+export const apiQueryTotalActiveCommissionable = (params) => {
+  const {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_total_commissionable', {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  })
+}
+
+//成長差額_活動中-淨利
+export const apiQueryGrowthGapActiveProfit = (params) => {
+  const {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_profit_loss_growth_diff', {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  })
+}
+
+//成長差額_活動中-實動人數
+export const apiQueryGrowthGapActiveReal = (params) => {
+  const {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_real_activate_growth_diff', {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  })
+}
+
+//成長差額_活動中-有效投注
+export const apiQueryGrowthGapActiveCommissionable = (params) => {
+  const {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_commissionable_growth_diff', {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  })
+}
+
+//成長率_活動中-淨利
+export const apiQueryGrowthRateActiveProfit = (params) => {
+  const {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_profit_loss_growth_rate', {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  })
+}
+
+//成長率_活動中-實動人數
+export const apiQueryGrowthRateActiveReal = (params) => {
+  const {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_real_activate_growth_rate', {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  })
+}
+
+//成長率_活動中-有效投注
+export const apiQueryGrowthRateActiveCommissionable = (params) => {
   const {
     hall_name,
     start_search_year,

@@ -3,8 +3,10 @@ import { ref, computed, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import Tab from '@/components/Tab.vue'
-import Overview from '@/views/ActivityAnalysisList/components/Overview.vue'
-import GrowthRate from '@/views/ActivityAnalysisList/components/GrowthRate.vue'
+import Overview from '@/views/ActivityAnalysisList/Overview/Overview.vue'
+import GrowthRate from '@/views/ActivityAnalysisList/GrowthRate/GrowthActiveChart.vue'
+import GrowthGap from '@/views/ActivityAnalysisList/GrowthGap/GapActiveChart.vue'
+import TotalSum from '@/views/ActivityAnalysisList/TotalSum/TotalActiveChart.vue'
 import AddButton from '@/components/Button/AddButton.vue'
 import AddDialog from '@/views/ActivityAnalysisList/AddActivity.vue'
 import Filter from '@/views/ActivityAnalysisList/Filter.vue'
@@ -49,7 +51,9 @@ const currentTabs = ref('Overview')
 // 整理所有 component
 const componentMap = {
   Overview,
-  GrowthRate
+  GrowthRate,
+  GrowthGap,
+  TotalSum
 }
 
 // 當前使用的 component
