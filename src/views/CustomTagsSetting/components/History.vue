@@ -113,7 +113,7 @@ const queryCustomTagsHistory = async (searchType = '') => {
         refCustomTable.value.showTableLoading = false
       }
       apiSuccess.value = true
-      tableData.value = transformHistoryData(result.data.result)
+      tableData.value = transformHistoryData(result.data.result.data)
       apiRecordsTotal.value = result.data.result.records_total
     } else {
       const { error_code } = result.data.status
@@ -166,6 +166,7 @@ const updateCurrentPage = (data) => {
 }
 
 const handleDialogClosed = () => {
+  apiStart.value = 0
   emit('closeHistory')
 }
 
