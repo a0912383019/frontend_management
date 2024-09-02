@@ -1,12 +1,14 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { dayjs } from 'element-plus'
 import { apiQueryGrowthGapActiveProfit } from '@/api'
 import { useGlobalStore } from '@/stores'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import { tooltipDarkConfig, tooltipShared } from '@/utils/highchartsConfig.js'
-import { errorRespond } from '@/utils/commonUtils.js'
+import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
+import { errorRespond, formatDateDuration, generateRGBColors } from '@/utils/commonUtils.js'
+import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 
 const { t } = useI18n()
 
@@ -26,10 +28,18 @@ const chartOptions = reactive({
     useHTML: true,
     symbolWidth: 0,
     labelFormatter: function () {
-      return `<div style="display: flex;">
-        <div style="width: 14px; height: 14px; background-color:
-        ${this.color}; display: inline-block; margin-right: 6px"></div><span>
-        ${this.name}</span></div>`
+      return `
+        <div style="display: flex;">
+          <div style="
+            width: 14px; 
+            height: 14px; 
+            background-color:${this.color}; 
+            display: inline-block; 
+            margin-right: 6px;
+          "></div>
+          <span>${this.name}</span>
+        </div>
+      `
     }
   },
   xAxis: {
@@ -39,10 +49,9 @@ const chartOptions = reactive({
     tickmarkPlacement: 'on',
     tickColor: '#e8e8e8',
     categories: [],
-    tickWidth: 1,
     labels: {
       style: {
-        fontSize: '14px'
+        fontSize: '12px'
       }
     }
   },
@@ -52,7 +61,7 @@ const chartOptions = reactive({
     shared: true,
     useHTML: true,
     formatter: function () {
-      return tooltipShared({ data: this.points, date: this.x, hallCode: activeHall.hall_code })
+      return tooltipAddSign({ data: this.points, date: this.x, sign: t('currency.currency_%') })
     },
     stickOnContact: true // 需要加這個才能使overflow 生效
   },
@@ -90,128 +99,7 @@ const chartOptions = reactive({
       }
     }
   },
-  series: [
-    {
-      name: '(1) qazosya',
-      type: 'line',
-      data: [0, 0, 1235, 239852, 0, 0, 0],
-      color: 'rgb(241,78,78,1)',
-      lineWidth: 3,
-      marker: {
-        symbol: 'circle',
-        radius: 5
-      },
-      yAxis: 0
-    },
-    {
-      name: '(2) lilytest2',
-      type: 'line',
-      data: [0, 21878.2617, 39133.548, 20.1, 54239.295, 0, 0],
-      color: 'rgb(0,192,236,1)',
-      lineWidth: 3,
-      marker: {
-        symbol: 'circle',
-        radius: 5
-      },
-      yAxis: 0
-    },
-    {
-      name: '(3) angel999',
-      type: 'line',
-      data: [0, 0, 0, 71200, 0, 0, 0],
-      color: 'rgb(69,137,166,1)',
-      lineWidth: 3,
-      marker: {
-        symbol: 'circle',
-        radius: 5
-      },
-      yAxis: 0
-    },
-    {
-      name: '(4) testdenny723',
-      type: 'line',
-      data: [0, 0, 0, 11115.6776, 32986.8, 0, 0],
-      color: 'rgb(251,201,201,1)',
-      lineWidth: 3,
-      marker: {
-        symbol: 'circle',
-        radius: 5
-      },
-      yAxis: 0
-    },
-    {
-      name: '(5) eurzosy',
-      type: 'line',
-      data: [0, 0, 0, 0, 38843.226, 0, 0],
-      color: 'rgb(209,214,222,1)',
-      lineWidth: 3,
-      marker: {
-        symbol: 'circle',
-        radius: 5
-      },
-      yAxis: 0
-    },
-    {
-      name: '(6) vengo',
-      type: 'line',
-      data: [0, 0, 0, 0, 32060, 0, 0],
-      color: 'rgb(200,200,240,1)',
-      lineWidth: 3,
-      marker: {
-        symbol: 'circle',
-        radius: 5
-      },
-      yAxis: 0
-    },
-    {
-      name: '(7) vndzosy',
-      type: 'line',
-      data: [0, 0, 0, 31074, 61.2, 0, 0],
-      color: 'rgb(255,107,0,1)',
-      lineWidth: 3,
-      marker: {
-        symbol: 'circle',
-        radius: 5
-      },
-      yAxis: 0
-    },
-    {
-      name: '(8) rmbalvis',
-      type: 'line',
-      data: [0, 0, 1100, 1750, 5200, 0, 100],
-      color: 'rgb(235,214,173,1)',
-      lineWidth: 3,
-      marker: {
-        symbol: 'circle',
-        radius: 5
-      },
-      yAxis: 0
-    },
-    {
-      name: '(9) chihesb001',
-      type: 'line',
-      data: [2047.1808, 0, 2455.0256, 0, 0, 0, 1710.3156],
-      color: 'rgb(255,172,112,1)',
-      lineWidth: 3,
-      marker: {
-        symbol: 'circle',
-        radius: 5
-      },
-      yAxis: 0
-    },
-    {
-      name: '(10) fxxdavan',
-      type: 'line',
-      data: [0, 0, 3204.72, 2800, 0, 0, 0],
-      color: 'rgb(12,197,195,1)',
-      lineWidth: 3,
-      marker: {
-        symbol: 'circle',
-        radius: 5
-      },
-      yAxis: 0
-    }
-  ]
+  series: []
 })
 
 // 取得資料
@@ -223,24 +111,24 @@ const queryGrowthGapActiveProfit = async () => {
     const result = await apiQueryGrowthGapActiveProfit({
       hall_name: 'esx',
       start_search_year: 2024,
-      start_search_month: 7,
-      start_search_week: 5,
-      start_date: '2024-07-31',
+      start_search_month: 6,
+      start_search_week: 1,
+      start_date: '2024-06-3',
       end_search_year: 2024,
-      end_search_month: 8,
+      end_search_month: 9,
       end_search_week: 1,
-      end_date: '2024-08-08',
+      end_date: '2024-09-02',
       cut_type: 'week',
-      reward_flag: 0,
+      reward_flag: 1,
       reward_date_flag: 0,
-      search_activity: []
+      search_activity: [50, 48, 33, 28]
     })
 
     const { return_code } = result.data.status
 
     if (return_code === '0000') {
       apiSuccess.value = true
-      // transformActivityMemberPeriodBetAmount(result.data.result)
+      transformActivityMemberPeriodGrowthGapNetProfit(result.data.result)
     } else if (return_code === '0001') {
       messageKey.value = 'noResult'
       let failMsg = errorRespond(result.data.status)
@@ -260,6 +148,48 @@ const queryGrowthGapActiveProfit = async () => {
       messageKey.value = 'chartFailed' //更改message內容
     }
   }
+}
+
+//轉換資料
+const transformActivityMemberPeriodGrowthGapNetProfit = (data) => {
+  clearChart()
+
+  let valueKey = 'profit_loss_growth_diff'
+  let dataClone = { ...data[0] }
+  let dataKey = Object.keys(dataClone)
+  delete dataKey[4]
+  let dataSet = {}
+
+  dataKey.forEach((ele, idx) => {
+    dataSet[ele] = {
+      name: dataClone[ele].activity_name,
+      type: 'line',
+      color: generateRGBColors(chart_fixed_bgColor[idx], 1),
+      lineWidth: 2,
+      marker: {
+        symbol: 'circle',
+        radius: 3
+      },
+      data: data.map((item) => parseFloat(item[ele][valueKey]))
+    }
+  })
+
+  chartOptions.xAxis.categories = data.map((ele) => {
+    let date = ele.interval_title.split('~')
+    return formatDateDuration(
+      dayjs(date[0]).format(t('date.format_date_rule')) +
+        '~' +
+        dayjs(date[1]).format(t('date.format_date_rule'))
+    )
+  })
+
+  Object.keys(dataSet).forEach((item) => {
+    chartOptions.series.push(dataSet[item])
+  })
+}
+const clearChart = () => {
+  chartOptions.xAxis.categories = []
+  chartOptions.series = []
 }
 
 onMounted(() => {
