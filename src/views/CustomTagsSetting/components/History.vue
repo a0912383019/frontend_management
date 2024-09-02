@@ -147,7 +147,7 @@ const transformHistoryData = (data) => {
         item.updated_time === ''
           ? '-'
           : dayjs(item.updated_time).format(t('date.format_datetime_rule')),
-      operator: item.operator_name,
+      operator: item.member_name,
       add_member_num: Number.isInteger(item.add_count) ? item.add_count : '-',
       delete_member_num: Number.isInteger(item.remove_count) ? item.remove_count : '-',
       status: item.status
