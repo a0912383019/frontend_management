@@ -76,7 +76,7 @@ const parseFile = (file) => {
       } else {
         isParseFile.value = false
         errorAccountText.value = t(
-          'custom_tags_setting.header_needs_to_be_user_name_data_date_enable'
+          'import_export_file.header_needs_to_be_user_name_data_date_enable'
         )
       }
 
