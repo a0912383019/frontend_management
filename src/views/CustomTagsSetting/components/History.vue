@@ -113,7 +113,7 @@ const queryCustomTagsHistory = async (searchType = '') => {
         refCustomTable.value.showTableLoading = false
       }
       apiSuccess.value = true
-      tableData.value = transformHistoryData(result.data.result)
+      tableData.value = transformHistoryData(result.data.result.data)
       apiRecordsTotal.value = result.data.result.records_total
     } else {
       const { error_code } = result.data.status
@@ -147,7 +147,7 @@ const transformHistoryData = (data) => {
         item.updated_time === ''
           ? '-'
           : dayjs(item.updated_time).format(t('date.format_datetime_rule')),
-      operator: item.operator_name,
+      operator: item.member_name,
       add_member_num: Number.isInteger(item.add_count) ? item.add_count : '-',
       delete_member_num: Number.isInteger(item.remove_count) ? item.remove_count : '-',
       status: item.status
@@ -166,6 +166,7 @@ const updateCurrentPage = (data) => {
 }
 
 const handleDialogClosed = () => {
+  apiStart.value = 0
   emit('closeHistory')
 }
 
