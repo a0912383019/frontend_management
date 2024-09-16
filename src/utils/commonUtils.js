@@ -160,30 +160,6 @@ export function formatDateDuration(date_duration) {
 }
 
 /**
- * 取得廳別對應的幣別符號
- * @param root_hall 對應的根廳別
- * @param hall_name 對應的廳別
- * @return {string} 幣別符號
- */
-export function getHallCurrencySign(root_hall, hall_name) {
-  return hall_config_dict[root_hall][hall_name].currency_sign
-}
-
-/**
- * 取得廳別對應的幣別符號文字
- * @param root_hall 對應的根廳別
- * @param hall_name 對應的廳別
- * @return {string} 幣別符號文字
- */
-export function getCurrencySignText(root_hall, hall_name) {
-  return {
-    currency: 'currency.currency',
-    currencySign: `currency.currency_${hall_config_dict[root_hall][hall_name].currency_sign}`,
-    currencySignText: hall_config_dict[root_hall][hall_name].currency_sign
-  }
-}
-
-/**
  * chart.js隨機產生背景顏色
  * @param {int[]} rgb_ary 顏色rgb數值
  * @param {number} alpha 顏色透明度

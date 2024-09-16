@@ -1,4 +1,5 @@
-import { getHallCurrencySign, FormatNumber } from '@/utils/commonUtils.js'
+import { FormatNumber } from '@/utils/commonUtils.js'
+import { useGlobalStore } from '@/stores/global.js'
 
 //tooltip 深色設定
 export const tooltipDarkConfig = {
@@ -21,7 +22,7 @@ export const tooltipFormatter = ({ data, hallCode = '', unit = '', tooltipIconBo
   color[3] = `${0.9})` // 把rgba的透明度調成1
   color = color.join(',') // -> EX: rgb(255, 255, 255, 0.9)
 
-  let moneySign = hallCode !== '' ? getHallCurrencySign('BBIN', hallCode) : ''
+  let moneySign = hallCode !== '' ? globalStore.currency_sign : ''
   return `
     <div style="
       padding: 6px 10px;
@@ -72,7 +73,7 @@ export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 })
       "></div>
       <div>
         ${data[i]['point']['series']['name']}：
-        ${hallCode !== '' ? getHallCurrencySign('BBIN', hallCode) : ''}
+        ${hallCode !== '' ? globalStore.currency_sign : ''}
         ${FormatNumber(data[i]['y'], '', precision)}
       </div>
     </div>
@@ -89,6 +90,8 @@ export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 })
  * @param tooltipIconBorder icon的border
  */
 export const tooltipSingleShared = ({ data, hallCode, tooltipIconBorder = false }) => {
+  const globalStore = useGlobalStore()
+
   let result = `
     <div style="
       padding: 6px 10px;
@@ -108,7 +111,7 @@ export const tooltipSingleShared = ({ data, hallCode, tooltipIconBorder = false 
       "></div>
       <div>
         ${data[i]['x']}：
-        ${getHallCurrencySign('BBIN', hallCode)}
+        ${globalStore.currency_sign}
         ${FormatNumber(data[i]['y'])}
       </div>
     </div>

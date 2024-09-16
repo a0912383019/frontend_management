@@ -13,11 +13,8 @@ describe('MemberInfo.vue', () => {
   let wrapper = null
 
   beforeEach(() => {
-    //只mock getHallCurrencySign，因爲無法初始化hall_code
     vi.mock('@/utils/commonUtils.js', async () => {
       const actual = await vi.importActual('@/utils/commonUtils.js')
-      const getHallCurrencySign = vi.fn()
-      getHallCurrencySign.mockReturnValue('¥')
 
       //模擬檢查標籤是否禁用
       const checkTagUsage = vi.fn()
@@ -99,7 +96,6 @@ describe('MemberInfo.vue', () => {
       })
       return {
         ...actual, //包括原始模組中的其他方法
-        getHallCurrencySign, //覆蓋函數
         checkTagUsage,
         generateTagBySortIndex
       }

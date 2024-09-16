@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '@/layout/Main.vue'
-import { useDateStore } from '@/stores/dateConfig.js'
-import { useSystemStore } from '@/stores/system.js'
+import { useDateStore, useGlobalStore, useSystemStore } from '@/stores'
 
 //不用登入即可觀看的頁面
 const whiteList = ['/login']
@@ -267,6 +266,11 @@ router.beforeEach(async (to, from, next) => {
       isLogin = false
     } else {
       isLogin = true
+      const globalStore = useGlobalStore()
+      globalStore.isLoading = true
+      const systemStore = useSystemStore()
+      await systemStore.queryHalls()
+      globalStore.isLoading = false
     }
   }
   if (isLogin || whiteList.includes(to.path)) {
@@ -274,11 +278,14 @@ router.beforeEach(async (to, from, next) => {
       const systemStore = useSystemStore()
       await systemStore.storeGetSystemConfig(0, true)
       systemStore.storeRefreshToken()
+      // globalStore.isLoading = false
       next()
     } else if (to.name !== 'Login') {
       const systemStore = useSystemStore()
       await systemStore.storeGetSystemConfig(0)
       systemStore.storeRefreshToken()
+      // globalStore.isLoading = false
+
       next()
     } else {
       next()

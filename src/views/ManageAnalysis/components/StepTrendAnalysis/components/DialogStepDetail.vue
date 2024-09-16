@@ -7,7 +7,6 @@ import { apiQueryStepDetail } from '@/api/manageAnalysis.js'
 import {
   addNumberColor,
   FormatNumber,
-  getHallCurrencySign,
   errorRespond
 } from '@/utils/commonUtils.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
@@ -111,7 +110,7 @@ const query_step_detail_tbl = async (param) => {
 //轉換資料
 const transform_step_detail_tbl = (data) => {
   const tempObj = {}
-  const hallCurrencySign = getHallCurrencySign('BBIN', activeHall.hall_code)
+  const hallCurrencySign = globalStore.currency_sign
   tempObj['bet_amount'] = FormatNumber(data.bet_amount, hallCurrencySign)
   tempObj['bet_amount_percent'] = FormatNumber(data.bet_amount_percent) + ' %'
   tempObj['payoff'] = addNumberColor(FormatNumber(data.payoff.toString(), hallCurrencySign))

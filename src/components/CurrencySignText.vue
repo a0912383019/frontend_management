@@ -1,7 +1,6 @@
 <script setup>
-import { ref, reactive, watch, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useGlobalStore } from '@/stores/global.js'
-import { getCurrencySignText } from '@/utils/commonUtils.js'
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -13,10 +12,9 @@ const currencyObj = reactive({ currency: '', currencySign: '', currencySignText:
 
 //產生幣別i18n資料
 const setCurrencyText = () => {
-  const currencyData = getCurrencySignText('BBIN', activeHall.hall_code)
-  currencyObj['currency'] = currencyData['currency']
-  currencyObj['currencySign'] = currencyData['currencySign']
-  currencyObj['currencySignText'] = currencyData['currencySignText']
+  currencyObj['currency'] = 'currency.currency'
+  currencyObj['currencySign'] = `currency.currency_${globalStore.currency_sign}`
+  currencyObj['currencySignText'] = globalStore.currency_sign
   isReady.value = true
 }
 
@@ -25,14 +23,6 @@ onMounted(() => {
     setCurrencyText()
   }
 })
-
-//監聽廳別變化更新幣別
-watch(
-  () => activeHall.hall_code,
-  () => {
-    setCurrencyText()
-  }
-)
 </script>
 <template>
   <div v-if="isReady" class="font-size-14 cdp-text-onyx">

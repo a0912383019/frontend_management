@@ -13,18 +13,6 @@ describe('GADetail.vue', () => {
   let wrapper = null
   let result
 
-  //只mock getHallCurrencySign，因爲無法初始化hall_code
-  vi.mock('@/utils/commonUtils.js', async () => {
-    const actual = await vi.importActual('@/utils/commonUtils.js')
-    const getHallCurrencySign = vi.fn()
-    getHallCurrencySign.mockReturnValue('¥')
-
-    return {
-      ...actual, //包括原始模組中的其他方法
-      getHallCurrencySign //覆蓋 getHallCurrencySign 函數
-    }
-  })
-
   afterEach(() => {
     wrapper.unmount()
   })

@@ -2,11 +2,12 @@ import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import { ElNotification } from 'element-plus'
 import { useGlobalStore, useSidebarStore, useVipCommercialAnalysisStore } from '@/stores'
-import { apiLogout } from '@/api/system.js'
+import { apiLogout, apiHalls } from '@/api'
 import { apiRefresh, apiGoRefresh, apiGetSystemConfig } from '@/api/system.js'
 import { i18n } from '@/global/i18n'
 import { hall_config_dict } from '@/../public/js/system_config.js'
 import { errorRespond, getSessionStorageEntity, findRootHall } from '@/utils/commonUtils.js'
+import { ref } from 'vue'
 
 export const useSystemStore = defineStore('system', () => {
   const router = useRouter()
@@ -134,5 +135,28 @@ export const useSystemStore = defineStore('system', () => {
     }
   }
 
-  return { storeLogout, storeGetSystemConfig, storeRefreshToken }
+  const hallConfigDict = ref([])
+  const queryHalls = async () => {
+    hallConfigDict.value = []
+    try {
+      const result = await apiHalls()
+
+      const { return_code } = result.data.status
+      if (return_code === '0000' && result.data.result.length !== 0) {
+        hallConfigDict.value = result.data.result
+      } else {
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
+    } catch (error) {
+      console.error(error)
+      if (error.response.status === 401) {
+        sessionStorage.clear()
+        localStorage.clear()
+        router.push({ name: 'Login' })
+      }
+    }
+  }
+
+  return { storeLogout, storeGetSystemConfig, storeRefreshToken, queryHalls, hallConfigDict }
 })

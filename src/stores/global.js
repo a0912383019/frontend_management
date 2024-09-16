@@ -159,6 +159,8 @@ export const useGlobalStore = defineStore(
 
     const systemConfigIsOk = ref(0)
 
+    const currency_sign = '¥'
+
     return {
       isLoading,
       storeHandleApiError,
@@ -170,7 +172,8 @@ export const useGlobalStore = defineStore(
       hallChange,
       lastRoute,
       userTypeConfig,
-      userStatusConfig
+      userStatusConfig,
+      currency_sign
     }
   },
   {

@@ -9,8 +9,6 @@ import {
   addNumberColor,
   formatDate,
   formatDateDuration,
-  getHallCurrencySign,
-  getCurrencySignText,
   generateRGBColors,
   dynamicBackgroundColors,
   generateMultipleColors,
@@ -100,24 +98,8 @@ describe('Utility Functions', () => {
     expect(result).toStrictEqual('2022-03-04 ~ 2022-05-06')
   })
 
-  //測試 getHallCurrencySign 函數
-  it('getHallCurrencySign should return the correct value', () => {
-    const result = getHallCurrencySign('BBIN', 'esb')
-    expect(result).toStrictEqual('¥')
-  })
-
-  //測試 getHallCurrencySign 函數
-  it('getCurrencySignText should return the correct value', () => {
-    const result = getCurrencySignText('BBIN', 'esb')
-    expect(result).toStrictEqual({
-      currency: 'currency.currency',
-      currencySign: 'currency.currency_¥',
-      currencySignText: '¥'
-    })
-  })
-
-  //測試 getHallCurrencySign 函數
-  it('getCurrencySignText should return the correct value', () => {
+  //測試 generateRGBColors 函數
+  it('generateRGBColors should return the correct value', () => {
     const result = generateRGBColors([245, 105, 84], 0.4)
     expect(result).toStrictEqual('rgb(245,105,84,0.4)')
   })

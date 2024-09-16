@@ -5,7 +5,6 @@ import { apiQuerySmallBoxData } from '@/api/home.js'
 import { useGlobalStore } from '@/stores/global.js'
 import {
   formatDateDuration,
-  getHallCurrencySign,
   FormatNumber,
   errorRespond,
   addNumberColor
@@ -107,7 +106,7 @@ const querySmallBoxData = async () => {
 
 // 轉換資料
 const transformSmallBoxData = (data) => {
-  const currentSign = getHallCurrencySign('BBIN', activeHall.hall_code)
+  const currentSign = globalStore.currency_sign
   const keyArr = ['bet_amount', 'payoff', 'premium_amount', 'active_people']
 
   keyArr.forEach((ele, idx) => {

@@ -6,7 +6,7 @@ import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import { dayjs, ElNotification } from 'element-plus'
-import { FormatNumber, errorRespond, getHallCurrencySign } from '@/utils/commonUtils.js'
+import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 import { showDatasetsLabels } from '@/utils/pluginUtils.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -74,8 +74,7 @@ const chartSetting = {
         displayColors: true,
         callbacks: {
           label: (tooltipItem) => {
-            let value =
-              getHallCurrencySign('BBIN', activeHall.hall_code) + FormatNumber(tooltipItem['raw'])
+            let value = globalStore.currency_sign + FormatNumber(tooltipItem['raw'])
             return t('data_name.bet_amount') + '：' + value
           }
         }
