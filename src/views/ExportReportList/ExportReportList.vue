@@ -5,7 +5,7 @@ import { apiQueryUserExportList } from '@/api'
 import { useGlobalStore, useExportListStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
-import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils.js'
+import { getSessionStorageEntity } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
@@ -147,22 +147,22 @@ const getSourceName = (type) => {
   switch (type) {
     case 1:
       sourceName =
-        'sidebar.' + findRootHall(activeHall.hall_code).toLowerCase() + '_manage_analysis'
+        'sidebar.bbin_manage_analysis'
       break
     case 2:
       sourceName =
-        'sidebar.' + findRootHall(activeHall.hall_code).toLowerCase() + '_customer_tag_list'
+        'sidebar.bbin_customer_tag_list'
       break
     case 3:
     case 4:
     case 5:
       sourceName =
-        'sidebar.' + findRootHall(activeHall.hall_code).toLowerCase() + '_vip_commercial_analysis'
+        'sidebar.bbin_vip_commercial_analysis'
       break
     case 6:
     case 7:
       sourceName =
-        'sidebar.' + findRootHall(activeHall.hall_code).toLowerCase() + '_offer_analysis_list'
+        'sidebar.bbin_offer_analysis_list'
       break
     case 8:
     case 9:

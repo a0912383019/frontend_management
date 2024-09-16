@@ -45,12 +45,9 @@ describe('ExportReportList.vue', () => {
         }
       })
 
-      const findRootHall = vi.fn()
-      findRootHall.mockReturnValue('BBIN')
       return {
         ...actual,
-        getSessionStorageEntity,
-        findRootHall
+        getSessionStorageEntity
       }
     })
 

@@ -1,8 +1,6 @@
 import { it, describe, expect } from 'vitest'
 import {
   getSessionStorageEntity,
-  findRootHall,
-  // findParentKey,
   errorRespond,
   roundDecimal,
   FormatNumber,
@@ -15,8 +13,6 @@ import {
   checkTagUsage,
   generateTagBySortIndex,
   formatNumberWithK,
-  // getRangeEveryDay,
-  findHallIdMappingKey,
   extractNumberValue,
   stringToIntArray,
   sortTableData,
@@ -36,12 +32,6 @@ describe('Utility Functions', () => {
 
     const result = getSessionStorageEntity(key)
     expect(result).toEqual(user_info)
-  })
-
-  //測試 findRootHall 函數
-  it('findRootHall should return the correct root hall', () => {
-    const result = findRootHall('esb')
-    expect(result).toStrictEqual('BBIN')
   })
 
   //測試 errorRespond 函數
@@ -288,12 +278,6 @@ describe('Utility Functions', () => {
   it('formatNumberWithK should return the correct value', () => {
     const result = formatNumberWithK(40392203)
     expect(result).toStrictEqual('40392.203k')
-  })
-
-  //測試 findHallIdMappingKey 函數
-  it('findHallIdMappingKey should return the correct value', () => {
-    const result = findHallIdMappingKey(['BBIN'], { hall_id: 3820566, domain_id: 0 })
-    expect(result).toStrictEqual('sk2')
   })
 
   // 測試 extractNumberValue 函數

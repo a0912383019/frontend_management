@@ -1,15 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { hall_config_dict } from '@/../public/js/system_config.js'
-import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
+import { getSessionStorageEntity } from '@/utils/commonUtils'
 import { useGlobalStore, useSystemStore, useSidebarStore } from '@/stores'
 import { useRouter, useRoute } from 'vue-router'
-import { storeToRefs } from 'pinia'
 
 const globalStore = useGlobalStore()
 const systemStore = useSystemStore()
-const { hallConfigDict } = storeToRefs(systemStore)
-
 const sidebarStore = useSidebarStore()
 const router = useRouter()
 const route = useRoute()
@@ -34,15 +30,10 @@ const generateHeaderHallDropdown = () => {
   hallDropdownList.value = []
   //根據storage內的可檢視廳別，產生出對應的廳別資料
   for (let i = 0; i < hallAry.length; i++) {
-    console.log(hall_config_dict[findRootHall(hallAry[i])])
-    console.log(hall_config_dict[findRootHall(hallAry[i])][hallAry[i]])
-
-    console.log(hallConfigDict.value)
     if (
-      hall_config_dict[findRootHall(hallAry[i])] &&
-      hall_config_dict[findRootHall(hallAry[i])][hallAry[i]]
+      systemStore.hallConfigDict[hallAry[i]]
     ) {
-      const hallData = hall_config_dict[findRootHall(hallAry[i])][hallAry[i]]
+      const hallData = systemStore.hallConfigDict[hallAry[i]]
       hallDropdownList.value.push(hallData)
       //將選取狀態預設為false
       hallDropdownList.value[hallDropdownList.value.length - 1]['is_active'] = false

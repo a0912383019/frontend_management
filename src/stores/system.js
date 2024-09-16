@@ -5,8 +5,7 @@ import { useGlobalStore, useSidebarStore, useVipCommercialAnalysisStore } from '
 import { apiLogout, apiHalls } from '@/api'
 import { apiRefresh, apiGoRefresh, apiGetSystemConfig } from '@/api/system.js'
 import { i18n } from '@/global/i18n'
-import { hall_config_dict } from '@/../public/js/system_config.js'
-import { errorRespond, getSessionStorageEntity, findRootHall } from '@/utils/commonUtils.js'
+import { errorRespond, getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { ref } from 'vue'
 
 export const useSystemStore = defineStore('system', () => {
@@ -42,8 +41,6 @@ export const useSystemStore = defineStore('system', () => {
 
   // call system config
   const storeGetSystemConfig = async (fromRoute = 1, simulate = false) => {
-    globalStore.isLoading = true // 顯示Loading視窗
-
     // global hall_code 為空，從sessionStorage user_info中取得資料中的第一個廳別
     // 模擬畫面需要重新抓取，因為每個使用者的hall 不一樣
     if (globalStore.activeHall.hall_code === '' || simulate) {
@@ -54,11 +51,9 @@ export const useSystemStore = defineStore('system', () => {
       // 取得第一個有效的廳
       for (let i = 0; i < accessHalls.length; i++) {
         if (
-          hall_config_dict[findRootHall(accessHalls[i])] &&
-          hall_config_dict[findRootHall(accessHalls[i])][accessHalls[i]]
+          hallConfigDict.value[accessHalls[i]]
         ) {
-          const { hall_name: hn, hall_code: hc } =
-            hall_config_dict[findRootHall(accessHalls[i])][accessHalls[i]]
+          const { hall_name: hn, hall_code: hc } = hallConfigDict.value[accessHalls[i]]
           hall_name = hn
           hall_code = hc
           break
@@ -73,7 +68,6 @@ export const useSystemStore = defineStore('system', () => {
         locale: i18nLocale.value
       })
       const { return_code } = result.data.status
-      globalStore.isLoading = false
       if (return_code === '0000') {
         sessionStorage.setItem('system_config', JSON.stringify(result.data.result))
         globalStore.systemConfigIsOk = fromRoute === 0 ? 0 : Math.floor(Math.random() * 1000)
@@ -86,7 +80,6 @@ export const useSystemStore = defineStore('system', () => {
       }
     } catch (error) {
       console.error(error)
-      globalStore.isLoading = false
       sessionStorage.clear()
       localStorage.clear()
       router.push({ name: 'Login' })
@@ -135,7 +128,7 @@ export const useSystemStore = defineStore('system', () => {
     }
   }
 
-  const hallConfigDict = ref([])
+  const hallConfigDict = ref({})
   const queryHalls = async () => {
     hallConfigDict.value = []
     try {
@@ -143,7 +136,7 @@ export const useSystemStore = defineStore('system', () => {
 
       const { return_code } = result.data.status
       if (return_code === '0000' && result.data.result.length !== 0) {
-        hallConfigDict.value = result.data.result
+        hallConfigDict.value = transformHallDict(result.data.result)
       } else {
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
@@ -158,5 +151,32 @@ export const useSystemStore = defineStore('system', () => {
     }
   }
 
-  return { storeLogout, storeGetSystemConfig, storeRefreshToken, queryHalls, hallConfigDict }
+  const transformHallDict = (data) => {
+    let hallDict = {}
+    data.forEach((ele) => {
+      hallDict[ele.login_code] = {
+        hall_name: ele.name,
+        hall_code: ele.login_code,
+        hall_id: ele.hall_id
+      }
+    })
+
+    return hallDict
+  }
+
+  const makeSystemConfig = async (fromRoute = 1, simulate = false) => {
+    globalStore.isLoading = true // 顯示Loading視窗
+    await queryHalls()
+    await storeGetSystemConfig(fromRoute, simulate)
+    globalStore.isLoading = false
+  }
+
+  return {
+    storeLogout,
+    storeGetSystemConfig,
+    storeRefreshToken,
+    queryHalls,
+    makeSystemConfig,
+    hallConfigDict
+  }
 })
