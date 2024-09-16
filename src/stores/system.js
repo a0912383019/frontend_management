@@ -128,7 +128,7 @@ export const useSystemStore = defineStore('system', () => {
 
   const hallConfigDict = ref({})
   const queryHalls = async () => {
-    hallConfigDict.value = []
+    hallConfigDict.value = {}
     try {
       const result = await apiHalls()
 
