@@ -81,7 +81,6 @@ const topCardData = ref([
 ])
 //取得資料
 const querySmallBoxData = async () => {
-  if (activeHall.hall_code === '') return
   try {
     const result = await apiQuerySmallBoxData({
       hall_name: activeHall.hall_code,

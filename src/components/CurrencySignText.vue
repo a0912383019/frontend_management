@@ -12,9 +12,9 @@ const currencyObj = reactive({ currency: '', currencySign: '', currencySignText:
 
 //產生幣別i18n資料
 const setCurrencyText = () => {
-  currencyObj['currency'] = 'currency.currency'
-  currencyObj['currencySign'] = `currency.currency_${globalStore.currency_sign}`
-  currencyObj['currencySignText'] = globalStore.currency_sign
+  currencyObj.currency = 'currency.currency'
+  currencyObj.currencySign = `currency.currency_${globalStore.currency_sign}`
+  currencyObj.currencySignText = globalStore.currency_sign
   isReady.value = true
 }
 
@@ -26,8 +26,8 @@ onMounted(() => {
 </script>
 <template>
   <div v-if="isReady" class="font-size-14 cdp-text-onyx">
-    ({{ $t(currencyObj['currency']) }} {{ $t(currencyObj['currencySign'])
-    }}{{ currencyObj['currencySignText'] }})
+    ({{ $t(currencyObj.currency) }} {{ $t(currencyObj.currencySign)
+    }}{{ currencyObj.currencySignText }})
   </div>
 </template>
 <style lang="scss" scoped></style>

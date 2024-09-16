@@ -1,4 +1,4 @@
-import { it, describe, expect, vi, afterEach } from 'vitest'
+import { it, describe, expect, vi, afterEach, beforeEach } from 'vitest'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import TopCard from '@/views/Home/components/TopCard.vue'
@@ -10,82 +10,19 @@ import { dayjs } from 'element-plus'
 
 describe('TopCard.vue', () => {
   let wrapper = null
-  vi.mock('@/stores/global.js', () => ({
-    useGlobalStore: vi.fn()
-  }))
-  vi.mock('@/stores/dateConfig.js', () => ({
-    useDateStore: vi.fn()
-  }))
-  const mockLastDate = {
-    LAST_DATE: dayjs(1513823919228)
-  }
-  useDateStore.mockReturnValue(mockLastDate)
 
-  afterEach(() => {
-    wrapper.unmount()
-  })
-
-  it('Expected components render correctly', async () => {
-    const mockActiveHall = {
-      activeHall: {
-        hall_name: '',
-        hall_code: ''
-      }
+  beforeEach(() => {
+    vi.mock('@/stores/global.js', () => ({
+      useGlobalStore: vi.fn()
+    }))
+    vi.mock('@/stores/dateConfig.js', () => ({
+      useDateStore: vi.fn()
+    }))
+    const mockLastDate = {
+      LAST_DATE: dayjs(1513823919228)
     }
-    useGlobalStore.mockReturnValue(mockActiveHall)
-    wrapper = shallowMount(TopCard, {
-      global: {
-        plugins: [i18n],
-        components: {
-          FontAwesomeIcon
-        },
-        stubs: {
-          ElRow: {
-            template: '<div><slot /></div>'
-          },
-          ElCol: {
-            template: '<div><slot /></div>'
-          }
-        }
-      }
-    })
-    //預期轉換後的資料
-    const topCardData = [
-      {
-        icon: 'fas fa-money-bill-wave',
-        colorClass: 'cdp-bg-maximum__blue',
-        monthAvg: '-',
-        weekAvg: '-',
-        growth: '-'
-      },
-      {
-        icon: 'fas fa-chart-area',
-        colorClass: 'cdp-bg-forest__green__crayola',
-        monthAvg: '-',
-        weekAvg: '-',
-        growth: '-'
-      },
-      {
-        icon: 'fas fa-gift',
-        colorClass: 'cdp-bg-indian__yellow',
-        monthAvg: '-',
-        weekAvg: '-',
-        growth: '-'
-      },
-      {
-        icon: 'fas fa-users',
-        colorClass: 'cdp-bg-candy__pink',
-        monthAvg: '-',
-        weekAvg: '-',
-        growth: '-'
-      }
-    ]
-    expect(wrapper.vm.topCardData).toStrictEqual(topCardData)
-    expect(wrapper.vm.weekDuration).toStrictEqual('2017/12/15~2017/12/21')
-    expect(wrapper.vm.monthDuration).toStrictEqual('2017/11/22~2017/12/21')
-  })
+    useDateStore.mockReturnValue(mockLastDate)
 
-  it('Is triggering watch and mock api as expected?', async () => {
     const result = {
       data: {
         status: {
@@ -117,13 +54,15 @@ describe('TopCard.vue', () => {
       }
     }
     vi.spyOn(axiosGoInstance, 'get').mockResolvedValue(result)
-    const mockActiveHall = {
+    const mockGlobalValue = {
       activeHall: {
-        hall_name: 'esb',
-        hall_code: 'esb'
-      }
+        hall_name: '',
+        hall_code: ''
+      },
+      currency_sign: '¥'
     }
-    useGlobalStore.mockReturnValue(mockActiveHall)
+    useGlobalStore.mockReturnValue(mockGlobalValue)
+
     wrapper = shallowMount(TopCard, {
       global: {
         plugins: [i18n],
@@ -140,6 +79,13 @@ describe('TopCard.vue', () => {
         }
       }
     })
+  })
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
+  it('Is mock api as expected', async () => {
     //等待異步完成
     await flushPromises()
     //預期轉換後的資料

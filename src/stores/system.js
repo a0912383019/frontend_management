@@ -50,9 +50,7 @@ export const useSystemStore = defineStore('system', () => {
 
       // 取得第一個有效的廳
       for (let i = 0; i < accessHalls.length; i++) {
-        if (
-          hallConfigDict.value[accessHalls[i]]
-        ) {
+        if (hallConfigDict.value[accessHalls[i]]) {
           const { hall_name: hn, hall_code: hc } = hallConfigDict.value[accessHalls[i]]
           hall_name = hn
           hall_code = hc
@@ -156,8 +154,7 @@ export const useSystemStore = defineStore('system', () => {
     data.forEach((ele) => {
       hallDict[ele.login_code] = {
         hall_name: ele.name,
-        hall_code: ele.login_code,
-        hall_id: ele.hall_id
+        hall_code: ele.login_code
       }
     })
 

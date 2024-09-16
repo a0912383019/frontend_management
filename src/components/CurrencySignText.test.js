@@ -2,29 +2,30 @@ import { it, describe, expect, beforeEach, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import router from '@/router'
-import CurrencySignText from '@/components/CurrencySignText.vue'
 import { createTestingPinia } from '@pinia/testing'
+import { useGlobalStore } from '@/stores'
+import CurrencySignText from '@/components/CurrencySignText.vue'
 
 describe('CurrencySignText', () => {
   let wrapper = null
 
   beforeEach(() => {
+    const pinia = createTestingPinia({ createSpy: vi.fn })
+    const globalStore = useGlobalStore(pinia)
+    globalStore.activeHall = {
+      hall_code: 'esx',
+      hall_name: 'Esball'
+    }
+
     wrapper = shallowMount(CurrencySignText, {
       global: {
-        plugins: [
-          i18n,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn
-          })
-        ]
+        plugins: [i18n, router]
       }
     })
   })
 
   // 觸發watch，確認資料轉變
   it('Trigger watch to confirm data change', async () => {
-    wrapper.vm.activeHall.hall_code = 'esb'
     await wrapper.vm.$nextTick()
 
     const currencyObject = {

@@ -1,4 +1,7 @@
-import { it, describe, expect } from 'vitest'
+import { it, describe, expect, vi } from 'vitest'
+import { createTestingPinia } from '@pinia/testing'
+import { useGlobalStore } from '@/stores'
+
 import {
   tooltipFormatter,
   tooltipShared,
@@ -8,6 +11,10 @@ import {
 } from '@/utils/highchartsConfig.js'
 
 describe('Tooltip Utils', () => {
+  const pinia = createTestingPinia({ createSpy: vi.fn })
+  const globalStore = useGlobalStore(pinia)
+  globalStore.currency_sign = "¥"
+
   it('should format tooltip using tooltipFormatter', () => {
     const testData = {
       color: 'rgb(255, 0, 0, 0.7)',

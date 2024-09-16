@@ -18,6 +18,7 @@ export const tooltipDarkConfig = {
  * @param tooltipIconBorder icon的border
  */
 export const tooltipFormatter = ({ data, hallCode = '', unit = '', tooltipIconBorder = false }) => {
+  const globalStore = useGlobalStore()
   let color = data.color.split(',') //將顏色用逗號切割
   color[3] = `${0.9})` // 把rgba的透明度調成1
   color = color.join(',') // -> EX: rgb(255, 255, 255, 0.9)
@@ -52,6 +53,7 @@ export const tooltipFormatter = ({ data, hallCode = '', unit = '', tooltipIconBo
  * @param precision 顯示的小數位數
  */
 export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 }) => {
+  const globalStore = useGlobalStore()
   let result = `
     <div style="
       padding: 6px 10px;
@@ -91,7 +93,6 @@ export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 })
  */
 export const tooltipSingleShared = ({ data, hallCode, tooltipIconBorder = false }) => {
   const globalStore = useGlobalStore()
-
   let result = `
     <div style="
       padding: 6px 10px;
