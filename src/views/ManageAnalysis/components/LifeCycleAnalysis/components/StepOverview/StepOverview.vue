@@ -68,17 +68,17 @@ const query_life_cycle_analysis_avg_data = async () => {
       //日均存款
       stepData['deposit']['data'] = FormatNumber(
         avg_deposit_amount,
-        globalStore.currency_sign
+        globalStore.currencySign
       )
       //日均貨量
       stepData['betAmount']['data'] = FormatNumber(
         avg_bet_amount,
-        globalStore.currency_sign
+        globalStore.currencySign
       )
       //日均損益
       stepData['payoff']['data'] = FormatNumber(
         avg_payoff.toString(),
-        globalStore.currency_sign
+        globalStore.currencySign
       )
       stepData['payoff']['className'] = avg_payoff < 0 ? 'cdp-text-candypink' : ''
     } else {

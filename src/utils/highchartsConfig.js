@@ -23,7 +23,7 @@ export const tooltipFormatter = ({ data, hallCode = '', unit = '', tooltipIconBo
   color[3] = `${0.9})` // 把rgba的透明度調成1
   color = color.join(',') // -> EX: rgb(255, 255, 255, 0.9)
 
-  let moneySign = hallCode !== '' ? globalStore.currency_sign : ''
+  let moneySign = hallCode !== '' ? globalStore.currencySign : ''
   return `
     <div style="
       padding: 6px 10px;
@@ -75,7 +75,7 @@ export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 })
       "></div>
       <div>
         ${data[i]['point']['series']['name']}：
-        ${hallCode !== '' ? globalStore.currency_sign : ''}
+        ${hallCode !== '' ? globalStore.currencySign : ''}
         ${FormatNumber(data[i]['y'], '', precision)}
       </div>
     </div>
@@ -112,7 +112,7 @@ export const tooltipSingleShared = ({ data, hallCode, tooltipIconBorder = false 
       "></div>
       <div>
         ${data[i]['x']}：
-        ${globalStore.currency_sign}
+        ${globalStore.currencySign}
         ${FormatNumber(data[i]['y'])}
       </div>
     </div>

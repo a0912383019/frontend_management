@@ -208,7 +208,7 @@ const transformMemberJourney = (data) => {
           text: t('customer_detail_info.accumulate_bet_amount_level_text', {
             accumulate_bet_amount: FormatNumber(
               item.accumulate_bet_amount,
-              globalStore.currency_sign
+              globalStore.currencySign
             )
           }),
           title: t(
@@ -230,7 +230,7 @@ const transformMemberJourney = (data) => {
           text: t('customer_detail_info.accumulate_deposit_amount_level_text', {
             accumulate_deposit_amount: FormatNumber(
               item.accumulate_deposit_amount,
-              globalStore.currency_sign
+              globalStore.currencySign
             )
           }),
           title: t(
@@ -371,7 +371,7 @@ const transformMemberJourney = (data) => {
             '">\u25CF</span> ' +
             this.series.name +
             ': <b>' +
-            globalStore.currency_sign +
+            globalStore.currencySign +
             FormatNumber(this.y) +
             '</b>'
           )
@@ -399,7 +399,7 @@ const transformMemberJourney = (data) => {
             '">\u25CF</span> ' +
             this.series.name +
             ': <b>' +
-            globalStore.currency_sign +
+            globalStore.currencySign +
             FormatNumber(this.y) +
             '</b>'
           )

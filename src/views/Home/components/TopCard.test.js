@@ -59,7 +59,7 @@ describe('TopCard.vue', () => {
         hall_name: '',
         hall_code: ''
       },
-      currency_sign: '¥'
+      currencySign: '¥'
     }
     useGlobalStore.mockReturnValue(mockGlobalValue)
 

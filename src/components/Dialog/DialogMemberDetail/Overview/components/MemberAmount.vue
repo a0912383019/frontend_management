@@ -36,7 +36,7 @@ const queryProfitWithdrawDepositAmount = async () => {
       amountData['total_profit'] = FormatNumber(total_profit)
       amountData['total_withdraw'] = FormatNumber(total_withdraw)
       amountData['withdraw_deposit_net_amount'] = FormatNumber(withdraw_deposit_net_amount)
-      currencySignText.value = globalStore.currency_sign
+      currencySignText.value = globalStore.currencySign
     } else {
       let failMsg = errorRespond(result.data.status)
       console.log(failMsg)

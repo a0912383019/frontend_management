@@ -74,7 +74,7 @@ const chartSetting = {
         displayColors: true,
         callbacks: {
           label: (tooltipItem) => {
-            let value = globalStore.currency_sign + FormatNumber(tooltipItem['raw'])
+            let value = globalStore.currencySign + FormatNumber(tooltipItem['raw'])
             return t('data_name.bet_amount') + '：' + value
           }
         }

@@ -121,7 +121,7 @@ const transformTableData = (data) => {
       value:
         data.per_session_bet_amount === '-'
           ? data.per_session_bet_amount
-          : globalStore.currency_sign + FormatNumber(data.per_session_bet_amount)
+          : globalStore.currencySign + FormatNumber(data.per_session_bet_amount)
     }
   ]
 }

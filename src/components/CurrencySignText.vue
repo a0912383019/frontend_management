@@ -13,8 +13,8 @@ const currencyObj = reactive({ currency: '', currencySign: '', currencySignText:
 //產生幣別i18n資料
 const setCurrencyText = () => {
   currencyObj.currency = 'currency.currency'
-  currencyObj.currencySign = `currency.currency_${globalStore.currency_sign}`
-  currencyObj.currencySignText = globalStore.currency_sign
+  currencyObj.currencySign = `currency.currency_${globalStore.currencySign}`
+  currencyObj.currencySignText = globalStore.currencySign
   isReady.value = true
 }
 

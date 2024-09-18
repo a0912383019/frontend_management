@@ -110,7 +110,7 @@ const query_step_detail_tbl = async (param) => {
 //轉換資料
 const transform_step_detail_tbl = (data) => {
   const tempObj = {}
-  const hallCurrencySign = globalStore.currency_sign
+  const hallCurrencySign = globalStore.currencySign
   tempObj['bet_amount'] = FormatNumber(data.bet_amount, hallCurrencySign)
   tempObj['bet_amount_percent'] = FormatNumber(data.bet_amount_percent) + ' %'
   tempObj['payoff'] = addNumberColor(FormatNumber(data.payoff.toString(), hallCurrencySign))

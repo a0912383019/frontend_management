@@ -159,7 +159,7 @@ export const useGlobalStore = defineStore(
 
     const systemConfigIsOk = ref(0)
 
-    const currency_sign = '¥'
+    const currencySign = '¥'
 
     return {
       isLoading,
@@ -173,7 +173,7 @@ export const useGlobalStore = defineStore(
       lastRoute,
       userTypeConfig,
       userStatusConfig,
-      currency_sign
+      currencySign
     }
   },
   {

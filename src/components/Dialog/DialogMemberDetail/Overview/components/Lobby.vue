@@ -73,7 +73,7 @@ const chartSetting = {
       tooltip: {
         callbacks: {
           label: (tooltipItem) => {
-            let value = globalStore.currency_sign + FormatNumber(tooltipItem['raw'])
+            let value = globalStore.currencySign + FormatNumber(tooltipItem['raw'])
             let title = tooltipItem['label'] + ' : '
             return title + value
           }

@@ -105,7 +105,7 @@ const querySmallBoxData = async () => {
 
 // 轉換資料
 const transformSmallBoxData = (data) => {
-  const currentSign = globalStore.currency_sign
+  const currentSign = globalStore.currencySign
   const keyArr = ['bet_amount', 'payoff', 'premium_amount', 'active_people']
 
   keyArr.forEach((ele, idx) => {

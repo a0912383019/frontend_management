@@ -13,7 +13,7 @@ import {
 describe('Tooltip Utils', () => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
   const globalStore = useGlobalStore(pinia)
-  globalStore.currency_sign = "¥"
+  globalStore.currencySign = "¥"
 
   it('should format tooltip using tooltipFormatter', () => {
     const testData = {
