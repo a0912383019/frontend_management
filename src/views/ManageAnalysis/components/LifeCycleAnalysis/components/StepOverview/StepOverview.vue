@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/stores/global.js'
 import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { apiQueryLifeCycleAnalysisAvgData } from '@/api/manageAnalysis.js'
-import { FormatNumber, getHallCurrencySign } from '@/utils/commonUtils.js'
+import { FormatNumber } from '@/utils/commonUtils.js'
 import FilterDate from '@/components/Filter/FilterDate.vue'
 import ExportCSV from './components/ExportCSV.vue'
 import AvgCard from './components/AvgCard.vue'
@@ -68,17 +68,17 @@ const query_life_cycle_analysis_avg_data = async () => {
       //日均存款
       stepData['deposit']['data'] = FormatNumber(
         avg_deposit_amount,
-        getHallCurrencySign('BBIN', activeHall.hall_code)
+        globalStore.currencySign
       )
       //日均貨量
       stepData['betAmount']['data'] = FormatNumber(
         avg_bet_amount,
-        getHallCurrencySign('BBIN', activeHall.hall_code)
+        globalStore.currencySign
       )
       //日均損益
       stepData['payoff']['data'] = FormatNumber(
         avg_payoff.toString(),
-        getHallCurrencySign('BBIN', activeHall.hall_code)
+        globalStore.currencySign
       )
       stepData['payoff']['className'] = avg_payoff < 0 ? 'cdp-text-candypink' : ''
     } else {

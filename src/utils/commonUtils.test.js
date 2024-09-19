@@ -1,24 +1,18 @@
 import { it, describe, expect } from 'vitest'
 import {
   getSessionStorageEntity,
-  findRootHall,
-  // findParentKey,
   errorRespond,
   roundDecimal,
   FormatNumber,
   addNumberColor,
   formatDate,
   formatDateDuration,
-  getHallCurrencySign,
-  getCurrencySignText,
   generateRGBColors,
   dynamicBackgroundColors,
   generateMultipleColors,
   checkTagUsage,
   generateTagBySortIndex,
   formatNumberWithK,
-  // getRangeEveryDay,
-  findHallIdMappingKey,
   extractNumberValue,
   stringToIntArray,
   sortTableData,
@@ -38,12 +32,6 @@ describe('Utility Functions', () => {
 
     const result = getSessionStorageEntity(key)
     expect(result).toEqual(user_info)
-  })
-
-  //測試 findRootHall 函數
-  it('findRootHall should return the correct root hall', () => {
-    const result = findRootHall('esb')
-    expect(result).toStrictEqual('BBIN')
   })
 
   //測試 errorRespond 函數
@@ -100,24 +88,8 @@ describe('Utility Functions', () => {
     expect(result).toStrictEqual('2022-03-04 ~ 2022-05-06')
   })
 
-  //測試 getHallCurrencySign 函數
-  it('getHallCurrencySign should return the correct value', () => {
-    const result = getHallCurrencySign('BBIN', 'esb')
-    expect(result).toStrictEqual('¥')
-  })
-
-  //測試 getHallCurrencySign 函數
-  it('getCurrencySignText should return the correct value', () => {
-    const result = getCurrencySignText('BBIN', 'esb')
-    expect(result).toStrictEqual({
-      currency: 'currency.currency',
-      currencySign: 'currency.currency_¥',
-      currencySignText: '¥'
-    })
-  })
-
-  //測試 getHallCurrencySign 函數
-  it('getCurrencySignText should return the correct value', () => {
+  //測試 generateRGBColors 函數
+  it('generateRGBColors should return the correct value', () => {
     const result = generateRGBColors([245, 105, 84], 0.4)
     expect(result).toStrictEqual('rgb(245,105,84,0.4)')
   })
@@ -306,12 +278,6 @@ describe('Utility Functions', () => {
   it('formatNumberWithK should return the correct value', () => {
     const result = formatNumberWithK(40392203)
     expect(result).toStrictEqual('40392.203k')
-  })
-
-  //測試 findHallIdMappingKey 函數
-  it('findHallIdMappingKey should return the correct value', () => {
-    const result = findHallIdMappingKey(['BBIN'], { hall_id: 3820566, domain_id: 0 })
-    expect(result).toStrictEqual('sk2')
   })
 
   // 測試 extractNumberValue 函數

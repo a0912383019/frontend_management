@@ -272,12 +272,12 @@ router.beforeEach(async (to, from, next) => {
   if (isLogin || whiteList.includes(to.path)) {
     if (to.name === 'Home' && to.query && to.query.simulate) {
       const systemStore = useSystemStore()
-      await systemStore.storeGetSystemConfig(0, true)
+      await systemStore.makeSystemConfig(0, true)
       systemStore.storeRefreshToken()
       next()
     } else if (to.name !== 'Login') {
       const systemStore = useSystemStore()
-      await systemStore.storeGetSystemConfig(0)
+      await systemStore.makeSystemConfig(0)
       systemStore.storeRefreshToken()
       next()
     } else {
