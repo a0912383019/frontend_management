@@ -188,7 +188,7 @@ const queryDownloadHistoryFile = async (file) => {
 
     const { return_code } = result.data.status
     if (return_code === '0000') {
-      downloadFile(result.data.download_url)
+      downloadFile(result.data.result)
     } else {
       ElNotification({
         title: t('msg.download_failed'),

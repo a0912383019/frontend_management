@@ -91,7 +91,6 @@ const queryListCustomTagsSetting = async () => {
     if (return_code === '0000') {
       tableData.value = transformCustomTagData(result.data.result)
       tableRef.value.sortByFather(sortData.value)
-      globalStore.isLoading = false
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
@@ -209,7 +208,8 @@ const reloadPage = async () => {
   await storeGetSystemConfig()
   // queryListCustomTagsSetting 的transformCustomTagData 會有短暫的資料延遲
   globalStore.isLoading = true
-  queryListCustomTagsSetting()
+  await queryListCustomTagsSetting()
+  globalStore.isLoading = false
 }
 
 const tableRef = ref(null)
