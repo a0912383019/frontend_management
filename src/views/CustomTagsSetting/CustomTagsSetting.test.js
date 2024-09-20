@@ -83,8 +83,18 @@ describe('CustomTagsSetting.vue', () => {
 
     wrapper = shallowMount(CustomTagsSetting, {
       global: {
-        plugins: [i18n, ElementPlus]
-      }
+        plugins: [i18n, ElementPlus],
+        stubs: {
+          EditDetail: {
+            props: ['tagName'],
+            template: '<div></div>'
+          },
+          History: {
+            props: ['tagName'],
+            template: '<div></div>'
+          }
+        }
+      },
     })
     wrapper.vm.$refs.tableRef.sortByFather = sortByFather
   })
