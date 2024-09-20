@@ -205,9 +205,9 @@ const openHistory = (data) => {
 }
 
 const reloadPage = async () => {
+  globalStore.isLoading = true
   await storeGetSystemConfig()
   // queryListCustomTagsSetting 的transformCustomTagData 會有短暫的資料延遲
-  globalStore.isLoading = true
   await queryListCustomTagsSetting()
   globalStore.isLoading = false
 }
@@ -244,12 +244,13 @@ const closeDelete = () => {
   deleteBox.value = false
 }
 
-const confirmDelete = () => {
-  deleteCustomTags()
+const confirmDelete = async () => {
+  globalStore.isLoading = true
+  await deleteCustomTags()
+  globalStore.isLoading = false
 }
 
 const deleteCustomTags = async () => {
-  globalStore.isLoading = true
   try {
     const result = await apiDeleteCustomTags({
       hall_name: activeHall.hall_code,
@@ -263,7 +264,6 @@ const deleteCustomTags = async () => {
         type: 'success'
       })
       closeDelete()
-      globalStore.isLoading = false
       reloadPage()
     } else {
       ElNotification({
@@ -273,7 +273,6 @@ const deleteCustomTags = async () => {
     }
   } catch (error) {
     console.error(error)
-    globalStore.isLoading = false
     if (error.response.status === 403) {
       ElNotification({
         title: t('msg.no_permission'),
@@ -379,6 +378,7 @@ onMounted(() => {
       @update:success="reloadPage"
     />
     <EditDetail
+      v-if="tagDetailOpen"
       v-model="tagDetailOpen"
       :tagCode="tagDetail.tagCode"
       :tagName="tagDetail.tagName"
@@ -387,6 +387,7 @@ onMounted(() => {
       @updateSuccess="reloadPage"
     />
     <History
+      v-if="tagHistoryOpen"
       v-model="tagHistoryOpen"
       :tagCode="tagDetail.tagCode"
       :tagName="tagDetail.tagName"

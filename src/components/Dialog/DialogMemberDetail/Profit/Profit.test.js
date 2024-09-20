@@ -23,10 +23,10 @@ describe('Profit.vue', () => {
           })
         ],
         stubs: {
-          'ElRow': {
+          ElRow: {
             template: '<div><slot /></div>'
           },
-          'ElCol': {
+          ElCol: {
             template: '<div><slot /></div>'
           }
         }

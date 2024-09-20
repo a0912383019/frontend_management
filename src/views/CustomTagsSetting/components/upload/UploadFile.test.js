@@ -5,7 +5,6 @@ import ElementPlus from 'element-plus'
 import UploadFile from '@/views/CustomTagsSetting/components/upload/UploadFile.vue'
 import fs from 'fs'
 import path from 'path'
-import exp from 'constants'
 
 // 讀取文件內容
 const filePath = path.join(__dirname, 'upload-demo.csv') // 替換為實際文件路徑
