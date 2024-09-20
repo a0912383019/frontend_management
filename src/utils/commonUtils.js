@@ -1,4 +1,4 @@
-import { hall_config_dict, chart_fixed_bgColor } from '@/../public/js/system_config.js'
+import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 
 /**
  * 取得儲存在sessionStorage中的JSON物件
@@ -8,53 +8,6 @@ import { hall_config_dict, chart_fixed_bgColor } from '@/../public/js/system_con
 export function getSessionStorageEntity(key) {
   return JSON.parse(sessionStorage.getItem(key))
 }
-
-/**
- * 返回輸入廳別的根廳別
- * @param hall_name 要搜尋的廳別
- */
-export function findRootHall(hall_name) {
-  let root_hall = null
-  for (let root_key in hall_config_dict) {
-    if (Object.prototype.hasOwnProperty.call(hall_config_dict, root_key)) {
-      for (let key in hall_config_dict[root_key]) {
-        if (key === hall_name) {
-          root_hall = root_key
-          break
-        }
-      }
-      if (root_hall !== null) {
-        break
-      }
-    }
-  }
-  return root_hall
-}
-
-/**
- * 返回輸入廳別的key
-hall_config_dict_xbb['178t'] = {
-  hall_code: 'demo1'
-}
-例如：輸入demo1返回178t
- * @param hall_name 要搜尋的廳別
- */
-// export function findParentKey(hall_name) {
-//   let root_hall = null
-//   for (let root_key in hall_config_dict) {
-//     if (Object.prototype.hasOwnProperty.call(hall_config_dict, root_key)) {
-//       Object.entries(hall_config_dict[root_key]).forEach((item) => {
-//         if (item[1]['hall_code'] === hall_name) {
-//           root_hall = item[0]
-//         }
-//       })
-//       if (root_hall !== null) {
-//         break
-//       }
-//     }
-//   }
-//   return root_hall
-// }
 
 /**
  * 錯誤訊息通用顯示格式
@@ -160,30 +113,6 @@ export function formatDateDuration(date_duration) {
 }
 
 /**
- * 取得廳別對應的幣別符號
- * @param root_hall 對應的根廳別
- * @param hall_name 對應的廳別
- * @return {string} 幣別符號
- */
-export function getHallCurrencySign(root_hall, hall_name) {
-  return hall_config_dict[root_hall][hall_name].currency_sign
-}
-
-/**
- * 取得廳別對應的幣別符號文字
- * @param root_hall 對應的根廳別
- * @param hall_name 對應的廳別
- * @return {string} 幣別符號文字
- */
-export function getCurrencySignText(root_hall, hall_name) {
-  return {
-    currency: 'currency.currency',
-    currencySign: `currency.currency_${hall_config_dict[root_hall][hall_name].currency_sign}`,
-    currencySignText: hall_config_dict[root_hall][hall_name].currency_sign
-  }
-}
-
-/**
  * chart.js隨機產生背景顏色
  * @param {int[]} rgb_ary 顏色rgb數值
  * @param {number} alpha 顏色透明度
@@ -282,45 +211,6 @@ export function generateTagBySortIndex({
  */
 export function formatNumberWithK(label) {
   return Math.abs(label) >= 1000 ? label / 1000 + 'k' : label
-}
-
-// /**
-//  * 輸入起始日和結束日，取得陣列，內容是這區間內的每一天
-//  * @param {String} startDate //起始日
-//  * @param {String} endDate //結束日
-//  * @param {Function} t //需在setup組件內 import { useI18n } from 'vue-i18n'
-//  * 並將const { t } = useI18n()中的t傳遞給function使用
-//  */
-// export function getRangeEveryDay(startDate, endDate, t) {
-//   const result = []
-//   let currentDate = startDate
-//   while (dayjs(currentDate) <= dayjs(endDate)) {
-//     result.push(dayjs(currentDate).format(t('date.format_date_rule')))
-//     currentDate = dayjs(currentDate).add(1, 'day').format(t('date.format_date_rule'))
-//   }
-//   return result
-// }
-
-/**
- * 返回value值对应的key(找出對應的廳別名稱)
- * @param {string[]} root_hall_ary 要尋找的根廳別
- * @param {object} value 尋找的廳別物件
- * @param compare
- */
-export function findHallIdMappingKey(
-  root_hall_ary,
-  value,
-  compare = (a, b) => a.hall_id === b.hall_id && a.domain_id === b.domain_id
-) {
-  let key = undefined
-  let index = 0
-  while (key === undefined && index < root_hall_ary.length) {
-    key = Object.keys(hall_config_dict[root_hall_ary[index]]).find((k) =>
-      compare(hall_config_dict[root_hall_ary[index]][k], value)
-    )
-    index++
-  }
-  return key
 }
 
 /**

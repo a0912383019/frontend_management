@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, watch, computed, onMounted } from 'vue'
-import { findRootHall, getSessionStorageEntity, generateTagBySortIndex } from '@/utils/commonUtils'
+import { getSessionStorageEntity, generateTagBySortIndex } from '@/utils/commonUtils'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
@@ -125,7 +125,7 @@ const transformTagsConfig = () => {
   }
 
   // 加入tag_type = 3的tag_category說明(2~7)
-  let root_hall = findRootHall(activeHall.hall_code)
+  let root_hall = "BBIN"
   let type3_data = []
   for (let i = 2; i <= 9; i++) {
     // tag_category 3 時段標籤下架，下拉選單不顯示時段

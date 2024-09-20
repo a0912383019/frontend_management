@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { hall_config_dict } from '@/../public/js/system_config.js'
-import { findRootHall, getSessionStorageEntity } from '@/utils/commonUtils'
+import { getSessionStorageEntity } from '@/utils/commonUtils'
 import { useGlobalStore, useSystemStore, useSidebarStore } from '@/stores'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -32,10 +31,9 @@ const generateHeaderHallDropdown = () => {
   //根據storage內的可檢視廳別，產生出對應的廳別資料
   for (let i = 0; i < hallAry.length; i++) {
     if (
-      hall_config_dict[findRootHall(hallAry[i])] &&
-      hall_config_dict[findRootHall(hallAry[i])][hallAry[i]]
+      systemStore.hallConfigDict[hallAry[i]]
     ) {
-      const hallData = hall_config_dict[findRootHall(hallAry[i])][hallAry[i]]
+      const hallData = systemStore.hallConfigDict[hallAry[i]]
       hallDropdownList.value.push(hallData)
       //將選取狀態預設為false
       hallDropdownList.value[hallDropdownList.value.length - 1]['is_active'] = false

@@ -7,7 +7,6 @@ import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import {
   generateRGBColors,
-  getHallCurrencySign,
   FormatNumber,
   formatNumberWithK,
   errorRespond
@@ -74,8 +73,7 @@ const chartSetting = {
       tooltip: {
         callbacks: {
           label: (tooltipItem) => {
-            let value =
-              getHallCurrencySign('BBIN', activeHall.hall_code) + FormatNumber(tooltipItem['raw'])
+            let value = globalStore.currencySign + FormatNumber(tooltipItem['raw'])
             let title = tooltipItem['label'] + ' : '
             return title + value
           }

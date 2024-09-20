@@ -9,7 +9,6 @@ import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import {
-  getHallCurrencySign,
   errorRespond,
   generateRGBColors,
   FormatNumber,
@@ -75,8 +74,7 @@ const chartSetting = {
         callbacks: {
           title: () => '',
           label: (tooltipItem) => {
-            let value =
-              getHallCurrencySign('BBIN', activeHall.hall_code) + FormatNumber(tooltipItem['raw'])
+            let value = globalStore.currencySign + FormatNumber(tooltipItem['raw'])
             let title = tooltipItem['label'] + ' : '
             return title + value
           }

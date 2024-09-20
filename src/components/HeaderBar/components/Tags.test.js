@@ -97,11 +97,6 @@ describe('Tags', () => {
     }
     sessionStorage.setItem('system_config', JSON.stringify(system_config))
 
-    spy = vi.spyOn(module, 'findRootHall').mockImplementation(vi.fn())
-
-    //模擬第一次與第二次呼叫getSessionStorageEntity
-    module.findRootHall.mockReturnValue('BBIN')
-
     wrapper = mount(Tags, {
       global: {
         plugins: [

@@ -7,7 +7,6 @@ import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
 import {
   FormatNumber,
-  getHallCurrencySign,
   generateRGBColors,
   errorRespond,
   checkTagUsage,
@@ -209,7 +208,7 @@ const transformMemberJourney = (data) => {
           text: t('customer_detail_info.accumulate_bet_amount_level_text', {
             accumulate_bet_amount: FormatNumber(
               item.accumulate_bet_amount,
-              getHallCurrencySign('BBIN', activeHall.hall_code)
+              globalStore.currencySign
             )
           }),
           title: t(
@@ -231,7 +230,7 @@ const transformMemberJourney = (data) => {
           text: t('customer_detail_info.accumulate_deposit_amount_level_text', {
             accumulate_deposit_amount: FormatNumber(
               item.accumulate_deposit_amount,
-              getHallCurrencySign('BBIN', activeHall.hall_code)
+              globalStore.currencySign
             )
           }),
           title: t(
@@ -372,7 +371,7 @@ const transformMemberJourney = (data) => {
             '">\u25CF</span> ' +
             this.series.name +
             ': <b>' +
-            getHallCurrencySign('BBIN', activeHall.hall_code) +
+            globalStore.currencySign +
             FormatNumber(this.y) +
             '</b>'
           )
@@ -400,7 +399,7 @@ const transformMemberJourney = (data) => {
             '">\u25CF</span> ' +
             this.series.name +
             ': <b>' +
-            getHallCurrencySign('BBIN', activeHall.hall_code) +
+            globalStore.currencySign +
             FormatNumber(this.y) +
             '</b>'
           )

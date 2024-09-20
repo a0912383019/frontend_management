@@ -4,7 +4,7 @@ import { apiQueryProfitWithdrawDepositAmount } from '@/api/dialogMemberDetail.js
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { useGlobalStore } from '@/stores/global.js'
 import { storeToRefs } from 'pinia'
-import { getHallCurrencySign, FormatNumber, errorRespond } from '@/utils/commonUtils.js'
+import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -36,7 +36,7 @@ const queryProfitWithdrawDepositAmount = async () => {
       amountData['total_profit'] = FormatNumber(total_profit)
       amountData['total_withdraw'] = FormatNumber(total_withdraw)
       amountData['withdraw_deposit_net_amount'] = FormatNumber(withdraw_deposit_net_amount)
-      currencySignText.value = getHallCurrencySign('BBIN', activeHall.hall_code)
+      currencySignText.value = globalStore.currencySign
     } else {
       let failMsg = errorRespond(result.data.status)
       console.log(failMsg)
