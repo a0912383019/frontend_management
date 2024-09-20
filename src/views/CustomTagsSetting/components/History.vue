@@ -112,7 +112,6 @@ const queryCustomTagsHistory = async (searchType = '') => {
       } else {
         refCustomTable.value.showTableLoading = false
       }
-      apiSuccess.value = true
       tableData.value = transformHistoryData(result.data.result.data)
       apiRecordsTotal.value = result.data.result.records_total
     } else {
@@ -159,8 +158,8 @@ const transformHistoryData = (data) => {
   return result
 }
 
-const updateCurrentPage = (data) => {
-  apiDraw.value = data
+const updateCurrentPage = (page) => {
+  apiDraw.value = page
   apiStart.value = apiDraw.value * apiLength.value - apiLength.value
   queryCustomTagsHistory('page')
 }
@@ -174,21 +173,17 @@ const handleDialogOpen = () => {
   queryCustomTagsHistory()
 }
 
-const downloadCsv = (file) => {
-  queryDownloadHistoryFile(file)
-}
-
-const queryDownloadHistoryFile = async (file) => {
+const queryDownloadHistoryFile = async (fileName) => {
   try {
     const result = await apiDownloadHistoryFile({
       hall_name: activeHall.hall_code,
       tag_code: props.tagCode,
-      file_name: file
+      file_name: fileName
     })
 
     const { return_code } = result.data.status
     if (return_code === '0000') {
-      downloadFile(result.data.download_url)
+      downloadFile(result.data.result)
     } else {
       ElNotification({
         title: t('msg.download_failed'),
@@ -260,7 +255,7 @@ const downloadFile = (url) => {
             class="customTable2 customTagSettingTable"
           >
             <template #file="scope">
-              <a class="cdp-link-click" @click="downloadCsv(scope.row.file)">{{
+              <a class="cdp-link-click" @click="queryDownloadHistoryFile(scope.row.file)">{{
                 scope.row.file
               }}</a>
             </template>

@@ -24,16 +24,12 @@ const emit = defineEmits(['update:success', 'closeImportCsv'])
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-//檔案路徑
-const filePath = ref(null)
-
 //UploadFile組件ref
 const refUploadFile = ref(null)
 
 //透過emit取得檔案路徑
-const handleGetFileName = (data) => {
-  filePath.value = data
-  uploadCustomTagsList()
+const handleGetFileName = (fileName) => {
+  uploadCustomTagsList(fileName)
 }
 
 //dialog close callback
@@ -42,13 +38,13 @@ const handleClose = () => {
   emit('closeImportCsv')
 }
 
-const uploadCustomTagsList = async () => {
+const uploadCustomTagsList = async (fileName) => {
   globalStore.isLoading = true // 開啟loading
   try {
     const result = await apiUploadCustomTagsList({
       hall_name: activeHall.hall_code,
       tag_code: props.tagCode,
-      upload_file: filePath.value
+      upload_users_file: fileName
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {

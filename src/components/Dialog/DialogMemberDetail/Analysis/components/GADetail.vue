@@ -143,7 +143,6 @@ onMounted(() => {
         :hasPagination="false"
         tableHeight="320"
         class="cdp-table"
-        border="border"
       >
       </CustomTable>
     </template>
