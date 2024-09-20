@@ -25,7 +25,6 @@ describe('CustomTagsSetting.vue', () => {
       hall_code: 'esb',
       hall_name: 'Esball'
     }
-    // globalStore.isLoading = false
     systemStore.storeGetSystemConfig = storeGetSystemConfig
 
     vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())

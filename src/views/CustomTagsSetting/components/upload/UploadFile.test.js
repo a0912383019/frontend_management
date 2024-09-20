@@ -75,8 +75,7 @@ describe('UploadFile', () => {
     expect(wrapper.vm.isCSVFile).toBe(true)
   })
 
-  // 檢查帳號
-  it('checkAccount function', () => {
+  it('checkFileDetail function', () => {
     wrapper.vm.isParseFile = true
     let data = [
       { user_name: 'Gboyfly', data_date: '2024-01-01', enable: 1 },
