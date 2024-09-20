@@ -378,7 +378,6 @@ onMounted(() => {
       @update:success="reloadPage"
     />
     <EditDetail
-      v-if="tagDetailOpen"
       v-model="tagDetailOpen"
       :tagCode="tagDetail.tagCode"
       :tagName="tagDetail.tagName"
@@ -387,7 +386,6 @@ onMounted(() => {
       @updateSuccess="reloadPage"
     />
     <History
-      v-if="tagHistoryOpen"
       v-model="tagHistoryOpen"
       :tagCode="tagDetail.tagCode"
       :tagName="tagDetail.tagName"
