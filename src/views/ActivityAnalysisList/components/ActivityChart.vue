@@ -1,22 +1,29 @@
 <script setup>
-import { ref, onMounted, reactive } from 'vue'
+import { ref, watch, onMounted, toRefs, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { generateRGBColors, formatDateDuration } from '@/utils/commonUtils.js'
 import { dayjs } from 'element-plus'
-import { apiQueryGrowthGapActiveProfit } from '@/api'
-import { useGlobalStore } from '@/stores'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
-import { errorRespond, formatDateDuration, generateRGBColors } from '@/utils/commonUtils.js'
-import { chart_fixed_bgColor } from '@/../public/js/system_config.js'
+import { latest_chart_color } from '@/../public/js/system_config.js'
 
 const { t } = useI18n()
 
-const globalStore = useGlobalStore()
-const { activeHall } = globalStore
+const props = defineProps({
+  apiObject: {
+    apiSuccess: Boolean,
+    messageKey: String,
+    result: Array
+  },
+  title: {
+    type: String
+  }
+})
+const { apiObject } = toRefs(props)
 
-const apiSuccess = ref(false)
-const messageKey = ref('loading')
+const apiSuccess = ref(apiObject.value.apiSuccess)
+const messageKey = ref(apiObject.value.messageKey)
 
 const chartOptions = reactive({
   chart: {
@@ -61,7 +68,7 @@ const chartOptions = reactive({
     shared: true,
     useHTML: true,
     formatter: function () {
-      return tooltipAddSign({ data: this.points, date: this.x, sign: t('currency.currency_%') })
+      return tooltipAddSign({ data: this.points, date: this.x, sign: '%' })
     },
     stickOnContact: true // 需要加這個才能使overflow 生效
   },
@@ -102,78 +109,9 @@ const chartOptions = reactive({
   series: []
 })
 
-// 取得資料
-const queryGrowthGapActiveProfit = async () => {
-  messageKey.value = 'loading'
-  apiSuccess.value = false
-
-  try {
-    const result = await apiQueryGrowthGapActiveProfit({
-      hall_name: 'esx',
-      start_search_year: 2024,
-      start_search_month: 6,
-      start_search_week: 1,
-      start_date: '2024-06-3',
-      end_search_year: 2024,
-      end_search_month: 9,
-      end_search_week: 1,
-      end_date: '2024-09-02',
-      cut_type: 'week',
-      reward_flag: 1,
-      reward_date_flag: 0,
-      search_activity: [50, 48, 33, 28]
-    })
-
-    const { return_code } = result.data.status
-
-    if (return_code === '0000') {
-      apiSuccess.value = true
-      transformActivityMemberPeriodGrowthGapNetProfit(result.data.result)
-    } else if (return_code === '0001') {
-      messageKey.value = 'noResult'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-    } else {
-      messageKey.value = 'chartFailed'
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-    }
-  } catch (error) {
-    console.error(error)
-    if (error.response.status === 403) {
-      messageKey.value = 'noPermission' //更改message內容
-    } else if (error.response.status === 401) {
-      globalStore.storeHandleApiError()
-    } else {
-      messageKey.value = 'chartFailed' //更改message內容
-    }
-  }
-}
-
-//轉換資料
-const transformActivityMemberPeriodGrowthGapNetProfit = (data) => {
+// 轉換資料
+const transformChartSeries = (data) => {
   clearChart()
-
-  let valueKey = 'profit_loss_growth_diff'
-  let dataClone = { ...data[0] }
-  let dataKey = Object.keys(dataClone)
-  delete dataKey[4]
-  let dataSet = {}
-
-  dataKey.forEach((ele, idx) => {
-    dataSet[ele] = {
-      name: dataClone[ele].activity_name,
-      type: 'line',
-      color: generateRGBColors(chart_fixed_bgColor[idx], 1),
-      lineWidth: 2,
-      marker: {
-        symbol: 'circle',
-        radius: 3
-      },
-      data: data.map((item) => parseFloat(item[ele][valueKey]))
-    }
-  })
-
   chartOptions.xAxis.categories = data.map((ele) => {
     let date = ele.interval_title.split('~')
     return formatDateDuration(
@@ -183,30 +121,70 @@ const transformActivityMemberPeriodGrowthGapNetProfit = (data) => {
     )
   })
 
+  let dataClone = { ...data[0] }
+  delete dataClone.interval_title
+  let dataKey = Object.keys(dataClone)
+
+  let valueKeys = { ...dataClone[dataKey[0]] }
+  delete valueKeys.activity_name
+  let valueKey = Object.entries(valueKeys)[0]
+
+  let dataSet = {}
+
+  dataKey.forEach((ele, idx) => {
+    dataSet[ele] = {
+      name: dataClone[ele].activity_name,
+      type: 'line',
+      color: generateRGBColors(latest_chart_color[idx], 1),
+      lineWidth: 2,
+      marker: {
+        symbol: 'circle',
+        radius: 3
+      },
+      data: data.map((item) => parseFloat(item[ele][valueKey[0]]))
+    }
+  })
+
   Object.keys(dataSet).forEach((item) => {
     chartOptions.series.push(dataSet[item])
   })
 }
+
 const clearChart = () => {
   chartOptions.xAxis.categories = []
   chartOptions.series = []
 }
 
+const handleApiResponse = () => {
+  apiSuccess.value = apiObject.value.apiSuccess
+  messageKey.value = apiObject.value.messageKey
+  if (apiObject.value.apiSuccess) {
+    if (apiObject.value.result.length === 0) {
+      apiSuccess.value = false
+      messageKey.value = 'noResult'
+    } else {
+      transformChartSeries(apiObject.value.result)
+    }
+  }
+}
+
+watch([() => apiObject.value.apiSuccess, () => apiObject.value.messageKey], () => {
+  handleApiResponse()
+})
+
 onMounted(() => {
-  queryGrowthGapActiveProfit()
+  handleApiResponse()
 })
 </script>
 <template>
   <section class="cdp-section-in">
-    <SectionTitle class="mb-16" :title="$t('activity_analysis.activity_net_profit')"></SectionTitle>
-    <highcharts :options="chartOptions"></highcharts>
-    <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
+    <SectionTitle class="mb-15" :title="props.title"> </SectionTitle>
+    <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
+    <template v-else>
+      <div class="cursor-pointer">
+        <highcharts :options="chartOptions"></highcharts>
+      </div>
+    </template>
   </section>
 </template>
-<style lang="scss" scoped>
-.mb-0 {
-  margin-bottom: 0 !important;
-}
-</style>
-<style lang="scss">
-</style>
+<style lang="scss" scoped></style>

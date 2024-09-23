@@ -289,6 +289,7 @@
 
     "query_successful": "查詢成功",
     "query_failed": "查詢失敗，請重新操作",
+    "query_failed_part": "部份查詢失敗，請重新操作",
     "updated_successfully": "更新成功",
     "update_failed": "更新失敗，請重新操作",
     "add_successful": "新增成功",
