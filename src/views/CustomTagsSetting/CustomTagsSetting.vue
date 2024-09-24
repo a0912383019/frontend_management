@@ -108,6 +108,7 @@ const transformCustomTagData = (data) => {
   let tagCofig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
 
   data.map((item) => {
+    if (!tagCofig[item.tag_code]) return
     let tempObj = {
       tag_code: item.tag_code,
       tag_name: tagCofig[item.tag_code].tag_name,
