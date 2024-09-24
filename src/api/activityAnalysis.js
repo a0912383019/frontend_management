@@ -1,7 +1,7 @@
 import axiosInstance from './axiosInstance'
 import axiosGoInstance from './axiosGoInstance.js'
 
-//總和_活動中-淨利
+// 總和_活動中-淨利
 export const apiQueryTotalActiveProfit = (params) => {
   const {
     hall_name,
@@ -35,7 +35,7 @@ export const apiQueryTotalActiveProfit = (params) => {
   })
 }
 
-//總和_活動中-實動人數
+// 總和_活動中-實動人數
 export const apiQueryTotalActiveReal = (params) => {
   const {
     hall_name,
@@ -69,7 +69,7 @@ export const apiQueryTotalActiveReal = (params) => {
   })
 }
 
-//總和_活動中-有效投注
+// 總和_活動中-有效投注
 export const apiQueryTotalActiveCommissionable = (params) => {
   const {
     hall_name,
@@ -103,7 +103,7 @@ export const apiQueryTotalActiveCommissionable = (params) => {
   })
 }
 
-//成長差額_活動中-淨利
+// 成長差額_活動中-淨利
 export const apiQueryGrowthGapActiveProfit = (params) => {
   const {
     hall_name,
@@ -137,7 +137,7 @@ export const apiQueryGrowthGapActiveProfit = (params) => {
   })
 }
 
-//成長差額_活動中-實動人數
+// 成長差額_活動中-實動人數
 export const apiQueryGrowthGapActiveReal = (params) => {
   const {
     hall_name,
@@ -171,7 +171,7 @@ export const apiQueryGrowthGapActiveReal = (params) => {
   })
 }
 
-//成長差額_活動中-有效投注
+// 成長差額_活動中-有效投注
 export const apiQueryGrowthGapActiveCommissionable = (params) => {
   const {
     hall_name,
@@ -205,7 +205,7 @@ export const apiQueryGrowthGapActiveCommissionable = (params) => {
   })
 }
 
-//成長率_活動中-淨利
+// 成長率_活動中-淨利
 export const apiQueryGrowthRateActiveProfit = (params) => {
   const {
     hall_name,
@@ -239,7 +239,7 @@ export const apiQueryGrowthRateActiveProfit = (params) => {
   })
 }
 
-//成長率_活動中-實動人數
+// 成長率_活動中-實動人數
 export const apiQueryGrowthRateActiveReal = (params) => {
   const {
     hall_name,
@@ -273,7 +273,7 @@ export const apiQueryGrowthRateActiveReal = (params) => {
   })
 }
 
-//成長率_活動中-有效投注
+// 成長率_活動中-有效投注
 export const apiQueryGrowthRateActiveCommissionable = (params) => {
   const {
     hall_name,
