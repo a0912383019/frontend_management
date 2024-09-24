@@ -43,9 +43,7 @@
     "currency_¥": "人民幣",
     "currency_₫": "越南盾",
     "currency_₩": "韓圓",
-    "currency_₱": "菲律賓披索",
-
-    "currency_℗": "測試幣"
+    "currency_₱": "菲律賓披索"
   },
 
   "common": {
@@ -288,6 +286,7 @@
 
     "query_successful": "查詢成功",
     "query_failed": "查詢失敗，請重新操作",
+    "query_failed_part": "部份查詢失敗，請重新操作",
     "updated_successfully": "更新成功",
     "update_failed": "更新失敗，請重新操作",
     "add_successful": "新增成功",
@@ -697,6 +696,9 @@
     "overview": "總覽",
     "activity_list_overview": "活動列表總覽",
     "growth_rate": "成長率",
+    "activity_commissionable": "活動中-有效投注",
+    "activity_active_people": "活動中-實動人數",
+    "activity_net_profit": "活動中-淨利",
     "growth_gap": "成長差額",
     "total": "總和",
     "activity_hall": "活動廳別",

@@ -4,6 +4,9 @@ import { useI18n } from 'vue-i18n'
 import PageTitle from '@/components/Title/PageTitle.vue'
 import Tab from '@/components/Tab.vue'
 import Overview from '@/views/ActivityAnalysisList/components/Overview.vue'
+import GrowthRate from '@/views/ActivityAnalysisList/components/GrowthRate.vue'
+import GrowthGap from '@/views/ActivityAnalysisList/components/GrowthGap.vue'
+import TotalSum from '@/views/ActivityAnalysisList/components/TotalSum.vue'
 import AddButton from '@/components/Button/AddButton.vue'
 import AddDialog from '@/views/ActivityAnalysisList/AddActivity.vue'
 import Filter from '@/views/ActivityAnalysisList/Filter.vue'
@@ -47,7 +50,10 @@ const currentTabs = ref('Overview')
 
 // 整理所有 component
 const componentMap = {
-  Overview
+  Overview,
+  GrowthRate,
+  GrowthGap,
+  TotalSum
 }
 
 // 當前使用的 component
