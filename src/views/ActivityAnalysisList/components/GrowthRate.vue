@@ -4,9 +4,9 @@ import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores'
 import ActivityChart from '@/views/ActivityAnalysisList/components/ActivityChart.vue'
 import {
-  apiQueryGrowthGapActiveCommissionable,
-  apiQueryGrowthGapActiveReal,
-  apiQueryGrowthGapActiveProfit
+  apiQueryGrowthRateActiveCommissionable,
+  apiQueryGrowthRateActiveReal,
+  apiQueryGrowthRateActiveProfit
 } from '@/api'
 import { ElNotification } from 'element-plus'
 import { errorRespond } from '@/utils/commonUtils.js'
@@ -84,9 +84,9 @@ const queryActivityApi = async (api, apiObject) => {
 
 const queryCharts = () => {
   let canvasPromises = [
-    queryActivityApi(apiQueryGrowthGapActiveCommissionable, apiObjectCommissionable),
-    queryActivityApi(apiQueryGrowthGapActiveReal, apiObjectReal),
-    queryActivityApi(apiQueryGrowthGapActiveProfit, apiObjectProfit)
+    queryActivityApi(apiQueryGrowthRateActiveCommissionable, apiObjectCommissionable),
+    queryActivityApi(apiQueryGrowthRateActiveReal, apiObjectReal),
+    queryActivityApi(apiQueryGrowthRateActiveProfit, apiObjectProfit)
   ]
 
   Promise.allSettled(canvasPromises).then((results) => {
@@ -113,6 +113,7 @@ const queryCharts = () => {
     }
   })
 }
+
 onMounted(async () => {
   queryCharts()
 })
