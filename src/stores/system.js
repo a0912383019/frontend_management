@@ -41,6 +41,7 @@ export const useSystemStore = defineStore('system', () => {
 
   // call system config
   const storeGetSystemConfig = async (fromRoute = 1, simulate = false) => {
+    globalStore.isLoading = true // 顯示Loading視窗
     // global hall_code 為空，從sessionStorage user_info中取得資料中的第一個廳別
     // 模擬畫面需要重新抓取，因為每個使用者的hall 不一樣
     if (globalStore.activeHall.hall_code === '' || simulate) {
@@ -70,13 +71,16 @@ export const useSystemStore = defineStore('system', () => {
         sessionStorage.setItem('system_config', JSON.stringify(result.data.result))
         globalStore.systemConfigIsOk = fromRoute === 0 ? 0 : Math.floor(Math.random() * 1000)
         sidebarStore.generateSidebarMenu() // 更新sidebar item
+        globalStore.isLoading = false
         return true
       } else {
+        globalStore.isLoading = false
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
         return false
       }
     } catch (error) {
+      globalStore.isLoading = false
       console.error(error)
       sessionStorage.clear()
       localStorage.clear()
@@ -162,10 +166,8 @@ export const useSystemStore = defineStore('system', () => {
   }
 
   const makeSystemConfig = async (fromRoute = 1, simulate = false) => {
-    globalStore.isLoading = true // 顯示Loading視窗
     await queryHalls()
-    await storeGetSystemConfig(fromRoute, simulate)
-    globalStore.isLoading = false
+    storeGetSystemConfig(fromRoute, simulate)
   }
 
   return {
