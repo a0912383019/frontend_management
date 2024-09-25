@@ -273,12 +273,10 @@ router.beforeEach(async (to, from, next) => {
     if (to.name === 'Home' && to.query && to.query.simulate) {
       const systemStore = useSystemStore()
       await systemStore.makeSystemConfig(0, true)
-      // await systemStore.storeRefreshToken()
       next()
     } else if (to.name !== 'Login') {
       const systemStore = useSystemStore()
       await systemStore.makeSystemConfig(0)
-      // await systemStore.storeRefreshToken()
       next()
     } else {
       next()

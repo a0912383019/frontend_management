@@ -112,8 +112,8 @@ const restartTimer = async (type) => {
   clearInterval(counter.value)
   isDisabledResetBtn.value = true //將重新計時按鈕disabled
   if (type) {
-    await storeGetSystemConfig()
     await storeRefreshToken()
+    await storeGetSystemConfig()
   }
   setCountDownTimer()
   isDisabledResetBtn.value = false
