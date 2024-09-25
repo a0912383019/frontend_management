@@ -91,7 +91,6 @@ const queryListCustomTagsSetting = async () => {
     if (return_code === '0000') {
       tableData.value = transformCustomTagData(result.data.result)
       tableRef.value.sortByFather(sortData.value)
-      globalStore.isLoading = false
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
@@ -109,6 +108,7 @@ const transformCustomTagData = (data) => {
   let tagCofig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
 
   data.map((item) => {
+    if (!tagCofig[item.tag_code]) return
     let tempObj = {
       tag_code: item.tag_code,
       tag_name: tagCofig[item.tag_code].tag_name,
@@ -128,16 +128,12 @@ const transformCustomTagData = (data) => {
   return result
 }
 
-const tagEnableClick = (event, tagCode) => {
-  updateTagConfig(tagCode, event)
-}
-
-const updateTagConfig = async (tagCode, enabled) => {
+const updateTagConfig = async (enabled, tagCode) => {
   try {
     const result = await apiUpdateTagConfig({
       hall_name: activeHall.hall_code,
       tag_code: tagCode,
-      tag_enabled: enabled
+      enabled: enabled
     })
 
     const { return_code } = result.data.status
@@ -210,10 +206,11 @@ const openHistory = (data) => {
 }
 
 const reloadPage = async () => {
+  globalStore.isLoading = true
   await storeGetSystemConfig()
   // queryListCustomTagsSetting 的transformCustomTagData 會有短暫的資料延遲
-  globalStore.isLoading = true
-  queryListCustomTagsSetting()
+  await queryListCustomTagsSetting()
+  globalStore.isLoading = false
 }
 
 const tableRef = ref(null)
@@ -248,12 +245,13 @@ const closeDelete = () => {
   deleteBox.value = false
 }
 
-const confirmDelete = () => {
-  deleteCustomTags()
+const confirmDelete = async () => {
+  globalStore.isLoading = true
+  await deleteCustomTags()
+  globalStore.isLoading = false
 }
 
 const deleteCustomTags = async () => {
-  globalStore.isLoading = true
   try {
     const result = await apiDeleteCustomTags({
       hall_name: activeHall.hall_code,
@@ -267,7 +265,6 @@ const deleteCustomTags = async () => {
         type: 'success'
       })
       closeDelete()
-      globalStore.isLoading = false
       reloadPage()
     } else {
       ElNotification({
@@ -277,7 +274,6 @@ const deleteCustomTags = async () => {
     }
   } catch (error) {
     console.error(error)
-    globalStore.isLoading = false
     if (error.response.status === 403) {
       ElNotification({
         title: t('msg.no_permission'),
@@ -333,7 +329,7 @@ onMounted(() => {
         <SwitchWithTooltip
           v-model="scope.row.enabled_and_disabled"
           :isDisabled="false"
-          @update:modelValue="tagEnableClick($event, scope.row.tag_code)"
+          @update:modelValue="updateTagConfig($event, scope.row.tag_code)"
         />
       </template>
       <template #manage="scope">

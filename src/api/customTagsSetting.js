@@ -1,4 +1,3 @@
-import axiosInstance from './axiosInstance'
 import axiosGoInstance from './axiosGoInstance.js'
 
 // 取得自訂標籤列表
@@ -9,21 +8,21 @@ export const apiListCustomTagsSetting = (params) => {
   })
 }
 
+// 修改自訂標籤啟用停用狀態
 export const apiUpdateTagConfig = (params) => {
-  const { hall_name, tag_code, tag_enabled } = params
-  return axiosInstance.post('/api/auth/custom_tags/update_tag_config', {
+  const { hall_name, tag_code, enabled } = params
+  return axiosGoInstance.put(`/api/auth/member_custom_tags/${tag_code}`, {
     hall_name,
-    tag_code,
-    tag_enabled
+    enabled
   })
 }
 
+// 修改自訂標籤說明
 export const apiUpdateTagDescription = (params) => {
-  const { hall_name, tag_code, tag_description } = params
-  return axiosInstance.post('/api/auth/custom_tags/update_tag_config', {
+  const { hall_name, tag_code, description } = params
+  return axiosGoInstance.put(`/api/auth/member_custom_tags/${tag_code}`, {
     hall_name,
-    tag_code,
-    tag_description
+    description
   })
 }
 
@@ -37,24 +36,23 @@ export const apiCustomTagsHistory = (params) => {
 
 export const apiDownloadHistoryFile = (params) => {
   const { hall_name, tag_code, file_name } = params
-  return axiosInstance.post('/api/auth/custom_tags/download_history_file', {
-    hall_name,
-    tag_code,
-    file_name
+  return axiosGoInstance.get(`/api/auth/member_custom_tags/${tag_code}/logs/download_link`, {
+    params: { hall_name, file_name }
   })
 }
 
 export const apiUploadCustomTagsList = (params) => {
-  const { hall_name, tag_code, upload_file } = params
-
-  const formData = new FormData()
-  formData.append('hall_name', hall_name)
-  formData.append('tag_code', tag_code)
-  formData.append('upload_file', upload_file)
-
-  return axiosInstance.post('/api/auth/custom_tags/upload_custom_tags_list', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' } //upload_file為binary，須改headers content-type
-  })
+  const { hall_name, tag_code, upload_users_file } = params
+  return axiosGoInstance.put(
+    `/api/auth/member_custom_tags/${tag_code}/upload_users`,
+    {
+      hall_name,
+      upload_users_file
+    },
+    {
+      headers: { 'Content-Type': 'multipart/form-data' } //upload_file為binary，須改headers content-type
+    }
+  )
 }
 
 // 刪除自訂標籤

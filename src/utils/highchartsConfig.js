@@ -1,4 +1,5 @@
-import { getHallCurrencySign, FormatNumber } from '@/utils/commonUtils.js'
+import { FormatNumber } from '@/utils/commonUtils.js'
+import { useGlobalStore } from '@/stores/global.js'
 
 //tooltip 深色設定
 export const tooltipDarkConfig = {
@@ -17,11 +18,12 @@ export const tooltipDarkConfig = {
  * @param tooltipIconBorder icon的border
  */
 export const tooltipFormatter = ({ data, hallCode = '', unit = '', tooltipIconBorder = false }) => {
+  const globalStore = useGlobalStore()
   let color = data.color.split(',') //將顏色用逗號切割
   color[3] = `${0.9})` // 把rgba的透明度調成1
   color = color.join(',') // -> EX: rgb(255, 255, 255, 0.9)
 
-  let moneySign = hallCode !== '' ? getHallCurrencySign('BBIN', hallCode) : ''
+  let moneySign = hallCode !== '' ? globalStore.currencySign : ''
   return `
     <div style="
       padding: 6px 10px;
@@ -51,6 +53,7 @@ export const tooltipFormatter = ({ data, hallCode = '', unit = '', tooltipIconBo
  * @param precision 顯示的小數位數
  */
 export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 }) => {
+  const globalStore = useGlobalStore()
   let result = `
     <div style="
       padding: 6px 10px;
@@ -72,7 +75,7 @@ export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 })
       "></div>
       <div>
         ${data[i]['point']['series']['name']}：
-        ${hallCode !== '' ? getHallCurrencySign('BBIN', hallCode) : ''}
+        ${hallCode !== '' ? globalStore.currencySign : ''}
         ${FormatNumber(data[i]['y'], '', precision)}
       </div>
     </div>
@@ -89,6 +92,7 @@ export const tooltipShared = ({ data, date = '', hallCode = '', precision = 0 })
  * @param tooltipIconBorder icon的border
  */
 export const tooltipSingleShared = ({ data, hallCode, tooltipIconBorder = false }) => {
+  const globalStore = useGlobalStore()
   let result = `
     <div style="
       padding: 6px 10px;
@@ -108,7 +112,7 @@ export const tooltipSingleShared = ({ data, hallCode, tooltipIconBorder = false 
       "></div>
       <div>
         ${data[i]['x']}：
-        ${getHallCurrencySign('BBIN', hallCode)}
+        ${globalStore.currencySign}
         ${FormatNumber(data[i]['y'])}
       </div>
     </div>

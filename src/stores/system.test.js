@@ -7,10 +7,13 @@ import {
   useDateStore
 } from '@/stores'
 import { useRouter } from 'vue-router'
-import { apiLogout } from '@/api/system.js'
+import { apiLogout, apiHalls } from '@/api'
 import { dayjs } from 'element-plus'
+import axiosGoInstance from '@/api/axiosGoInstance.js'
 
 describe('useSystemStore', () => {
+  let spyGet
+
   beforeEach(() => {
     vi.mock('vue-router')
     setActivePinia(createPinia())
@@ -73,5 +76,51 @@ describe('useSystemStore', () => {
     expect(useRouter().push).toHaveBeenCalledWith({ name: 'Login' })
     expect(sessionStorageMock.clear).toHaveBeenCalled()
     expect(localStorageMock.clear).toHaveBeenCalled()
+  })
+
+  it('queryHalls & hallConfigDict', async () => {
+    const result = {
+      data: {
+        result: [
+          {
+            name: '寶馬-我是廳名',
+            login_code: 'bmw',
+            hall_id: 1
+          },
+          {
+            name: '淘金盈-我是金',
+            login_code: 'liv',
+            hall_id: 5
+          }
+        ],
+        status: {
+          return_code: '0000',
+          message: 'success'
+        }
+      }
+    }
+    spyGet = vi.spyOn(axiosGoInstance, 'get')
+    spyGet.mockResolvedValue(result)
+
+    const systemStore = useSystemStore()
+
+    expect(spyGet).toBeCalledTimes(0)
+    expect(systemStore.hallConfigDict).toStrictEqual({})
+
+    await systemStore.queryHalls()
+
+    const expectHallConfigDict = {
+      bmw: {
+        hall_code: 'bmw',
+        hall_name: '寶馬-我是廳名'
+      },
+      liv: {
+        hall_code: 'liv',
+        hall_name: '淘金盈-我是金'
+      }
+    }
+    expect(spyGet).toBeCalledTimes(1)
+    expect(spyGet).toBeCalledWith('/api/auth/halls')
+    expect(systemStore.hallConfigDict).toStrictEqual(expectHallConfigDict)
   })
 })

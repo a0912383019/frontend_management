@@ -143,14 +143,12 @@ const regexSpace = (val) => {
 
 // 檢查日期的正規表達式
 const regexDate = (val) => {
-  // 合法帳號為小寫英文字母＋數字
   const validate = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
   return validate.test(val)
 }
 
 // 檢查Enable的正規表達式
 const regexEnable = (val) => {
-  // 合法帳號為小寫英文字母＋數字
   const validate = /^[01]$/
   return validate.test(val)
 }
@@ -159,7 +157,7 @@ const regexEnable = (val) => {
 const dialogClose = () => {
   //dialod 關閉 清空檔案
   fileName.value = ''
-  fileData.value = ''
+  fileData.value = null
   notOkAccountData.value = []
   errorAccountText.value = ''
   errorDateText.value = ''
@@ -168,6 +166,7 @@ const dialogClose = () => {
   //清空 input file value
   refInputFile.value.value = ''
 }
+
 // 送出
 const handleSubmit = () => {
   if (isCSVFile.value) {

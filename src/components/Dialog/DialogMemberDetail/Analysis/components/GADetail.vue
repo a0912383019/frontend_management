@@ -8,7 +8,7 @@ import { storeToRefs } from 'pinia'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
-import { getHallCurrencySign, FormatNumber, errorRespond } from '@/utils/commonUtils.js'
+import { FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
 
@@ -121,8 +121,7 @@ const transformTableData = (data) => {
       value:
         data.per_session_bet_amount === '-'
           ? data.per_session_bet_amount
-          : getHallCurrencySign('BBIN', activeHall.hall_code) +
-            FormatNumber(data.per_session_bet_amount)
+          : globalStore.currencySign + FormatNumber(data.per_session_bet_amount)
     }
   ]
 }
@@ -144,7 +143,6 @@ onMounted(() => {
         :hasPagination="false"
         tableHeight="320"
         class="cdp-table"
-        border="border"
       >
       </CustomTable>
     </template>
