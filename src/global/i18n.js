@@ -1,7 +1,10 @@
 import { createI18n } from 'vue-i18n'
-import zhTw from '@/language/zh-TW/zh-TW.json'
-import zhCN from '@/language/zh-CN/zh-CN.json'
-import en from '@/language/en/en.json'
+// import zhTw from '@/language/zh-TW/zh-TW.json'
+// import zhCN from '@/language/zh-CN/zh-CN.json'
+// import en from '@/language/en/en.json'
+import zhTw from '@/locales/cdp_frontend/zh_Hant.json'
+import zhCN from '@/locales/cdp_frontend/zh_Hans.json'
+import en from '@/locales/cdp_frontend/en.json'
 
 export const i18n = createI18n({
   legacy: false, //使用vue3 Composition Api 一定要設為false才可使用

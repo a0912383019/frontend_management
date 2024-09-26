@@ -27,7 +27,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
           :unique-opened="true"
         >
           <template v-for="(item, index) in menuLists" :key="index">
-            <el-menu-item :index="`/${item.url_path}`" v-if="item.sub_menu.length === 0">
+            <el-menu-item :index="`/${item.url_path}`">
               <div class="cdp-menu__item">
                 <router-link :to="item.url_path">
                   <span class="cdp-menu__icon">
@@ -37,7 +37,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
                 </router-link>
               </div>
             </el-menu-item>
-            <el-sub-menu :index="index.toString()" class="cdp-menu__submenu" v-else>
+            <!-- <el-sub-menu :index="index.toString()" class="cdp-menu__submenu" v-else>
               <template #title>
                 <div class="cdp-menu__item">
                   <a href="javascript:;">
@@ -60,7 +60,7 @@ const activePath = computed(() => route.path) // 根據路由變化，更新menu
                   </div>
                 </el-menu-item>
               </template>
-            </el-sub-menu>
+            </el-sub-menu> -->
           </template>
         </el-menu>
       </div>
