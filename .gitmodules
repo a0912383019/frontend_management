@@ -1,3 +1,0 @@
-[submodule "src/locales"]
-	path = src/locales
-	url = ../weblate.git
