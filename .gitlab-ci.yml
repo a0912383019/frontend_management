@@ -1,6 +1,6 @@
 include:
   - project: "bi/cdp/cicd"
-    ref: yu_lan-originmain-patch-54035
+    ref: originmain
     file:
       - "/project-yml/Frontend_Vue.yml"
 # https://swissknife.vip/bi/cdp/cicd/-/blob/master/project-yml/Frontend_Vue.yml?ref_type=heads
