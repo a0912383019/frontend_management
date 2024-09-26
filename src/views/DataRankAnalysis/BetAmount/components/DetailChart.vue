@@ -158,7 +158,7 @@ watch([() => apiObject.value.apiSuccess, () => apiObject.value.messageKey], () =
   apiSuccess.value = apiObject.value.apiSuccess
   messageKey.value = apiObject.value.messageKey
   if (apiObject.value.apiSuccess) {
-    if (apiObject.value.result.rank.length === 0) {
+    if (apiObject.value.result.rank.length === 0 || apiObject.value.result.daily.length === 0) {
       apiSuccess.value = false
       messageKey.value = 'noResult'
     } else {
@@ -169,7 +169,7 @@ watch([() => apiObject.value.apiSuccess, () => apiObject.value.messageKey], () =
 
 onMounted(() => {
   if (apiObject.value.apiSuccess && Object.keys(apiObject.value.result).length !== 0) {
-    if (apiObject.value.result.rank.length === 0) {
+    if (apiObject.value.result.rank.length === 0 || apiObject.value.result.daily.length === 0) {
       apiSuccess.value = false
       messageKey.value = 'noResult'
     } else {

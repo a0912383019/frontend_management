@@ -6,6 +6,7 @@ import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiListCustomTagsSetting } from '@/api'
 import { errorRespond, getSessionStorageEntity } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
+import { ElNotification } from 'element-plus'
 
 const { t } = useI18n()
 
@@ -44,7 +45,12 @@ const queryListCustomTagsSetting = async () => {
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 401) {
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     }
   }
