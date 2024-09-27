@@ -78,3 +78,11 @@ npm run test:e2e
 ```sh
 npm run lint
 ```
+
+### Get latest submodules
+.gitmodules 更新下面 url 才能在本地拉取最新 submodules
+url = ssh://git@swissknife.vip:2224/bi/cdp/weblate.git
+
+```sh
+git submodule update --remote
+```
