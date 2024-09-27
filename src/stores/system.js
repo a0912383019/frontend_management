@@ -18,7 +18,6 @@ export const useSystemStore = defineStore('system', () => {
   const storeLogout = async () => {
     globalStore.isLoading = true
     try {
-      // await apiLogout()
       await Promise.all([apiLogout(), apiRevoke()])
       ElNotification({
         title: '',
