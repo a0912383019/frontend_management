@@ -2,7 +2,7 @@ import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import { ElNotification } from 'element-plus'
 import { useGlobalStore, useSidebarStore, useVipCommercialAnalysisStore } from '@/stores'
-import { apiLogout, apiHalls } from '@/api'
+import { apiLogout, apiHalls, apiRevoke } from '@/api'
 import { apiRefresh, apiGoRefresh, apiGetSystemConfig } from '@/api/system.js'
 import { i18n } from '@/global/i18n'
 import { errorRespond, getSessionStorageEntity } from '@/utils/commonUtils.js'
@@ -18,7 +18,8 @@ export const useSystemStore = defineStore('system', () => {
   const storeLogout = async () => {
     globalStore.isLoading = true
     try {
-      await apiLogout()
+      // await apiLogout()
+      await Promise.all([apiLogout(), apiRevoke()])
       ElNotification({
         title: '',
         message: t('msg.logout'),
@@ -167,7 +168,7 @@ export const useSystemStore = defineStore('system', () => {
 
   const makeSystemConfig = async (fromRoute = 1, simulate = false) => {
     await queryHalls()
-    storeGetSystemConfig(fromRoute, simulate)
+    await storeGetSystemConfig(fromRoute, simulate)
   }
 
   return {
