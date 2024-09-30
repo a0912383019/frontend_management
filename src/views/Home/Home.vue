@@ -15,7 +15,6 @@ const key = ref(systemConfigIsOk.value)
 watch(
   () => systemConfigIsOk.value,
   () => {
-    // if (systemConfigIsOk.value !== 0 && !globalStore.hallChange) {
     if (systemConfigIsOk.value !== 0) {
       key.value = systemConfigIsOk.value
     }
