@@ -157,13 +157,6 @@ const clearChart = () => {
 onMounted(() => {
   queryLatestLifeCycleSummary()
 })
-
-watch(
-  () => i18nLocale.value,
-  () => {
-    queryLatestLifeCycleSummary()
-  }
-)
 </script>
 <template>
   <section class="cdp-section h-444">

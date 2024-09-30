@@ -286,13 +286,6 @@ const currentKind = computed(() => {
   return kind
 })
 
-watch(
-  () => i18nLocale.value,
-  () => {
-    querySmallMesNote()
-  }
-)
-
 watch([() => currentTabs.value], () => {
   searchText.value = ''
   if (refTable.value) {
