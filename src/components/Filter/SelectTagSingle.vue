@@ -112,7 +112,7 @@ const handleTagAddText = (data) => {
     handleTagDelete({ index: currentTagAryIndex })
   }
 
-  // 如果目前沒有選曲選項，則新增該選項
+  // 如果目前沒有選取選項，則新增該選項
   if (currentTagAryIndex === false) {
     // 點擊全部，需把剩下選項disabled
     if (data.value === 'all') {
