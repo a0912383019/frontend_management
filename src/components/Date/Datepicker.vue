@@ -45,9 +45,9 @@ const dateMaxDate = ref('')
 //根據props config決定使用的預設日期
 switch (props.config) {
   case 4:
-    dateValueEndDate.value = dayjs(date_range_picker_config_4.endDate).format('YYYY-MM-DD')
-    dateMinDate.value = dayjs(date_range_picker_config_4.minDate).format('YYYY-MM-DD')
-    dateMaxDate.value = dayjs(date_range_picker_config_4.maxDate).format('YYYY-MM-DD')
+    dateValueEndDate.value = dayjs(date_range_picker_config_4.endDate).format(t('date.format_date_rule'))
+    dateMinDate.value = dayjs(date_range_picker_config_4.minDate).format(t('date.format_date_rule'))
+    dateMaxDate.value = dayjs(date_range_picker_config_4.maxDate).format(t('date.format_date_rule'))
     break
 }
 
@@ -71,9 +71,9 @@ const handleCalendarChange = (val) => {
 }
 
 const disabledDate = (time) => {
-  let day = dayjs(time).format('YYYY-MM-DD')
-  let minDate = dayjs(dateMinDate.value).format('YYYY-MM-DD')
-  let maxDate = dayjs(dateMaxDate.value).format('YYYY-MM-DD')
+  let day = dayjs(time).format(t('date.format_date_rule'))
+  let minDate = dayjs(dateMinDate.value).format(t('date.format_date_rule'))
+  let maxDate = dayjs(dateMaxDate.value).format(t('date.format_date_rule'))
   if (day > maxDate || day < minDate) {
     return true
   }
