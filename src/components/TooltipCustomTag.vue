@@ -2,7 +2,11 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+
+const widthClass = computed(() => {
+  return locale.value === 'en' ? 'width-en' : 'width-ch';
+})
 
 const tagsList = computed(() => {
   return [
@@ -36,7 +40,7 @@ const tagsList = computed(() => {
 <template>
   <el-tooltip effect="dark" placement="right">
     <template #content>
-      <div class="page-customtag-type flex flex-wrap justify-between">
+      <div class="page-customtag-type flex flex-wrap justify-between" :class="widthClass">
         <template v-for="item in tagsList" :key="item.color">
           <div class="page-customtag-type__item" :class="item.color">{{ item.name }}</div>
         </template>
@@ -46,8 +50,13 @@ const tagsList = computed(() => {
   </el-tooltip>
 </template>
 <style lang="scss" scoped>
-.page-customtag-type {
+.width-ch {
   width: 175px;
+}
+.width-en {
+  width: 250px;
+}
+.page-customtag-type {
   word-break: break-all;
   font-size: 14px;
   &__item {

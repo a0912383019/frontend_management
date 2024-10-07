@@ -237,6 +237,7 @@ const transformListMemberTags = (data) => {
     result.push(tempObj)
     tagWidth = 0
   })
+
   return result
 }
 
