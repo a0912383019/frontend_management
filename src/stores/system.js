@@ -3,7 +3,13 @@ import { defineStore } from 'pinia'
 import { ElNotification } from 'element-plus'
 import { useGlobalStore, useSidebarStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiLogout, apiHalls, apiRevoke } from '@/api'
-import { apiRefresh, apiGoRefresh, apiGetSystemConfig } from '@/api/system.js'
+import {
+  apiRefresh,
+  apiGoRefresh,
+  apiGetSystemConfig,
+  apiGetMenusConfig,
+  apiGetTagsConfig
+} from '@/api'
 import { i18n } from '@/global/i18n'
 import { errorRespond, getSessionStorageEntity } from '@/utils/commonUtils.js'
 import { ref } from 'vue'
@@ -80,6 +86,62 @@ export const useSystemStore = defineStore('system', () => {
         return false
       }
     } catch (error) {
+      globalStore.isLoading = false
+      console.error(error)
+      sessionStorage.clear()
+      localStorage.clear()
+      router.push({ name: 'Login' })
+      return false
+    }
+  }
+
+  const getUserHall = () => {
+    let { access_hall } = getSessionStorageEntity('user_info')
+    let accessHalls = access_hall.split(',')
+    let hall_name, hall_code
+
+    // 取得第一個有效的廳
+    for (let i = 0; i < accessHalls.length; i++) {
+      if (hallConfigDict.value[accessHalls[i]]) {
+        const { hall_name: hn, hall_code: hc } = hallConfigDict.value[accessHalls[i]]
+        hall_name = hn
+        hall_code = hc
+        break
+      }
+    }
+    globalStore.activeHall.hall_name = hall_name
+    globalStore.activeHall.hall_code = hall_code
+  }
+
+  const storeSystemConfig = async (simulate) => {
+    // global hall_code 為空，從sessionStorage user_info中取得資料中的第一個廳別
+    // 模擬畫面需要重新抓取，因為每個使用者的hall 不一樣
+    if (globalStore.activeHall.hall_code === '' || simulate) {
+      getUserHall()
+    }
+    try {
+      const [menusRes, tagsRes] = await Promise.all([
+        apiGetMenusConfig({
+          hall_name: globalStore.activeHall.hall_code
+        }),
+        apiGetTagsConfig({
+          hall_name: globalStore.activeHall.hall_code,
+          locale: i18nLocale.value
+        })
+      ])
+      const { return_code: menusReturnCode } = menusRes.data.status
+      const { return_code: tagsReturnCode } = tagsRes.data.status
+
+      if (menusReturnCode === '0000' || tagsReturnCode === '0000') {
+        const systemConfig = {
+          menu_config: menusRes.data.result,
+          tags_config: tagsRes.data.result
+        }
+        sessionStorage.setItem('system_config', JSON.stringify(systemConfig))
+      } else {
+        throw new Error()
+      }
+    } catch {
       globalStore.isLoading = false
       console.error(error)
       sessionStorage.clear()
@@ -166,8 +228,16 @@ export const useSystemStore = defineStore('system', () => {
   }
 
   const makeSystemConfig = async (fromRoute = 1, simulate = false) => {
+    globalStore.isLoading = true
+
     await queryHalls()
-    await storeGetSystemConfig(fromRoute, simulate)
+    // await storeGetSystemConfig(fromRoute, simulate)
+    await storeSystemConfig(simulate)
+
+    globalStore.systemConfigIsOk = fromRoute === 0 ? 0 : Math.floor(Math.random() * 1000)
+    sidebarStore.generateSidebarMenu() // 更新sidebar item
+
+    globalStore.isLoading = false
   }
 
   return {

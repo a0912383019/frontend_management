@@ -42,3 +42,22 @@ export const apiGetSystemConfig = (params) => {
     }
   })
 }
+
+export const apiGetMenusConfig = (params) => {
+  const { hall_name } = params
+  return axiosGoInstance.get('/api/auth/menus_config', {
+    params: {
+      hall_name
+    }
+  })
+}
+
+export const apiGetTagsConfig = (params) => {
+  const { hall_name, locale } = params
+  return axiosGoInstance.get('/api/auth/tags_config', {
+    params: {
+      hall_name,
+      locale
+    }
+  })
+}
