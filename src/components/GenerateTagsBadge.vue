@@ -17,7 +17,7 @@ const props = defineProps({
 })
 
 const tag_description_dict = ref(
-  getSessionStorageEntity('system_config').tags_config[props.hall_name]
+  getSessionStorageEntity('system_config').tags_config
 )
 
 const get_tag_code = computed(() => {

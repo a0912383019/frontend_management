@@ -170,29 +170,22 @@ export function generateMultipleColors(count) {
  * @param hall_name 檢查的廳別
  * @param tag_code 檢查的標籤代碼
  */
-export function checkTagUsage(hall_name, tag_code) {
-  let tag_description_dict = getSessionStorageEntity('system_config').tags_config[hall_name]
+export function checkTagUsage(tag_code) {
+  let tag_description_dict = getSessionStorageEntity('system_config').tags_config
   return tag_description_dict[tag_code] && tag_description_dict[tag_code].tag_enabled
 }
 
 /**
  * 排序標籤
- * @param {string} element_id 要設定的下拉選單id
- * @param {string} root_hall_name 要設定的標籤根廳別
- * @param {string} hall_name 要設定的標籤廳別
  * @param {number[]} tag_category 要設定的標籤種類(1:一般標籤 2:週次標籤 3:時段標籤)
  * @param {boolean} is_check_tag_usage 是否檢查標籤可用性
  */
-export function generateTagBySortIndex({
-  hall_name,
-  tag_category = [1],
-  is_check_tag_usage = true
-}) {
+export function generateTagBySortIndex(tag_category = [1], is_check_tag_usage = true) {
   let tag_sort_dict = {} // 存放排序好的標籤字典
-  let tag_description_dict = getSessionStorageEntity('system_config').tags_config[hall_name]
+  let tag_description_dict = getSessionStorageEntity('system_config').tags_config
   Object.entries(tag_description_dict).map((item) => {
     //  若需檢查標籤是否禁用且標籤代碼禁用，則跳過不顯示
-    if (!checkTagUsage(hall_name, item[0]) && is_check_tag_usage) {
+    if (!checkTagUsage(item[0]) && is_check_tag_usage) {
       return
     }
     //  判斷標籤種類是否為要設定的種類，若不是則跳過不新增

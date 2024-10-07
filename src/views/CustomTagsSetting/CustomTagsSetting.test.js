@@ -30,19 +30,17 @@ describe('CustomTagsSetting.vue', () => {
     vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
     module.getSessionStorageEntity.mockReturnValue({
       tags_config: {
-        esb: {
-          30406: {
-            tag_type: 1,
-            tag_description: '人工定義為高價值會員',
-            tag_name: '水水tag',
-            tag_enabled: 1
-          },
-          40003: {
-            tag_type: 3,
-            tag_description: '近15個實動日，當日贏後下次會賭更大會員',
-            tag_name: '混混tag',
-            tag_enabled: 1
-          }
+        30406: {
+          tag_type: 1,
+          tag_description: '人工定義為高價值會員',
+          tag_name: '水水tag',
+          tag_enabled: 1
+        },
+        40003: {
+          tag_type: 3,
+          tag_description: '近15個實動日，當日贏後下次會賭更大會員',
+          tag_name: '混混tag',
+          tag_enabled: 1
         }
       }
     })
@@ -94,7 +92,7 @@ describe('CustomTagsSetting.vue', () => {
             template: '<div></div>'
           }
         }
-      },
+      }
     })
     wrapper.vm.$refs.tableRef.sortByFather = sortByFather
   })

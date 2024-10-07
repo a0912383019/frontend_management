@@ -169,7 +169,7 @@ const changeGenerateCategoryLists = () => {
 // 標籤下拉
 const selectTagLists = ref([])
 const originalSelectTagLists = ref([])
-const tagsConfig = generateTagBySortIndex({ hall_name: activeHall.hall_code, tag_category: [1,2,3,4,5,6,7,9] })
+const tagsConfig = generateTagBySortIndex([1,2,3,4,5,6,7,9])
 const tagsConfigTransformData = reactive({})
 
 // 轉換資料，優化tagsConfig

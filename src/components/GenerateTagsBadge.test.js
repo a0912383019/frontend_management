@@ -13,27 +13,25 @@ describe('GenerateTagsBadge', () => {
     //模擬第一次與第二次呼叫getSessionStorageEntity
     module.getSessionStorageEntity.mockReturnValue({
       tags_config: {
-        esb: {
-          10001: {
-            tag_type: 1,
-            tag_description: '人工定義為高價值會員'
-          },
-          30004: {
-            tag_type: 3,
-            tag_description: '近15個實動日，當日贏後下次會賭更大會員'
-          },
-          40001: {
-            tag_type: 4,
-            tag_description: 'AI 判定為行為異常且較容易贏錢的會員'
-          },
-          60001: {
-            tag_type: 6,
-            tag_description: '近14天中，累積獲利天數大於6天，且累積獲利大於該遊戲風險損益閾值的玩家'
-          },
-          90001: {
-            tag_type: 9,
-            tag_description: '測試結束之後就可以刪掉囉~~~~'
-          }
+        10001: {
+          tag_type: 1,
+          tag_description: '人工定義為高價值會員'
+        },
+        30004: {
+          tag_type: 3,
+          tag_description: '近15個實動日，當日贏後下次會賭更大會員'
+        },
+        40001: {
+          tag_type: 4,
+          tag_description: 'AI 判定為行為異常且較容易贏錢的會員'
+        },
+        60001: {
+          tag_type: 6,
+          tag_description: '近14天中，累積獲利天數大於6天，且累積獲利大於該遊戲風險損益閾值的玩家'
+        },
+        90001: {
+          tag_type: 9,
+          tag_description: '測試結束之後就可以刪掉囉~~~~'
         }
       }
     })

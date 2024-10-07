@@ -113,6 +113,15 @@ export const useSystemStore = defineStore('system', () => {
     globalStore.activeHall.hall_code = hall_code
   }
 
+  const transformTagsConfig = (data) => {
+    let tagsConfig = {}
+    data.forEach((ele) => {
+      tagsConfig[ele.tag_code] = ele
+    })
+
+    return tagsConfig
+  }
+
   const storeSystemConfig = async (simulate) => {
     // global hall_code 為空，從sessionStorage user_info中取得資料中的第一個廳別
     // 模擬畫面需要重新抓取，因為每個使用者的hall 不一樣
@@ -133,15 +142,21 @@ export const useSystemStore = defineStore('system', () => {
       const { return_code: tagsReturnCode } = tagsRes.data.status
 
       if (menusReturnCode === '0000' || tagsReturnCode === '0000') {
-        const systemConfig = {
-          menu_config: menusRes.data.result,
-          tags_config: tagsRes.data.result
+        if (menusRes.data.result.length !== 0 && tagsRes.data.result.length !== 0) {
+          const tagsConfig = transformTagsConfig(tagsRes.data.result)
+          const systemConfig = {
+            menu_config: menusRes.data.result,
+            tags_config: tagsConfig
+          }
+          sessionStorage.setItem('system_config', JSON.stringify(systemConfig))
+        } else {
+          throw new Error()
         }
-        sessionStorage.setItem('system_config', JSON.stringify(systemConfig))
       } else {
         throw new Error()
       }
-    } catch {
+    } catch(error) {
+      console.log(error)
       globalStore.isLoading = false
       console.error(error)
       sessionStorage.clear()

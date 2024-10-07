@@ -250,7 +250,7 @@ const transformMemberJourney = (data) => {
         delete chart_data_user_tag_flag_dict[key]
 
         let tag_config =
-          getSessionStorageEntity('system_config').tags_config[activeHall.hall_code][key]
+          getSessionStorageEntity('system_config').tags_config[key]
         chart_data_user_tag_flag.push({
           x: index,
           text: t('customer_detail_info.remove_tag_from_member', { tag_name: tag_config.tag_name }),
@@ -263,13 +263,13 @@ const transformMemberJourney = (data) => {
     for (let j = 0; j < user_tag_ary.length; j++) {
       if (
         user_tag_ary[j] &&
-        checkTagUsage(activeHall.hall_code, user_tag_ary[j]) &&
+        checkTagUsage(user_tag_ary[j]) &&
         !Object.prototype.hasOwnProperty.call(chart_data_user_tag_flag_dict, user_tag_ary[j])
       ) {
         chart_data_user_tag_flag_dict[user_tag_ary[j]] = label
 
         let tag_config =
-          getSessionStorageEntity('system_config').tags_config[activeHall.hall_code][
+          getSessionStorageEntity('system_config').tags_config[
             user_tag_ary[j]
           ]
         chart_data_user_tag_flag.push({

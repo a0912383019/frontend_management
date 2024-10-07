@@ -110,7 +110,7 @@ const queryListCustomTagsSetting = async () => {
 
 const transformCustomTagData = (data) => {
   let result = []
-  let tagCofig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+  let tagCofig = getSessionStorageEntity('system_config').tags_config
 
   data.map((item) => {
     if (!tagCofig[item.tag_code]) return

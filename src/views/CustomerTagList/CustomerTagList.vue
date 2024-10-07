@@ -54,7 +54,7 @@ const apiRecordsTotal = ref(0) //資料總數
 const canvas = ref(null)
 
 const tag_description_dict =
-  getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+  getSessionStorageEntity('system_config').tags_config
 
 const tableColumns = computed(() => {
   return [
@@ -212,7 +212,7 @@ const transformListMemberTags = (data) => {
 
     for (let i = 0; i < tag_str_ary.length; i++) {
       //  若標籤代碼禁用，則跳過不顯示
-      if (checkTagUsage(activeHall.hall_code, tag_str_ary[i])) {
+      if (checkTagUsage(tag_str_ary[i])) {
         tempObj['tag_name_str'].push(tag_str_ary[i])
       }
     }

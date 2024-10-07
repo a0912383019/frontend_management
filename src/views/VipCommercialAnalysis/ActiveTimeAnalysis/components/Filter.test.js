@@ -27,33 +27,29 @@ describe('Filter', () => {
     module.getSessionStorageEntity
       .mockReturnValueOnce({
         tags_config: {
-          esx: {
-            10001: {
-              tag_type: 1,
-              tag_name: 'VIP客',
-              tag_description: '人工定義為高價值會員'
-            },
-            10003: {
-              tag_type: 3,
-              tag_name: '深耕客',
-              tag_description: '近15個實動日，當日贏後下次會賭更大會員'
-            }
+          10001: {
+            tag_type: 1,
+            tag_name: 'VIP客',
+            tag_description: '人工定義為高價值會員'
+          },
+          10003: {
+            tag_type: 3,
+            tag_name: '深耕客',
+            tag_description: '近15個實動日，當日贏後下次會賭更大會員'
           }
         }
       })
       .mockReturnValueOnce({
         tags_config: {
-          esx: {
-            10001: {
-              tag_type: 1,
-              tag_name: 'VIP客',
-              tag_description: '人工定義為高價值會員'
-            },
-            10003: {
-              tag_type: 3,
-              tag_name: '深耕客',
-              tag_description: '近15個實動日，當日贏後下次會賭更大會員'
-            }
+          10001: {
+            tag_type: 1,
+            tag_name: 'VIP客',
+            tag_description: '人工定義為高價值會員'
+          },
+          10003: {
+            tag_type: 3,
+            tag_name: '深耕客',
+            tag_description: '近15個實動日，當日贏後下次會賭更大會員'
           }
         }
       })

@@ -18,34 +18,32 @@ describe('MemberJourney.vue', () => {
 
   let system_config = {
     tags_config: {
-      esb: {
-        10001: {
-          tag_type: 1,
-          tag_name: '測試',
-          tag_description: '測試敘述',
-          tag_category: 1,
-          sort_index: 1000000,
-          tag_enabled: true,
-          mutual_tags_code: ''
-        },
-        40001: {
-          tag_type: 1,
-          tag_name: 'VIP客',
-          tag_description: '人工定義為高價值會員',
-          tag_category: 1,
-          sort_index: 1000001,
-          tag_enabled: true,
-          mutual_tags_code: ''
-        },
-        40004: {
-          tag_type: 3,
-          tag_name: '體育客',
-          tag_description: '會員近15個實動日，在體育類遊戲總有效投註量最多',
-          tag_category: 1,
-          sort_index: 3000012,
-          tag_enabled: true,
-          mutual_tags_code: '30009,30010,30011,30013,30014'
-        }
+      10001: {
+        tag_type: 1,
+        tag_name: '測試',
+        tag_description: '測試敘述',
+        tag_category: 1,
+        sort_index: 1000000,
+        tag_enabled: true,
+        mutual_tags_code: ''
+      },
+      40001: {
+        tag_type: 1,
+        tag_name: 'VIP客',
+        tag_description: '人工定義為高價值會員',
+        tag_category: 1,
+        sort_index: 1000001,
+        tag_enabled: true,
+        mutual_tags_code: ''
+      },
+      40004: {
+        tag_type: 3,
+        tag_name: '體育客',
+        tag_description: '會員近15個實動日，在體育類遊戲總有效投註量最多',
+        tag_category: 1,
+        sort_index: 3000012,
+        tag_enabled: true,
+        mutual_tags_code: '30009,30010,30011,30013,30014'
       }
     }
   }

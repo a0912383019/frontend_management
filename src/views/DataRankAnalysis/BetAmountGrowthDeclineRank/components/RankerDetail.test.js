@@ -175,27 +175,25 @@ describe('RankerDetail.vue', () => {
       const getSessionStorageEntity = vi.fn()
       getSessionStorageEntity.mockReturnValue({
         tags_config: {
-          esb: {
-            10001: {
-              tag_type: 1,
-              tag_name: 'VIP客',
-              tag_description: '人工定義為高價值會員'
-            },
-            10002: {
-              tag_type: 1,
-              tag_name: 'VIP客超級無敵大麥克兩份無糖',
-              tag_description: '超級無敵大麥克兩份無糖'
-            },
-            10003: {
-              tag_type: 1,
-              tag_name: 'VIP彡去',
-              tag_description: '彡彡去'
-            },
-            10004: {
-              tag_type: 1,
-              tag_name: 'VIP客吃吃抓抓貓抓板',
-              tag_description: '吃吃抓貓抓板'
-            }
+          10001: {
+            tag_type: 1,
+            tag_name: 'VIP客',
+            tag_description: '人工定義為高價值會員'
+          },
+          10002: {
+            tag_type: 1,
+            tag_name: 'VIP客超級無敵大麥克兩份無糖',
+            tag_description: '超級無敵大麥克兩份無糖'
+          },
+          10003: {
+            tag_type: 1,
+            tag_name: 'VIP彡去',
+            tag_description: '彡彡去'
+          },
+          10004: {
+            tag_type: 1,
+            tag_name: 'VIP客吃吃抓抓貓抓板',
+            tag_description: '吃吃抓貓抓板'
           }
         }
       })

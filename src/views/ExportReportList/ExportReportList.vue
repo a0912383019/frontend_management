@@ -269,14 +269,14 @@ watch(
   () => systemConfigIsOk.value,
   () => {
     tag_description_dict.hall =
-      getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+      getSessionStorageEntity('system_config').tags_config
     queryAgNameUserLevel()
   }
 )
 
 onMounted(() => {
   tag_description_dict.hall =
-    getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+    getSessionStorageEntity('system_config').tags_config
   queryAgNameUserLevel()
   queryUserExportList()
 })
