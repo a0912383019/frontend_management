@@ -72,9 +72,9 @@ const disabledDate = (day) => {
   }
 
   // 禁選條件二：日期小於最小日期 或 日期大於結束日
-  let activeDate = dayjs(day).format('YYYY-MM-DD')
-  let minDate = dayjs(dateMinDate.value).format('YYYY-MM-DD')
-  let maxDate = dayjs(dateMaxDate.value).format('YYYY-MM-DD')
+  let activeDate = dayjs(day).format(t('date.format_date_rule'))
+  let minDate = dayjs(dateMinDate.value).format(t('date.format_date_rule'))
+  let maxDate = dayjs(dateMaxDate.value).format(t('date.format_date_rule'))
   if (activeDate < minDate || activeDate > maxDate) {
     return true
   }
@@ -92,9 +92,9 @@ const handleClick = () => {
   emit('update:timestamp', {
     timestamp: new Date().getTime(),
     rangeDate: formatDateDuration(
-      dayjs(dateValue.value[0]).format('YYYY-MM-DD') +
+      dayjs(dateValue.value[0]).format(t('date.format_date_rule')) +
         '~' +
-        dayjs(dateValue.value[1]).format('YYYY-MM-DD')
+        dayjs(dateValue.value[1]).format(t('date.format_date_rule'))
     )
   })
   closePopover()
@@ -140,6 +140,7 @@ watch(
             v-model="dateValue"
             type="daterange"
             :unlink-panels="false"
+            :format="$t('date.format_date_rule')"
             popper-class="cdp-datepicker-range-popper cdp-datepicker-range-popper__purple"
             range-separator="~"
             start-placeholder="Start date"
