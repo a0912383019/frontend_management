@@ -61,3 +61,7 @@ export const apiGetTagsConfig = (params) => {
     }
   })
 }
+
+export const apiGetServerTime = () => {
+  return axiosGoInstance.get('/api/auth/server_time')
+}

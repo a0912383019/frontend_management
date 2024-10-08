@@ -8,7 +8,8 @@ import {
   apiGoRefresh,
   apiGetSystemConfig,
   apiGetMenusConfig,
-  apiGetTagsConfig
+  apiGetTagsConfig,
+  apiGetServerTime
 } from '@/api'
 import { i18n } from '@/global/i18n'
 import { errorRespond, getSessionStorageEntity } from '@/utils/commonUtils.js'
@@ -129,24 +130,27 @@ export const useSystemStore = defineStore('system', () => {
       getUserHall()
     }
     try {
-      const [menusRes, tagsRes] = await Promise.all([
+      const [menusRes, tagsRes, timeRes] = await Promise.all([
         apiGetMenusConfig({
           hall_name: globalStore.activeHall.hall_code
         }),
         apiGetTagsConfig({
           hall_name: globalStore.activeHall.hall_code,
           locale: i18nLocale.value
-        })
+        }),
+        apiGetServerTime()
       ])
       const { return_code: menusReturnCode } = menusRes.data.status
       const { return_code: tagsReturnCode } = tagsRes.data.status
+      const { return_code: timeReturnCode } = timeRes.data.status
 
-      if (menusReturnCode === '0000' || tagsReturnCode === '0000') {
+      if (menusReturnCode === '0000' && tagsReturnCode === '0000' && timeReturnCode === '0000') {
         if (menusRes.data.result.length !== 0 && tagsRes.data.result.length !== 0) {
           const tagsConfig = transformTagsConfig(tagsRes.data.result)
           const systemConfig = {
             menu_config: menusRes.data.result,
-            tags_config: tagsConfig
+            tags_config: tagsConfig,
+            server_time: timeRes.data.result.us_east_time
           }
           sessionStorage.setItem('system_config', JSON.stringify(systemConfig))
         } else {
@@ -156,9 +160,8 @@ export const useSystemStore = defineStore('system', () => {
         throw new Error()
       }
     } catch(error) {
-      console.log(error)
-      globalStore.isLoading = false
       console.error(error)
+      globalStore.isLoading = false
       sessionStorage.clear()
       localStorage.clear()
       router.push({ name: 'Login' })
@@ -168,7 +171,6 @@ export const useSystemStore = defineStore('system', () => {
 
   // call refreshToken
   const storeRefreshToken = async () => {
-    globalStore.isLoading = true
     try {
       const [phpResponse, goResponse] = await Promise.all([apiRefresh(), apiGoRefresh()])
       const { return_code: phpReturnCode } = phpResponse.data.status
@@ -180,7 +182,6 @@ export const useSystemStore = defineStore('system', () => {
         token_type,
         access_token: goAccessToken
       } = goResponse.data.result
-      globalStore.isLoading = false
       if (phpReturnCode === '0000' && goReturnCode === '0000') {
         let user_info_entity = getSessionStorageEntity('user_info')
         user_info_entity.user_type = user_type // 更新使用者身份權限
@@ -194,7 +195,6 @@ export const useSystemStore = defineStore('system', () => {
       }
     } catch (error) {
       console.error(error)
-      globalStore.isLoading = false
       if (error.response.status === 401) {
         // 若api回應401 http error code，導至登入頁
         sessionStorage.clear()
@@ -243,21 +243,15 @@ export const useSystemStore = defineStore('system', () => {
   }
 
   const makeSystemConfig = async (fromRoute = 1, simulate = false) => {
-    globalStore.isLoading = true
-
     await queryHalls()
-    // await storeGetSystemConfig(fromRoute, simulate)
     await storeSystemConfig(simulate)
 
     globalStore.systemConfigIsOk = fromRoute === 0 ? 0 : Math.floor(Math.random() * 1000)
     sidebarStore.generateSidebarMenu() // 更新sidebar item
-
-    globalStore.isLoading = false
   }
 
   return {
     storeLogout,
-    storeGetSystemConfig,
     storeRefreshToken,
     queryHalls,
     makeSystemConfig,

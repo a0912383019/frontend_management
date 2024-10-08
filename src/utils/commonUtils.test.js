@@ -208,7 +208,7 @@ describe('Utility Functions', () => {
     expect(result2).toBe(false)
   })
 
-  //測試 generateTagBySortIndex 函數
+  // 測試 generateTagBySortIndex 函數
   it('generateTagBySortIndex should return the correct value', () => {
     const system_config = {
       tags_config: {
