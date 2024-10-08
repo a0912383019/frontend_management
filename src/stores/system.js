@@ -6,7 +6,6 @@ import { apiLogout, apiHalls, apiRevoke } from '@/api'
 import {
   apiRefresh,
   apiGoRefresh,
-  apiGetSystemConfig,
   apiGetMenusConfig,
   apiGetTagsConfig,
   apiGetServerTime
@@ -46,56 +45,6 @@ export const useSystemStore = defineStore('system', () => {
     }
   }
 
-  // call system config
-  const storeGetSystemConfig = async (fromRoute = 1, simulate = false) => {
-    globalStore.isLoading = true // 顯示Loading視窗
-    // global hall_code 為空，從sessionStorage user_info中取得資料中的第一個廳別
-    // 模擬畫面需要重新抓取，因為每個使用者的hall 不一樣
-    if (globalStore.activeHall.hall_code === '' || simulate) {
-      let { access_hall } = getSessionStorageEntity('user_info')
-      let accessHalls = access_hall.split(',')
-      let hall_name, hall_code
-
-      // 取得第一個有效的廳
-      for (let i = 0; i < accessHalls.length; i++) {
-        if (hallConfigDict.value[accessHalls[i]]) {
-          const { hall_name: hn, hall_code: hc } = hallConfigDict.value[accessHalls[i]]
-          hall_name = hn
-          hall_code = hc
-          break
-        }
-      }
-      globalStore.activeHall.hall_name = hall_name
-      globalStore.activeHall.hall_code = hall_code
-    }
-    try {
-      const result = await apiGetSystemConfig({
-        hall_name: globalStore.activeHall.hall_code,
-        locale: i18nLocale.value
-      })
-      const { return_code } = result.data.status
-      if (return_code === '0000') {
-        sessionStorage.setItem('system_config', JSON.stringify(result.data.result))
-        globalStore.systemConfigIsOk = fromRoute === 0 ? 0 : Math.floor(Math.random() * 1000)
-        sidebarStore.generateSidebarMenu() // 更新sidebar item
-        globalStore.isLoading = false
-        return true
-      } else {
-        globalStore.isLoading = false
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-        return false
-      }
-    } catch (error) {
-      globalStore.isLoading = false
-      console.error(error)
-      sessionStorage.clear()
-      localStorage.clear()
-      router.push({ name: 'Login' })
-      return false
-    }
-  }
-
   const getUserHall = () => {
     let { access_hall } = getSessionStorageEntity('user_info')
     let accessHalls = access_hall.split(',')
@@ -123,7 +72,7 @@ export const useSystemStore = defineStore('system', () => {
     return tagsConfig
   }
 
-  const storeSystemConfig = async (simulate) => {
+  const storeSystemConfig = async (simulate = false) => {
     // global hall_code 為空，從sessionStorage user_info中取得資料中的第一個廳別
     // 模擬畫面需要重新抓取，因為每個使用者的hall 不一樣
     if (globalStore.activeHall.hall_code === '' || simulate) {
@@ -254,6 +203,7 @@ export const useSystemStore = defineStore('system', () => {
     storeLogout,
     storeRefreshToken,
     queryHalls,
+    storeSystemConfig,
     makeSystemConfig,
     hallConfigDict
   }

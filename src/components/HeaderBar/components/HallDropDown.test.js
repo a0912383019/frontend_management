@@ -9,7 +9,6 @@ import HallDropDown from '@/components/HeaderBar/components/HallDropDown.vue'
 
 describe('HallDropDown', () => {
   let wrapper = null
-  let spy
   const pinia = createTestingPinia({ createSpy: vi.fn })
   const globalStore = useGlobalStore(pinia)
   const systemStore = useSystemStore(pinia)
@@ -37,7 +36,7 @@ describe('HallDropDown', () => {
   ]
 
   beforeEach(() => {
-    spy = vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
+    vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
     module.getSessionStorageEntity.mockReturnValueOnce({
       access_hall: 'esx,802,999,bmw'
     })

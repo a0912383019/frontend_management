@@ -5,14 +5,12 @@ import { i18n } from '@/global/i18n'
 import Tags from '@/components/HeaderBar/components/Tags.vue'
 import { createTestingPinia } from '@pinia/testing'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { library } from '@/utils/fontawsome.js'
 import router from '@/router'
-import * as module from '@/utils/commonUtils.js'
+import { library } from '@/utils/fontawsome.js'
 
 describe('Tags', () => {
   let wrapper = null
   let system_config = null
-  let spy
 
   beforeEach(() => {
     system_config = {

@@ -14,7 +14,7 @@ describe('CustomTagsSetting.vue', () => {
   let spyPut
   let spyDelete
   const sortByFather = vi.fn()
-  const storeGetSystemConfig = vi.fn()
+  const storeSystemConfig = vi.fn()
 
   const pinia = createTestingPinia({ createSpy: vi.fn })
   const globalStore = useGlobalStore(pinia)
@@ -25,7 +25,7 @@ describe('CustomTagsSetting.vue', () => {
       hall_code: 'esb',
       hall_name: 'Esball'
     }
-    systemStore.storeGetSystemConfig = storeGetSystemConfig
+    systemStore.storeSystemConfig = storeSystemConfig
 
     vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
     module.getSessionStorageEntity.mockReturnValue({
@@ -191,7 +191,7 @@ describe('CustomTagsSetting.vue', () => {
   })
 
   it('test updateTagConfig & reloadPage', async () => {
-    expect(storeGetSystemConfig).toBeCalledTimes(0)
+    expect(storeSystemConfig).toBeCalledTimes(0)
     // onMounted 第一次
     expect(spyGet).toBeCalledTimes(1)
 
@@ -204,7 +204,7 @@ describe('CustomTagsSetting.vue', () => {
       hall_name: 'esb',
       enabled
     })
-    expect(storeGetSystemConfig).toBeCalledTimes(1)
+    expect(storeSystemConfig).toBeCalledTimes(1)
     expect(spyGet).toBeCalledTimes(2)
   })
 
