@@ -58,6 +58,9 @@ const queryActivityApi = async (api, apiObject) => {
       apiObject.apiSuccess = true
       if (result.data.result.length !== 0) {
         apiObject.result = result.data.result
+      } else {
+        apiObject.messageKey = 'noResult'
+        apiObject.apiSuccess = false
       }
     } else if (return_code === '0001') {
       apiObject.messageKey = 'noResult'

@@ -158,6 +158,7 @@ const clearChart = () => {
 const handleApiResponse = () => {
   apiSuccess.value = apiObject.value.apiSuccess
   messageKey.value = apiObject.value.messageKey
+
   if (apiObject.value.apiSuccess) {
     if (apiObject.value.result.length === 0) {
       apiSuccess.value = false
