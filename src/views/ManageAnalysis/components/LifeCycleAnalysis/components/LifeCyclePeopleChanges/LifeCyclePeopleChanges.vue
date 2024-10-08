@@ -186,12 +186,6 @@ const transformLifeCycleAnalysisOverviewTbl = (data) => {
 
   tableTotalPeopleNum.value = FormatNumber(data.total_people_num)
 }
-watch(
-  () => activeHall.hall_code,
-  () => {
-    queryLifeCycleAnalysisOverviewTbl()
-  }
-)
 
 watch(i18nLocale, () => {
   transformLifeCycleAnalysisOverviewTbl(apiTableResult.value)
@@ -215,7 +209,7 @@ const handleClick = (data) => {
 watch(
   () => activeFile.value,
   () => {
-    /*-- 
+    /*--
       備註：
       目前FilterMemberName.vue有更新updateFilterTimestamp
       使階段總覽及會員明細更動狀態，所以監聽檔名異動後去搜尋資料，會發生資料被覆蓋
