@@ -120,12 +120,18 @@ describe('HallDropDown', () => {
         is_active: false
       }
     ]
+    const restartTimer = vi.fn()
+    wrapper.vm.$refs.countRef.restartTimer = restartTimer
+
+    expect(restartTimer).toBeCalledTimes(0)
+
     wrapper.vm.changeHeaderHall(changeHallObj)
     await router.isReady()
     await flushPromises()
     expect(globalStore.activeHall.hall_name).toBe('Esball')
     expect(globalStore.activeHall.hall_code).toBe('esx')
     expect(wrapper.vm.hallDropdownList).toStrictEqual(result)
+    expect(restartTimer).toBeCalledTimes(1)
     expect(wrapper.emitted('update:drop')).toStrictEqual([[false]])
   })
 })
