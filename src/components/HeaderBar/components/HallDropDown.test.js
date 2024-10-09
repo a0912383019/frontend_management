@@ -9,7 +9,6 @@ import HallDropDown from '@/components/HeaderBar/components/HallDropDown.vue'
 
 describe('HallDropDown', () => {
   let wrapper = null
-  let spy
   const pinia = createTestingPinia({ createSpy: vi.fn })
   const globalStore = useGlobalStore(pinia)
   const systemStore = useSystemStore(pinia)
@@ -37,7 +36,7 @@ describe('HallDropDown', () => {
   ]
 
   beforeEach(() => {
-    spy = vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
+    vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
     module.getSessionStorageEntity.mockReturnValueOnce({
       access_hall: 'esx,802,999,bmw'
     })
@@ -120,12 +119,18 @@ describe('HallDropDown', () => {
         is_active: false
       }
     ]
+    const restartTimer = vi.fn()
+    wrapper.vm.$refs.countRef.restartTimer = restartTimer
+
+    expect(restartTimer).toBeCalledTimes(0)
+
     wrapper.vm.changeHeaderHall(changeHallObj)
     await router.isReady()
     await flushPromises()
     expect(globalStore.activeHall.hall_name).toBe('Esball')
     expect(globalStore.activeHall.hall_code).toBe('esx')
     expect(wrapper.vm.hallDropdownList).toStrictEqual(result)
+    expect(restartTimer).toBeCalledTimes(1)
     expect(wrapper.emitted('update:drop')).toStrictEqual([[false]])
   })
 })

@@ -11,7 +11,7 @@ import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 const { t, locale: i18nLocale } = useI18n()
 const globalStore = useGlobalStore()
 const systemStore = useSystemStore()
-const { storeGetSystemConfig, storeRefreshToken } = systemStore
+const { makeSystemConfig, storeRefreshToken } = systemStore
 const route = useRoute()
 
 const countdownInterval = ref(1000) // 每秒倒數
@@ -112,25 +112,21 @@ const restartTimer = async (type) => {
   clearInterval(counter.value)
   isDisabledResetBtn.value = true //將重新計時按鈕disabled
   if (type) {
-    await storeRefreshToken()
-    await storeGetSystemConfig()
+    await renewTokenAndConfig()
   }
   setCountDownTimer()
   isDisabledResetBtn.value = false
   ElNotification.closeAll()
 }
 
-// 監聽廳主切換
-watch(
-  () => globalStore.activeHall.hall_code,
-  () => {
-    if (sessionStorage.system_config !== undefined && globalStore.lastRoute !== 'Home') {
-      restartTimer()
-    } else if (sessionStorage.system_config !== undefined) {
-      restartTimer(true)
-    }
-  }
-)
+const renewTokenAndConfig = async () => {
+  globalStore.isLoading = true
+  await storeRefreshToken()
+  await makeSystemConfig()
+  globalStore.isLoading = false
+}
+
+defineExpose({ restartTimer })
 
 // 監聽語系切換
 watch(

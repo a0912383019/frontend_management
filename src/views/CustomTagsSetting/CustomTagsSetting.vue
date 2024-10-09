@@ -20,7 +20,7 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const systemStore = useSystemStore()
-const { storeGetSystemConfig } = systemStore
+const { storeSystemConfig } = systemStore
 
 const tableData = ref([])
 const apiLength = ref(10) //一頁幾筆
@@ -110,7 +110,7 @@ const queryListCustomTagsSetting = async () => {
 
 const transformCustomTagData = (data) => {
   let result = []
-  let tagCofig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+  let tagCofig = getSessionStorageEntity('system_config').tags_config
 
   data.map((item) => {
     if (!tagCofig[item.tag_code]) return
@@ -212,7 +212,7 @@ const openHistory = (data) => {
 
 const reloadPage = async () => {
   globalStore.isLoading = true
-  await storeGetSystemConfig()
+  await storeSystemConfig()
   // queryListCustomTagsSetting 的transformCustomTagData 會有短暫的資料延遲
   await queryListCustomTagsSetting()
   globalStore.isLoading = false

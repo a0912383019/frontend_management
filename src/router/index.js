@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '@/layout/Main.vue'
-import { useDateStore } from '@/stores/dateConfig.js'
-import { useSystemStore } from '@/stores/system.js'
+import { useSystemStore, useGlobalStore, useDateStore } from '@/stores'
 
 //不用登入即可觀看的頁面
 const whiteList = ['/login']
@@ -257,6 +256,8 @@ export const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+  const globalStore = useGlobalStore()
+  globalStore.isLoading = true
   const sessionStorageUserInfo = sessionStorage.user_info
   //將from page寫入window內
   sessionStorage.from_page = `?fromPage=${to.meta.fromPage}`
@@ -270,17 +271,22 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   if (isLogin || whiteList.includes(to.path)) {
+    const systemStore = useSystemStore()
+
     if (to.name === 'Home' && to.query && to.query.simulate) {
-      const systemStore = useSystemStore()
+      // 如果路由是 Home 且 query 中有 simulate
       await systemStore.makeSystemConfig(0, true)
-      next()
     } else if (to.name !== 'Login') {
-      const systemStore = useSystemStore()
+      // 如果不是 Login 頁面，檢查是否有 hallChage query
+      if (to.query && to.query.hallChage) {
+        next()
+        return
+      }
+      // 若無 hallChage query，則執行 makeSystemConfig
       await systemStore.makeSystemConfig(0)
-      next()
-    } else {
-      next()
     }
+
+    next()
   } else {
     next({ name: 'Login' })
   }
@@ -289,6 +295,11 @@ router.beforeEach(async (to, from, next) => {
     const dateStore = useDateStore()
     dateStore.updateDate()
   }
+})
+
+router.afterEach((to, from) => {
+  const globalStore = useGlobalStore()
+  globalStore.isLoading = false
 })
 
 export default router

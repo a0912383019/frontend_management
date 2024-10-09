@@ -2,7 +2,6 @@ import { it, describe, expect, beforeEach, afterEach, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { i18n } from '@/global/i18n'
-import { dayjs } from 'element-plus'
 import ElementPlus from 'element-plus'
 import SelectTagSingle from '@/components/Filter/SelectTagSingle.vue'
 

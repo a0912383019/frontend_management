@@ -88,7 +88,7 @@ const checkRowCount = (data) => {
   const hasVipTagData = data.filter((item) => vipTag.includes(item.tag_code.toString()))
 
   // 取得 tag config 資料
-  const tagConfig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+  const tagConfig = getSessionStorageEntity('system_config').tags_config
 
   // 取得 row_count 為 0 的資料
   const hasRowCountZero = hasVipTagData.filter((item) => item.row_count === 0)
