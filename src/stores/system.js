@@ -34,15 +34,19 @@ export const useSystemStore = defineStore('system', () => {
       console.error(error)
     } finally {
       globalStore.isLoading = false
-
-      // 登出後，讓 pinia 資料回覆預設值
-      vipCommercialAnalysisStore.resetState()
-
-      // 不管logout的ajax成功或失敗，都清除所有sessionStorage與localStorage
-      sessionStorage.clear()
-      localStorage.clear()
-      router.push({ name: 'Login' })
+      redirectToLogin()
     }
+  }
+
+  const redirectToLogin = () => {
+    // 登出後，讓 pinia 資料回覆預設值
+    vipCommercialAnalysisStore.resetState()
+    globalStore.resetState()
+
+    // 不管logout的ajax成功或失敗，都清除所有sessionStorage與localStorage
+    sessionStorage.clear()
+    localStorage.clear()
+    router.push({ name: 'Login' })
   }
 
   const getUserHall = () => {
@@ -108,12 +112,10 @@ export const useSystemStore = defineStore('system', () => {
       } else {
         throw new Error()
       }
-    } catch(error) {
+    } catch (error) {
       console.error(error)
       globalStore.isLoading = false
-      sessionStorage.clear()
-      localStorage.clear()
-      router.push({ name: 'Login' })
+      redirectToLogin()
       return false
     }
   }
@@ -145,10 +147,7 @@ export const useSystemStore = defineStore('system', () => {
     } catch (error) {
       console.error(error)
       if (error.response.status === 401) {
-        // 若api回應401 http error code，導至登入頁
-        sessionStorage.clear()
-        localStorage.clear()
-        router.push({ name: 'Login' })
+        globalStore.storeHandleApiError()
         let failMsg = `${error.response.status} : ${error.response.data.message}`
         return Promise.reject(failMsg) //表示Promise物件執行失敗，拒絕後續的程式執行
       }
@@ -172,9 +171,7 @@ export const useSystemStore = defineStore('system', () => {
     } catch (error) {
       console.error(error)
       if (error.response.status === 401) {
-        sessionStorage.clear()
-        localStorage.clear()
-        router.push({ name: 'Login' })
+        globalStore.storeHandleApiError()
       }
     }
   }
