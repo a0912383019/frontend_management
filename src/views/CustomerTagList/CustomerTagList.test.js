@@ -19,12 +19,10 @@ describe('CustomerTagList', () => {
     //模擬呼叫getSessionStorageEntity
     module.getSessionStorageEntity.mockReturnValueOnce({
       tags_config: {
-        esb: {
-          10001: {
-            tag_type: 1,
-            tag_name: 'VIP客',
-            tag_description: '人工定義為高價值會員'
-          }
+        10001: {
+          tag_type: 1,
+          tag_name: 'VIP客',
+          tag_description: '人工定義為高價值會員'
         }
       }
     })

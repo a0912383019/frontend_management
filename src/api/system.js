@@ -1,28 +1,31 @@
 import axiosInstance from './axiosInstance.js'
 import axiosGoInstance from './axiosGoInstance.js'
 
-//登入
+// 登入
 export const apiLogin = (params) => {
-  // console.log('login', params)
   const { id_token } = params
   return axiosInstance.post('/api/auth/login_google', {
     id_token
   })
 }
 export const apiGoLogin = (params) => {
-  // console.log('login', params)
   const { id_token } = params
   return axiosGoInstance.put('/api/auth/login_google', {
     id_token
   })
 }
 
-//登出
+// 登出 php
 export const apiLogout = () => {
   return axiosInstance.post('/api/auth/logout')
 }
 
-//重新取得token
+// 登出 go
+export const apiRevoke = () => {
+  return axiosGoInstance.post('/api/auth/revoke')
+}
+
+// 重新取得token
 export const apiRefresh = () => {
   return axiosInstance.post('/api/auth/refresh')
 }
@@ -31,7 +34,6 @@ export const apiGoRefresh = () => {
 }
 
 export const apiGetSystemConfig = (params) => {
-  // console.log('apiGetSystemConfig', params)
   const { hall_name, locale } = params
   return axiosGoInstance.get('/api/auth/system_config', {
     params: {
@@ -39,4 +41,27 @@ export const apiGetSystemConfig = (params) => {
       locale
     }
   })
+}
+
+export const apiGetMenusConfig = (params) => {
+  const { hall_name } = params
+  return axiosGoInstance.get('/api/auth/menus_config', {
+    params: {
+      hall_name
+    }
+  })
+}
+
+export const apiGetTagsConfig = (params) => {
+  const { hall_name, locale } = params
+  return axiosGoInstance.get('/api/auth/tags_config', {
+    params: {
+      hall_name,
+      locale
+    }
+  })
+}
+
+export const apiGetServerTime = () => {
+  return axiosGoInstance.get('/api/auth/server_time')
 }

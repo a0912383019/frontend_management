@@ -43,7 +43,7 @@ const filterData = reactive({
 })
 
 // 取得 system_config 資料
-const tagsConfig = ref(getSessionStorageEntity('system_config').tags_config[activeHall.hall_code])
+const tagsConfig = ref(getSessionStorageEntity('system_config').tags_config)
 
 // 包含標籤選項
 const selectTypeLists = computed({
@@ -176,7 +176,7 @@ onUnmounted(() => {
 watch(
   () => systemConfigIsOk.value,
   () => {
-    tagsConfig.value = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+    tagsConfig.value = getSessionStorageEntity('system_config').tags_config
     key.value = Math.floor(Math.random() * 100)
     handleDateChange()
   }

@@ -42,7 +42,7 @@ const apiSuccess = ref(apiObject.value.apiSuccess)
 const messageKey = ref(apiObject.value.messageKey)
 
 const tag_description_dict =
-  getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+  getSessionStorageEntity('system_config').tags_config
 
 const tableColumns = computed(() => {
   return [
@@ -109,7 +109,7 @@ const transformMemberData = (data) => {
 
     for (let i = 0; i < tempObj.tags.length; i++) {
       // 若標籤代碼禁用，則跳過不顯示
-      if (checkTagUsage(activeHall.hall_code, tempObj.tags[i])) {
+      if (checkTagUsage(tempObj.tags[i])) {
         tempObj.tag_name_str.push(tempObj.tags[i])
       }
     }

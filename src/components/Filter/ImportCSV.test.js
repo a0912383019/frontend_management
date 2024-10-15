@@ -9,12 +9,17 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import ImportCSV from '@/components/Filter/ImportCSV.vue'
 import UploadFile from '@/components/Filter/UploadFile.vue'
 import { library } from '@/utils/fontawsome.js'
+import { useGlobalStore } from '@/stores/global.js'
 
 describe('ImportCSV', () => {
   let wrapper = null
   let result
+  let globalStore
 
   beforeEach(() => {
+    const pinia = createTestingPinia({ createSpy: vi.fn })
+    globalStore = useGlobalStore(pinia)
+
     result = {
       data: {
         result: ['ye4676', 'txphydd', 'j8888', 'jsasdg'],
@@ -66,7 +71,7 @@ describe('ImportCSV', () => {
     //等待異步完成
     await flushPromises()
     expect(wrapper.vm.dialogVisible).toBe(false)
-    expect(wrapper.vm.globalStore.isLoading).toBe(false)
+    expect(globalStore.isLoading).toBe(false)
     expect(wrapper.emitted('update:success')).toStrictEqual([
       [['ye4676', 'txphydd', 'j8888', 'jsasdg']]
     ])

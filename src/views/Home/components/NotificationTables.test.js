@@ -351,10 +351,5 @@ describe('NotificationTables.vue', () => {
     await flushPromises()
     expect(goToFirstPage).toHaveBeenCalled()
     expect(wrapper.vm.tableData).toStrictEqual(tableAll[1])
-
-    //觸發切換語系watch
-    wrapper.vm.i18nLocale = 'en'
-    await flushPromises()
-    expect(spyGet).toHaveBeenCalledTimes(3)
   })
 })

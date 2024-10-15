@@ -107,84 +107,82 @@ describe('MemberInfo.vue', () => {
     sessionStorage.setItem('user_info', JSON.stringify(user_info))
     const system_config = {
       tags_config: {
-        esb: {
-          10000: {
-            tag_type: 1,
-            tag_name: '測試',
-            tag_description: '測試敘述',
-            tag_category: 1,
-            sort_index: 1000000,
-            tag_enabled: true,
-            mutual_tags_code: ''
-          },
-          10001: {
-            tag_type: 1,
-            tag_name: 'VIP客',
-            tag_description: '人工定義為高價值會員',
-            tag_category: 1,
-            sort_index: 1000001,
-            tag_enabled: true,
-            mutual_tags_code: ''
-          },
-          10002: {
-            tag_type: 1,
-            tag_name: '退場VIP',
-            tag_description: '人工定義為「曾經」是高價值會員',
-            tag_category: 1,
-            sort_index: 1000002,
-            tag_enabled: true,
-            mutual_tags_code: '',
-            tag_key: '10002'
-          },
-          10003: {
-            tag_type: 1,
-            tag_name: '深耕客',
-            tag_description: '人工定義為「有潛力開發」為高價值的會員',
-            tag_category: 1,
-            sort_index: 1000004,
-            tag_enabled: true,
-            mutual_tags_code: '',
-            tag_key: '10003'
-          },
-          10004: {
-            tag_type: 1,
-            tag_name: '退場深耕客',
-            tag_description: '人工定義為「曾經有潛力開發」為高價值的會員',
-            tag_category: 1,
-            sort_index: 1000005,
-            tag_enabled: true,
-            mutual_tags_code: '10000',
-            tag_key: '10004'
-          },
-          10005: {
-            tag_type: 1,
-            tag_name: '套利客',
-            tag_description: '人工定義為套利客',
-            tag_category: 1,
-            sort_index: 1000006,
-            tag_enabled: true,
-            mutual_tags_code: '',
-            tag_key: '10005'
-          },
-          10007: {
-            tag_type: 1,
-            tag_name: '疑似套利客',
-            tag_description: '人工定義為疑似套利客',
-            tag_category: 1,
-            sort_index: 1000007,
-            tag_enabled: true,
-            mutual_tags_code: '',
-            tag_key: '10007'
-          },
-          30004: {
-            tag_type: 3,
-            tag_name: '贏了會衝',
-            tag_description: '近15個實動日，當日贏後下次會賭更大會員',
-            tag_category: 1,
-            sort_index: 3000004,
-            tag_enabled: true,
-            mutual_tags_code: '30005,30006,30007'
-          }
+        10000: {
+          tag_type: 1,
+          tag_name: '測試',
+          tag_description: '測試敘述',
+          tag_category: 1,
+          sort_index: 1000000,
+          tag_enabled: true,
+          mutual_tags_code: ''
+        },
+        10001: {
+          tag_type: 1,
+          tag_name: 'VIP客',
+          tag_description: '人工定義為高價值會員',
+          tag_category: 1,
+          sort_index: 1000001,
+          tag_enabled: true,
+          mutual_tags_code: ''
+        },
+        10002: {
+          tag_type: 1,
+          tag_name: '退場VIP',
+          tag_description: '人工定義為「曾經」是高價值會員',
+          tag_category: 1,
+          sort_index: 1000002,
+          tag_enabled: true,
+          mutual_tags_code: '',
+          tag_key: '10002'
+        },
+        10003: {
+          tag_type: 1,
+          tag_name: '深耕客',
+          tag_description: '人工定義為「有潛力開發」為高價值的會員',
+          tag_category: 1,
+          sort_index: 1000004,
+          tag_enabled: true,
+          mutual_tags_code: '',
+          tag_key: '10003'
+        },
+        10004: {
+          tag_type: 1,
+          tag_name: '退場深耕客',
+          tag_description: '人工定義為「曾經有潛力開發」為高價值的會員',
+          tag_category: 1,
+          sort_index: 1000005,
+          tag_enabled: true,
+          mutual_tags_code: '10000',
+          tag_key: '10004'
+        },
+        10005: {
+          tag_type: 1,
+          tag_name: '套利客',
+          tag_description: '人工定義為套利客',
+          tag_category: 1,
+          sort_index: 1000006,
+          tag_enabled: true,
+          mutual_tags_code: '',
+          tag_key: '10005'
+        },
+        10007: {
+          tag_type: 1,
+          tag_name: '疑似套利客',
+          tag_description: '人工定義為疑似套利客',
+          tag_category: 1,
+          sort_index: 1000007,
+          tag_enabled: true,
+          mutual_tags_code: '',
+          tag_key: '10007'
+        },
+        30004: {
+          tag_type: 3,
+          tag_name: '贏了會衝',
+          tag_description: '近15個實動日，當日贏後下次會賭更大會員',
+          tag_category: 1,
+          sort_index: 3000004,
+          tag_enabled: true,
+          mutual_tags_code: '30005,30006,30007'
         }
       }
     }

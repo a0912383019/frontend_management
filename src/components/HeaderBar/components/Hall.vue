@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import HallToggle from '@/components/HeaderBar/components/HallToggle.vue'
-import Countdown from '@/components/HeaderBar/components/Countdown.vue'
 import HallDropDown from '@/components/HeaderBar/components/HallDropDown.vue'
 
 const isDropOpen = ref(false) //下拉開啟狀態
@@ -35,7 +34,6 @@ onUnmounted(() => {
       <HallToggle class="targetHallBox" />
       <transition name="slide-up-fade">
         <div class="hallbox__content" ref="refHallContent" v-show="isDropOpen">
-          <Countdown />
           <HallDropDown @update:drop="closeDrop" />
         </div>
       </transition>

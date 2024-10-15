@@ -6,6 +6,7 @@ import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiListCustomTagsSetting } from '@/api'
 import { errorRespond, getSessionStorageEntity } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
+import { ElNotification } from 'element-plus'
 
 const { t } = useI18n()
 
@@ -44,7 +45,12 @@ const queryListCustomTagsSetting = async () => {
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 401) {
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     }
   }
@@ -82,7 +88,7 @@ const checkRowCount = (data) => {
   const hasVipTagData = data.filter((item) => vipTag.includes(item.tag_code.toString()))
 
   // 取得 tag config 資料
-  const tagConfig = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+  const tagConfig = getSessionStorageEntity('system_config').tags_config
 
   // 取得 row_count 為 0 的資料
   const hasRowCountZero = hasVipTagData.filter((item) => item.row_count === 0)

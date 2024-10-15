@@ -14,7 +14,7 @@ const globalStore = useGlobalStore()
 const { systemConfigIsOk } = storeToRefs(globalStore)
 const { activeHall } = globalStore
 
-const dialogTableVisible = ref(false) //dialog開啟狀態
+const dialogTableVisible = ref(false) // dialog開啟狀態
 
 const tableColumns = computed(() => {
   return [
@@ -32,7 +32,7 @@ const tableColumns = computed(() => {
   ]
 })
 
-const currentTabs = ref('all') //當前顯示的tabs
+const currentTabs = ref('all') // 當前顯示的tabs
 
 const refTable = ref(null) // ref table
 
@@ -89,20 +89,19 @@ const tagsData = reactive({
 })
 let tagsDataOriginal = reactive({})
 
-//取得sessiontStorage tags_config資料
+// 取得sessiontStorage tags_config資料
 const getTagsConfig = () => {
   return getSessionStorageEntity('system_config').tags_config
 }
 
-//轉換 tags_config 格式
+// 轉換 tags_config 格式
 const transformTagsConfig = () => {
   Object.keys(tagsData).forEach((item) => {
     tagsData[item] = []
   })
 
-  let tagsConfigData = tagsConfig[activeHall.hall_code]
-  if (tagsConfigData !== undefined) {
-    let tagSortDict = generateTagBySortIndex({hall_name: activeHall.hall_code})
+  if (tagsConfig !== undefined && tagsConfig) {
+    let tagSortDict = generateTagBySortIndex()
 
     Object.entries(tagSortDict).forEach((item) => {
       let value = item[1]
@@ -149,7 +148,7 @@ const transformTagsConfig = () => {
         break
     }
   }
-  //將資料合併到all和type3內
+  // 將資料合併到all和type3內
   tagsData['type3'] = tagsData['type3'].concat(type3_data)
   tagsData['all'] = tagsData['all']
     .concat(tagsData['type6'])
@@ -160,7 +159,7 @@ const transformTagsConfig = () => {
     .concat(tagsData['type1'])
     .concat(tagsData['type9'])
 
-  //將目前資料複製一份到tagsDataOriginal
+  // 將目前資料複製一份到tagsDataOriginal
   tagsDataOriginal = {}
   tagsDataOriginal = JSON.parse(JSON.stringify(tagsData))
   handleSearch()
@@ -172,7 +171,7 @@ const tableData = computed(() => {
 
 const filtered = ref(false)
 const tableDataLength = ref(0)
-//search
+// search
 const searchText = ref('')
 const handleSearch = () => {
   let handleSearchText = searchText.value.toLowerCase()
@@ -192,12 +191,12 @@ const handleSearch = () => {
   tableDataLength.value = tagsDataOriginal[currentTabs.value].length
 }
 
-//開啟 dialog
+// 開啟 dialog
 const handleOpenDialog = () => {
   dialogTableVisible.value = true
 }
 
-//dialog close callback
+// dialog close callback
 const handleCloseDialog = () => {
   searchText.value = ''
 }
@@ -231,12 +230,12 @@ watch(
 watch(
   () => currentTabs.value,
   (newVal, oldVal) => {
-    //切換頁籤時，如果有搜尋關鍵字，將關鍵字清除，並復原切換前頁籤的內容
+    // 切換頁籤時，如果有搜尋關鍵字，將關鍵字清除，並復原切換前頁籤的內容
     if (searchText.value !== '') {
       searchText.value = ''
       tagsData[oldVal] = JSON.parse(JSON.stringify(tagsDataOriginal[oldVal]))
     }
-    //切換頁籤時，將表格的頁碼初始化到第一頁
+    // 切換頁籤時，將表格的頁碼初始化到第一頁
     refTable.value.goToFirstPage()
   }
 )

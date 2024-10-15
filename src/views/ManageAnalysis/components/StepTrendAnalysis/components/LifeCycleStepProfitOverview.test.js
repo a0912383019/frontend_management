@@ -25,7 +25,7 @@ describe('LifeCycleStepProfitOverview.vue', () => {
     }
   })
 
-  //讓console.error不要洗版
+  // 讓console.error不要洗版
   vi.spyOn(console, 'error').mockImplementation(() => {})
 
   // 預設apiSuccess = false，預期渲染的元件
@@ -43,7 +43,7 @@ describe('LifeCycleStepProfitOverview.vue', () => {
     //更換語系
     wrapper.vm.i18nLocale = 'en'
     const tableColumnsValue = wrapper.vm.tableColumns
-    //computed有無如預期改變
+    // computed有無如預期改變
     expect(tableColumnsValue).toStrictEqual([
       { label: 'Phase', prop: 'step_name', headerAlign: 'center', align: 'left', minWidth: '20%' },
       {

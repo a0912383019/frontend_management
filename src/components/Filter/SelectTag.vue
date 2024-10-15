@@ -165,11 +165,13 @@ const changeGenerateCategoryLists = () => {
   }
   originalSelectCategoryLists.value = selectCategoryLists.value.slice(0)
 }
+
 // 標籤下拉
 const selectTagLists = ref([])
 const originalSelectTagLists = ref([])
-const tagsConfig = generateTagBySortIndex({ hall_name: activeHall.hall_code })
+const tagsConfig = generateTagBySortIndex([1,2,3,4,5,6,7,9])
 const tagsConfigTransformData = reactive({})
+
 // 轉換資料，優化tagsConfig
 const transformTagsConfig = () => {
   try {
@@ -193,6 +195,7 @@ const transformTagsConfig = () => {
     router.push({ path: '/home' })
   }
 }
+
 const changeGenerateTagLists = () => {
   selectTagLists.value = []
   if (selectCategoryValue.value !== '') {

@@ -170,84 +170,80 @@ describe('Utility Functions', () => {
   it('checkTagUsage should return the correct value', () => {
     const system_config = {
       tags_config: {
-        esb: {
-          10000: {
-            tag_type: 1,
-            tag_name: '測試',
-            tag_description: '測試敘述',
-            tag_category: 1,
-            sort_index: 1000000,
-            tag_enabled: true,
-            mutual_tags_code: ''
-          },
-          10001: {
-            tag_type: 1,
-            tag_name: 'VIP客',
-            tag_description: '人工定義為高價值會員',
-            tag_category: 1,
-            sort_index: 1000001,
-            tag_enabled: true,
-            mutual_tags_code: ''
-          },
-          10002: {
-            tag_type: 1,
-            tag_name: '退場VIP',
-            tag_description: '人工定義為「曾經」是高價值會員',
-            tag_category: 1,
-            sort_index: 1000002,
-            tag_enabled: false,
-            mutual_tags_code: '',
-            tag_key: '10002'
-          }
+        10000: {
+          tag_type: 1,
+          tag_name: '測試',
+          tag_description: '測試敘述',
+          tag_category: 1,
+          sort_index: 1000000,
+          tag_enabled: true,
+          mutual_tags_code: ''
+        },
+        10001: {
+          tag_type: 1,
+          tag_name: 'VIP客',
+          tag_description: '人工定義為高價值會員',
+          tag_category: 1,
+          sort_index: 1000001,
+          tag_enabled: true,
+          mutual_tags_code: ''
+        },
+        10002: {
+          tag_type: 1,
+          tag_name: '退場VIP',
+          tag_description: '人工定義為「曾經」是高價值會員',
+          tag_category: 1,
+          sort_index: 1000002,
+          tag_enabled: false,
+          mutual_tags_code: '',
+          tag_key: '10002'
         }
       }
     }
     sessionStorage.setItem('system_config', JSON.stringify(system_config))
-    const result1 = checkTagUsage('esb', 10000)
+    const result1 = checkTagUsage(10000)
     expect(result1).toBe(true)
 
-    const result2 = checkTagUsage('esb', 10002)
+    const result2 = checkTagUsage(10002)
     expect(result2).toBe(false)
   })
 
-  //測試 generateTagBySortIndex 函數
+  // 測試 generateTagBySortIndex 函數
   it('generateTagBySortIndex should return the correct value', () => {
     const system_config = {
       tags_config: {
-        esb: {
-          10000: {
-            tag_type: 1,
-            tag_name: '測試',
-            tag_description: '測試敘述',
-            tag_category: 1,
-            sort_index: 1000000,
-            tag_enabled: true,
-            mutual_tags_code: ''
-          },
-          10001: {
-            tag_type: 1,
-            tag_name: 'VIP客',
-            tag_description: '人工定義為高價值會員',
-            tag_category: 1,
-            sort_index: 1000001,
-            tag_enabled: true,
-            mutual_tags_code: ''
-          },
-          10002: {
-            tag_type: 1,
-            tag_name: '退場VIP',
-            tag_description: '人工定義為「曾經」是高價值會員',
-            tag_category: 1,
-            sort_index: 1000002,
-            tag_enabled: false,
-            mutual_tags_code: '',
-            tag_key: '10002'
-          }
+        10000: {
+          tag_type: 1,
+          tag_name: '測試',
+          tag_description: '測試敘述',
+          tag_category: 1,
+          sort_index: 1000000,
+          tag_enabled: true,
+          mutual_tags_code: ''
+        },
+        10001: {
+          tag_type: 1,
+          tag_name: 'VIP客',
+          tag_description: '人工定義為高價值會員',
+          tag_category: 1,
+          sort_index: 1000001,
+          tag_enabled: true,
+          mutual_tags_code: ''
+        },
+        10002: {
+          tag_type: 1,
+          tag_name: '退場VIP',
+          tag_description: '人工定義為「曾經」是高價值會員',
+          tag_category: 1,
+          sort_index: 1000002,
+          tag_enabled: false,
+          mutual_tags_code: '',
+          tag_key: '10002'
         }
       }
     }
     sessionStorage.setItem('system_config', JSON.stringify(system_config))
-    const result = generateTagBySortIndex({ hall_name: 'esb' })
+    const result = generateTagBySortIndex()
 
     const tag_sort_dict = {
       1000000: {

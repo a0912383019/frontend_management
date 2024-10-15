@@ -74,7 +74,7 @@ const transformMemberInfoTagStr = (data) => {
   let has_tag_ary = data ? data.split(',') : []
   has_tag_ary.forEach((item) => {
     //  若標籤代碼禁用，則跳過不顯示
-    if (checkTagUsage(activeHall.hall_code, item)) {
+    if (checkTagUsage(item)) {
       tagStrList.value.push(item)
     }
   })

@@ -14,7 +14,7 @@ describe('CustomTagsSetting.vue', () => {
   let spyPut
   let spyDelete
   const sortByFather = vi.fn()
-  const storeGetSystemConfig = vi.fn()
+  const storeSystemConfig = vi.fn()
 
   const pinia = createTestingPinia({ createSpy: vi.fn })
   const globalStore = useGlobalStore(pinia)
@@ -25,24 +25,22 @@ describe('CustomTagsSetting.vue', () => {
       hall_code: 'esb',
       hall_name: 'Esball'
     }
-    systemStore.storeGetSystemConfig = storeGetSystemConfig
+    systemStore.storeSystemConfig = storeSystemConfig
 
     vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
     module.getSessionStorageEntity.mockReturnValue({
       tags_config: {
-        esb: {
-          30406: {
-            tag_type: 1,
-            tag_description: '人工定義為高價值會員',
-            tag_name: '水水tag',
-            tag_enabled: 1
-          },
-          40003: {
-            tag_type: 3,
-            tag_description: '近15個實動日，當日贏後下次會賭更大會員',
-            tag_name: '混混tag',
-            tag_enabled: 1
-          }
+        30406: {
+          tag_type: 1,
+          tag_description: '人工定義為高價值會員',
+          tag_name: '水水tag',
+          tag_enabled: 1
+        },
+        40003: {
+          tag_type: 3,
+          tag_description: '近15個實動日，當日贏後下次會賭更大會員',
+          tag_name: '混混tag',
+          tag_enabled: 1
         }
       }
     })
@@ -94,7 +92,7 @@ describe('CustomTagsSetting.vue', () => {
             template: '<div></div>'
           }
         }
-      },
+      }
     })
     wrapper.vm.$refs.tableRef.sortByFather = sortByFather
   })
@@ -193,7 +191,7 @@ describe('CustomTagsSetting.vue', () => {
   })
 
   it('test updateTagConfig & reloadPage', async () => {
-    expect(storeGetSystemConfig).toBeCalledTimes(0)
+    expect(storeSystemConfig).toBeCalledTimes(0)
     // onMounted 第一次
     expect(spyGet).toBeCalledTimes(1)
 
@@ -206,7 +204,7 @@ describe('CustomTagsSetting.vue', () => {
       hall_name: 'esb',
       enabled
     })
-    expect(storeGetSystemConfig).toBeCalledTimes(1)
+    expect(storeSystemConfig).toBeCalledTimes(1)
     expect(spyGet).toBeCalledTimes(2)
   })
 

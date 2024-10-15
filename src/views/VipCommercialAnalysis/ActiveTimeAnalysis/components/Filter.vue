@@ -93,7 +93,7 @@ const selectWeekLists = computed({
 const originalWeekLists = JSON.parse(JSON.stringify(selectWeekLists.value))
 
 // 取得 system_config 資料
-const tagsConfig = ref(getSessionStorageEntity('system_config').tags_config[activeHall.hall_code])
+const tagsConfig = ref(getSessionStorageEntity('system_config').tags_config)
 
 // 包含標籤選項
 const selectTagLists = computed({
@@ -171,7 +171,7 @@ const handleClick = () => {
 watch(
   () => systemConfigIsOk.value,
   () => {
-    tagsConfig.value = getSessionStorageEntity('system_config').tags_config[activeHall.hall_code]
+    tagsConfig.value = getSessionStorageEntity('system_config').tags_config
     weekKey.value = Math.floor(Math.random() * 100)
     vipKey.value = Math.floor(Math.random() * 100)
   }

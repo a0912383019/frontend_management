@@ -38,6 +38,11 @@ export const useGlobalStore = defineStore(
       hall_code: ''
     })
 
+    const resetState = () => {
+      activeHall.hall_name = ''
+      activeHall.hall_code = ''
+    }
+
     // lobby_group
     const lobbyGroupConfig = computed(() => {
       const config = {}
@@ -173,7 +178,8 @@ export const useGlobalStore = defineStore(
       lastRoute,
       userTypeConfig,
       userStatusConfig,
-      currencySign
+      currencySign,
+      resetState
     }
   },
   {
