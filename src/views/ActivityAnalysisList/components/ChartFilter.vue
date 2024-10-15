@@ -157,7 +157,11 @@ watch(
       </template>
       <el-row :gutter="15">
         <el-col :span="12" class="mb-19">
-          <SectionTitle size="small" class="cdp-text-purple mb-4" :title="$t('data_name.ag_name')">
+          <SectionTitle
+            size="small"
+            class="cdp-text-purple mb-4"
+            :title="$t('activity_analysis.analysis_duration')"
+          >
           </SectionTitle>
           <el-select-v2
             v-model="form.selectAcount"
