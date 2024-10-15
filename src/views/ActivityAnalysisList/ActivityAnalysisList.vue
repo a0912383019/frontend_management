@@ -10,6 +10,7 @@ import TotalSum from '@/views/ActivityAnalysisList/components/TotalSum.vue'
 import AddButton from '@/components/Button/AddButton.vue'
 import AddDialog from '@/views/ActivityAnalysisList/AddActivity.vue'
 import Filter from '@/views/ActivityAnalysisList/Filter.vue'
+import ChartFilter from '@/views/ActivityAnalysisList/components/ChartFilter.vue'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import { apiImportActivity } from '@/api'
 import { ElNotification } from 'element-plus'
@@ -130,6 +131,14 @@ onUnmounted(() => {
             @click="openAddDialog"
           />
           <Filter />
+        </div>
+        <div v-if="currentTabs !== 'Overview'" class="flex items-center justify-end">
+          <AddButton
+            class="mr-10"
+            :name="$t('activity_analysis.add_activity')"
+            @click="openAddDialog"
+          />
+          <ChartFilter />
         </div>
       </el-col>
     </el-row>
