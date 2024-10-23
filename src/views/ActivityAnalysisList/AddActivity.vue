@@ -447,7 +447,7 @@ onMounted(() => {
                         v-model="scope.row.promotion_list"
                         class="cdp-select cdp-select__blue w-full ml-5"
                         :class="{ 'is-error': !scope.row.promotion_valid.valid }"
-                        popper-class="cdp-select-popper cdp-select-popper__blue"
+                        popper-class="cdp-select-popper__blue"
                         filterable
                         :fallback-placements="['bottom-end', 'top-end']"
                         :teleported="true"
@@ -596,11 +596,6 @@ onMounted(() => {
 :deep(.el-table) {
   .cell {
     overflow: visible !important;
-    .el-popper.cdp-select-popper {
-      overflow: scroll;
-      right: 0px !important;
-      top: 50px !important;
-    }
   }
   td.el-table__cell {
     z-index: auto !important;
