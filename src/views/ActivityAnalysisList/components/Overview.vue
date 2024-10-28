@@ -9,6 +9,7 @@ import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
+import ActivityDetail from '@/views/ActivityAnalysisList/components/activityDetail/ActivityDetail.vue'
 import { ElNotification } from 'element-plus'
 import { sortTableDate } from '@/utils/commonUtils.js'
 
@@ -105,8 +106,16 @@ const transformActivityList = (data) => {
   return activityList
 }
 
+const showDetail = ref(false)
+const detailId = ref(null)
 const openActivityDetail = (activityId) => {
-  console.log('activity_id', activityId)
+  showDetail.value = true
+  detailId.value = activityId
+}
+
+const closeDetail = () => {
+  showDetail.value = false
+  detailId.value = null
 }
 
 const deleteBox = ref(false) // 刪除彈窗
@@ -205,7 +214,7 @@ onMounted(() => {
       :pageSize="10"
       :stripe="true"
       @sort="upadteCurrentSort"
-      class="customTable2 customTagListTable"
+      class="customTable2 customActivityListTable"
     >
       <template #operation="scope">
         <div>
@@ -240,6 +249,7 @@ onMounted(() => {
         {{ $t('modal.are_you_sure_to_delete') + '「' + deleteActivityName + '」?' }}
       </template>
     </ConfirmBox>
+    <ActivityDetail v-model="showDetail" @closeDialog="closeDetail" :detailId="detailId" />
   </section>
 </template>
 <style lang="scss" scoped>
@@ -248,7 +258,7 @@ onMounted(() => {
 }
 </style>
 <style lang="scss">
-.customTagListTable {
+.customActivityListTable {
   button.detail-button {
     min-width: 80px;
   }

@@ -14,5 +14,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   // 用來監聽是否新增或是修改活動
   const activityAddChange = 0
 
-  return { searchActivity, filtered, initFilter, activityAddChange }
+  const childListData = ref([])
+
+  return { searchActivity, filtered, initFilter, activityAddChange, childListData }
 })

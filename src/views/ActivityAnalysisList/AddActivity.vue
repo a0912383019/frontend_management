@@ -492,12 +492,14 @@ onMounted(() => {
             </el-col>
           </el-row>
         </el-form>
-        <CdpButton
-          class="custom-bg-dark__blue ml-20"
-          :name="$t('modal.add')"
-          size="sm-130"
-          @click="validActivityAdd()"
-        />
+        <div class="flex justify-end">
+          <CdpButton
+            class="custom-bg-dark__blue"
+            :name="$t('modal.add')"
+            size="sm-130"
+            @click="validActivityAdd()"
+          />
+        </div>
       </section>
     </div>
   </el-dialog>
@@ -652,9 +654,6 @@ onMounted(() => {
     overflow: visible !important;
   }
 }
-// :deep(.el-table .cell) {
-//   overflow: visible !important;
-// }
 .detail-button {
   min-width: 40px !important;
   width: 85%;
