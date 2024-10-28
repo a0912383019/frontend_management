@@ -48,6 +48,7 @@ const childRef = ref(null)
 const subActivities = ref([])
 
 const edit = ref(false)
+const editDisabled = ref(true)
 
 const handleEdit = () => {
   edit.value = true
@@ -102,6 +103,8 @@ const validActivity = async () => {
 }
 
 const queryTargetGroupsId = async () => {
+  editDisabled.value = true
+
   try {
     const result = await apiActivityInfo({
       hall_name: activeHall.hall_code,
@@ -111,6 +114,7 @@ const queryTargetGroupsId = async () => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       transformActivityData(result.data.result)
+      editDisabled.value = false
     }
   } catch (error) {
     console.error(error)
@@ -251,6 +255,7 @@ onMounted(() => {
           class="custom-bg-dark__blue ml-20"
           :name="$t('common.edit')"
           size="sm-130"
+          :disabled="editDisabled"
           @click="handleEdit()"
         />
       </div>
