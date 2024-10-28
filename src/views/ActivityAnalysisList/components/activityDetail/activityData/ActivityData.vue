@@ -118,10 +118,21 @@ const queryTargetGroupsId = async () => {
     }
   } catch (error) {
     console.error(error)
+    initFormAndData()
     if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     }
   }
+}
+
+const initFormAndData = () => {
+  originalData.value = null
+  validateForm.name = ''
+  validateForm.purpose = ''
+  validateForm.operatedAccount = ''
+  validateForm.createdTime = ''
+  validateForm.description = ''
+  childListData.value = []
 }
 
 const originalData = ref(null)
@@ -168,6 +179,7 @@ const confirmSaved = () => {
 }
 
 onMounted(() => {
+  initFormAndData()
   confirmWidth.value = locale.value === 'en' ? 400 : 350
   queryTargetGroupsId()
 })
