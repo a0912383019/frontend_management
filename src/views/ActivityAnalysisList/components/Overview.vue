@@ -214,7 +214,7 @@ onMounted(() => {
       :pageSize="10"
       :stripe="true"
       @sort="upadteCurrentSort"
-      class="customTable2 customTagListTable"
+      class="customTable2 customActivityListTable"
     >
       <template #operation="scope">
         <div>
@@ -258,7 +258,7 @@ onMounted(() => {
 }
 </style>
 <style lang="scss">
-.customTagListTable {
+.customActivityListTable {
   button.detail-button {
     min-width: 80px;
   }

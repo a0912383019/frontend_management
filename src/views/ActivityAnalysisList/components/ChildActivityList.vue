@@ -272,7 +272,7 @@ defineExpose({ getSubActivities, validSubActivities })
         :hasPagination="false"
         :stripe="false"
         rowKey="detail_key"
-        class="customTable2 customTagListTable"
+        class="customTable2"
         :class="{ 'is-empty': childListData.value && childListData.value.length === 0 }"
       >
         <template #promotion_list-header>
@@ -533,24 +533,5 @@ defineExpose({ getSubActivities, validSubActivities })
 }
 .line-1-5 {
   line-height: 1.5;
-}
-.table-total {
-  width: 100%;
-  td {
-    font-size: 14px;
-    color: #404040;
-    font-weight: normal;
-    div {
-      word-break: break-all;
-    }
-  }
-}
-</style>
-<style lang="scss">
-.overflow-visible {
-  overflow: visible !important;
-}
-.dialog-mt-40 {
-  margin-top: 40px;
 }
 </style>
