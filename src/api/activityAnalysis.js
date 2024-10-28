@@ -354,3 +354,11 @@ export const apiImportActivity = (params) => {
     function_id
   })
 }
+
+export const apiActivityInfo = (params) => {
+  const { hall_name, activity_id } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_analysis_info', {
+    hall_name,
+    activity_id
+  })
+}
