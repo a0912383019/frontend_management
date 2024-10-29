@@ -274,7 +274,7 @@ watch(
 watch(
   () => subActivities.value.length,
   (newLength) => {
-    maxLimit.value = newLength >= 5
+    maxLimit.value = newLength >= 20
   }
 )
 
