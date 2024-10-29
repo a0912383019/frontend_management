@@ -6,6 +6,7 @@ import { apiActivityInfo } from '@/api'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ChildActivityList from '@/views/ActivityAnalysisList/components/ChildActivityList.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
+import { ElNotification } from 'element-plus'
 
 const { t, locale } = useI18n()
 
@@ -102,7 +103,8 @@ const validActivity = async () => {
   return subValid && infoValid
 }
 
-const queryTargetGroupsId = async () => {
+const queryActivityInfo = async () => {
+  initFormAndData()
   editDisabled.value = true
 
   try {
@@ -118,9 +120,18 @@ const queryTargetGroupsId = async () => {
     }
   } catch (error) {
     console.error(error)
-    initFormAndData()
-    if (error.response.status === 401) {
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.query_failed'),
+        type: 'error'
+      })
     }
   }
 }
@@ -175,13 +186,13 @@ const cancelSaved = () => {
 const confirmSaved = () => {
   confirmBox.value = false
   edit.value = false
-  queryTargetGroupsId()
+  queryActivityInfo()
 }
 
 onMounted(() => {
   initFormAndData()
   confirmWidth.value = locale.value === 'en' ? 400 : 350
-  queryTargetGroupsId()
+  queryActivityInfo()
 })
 </script>
 <template>

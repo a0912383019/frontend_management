@@ -64,6 +64,7 @@ watch(
   () => {
     disabledTab.value = [1]
     if (childListData.value.length !== 0) {
+      console.log(childListData.value);
       disabledTab.value = []
     }
   }

@@ -82,8 +82,20 @@ const createSubActivity = () => {
 
 const subActivities = ref([])
 
+const maxLimit = ref(false)
+const addBtnDisabled = computed({
+  get() {
+    return !props.canEdit || maxLimit.value
+  },
+  set(newValue) {
+    maxLimit.value = newValue
+  }
+})
+
 const addChild = () => {
-  subActivities.value.push(createSubActivity())
+  if (!addBtnDisabled.value) {
+    subActivities.value.push(createSubActivity())
+  }
 }
 
 const generateOptions = (arr) => {
@@ -259,6 +271,13 @@ watch(
   }
 )
 
+watch(
+  () => subActivities.value.length,
+  (newLength) => {
+    maxLimit.value = newLength >= 5
+  }
+)
+
 defineExpose({ getSubActivities, validSubActivities })
 </script>
 <template>
@@ -396,7 +415,7 @@ defineExpose({ getSubActivities, validSubActivities })
         :name="$t('activity_analysis.add_activity_detail')"
         size="long"
         :bg="true"
-        :disabled="!props.canEdit"
+        :disabled="addBtnDisabled"
         @click="addChild()"
       />
     </section>
