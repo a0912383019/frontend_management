@@ -1,7 +1,7 @@
 <script setup>
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useGlobalStore } from '@/stores'
+import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import ActivityChart from '@/views/ActivityAnalysisList/components/ActivityChart.vue'
 import {
   apiQueryGrowthRateActiveCommissionable,
@@ -14,6 +14,10 @@ import { errorRespond } from '@/utils/commonUtils.js'
 const { t } = useI18n()
 
 const globalStore = useGlobalStore()
+const { activeHall } = globalStore
+
+const activityStore = useActivityAnalysisStore()
+const { chartApiParams } = activityStore
 
 const apiObjectCommissionable = reactive({
   apiSuccess: false,
@@ -37,21 +41,22 @@ const queryActivityApi = async (api, apiObject) => {
   apiObject.apiSuccess = false
   apiObject.messageKey = 'loading'
   let hasError = false
+
   try {
     const result = await api({
-      hall_name: 'esx',
+      hall_name: activeHall.hall_code,
       start_search_year: 2024,
       start_search_month: 6,
       start_search_week: 1,
-      start_date: '2024-06-3',
+      start_date: chartApiParams.start_date,
       end_search_year: 2024,
       end_search_month: 9,
       end_search_week: 1,
-      end_date: '2024-09-02',
-      cut_type: 'week',
-      reward_flag: 1,
+      end_date: chartApiParams.end_date,
+      cut_type: chartApiParams.cut_type,
+      reward_flag: chartApiParams.reward_flag,
       reward_date_flag: 0,
-      search_activity: [50, 48, 33, 28]
+      search_activity: chartApiParams.search_activity
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -116,6 +121,10 @@ const queryCharts = () => {
     }
   })
 }
+
+watch([() => activityStore.chartFiltered], () => {
+  queryCharts()
+})
 
 onMounted(async () => {
   queryCharts()

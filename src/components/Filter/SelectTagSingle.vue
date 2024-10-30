@@ -16,8 +16,17 @@ const props = defineProps({
   },
   defaultAll: {
     type: String
+  },
+  showAllOption: {
+    type: Boolean,
+    default: true
+  },
+  placeholder: {
+    type: String
   }
 })
+
+const placeholderText = props.placeholder || t('tags.filter')
 
 const vipStore = useVipCommercialAnalysisStore()
 const { defaultVipTag } = vipStore
@@ -35,9 +44,12 @@ const defaultAll = props.defaultAll === undefined ? defaultVipTag : props.defaul
 const dropClass = ref('dropClass' + dayjs() + Math.floor(Math.random() * 10))
 
 // 已選標籤列表
-const currentTagAry = ref([
-  { value: 'all', label: t('vip_commercial_analysis.all'), disabled: false, active: false }
-])
+const currentTagAry = ref(
+  props.showAllOption
+    ? [{ value: 'all', label: t('vip_commercial_analysis.all'), disabled: false, active: false }]
+    : []
+)
+
 // 標籤選取文字
 const tagTextAry = ref([])
 // 篩選標籤input欄位
@@ -247,7 +259,7 @@ watch(
         v-model="tagInputText"
         class="select-tag-single__input"
         :class="dropClass"
-        :placeholder="$t('tags.filter')"
+        :placeholder="placeholderText"
         ref="refTagInput"
         @focus="handleInputFocus"
         @keyup="handleInputKeyup"

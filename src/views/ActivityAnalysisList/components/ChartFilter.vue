@@ -1,89 +1,109 @@
 <script setup>
-import { ref, reactive, watch, onMounted, computed } from 'vue'
+import { ref, nextTick, watch, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryListActiveLimit } from '@/api'
-import { useGlobalStore } from '@/stores'
-import { ElNotification } from 'element-plus'
+import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import { errorRespond } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import FuzzySwitchWithTooltip from '@/components/Switch/FuzzySwitchWithTooltip.vue'
-import SelectTag from '@/components/Filter/SelectTag.vue'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
+import LoadingBox from '@/components/Loading/LoadingBox.vue'
+import SelectTagSingle from '@/components/Filter/SelectTagSingle.vue'
+import { ElNotification } from 'element-plus'
 
 const { t } = useI18n()
+
+const activityStore = useActivityAnalysisStore()
+const { filterData } = activityStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-//popover 開啟狀態
+// popover 開啟狀態
 const popoverVisible = ref(false)
+const formDisabled = ref(false)
 
-const emit = defineEmits(['update:filter-submit'])
+// api是否成功
+const apiSuccess = ref(false)
+
+// 紀錄 key
+const Key = ref(0)
 
 // 分析區間 options
-const selectAccountOptions = computed(() => {
+const selectDurationOptions = computed(() => {
   return [
     {
-      value: '0',
+      value: 'week',
       label: t('tag_synchronization.activity_date_cycle_week'),
-      selected: true
+      disabled: false
     },
     {
-      value: '0',
-      label: t('tag_synchronization.activity_date_cycle_week'),
-      selected: true
+      value: 'month',
+      label: t('tag_synchronization.activity_date_cycle_month'),
+      disabled: false
+    },
+    {
+      value: 'season',
+      label: t('tag_synchronization.activity_date_cycle_season'),
+      disabled: false
+    },
+    {
+      value: 'year',
+      label: t('tag_synchronization.activity_date_cycle_year'),
+      disabled: false
     }
   ]
 })
 
 // 達檻狀態 options
-const selectLevelOptions = ref([
-  {
-    value: '0',
-    label: t('tag_synchronization.activity_date_cycle_week'),
-    selected: true
-  }
-])
-
-const form = reactive({
-  hall_name: '',
-  start_search_year: '',
-  start_search_month: '',
-  start_search_week: '',
-  start_date: '',
-  end_search_year: '',
-  end_search_month: '',
-  end_search_week: '',
-  end_date: '',
-  cut_type: '',
-  reward_flag: '',
-  reward_date_flag: 0,
-  search_activity: []
+const selectRewardOptions = computed(() => {
+  return [
+    {
+      value: 1,
+      label: t('activity_analysis.award')
+    },
+    {
+      value: 0,
+      label: t('activity_analysis.not_award')
+    }
+  ]
 })
 
-const handleSubmitClick = () => {
-  popoverVisible.value = false
-  emit('update:filter-submit', form)
-  closePopover()
-}
+// 活動中 options
+const selectActivityStatusdOptions = computed(() => {
+  return [
+    {
+      value: 'all',
+      label: t('activity_analysis.all_date')
+    },
+    {
+      value: 'other',
+      label: t('activity_analysis.award_date')
+    }
+  ]
+})
 
-// 取得代理帳號和會員層級
-const queryAgNameUserLevel = async () => {
+// 活動名稱 options
+const selectActivityNameOptions = ref([])
+
+// 取得資料
+const queryActivityName = async () => {
+  apiSuccess.value = false
   try {
     const result = await apiQueryListActiveLimit({
-      hall_name: activeHall.hall_code
+      hall_name: activeHall.hall_code,
+      duration: filterData.selectDuration,
+      reward: filterData.selectReward,
+      name: filterData.activityNameList
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
-      transformAgNameUserLevel(result.data.result)
+      apiSuccess.value = true
+      selectActivityNameOptions.value = []
+      transformActivityName(result.data.result)
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
-      ElNotification({
-        title: t('msg.query_failed'),
-        type: 'success'
-      })
     }
   } catch (error) {
     console.error(error)
@@ -94,23 +114,14 @@ const queryAgNameUserLevel = async () => {
 }
 
 // 處理資料
-const transformAgNameUserLevel = (data) => {
-  let { ag_name, user_level } = data
-  // 代理帳號
-  ag_name.forEach((item) => {
-    selectAccountOptions.value.push({
-      value: item,
-      label: item
+const transformActivityName = (data) => {
+  data.forEach((item) => {
+    selectActivityNameOptions.value.push({
+      value: item.activity_id,
+      label: item.activity_name
     })
   })
-
-  // 會員層級
-  user_level.forEach((item) => {
-    selectLevelOptions.value.push({
-      value: item.user_level_id,
-      label: item.user_level_name
-    })
-  })
+  selectActivityNameOptions.value = selectActivityNameOptions.value.slice(0, 10)
 }
 
 const popover = ref(null) //popover
@@ -120,19 +131,82 @@ const closePopover = () => {
   popover.value.hide()
 }
 
+// 處理時間變化
+const dateCount = (data) => {
+  selectDurationOptions.value.forEach((option) => {
+    option.disabled = false
+  })
+
+  const dateArr = data.split('~')
+  const start = dateArr[0].trim()
+  const end = dateArr[1].trim()
+
+  const diffDays = calculateDayDifference(start, end)
+  const diffMonth = diffDays / 31
+
+  if (diffMonth > 3 && filterData.selectDuration === 'week') {
+    filterData.selectDuration = 'month'
+    selectDurationOptions.value[0].disabled = true
+    ElNotification({
+      title: t('msg.query_failed'),
+      type: 'warning'
+    })
+  } else if (diffMonth > 3 && filterData.selectDuration === 'month') {
+    filterData.selectDuration = 'season'
+    selectDurationOptions.value[0].disabled = true
+    selectDurationOptions.value[1].disabled = true
+    ElNotification({
+      title: t('msg.query_failed'),
+      type: 'warning'
+    })
+  } else if (diffMonth > 3 && filterData.selectDuration === 'season') {
+    filterData.selectDuration = 'year'
+    selectDurationOptions.value[0].disabled = true
+    selectDurationOptions.value[1].disabled = true
+    selectDurationOptions.value[2].disabled = true
+    ElNotification({
+      title: t('msg.query_failed'),
+      type: 'warning'
+    })
+  }
+}
+
+const calculateDayDifference = (startDateStr, endDateStr) => {
+  const startDate = new Date(startDateStr)
+  const endDate = new Date(endDateStr)
+  const timeDifference = endDate - startDate // 毫秒差
+  const dayDifference = timeDifference / (1000 * 60 * 60 * 24) // 換算為天數
+  return dayDifference
+}
+
+const updateActivityName = (idx) => {
+  queryActivityName(idx)
+}
+
+const handleSubmitClick = () => {
+  popoverVisible.value = false
+  activityStore.transformChartParams()
+  activityStore.chartFiltered = Date.now()
+  closePopover()
+}
+
 onMounted(() => {
-  queryAgNameUserLevel()
+  nextTick(() => {
+    queryActivityName()
+  })
 })
 
-// 監聽會員名稱
 watch(
-  () => form.member,
+  () => activityStore.durationApiParams,
   () => {
-    if (form.member === '') {
-      formDisabled.value = false
-    } else {
-      formDisabled.value = true
-    }
+    console.log(999)
+  }
+)
+
+watch(
+  [() => filterData.selectDuration, () => filterData.analysisDate, () => filterData.selectReward],
+  () => {
+    updateActivityName()
   }
 )
 </script>
@@ -164,27 +238,26 @@ watch(
           >
           </SectionTitle>
           <el-select-v2
-            v-model="form.selectAcount"
+            v-model="filterData.selectDuration"
             class="cdp-select cdp-select__purple w-full"
             popper-class="cdp-select-popper cdp-select-popper__purple"
-            filterable
             :teleported="false"
-            :disabled="formDisabled"
-            :options="selectAccountOptions"
+            :options="selectDurationOptions"
           />
         </el-col>
         <el-col :span="12" class="mb-19">
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-4"
-            :title="$t('data_name.register_date')"
+            :title="$t('activity_analysis.analysis_date')"
           >
           </SectionTitle>
           <DatepickerRange
-            v-model="form.registerDate"
+            v-model="filterData.analysisDate"
             :config="2"
+            :disableDate="false"
+            @update:modelValue="dateCount"
             :shortcutsConfig="1"
-            :disabled="formDisabled"
             class="w-full filter-datepicker custom-tag-date-picker"
             classColor="purple"
           />
@@ -193,19 +266,17 @@ watch(
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-4"
-            :title="$t('data_name.user_level')"
+            :title="$t('activity_analysis.reward_status')"
           >
           </SectionTitle>
           <el-select
-            v-model="form.selectLevel"
+            v-model="filterData.selectReward"
             class="cdp-select cdp-select__purple w-full"
             popper-class="cdp-select-popper cdp-select-popper__purple"
-            filterable
             :teleported="false"
-            :disabled="formDisabled"
           >
             <el-option
-              v-for="item in selectLevelOptions"
+              v-for="item in selectRewardOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -213,20 +284,30 @@ watch(
             />
           </el-select>
         </el-col>
+
         <el-col :span="12" class="mb-19">
-          <SectionTitle size="small" class="cdp-text-purple mb-4" :title="$t('data_name.ag_name')">
+          <SectionTitle
+            size="small"
+            class="cdp-text-purple mb-4"
+            :title="$t('activity_analysis.activity_status')"
+          >
           </SectionTitle>
-          <el-select-v2
-            v-model="form.selectAcount"
+          <el-select
+            v-model="filterData.selectActivityStatus"
             class="cdp-select cdp-select__purple w-full"
             popper-class="cdp-select-popper cdp-select-popper__purple"
-            filterable
             :teleported="false"
             :disabled="formDisabled"
-            :options="selectAccountOptions"
-          />
+          >
+            <el-option
+              v-for="item in selectActivityStatusdOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              :selected="item.selected"
+            />
+          </el-select>
         </el-col>
-
         <el-col :span="24" class="mb-19">
           <SectionTitle
             size="small"
@@ -234,7 +315,17 @@ watch(
             :title="$t('activity_analysis.activity_name')"
           >
           </SectionTitle>
-          <SelectTag v-model="form.searchTag" />
+          <div class="loading" v-if="!apiSuccess">
+            <LoadingBox color="purple" size="sm" />
+          </div>
+          <div v-else>
+            <SelectTagSingle
+              :lists="selectActivityNameOptions"
+              :showAllOption="false"
+              :placeholder="t('common.select')"
+              v-model="filterData.activityNameList"
+            />
+          </div>
         </el-col>
       </el-row>
       <div class="drop">
@@ -262,12 +353,10 @@ watch(
     margin-left: 30px;
   }
 }
-.cdp-checkbox {
-  height: 25px;
-}
+
 .custom-tag-date-picker {
   :deep(.el-popper.el-picker__popper) {
-    inset: 147px -13px auto auto !important;
+    inset: 70px 8px auto auto !important;
   }
 }
 </style>

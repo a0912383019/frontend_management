@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
+import { useDateStore } from '@/stores/dateConfig.js'
+import { dayjs } from 'element-plus'
 
 export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   const searchActivity = ref('')
@@ -9,6 +11,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   const initListFilter = () => {
     islistFiltered.value = 0
     searchActivity.value = ''
+    currentTabs.value = 'Overview'
   }
 
   // 用來監聽是否新增或是修改活動
@@ -47,6 +50,51 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 
   const currentDetailTab = ref('TagStatistics')
 
+  const chartFiltered = 0
+  const currentTabs = ref('Overview')
+  const { date_range_picker_config_2 } = useDateStore()
+
+  // 成長率 成長差額 總和 -> 各頁籤篩選狀態
+  const chartFilteredArr = reactive({
+    GrowthRate: { status: 0 },
+    GrowthGap: { status: 0 },
+    TotalSum: { status: 0 }
+  })
+
+  // 進階篩選options的預設值
+  const filterData = reactive({
+    selectDuration: 'week',
+    analysisDate: '',
+    selectReward: 1,
+    activityNameList: ''
+  })
+
+  const chartApiParams = reactive({
+    start_date: dayjs(date_range_picker_config_2.startDate).format('YYYY-MM-DD'),
+    end_date: dayjs(date_range_picker_config_2.endDate).format('YYYY-MM-DD'),
+    cut_type: 'week',
+    reward_flag: 1,
+    search_activity: []
+  })
+
+  const transformChartParams = () => {
+    const dateArr = filterData.analysisDate.split('~')
+    chartApiParams.start_date = dateArr[0].trim()
+    chartApiParams.end_date = dateArr[1].trim()
+    chartApiParams.cut_type = filterData.selectDuration
+    chartApiParams.reward_flag = filterData.selectReward
+    chartApiParams.search_activity = filterData.activityNameList.split(',')
+  }
+
+  // 重置資料
+  const resetState = () => {
+    filterData.chartFiltered = 0
+    filterData.selectDuration = 'week'
+    filterData.analysisDate = ''
+    filterData.selectReward = 1
+    filterData.activityNameList = ''
+  }
+
   return {
     searchActivity,
     islistFiltered,
@@ -58,6 +106,13 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     findSelectedOption,
     isChildFiltered,
     initChildData,
-    currentDetailTab
+    currentDetailTab,
+    chartFiltered,
+    currentTabs,
+    chartFilteredArr,
+    filterData,
+    chartApiParams,
+    transformChartParams,
+    resetState
   }
 })

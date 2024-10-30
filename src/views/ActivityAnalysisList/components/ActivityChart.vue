@@ -1,7 +1,12 @@
 <script setup>
 import { ref, watch, onMounted, toRefs, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { generateRGBColors, formatDateDuration } from '@/utils/commonUtils.js'
+import {
+  generateRGBColors,
+  formatDateDuration,
+  generateMultipleColors
+} from '@/utils/commonUtils.js'
+import { useActivityAnalysisStore } from '@/stores'
 import { dayjs } from 'element-plus'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -9,6 +14,9 @@ import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
 import { latest_chart_color } from '@/../public/js/system_config.js'
 
 const { t } = useI18n()
+
+const activityStore = useActivityAnalysisStore()
+const { chartApiParams } = activityStore
 
 const props = defineProps({
   apiObject: {
@@ -113,12 +121,13 @@ const chartOptions = reactive({
 const transformChartSeries = (data) => {
   clearChart()
   chartOptions.xAxis.categories = data.map((ele) => {
-    let date = ele.interval_title.split('~')
-    return formatDateDuration(
-      dayjs(date[0]).format(t('date.format_date_rule')) +
-        '~' +
-        dayjs(date[1]).format(t('date.format_date_rule'))
-    )
+    return ele.interval_title
+    // let date = ele.interval_title.split('~')
+    // return formatDateDuration(
+    //   dayjs(date[0]).format(t('date.format_date_rule')) +
+    //     '~' +
+    //     dayjs(date[1]).format(t('date.format_date_rule'))
+    // )
   })
 
   let dataClone = { ...data[0] }
@@ -131,11 +140,17 @@ const transformChartSeries = (data) => {
 
   let dataSet = {}
 
+  let colorCount = dataKey.length
+  let colorArr = []
+  if (colorCount > 20) {
+    colorArr = generateMultipleColors(colorCount)['bg']
+  }
+
   dataKey.forEach((ele, idx) => {
     dataSet[ele] = {
       name: dataClone[ele].activity_name,
       type: 'line',
-      color: generateRGBColors(latest_chart_color[idx], 1),
+      color: colorCount > 20 ? colorArr[idx] : generateRGBColors(latest_chart_color[idx], 1),
       lineWidth: 2,
       marker: {
         symbol: 'circle',
