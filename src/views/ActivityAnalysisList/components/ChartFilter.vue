@@ -21,13 +21,11 @@ const { activeHall } = globalStore
 
 // popover 開啟狀態
 const popoverVisible = ref(false)
-const formDisabled = ref(false)
+
+const isFirstLoad = ref(false)
 
 // api是否成功
 const apiSuccess = ref(false)
-
-// 紀錄 key
-const Key = ref(0)
 
 // 分析區間 options
 const selectDurationOptions = computed(() => {
@@ -69,26 +67,13 @@ const selectRewardOptions = computed(() => {
   ]
 })
 
-// 活動中 options
-const selectActivityStatusdOptions = computed(() => {
-  return [
-    {
-      value: 'all',
-      label: t('activity_analysis.all_date')
-    },
-    {
-      value: 'other',
-      label: t('activity_analysis.award_date')
-    }
-  ]
-})
-
 // 活動名稱 options
 const selectActivityNameOptions = ref([])
 
 // 取得資料
 const queryActivityName = async () => {
   apiSuccess.value = false
+
   try {
     const result = await apiQueryListActiveLimit({
       hall_name: activeHall.hall_code,
@@ -96,9 +81,11 @@ const queryActivityName = async () => {
       reward: filterData.selectReward,
       name: filterData.activityNameList
     })
+
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true
+
       selectActivityNameOptions.value = []
       transformActivityName(result.data.result)
     } else {
@@ -107,7 +94,7 @@ const queryActivityName = async () => {
     }
   } catch (error) {
     console.error(error)
-    if (error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
       globalStore.storeHandleApiError()
     }
   }
@@ -115,13 +102,16 @@ const queryActivityName = async () => {
 
 // 處理資料
 const transformActivityName = (data) => {
-  data.forEach((item) => {
+  selectActivityNameOptions.value = []
+
+  const displayData = !isFirstLoad.value ? data.slice(0, 10) : data
+
+  displayData.forEach((item) => {
     selectActivityNameOptions.value.push({
       value: item.activity_id,
       label: item.activity_name
     })
   })
-  selectActivityNameOptions.value = selectActivityNameOptions.value.slice(0, 10)
 }
 
 const popover = ref(null) //popover
@@ -148,7 +138,7 @@ const dateCount = (data) => {
     filterData.selectDuration = 'month'
     selectDurationOptions.value[0].disabled = true
     ElNotification({
-      title: t('msg.query_failed'),
+      title: t('activity_analysis.week_duration_validation_msg'),
       type: 'warning'
     })
   } else if (diffMonth > 3 && filterData.selectDuration === 'month') {
@@ -156,7 +146,7 @@ const dateCount = (data) => {
     selectDurationOptions.value[0].disabled = true
     selectDurationOptions.value[1].disabled = true
     ElNotification({
-      title: t('msg.query_failed'),
+      title: t('activity_analysis.month_duration_validation_msg'),
       type: 'warning'
     })
   } else if (diffMonth > 3 && filterData.selectDuration === 'season') {
@@ -165,7 +155,7 @@ const dateCount = (data) => {
     selectDurationOptions.value[1].disabled = true
     selectDurationOptions.value[2].disabled = true
     ElNotification({
-      title: t('msg.query_failed'),
+      title: t('activity_analysis.season_duration_validation_msg'),
       type: 'warning'
     })
   }
@@ -191,17 +181,14 @@ const handleSubmitClick = () => {
 }
 
 onMounted(() => {
-  nextTick(() => {
-    queryActivityName()
+  isFirstLoad.value = false
+
+  queryActivityName().then(async () => {
+    isFirstLoad.value = true
+
+    await nextTick()
   })
 })
-
-watch(
-  () => activityStore.durationApiParams,
-  () => {
-    console.log(999)
-  }
-)
 
 watch(
   [() => filterData.selectDuration, () => filterData.analysisDate, () => filterData.selectReward],
@@ -262,7 +249,7 @@ watch(
             classColor="purple"
           />
         </el-col>
-        <el-col :span="12" class="mb-19">
+        <el-col :span="24" class="mb-19">
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-4"
@@ -285,29 +272,6 @@ watch(
           </el-select>
         </el-col>
 
-        <el-col :span="12" class="mb-19">
-          <SectionTitle
-            size="small"
-            class="cdp-text-purple mb-4"
-            :title="$t('activity_analysis.activity_status')"
-          >
-          </SectionTitle>
-          <el-select
-            v-model="filterData.selectActivityStatus"
-            class="cdp-select cdp-select__purple w-full"
-            popper-class="cdp-select-popper cdp-select-popper__purple"
-            :teleported="false"
-            :disabled="formDisabled"
-          >
-            <el-option
-              v-for="item in selectActivityStatusdOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-              :selected="item.selected"
-            />
-          </el-select>
-        </el-col>
         <el-col :span="24" class="mb-19">
           <SectionTitle
             size="small"
