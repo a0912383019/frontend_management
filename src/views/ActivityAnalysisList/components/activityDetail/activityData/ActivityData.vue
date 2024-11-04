@@ -17,7 +17,7 @@ const activityStore = useActivityAnalysisStore()
 const { childListData } = activityStore
 
 const props = defineProps({
-  detailId: {
+  activityId: {
     type: Number
   }
 })
@@ -110,7 +110,7 @@ const queryActivityInfo = async () => {
   try {
     const result = await apiActivityInfo({
       hall_name: activeHall.hall_code,
-      activity_id: props.detailId
+      activity_id: props.activityId
     })
 
     const { return_code } = result.data.status
