@@ -10,6 +10,7 @@ import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
 import AddChild from '@/components/Button/AddButton.vue'
 import { dayjs } from 'element-plus'
+import { storeToRefs } from 'pinia'
 
 const { t, locale } = useI18n()
 
@@ -17,7 +18,7 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const activityStore = useActivityAnalysisStore()
-const { childListData } = activityStore
+const { childListData } = storeToRefs(activityStore)
 
 const props = defineProps({
   canEdit: {

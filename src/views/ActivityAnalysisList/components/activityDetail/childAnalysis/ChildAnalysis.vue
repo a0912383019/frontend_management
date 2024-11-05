@@ -66,9 +66,7 @@ onMounted(() => {
         :currentView="activeView"
         :isChildFiltered="activityStore.isChildFiltered"
         :activityId="props.activityId"
-        :detailId="currentChildAnalysis.id"
       ></component>
     </keep-alive>
   </section>
 </template>
-<style lang="scss" scoped></style>

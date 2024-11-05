@@ -182,7 +182,7 @@ const upadteCurrentSort = ({ prop, order }) => {
 }
 
 watch(
-  () => activityStore.filtered,
+  () => activityStore.islistFiltered,
   () => {
     queryListActivity()
   }

@@ -2,12 +2,13 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryActivityCompareOverview } from '@/api'
-import { useGlobalStore } from '@/stores'
+import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import { dayjs } from 'element-plus'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import PercentWithIcon from '@/components/PercentWithIcon.vue'
+import { errorRespond } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
 
@@ -18,14 +19,14 @@ const props = defineProps({
   },
   activityId: {
     type: Number
-  },
-  detailId: {
-    type: Number
   }
 })
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
+
+const activityStore = useActivityAnalysisStore()
+const { currentChildAnalysis } = activityStore
 
 const apiSuccess = ref(false) //api是否成功
 
@@ -162,7 +163,7 @@ const queryActivityCompareOverview = async () => {
     const result = await apiQueryActivityCompareOverview({
       hall_name: activeHall.hall_code,
       activity_id_hide: props.activityId,
-      activity_detail_id_hide: props.detailId
+      activity_detail_id_hide: currentChildAnalysis.id
     })
 
     const { return_code } = result.data.status
@@ -170,6 +171,7 @@ const queryActivityCompareOverview = async () => {
       apiSuccess.value = true
       if (result.data.result.length !== 0) {
         performanceTableData.value = transformPerformance(result.data.result)
+        proportionTableData.value = transformProportion(result.data.result)
       } else {
         messageKey.value = 'noResult'
       }
@@ -196,6 +198,39 @@ const queryActivityCompareOverview = async () => {
 }
 
 // 轉換資料
+const transformProportion = (data) => {
+  if (!props.isRewarded) return
+  let result = []
+  let durationKey = ['before', 'current', 'after']
+  let durationName = [
+    t('activity_analysis.activity_before'),
+    t('activity_analysis.activity_now'),
+    t('activity_analysis.activity_after')
+  ]
+
+  durationKey.map((key, idx) => {
+    let dataObj = data.reward[key]
+    let tempObj = {
+      activity_duration: durationName[idx],
+      data_duration: dataObj.date_range
+        .split('~')
+        .map((date) => dayjs(date).format(t('date.format_date_rule')))
+        .join(' ~ '),
+      date_count: t('activity_analysis.total_day_num', { day_num: dataObj.day_diff }),
+      deposit_day_avg: dataObj.commissionable_avg,
+      rate: '-20',
+      commissionable_day_avg: dataObj.commissionable_avg,
+      profit_day_avg: dataObj.commissionable_avg,
+      bonus_day_avg: dataObj.commissionable_avg,
+      hall_profit_day_avg: dataObj.commissionable_avg
+    }
+
+    result.push(tempObj)
+  })
+
+  return result
+}
+
 const transformPerformance = (data) => {
   if (!props.isRewarded) return
   let result = []
@@ -226,12 +261,10 @@ const transformPerformance = (data) => {
     result.push(tempObj)
   })
 
-  console.log(result)
   return result
 }
 
 onMounted(() => {
-  console.log(props.detailId)
   queryActivityCompareOverview()
 })
 </script>
@@ -479,22 +512,23 @@ onMounted(() => {
     </div>
   </section>
 </template>
-<style lang="scss" scoped>
-.mb-0 {
-  margin-bottom: 0 !important;
-}
-</style>
 <style lang="scss">
 .customAnalysisTable {
+  .el-table {
+    height: 204px !important;
+  }
   .el-table tbody .el-table__cell {
     padding: 5px 0;
+    .cell {
+      line-height: normal;
+    }
   }
   tr.el-table__row {
     .cell {
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 32px;
+      min-height: 43px;
     }
   }
 }

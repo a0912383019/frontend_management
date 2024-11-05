@@ -4,10 +4,10 @@ import { reactive, ref } from 'vue'
 export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   const searchActivity = ref('')
 
-  const filtered = ref(0)
+  const islistFiltered = ref(0)
 
-  const initFilter = () => {
-    filtered.value = 0
+  const initListFilter = () => {
+    islistFiltered.value = 0
     searchActivity.value = ''
   }
 
@@ -37,15 +37,24 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 
   const isChildFiltered = ref(0)
 
+  const initChildData = () => {
+    childListData.value = []
+    currentChildAnalysis.name = null
+    currentChildAnalysis.id = null
+    optionChildList.value = null
+    isChildFiltered.value = 0
+  }
+
   return {
     searchActivity,
-    filtered,
-    initFilter,
+    islistFiltered,
+    initListFilter,
     activityAddChange,
     childListData,
     currentChildAnalysis,
     optionChildList,
     findSelectedOption,
-    isChildFiltered
+    isChildFiltered,
+    initChildData
   }
 })

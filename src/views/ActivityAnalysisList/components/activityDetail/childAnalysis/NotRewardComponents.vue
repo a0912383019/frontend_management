@@ -7,9 +7,6 @@ const props = defineProps({
   activityId: {
     type: Number
   },
-  detailId: {
-    type: Number
-  },
   currentView: {
     type: String
   },
@@ -37,7 +34,5 @@ const key = computed(() => {
     :key="key"
     :isRewarded="isRewarded"
     :activityId="props.activityId"
-    :detailId="props.detailId"
   />
 </template>
-<style lang="scss" scoped></style>

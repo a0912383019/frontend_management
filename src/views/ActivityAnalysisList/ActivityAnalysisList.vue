@@ -112,7 +112,7 @@ const queryImportActivity = async (data, functionId) => {
 }
 
 onUnmounted(() => {
-  activityStore.initFilter()
+  activityStore.initListFilter()
 })
 </script>
 <template>

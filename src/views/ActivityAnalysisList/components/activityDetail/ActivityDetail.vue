@@ -11,8 +11,8 @@ import { storeToRefs } from 'pinia'
 const { t } = useI18n()
 
 const activityStore = useActivityAnalysisStore()
-const { childListData, currentChildAnalysis, findSelectedOption } = activityStore
-const { optionChildList } = storeToRefs(activityStore)
+const { currentChildAnalysis, findSelectedOption, initChildData } = activityStore
+const { optionChildList, childListData } = storeToRefs(activityStore)
 
 const props = defineProps({
   modelValue: {
@@ -59,15 +59,15 @@ const disabledTab = ref([1])
 
 // 關閉 dialog
 const handleDialogClosed = () => {
+  disabledTab.value = [1]
   currentTabs.value = 'ActivityData'
-  childListData.value = []
+  initChildData()
   emit('closeDialog')
 }
 
 // 產生子活動進階篩選選項
 const generateChildListOptions = () => {
   optionChildList.value = childListData.value.map((ele) => {
-    console.log(ele)
     return {
       value: ele.activity_detail_id,
       label: ele.activity_detail_name
