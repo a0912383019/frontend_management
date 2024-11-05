@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useActivityAnalysisStore } from '@/stores'
 import SwitchWithTooltip from '@/components/Switch/SwitchWithTooltip.vue'
@@ -7,7 +7,7 @@ import CurrencySignText from '@/components/CurrencySignText.vue'
 import RewardComponents from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/RewardComponents.vue'
 import NotRewardComponents from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/NotRewardComponents.vue'
 
-const { t, locale } = useI18n()
+const { locale } = useI18n()
 
 const activityStore = useActivityAnalysisStore()
 const { currentChildAnalysis } = activityStore
@@ -42,13 +42,6 @@ const switchBtnWidth = ref(72)
 onMounted(() => {
   switchBtnWidth.value = locale.value === 'en' ? 93 : 72
 })
-
-// watch(
-//   () => activityStore.isChildFiltered,
-//   () => {
-//     console.log('ncjdncjdncjd')
-//   }
-// )
 </script>
 <template>
   <section class="cdp-section mb-0">
@@ -70,6 +63,8 @@ onMounted(() => {
     <keep-alive>
       <component
         :is="currentActiveComponent"
+        :currentView="activeView"
+        :isChildFiltered="activityStore.isChildFiltered"
         :activityId="props.activityId"
         :detailId="currentChildAnalysis.id"
       ></component>

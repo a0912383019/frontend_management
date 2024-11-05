@@ -1,12 +1,8 @@
 <script setup>
-import { onMounted, ref, computed, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { useActivityAnalysisStore } from '@/stores'
-import { storeToRefs } from 'pinia'
-
-const { t } = useI18n()
 
 const activityStore = useActivityAnalysisStore()
 const { findSelectedOption, currentChildAnalysis, optionChildList } = activityStore
@@ -23,9 +19,6 @@ const popover = ref(null) // popover
 const closePopover = () => {
   popover.value.hide()
 }
-
-const selectedChildActivity = ref(null)
-const selectChildList = ref([])
 
 // 確認篩選
 const handleClick = () => {

@@ -1,18 +1,11 @@
 <script setup>
-import { ref, reactive, watch, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryActivityCompareOverview } from '@/api'
-import { useGlobalStore, useExportListStore } from '@/stores'
-import { storeToRefs } from 'pinia'
+import { useGlobalStore } from '@/stores'
 import { dayjs } from 'element-plus'
-import { getSessionStorageEntity } from '@/utils/commonUtils.js'
-import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
-import PageTitle from '@/components/Title/PageTitle.vue'
-import LoadingBox from '@/components/Loading/LoadingBox.vue'
-import DeleteBox from '@/views/ExportReportList/components/DeleteBox.vue'
-import SearchDetailBox from '@/views/ExportReportList/components/SearchDetailBox.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import PercentWithIcon from '@/components/PercentWithIcon.vue'
 
@@ -34,17 +27,15 @@ const props = defineProps({
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const performanceApiSuccess = ref(false) //api是否成功
+const apiSuccess = ref(false) //api是否成功
 
 //依照不同的messageKey產生不同的message
-const performanceMessageKey = ref('loading')
+const messageKey = ref('loading')
 
 const performanceTableData = ref([])
-
 const performanceTableColumns = computed(() => {
   return [
     {
-      label: t('activity_analysis.activity_duration'),
       prop: 'activity_duration',
       headerAlign: 'center',
       align: 'center',
@@ -55,7 +46,7 @@ const performanceTableColumns = computed(() => {
       prop: 'data_duration',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '20%'
+      minWidth: '17%'
     },
     {
       label: t('activity_analysis.deposit_day_avg'),
@@ -69,7 +60,7 @@ const performanceTableColumns = computed(() => {
       prop: 'commissionable_day_avg',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '14%'
+      minWidth: '15%'
     },
     {
       label: t('activity_analysis.profit_day_avg'),
@@ -83,21 +74,89 @@ const performanceTableColumns = computed(() => {
       prop: 'bonus_day_avg',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '14%'
+      minWidth: '15%'
     },
     {
       label: t('activity_analysis.hall_profit_day_avg'),
       prop: 'hall_profit_day_avg',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '14%'
+      minWidth: '15%'
+    }
+  ]
+})
+
+const proportionTableData = ref([])
+const proportionTableColumns = computed(() => {
+  return [
+    {
+      prop: 'activity_duration',
+      headerAlign: 'center',
+      align: 'center',
+      minWidth: '10%'
+    },
+    {
+      label: t('activity_analysis.data_duration'),
+      prop: 'data_duration',
+      headerAlign: 'center',
+      align: 'center',
+      minWidth: '17%'
+    },
+    {
+      label: t('activity_analysis.commissionable_people_proportion'),
+      prop: 'commissionable_people_proportion',
+      headerAlign: 'center',
+      align: 'center',
+      minWidth: '13%'
+    },
+    {
+      label: t('activity_analysis.commissionable_proportion'),
+      prop: 'commissionable_proportion',
+      headerAlign: 'center',
+      align: 'center',
+      minWidth: '13%'
+    },
+    {
+      label: t('activity_analysis.deposit_proportion'),
+      prop: 'deposit_proportion',
+      headerAlign: 'center',
+      align: 'center',
+      minWidth: '11%'
+    },
+    {
+      label: t('activity_analysis.deposit_count'),
+      prop: 'deposit_count',
+      headerAlign: 'center',
+      align: 'center',
+      minWidth: '8%'
+    },
+    {
+      label: t('data_name.active_member'),
+      prop: 'active_member',
+      headerAlign: 'center',
+      align: 'center',
+      minWidth: '8%'
+    },
+    {
+      label: t('activity_analysis.people_tags_count'),
+      prop: 'people_tags_count',
+      headerAlign: 'center',
+      align: 'center',
+      minWidth: '8%'
+    },
+    {
+      label: t('activity_analysis.register_in_30_days'),
+      prop: 'register_in_30_days',
+      headerAlign: 'center',
+      align: 'center',
+      minWidth: '12%'
     }
   ]
 })
 
 const queryActivityCompareOverview = async () => {
-  performanceApiSuccess.value = false
-  performanceMessageKey.value = 'loading'
+  apiSuccess.value = false
+  messageKey.value = 'loading'
   performanceTableData.value = []
   try {
     const result = await apiQueryActivityCompareOverview({
@@ -108,19 +167,30 @@ const queryActivityCompareOverview = async () => {
 
     const { return_code } = result.data.status
     if (return_code === '0000') {
-      performanceApiSuccess.value = true
+      apiSuccess.value = true
       if (result.data.result.length !== 0) {
         performanceTableData.value = transformPerformance(result.data.result)
+      } else {
+        messageKey.value = 'noResult'
+      }
+    } else {
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        messageKey.value = 'noResult'
+      } else {
+        messageKey.value = 'queryFailed'
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
       }
     }
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      performanceMessageKey.value = 'noPermission' //更改message內容
+      messageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      performanceMessageKey.value = 'queryFailed' //更改message內容
+      messageKey.value = 'queryFailed' //更改message內容
     }
   }
 }
@@ -166,12 +236,12 @@ onMounted(() => {
 })
 </script>
 <template>
-  <section class="cdp-section-in mb-0">
+  <section class="cdp-section-in mb-20">
     <SectionTitle
       :title="$t('activity_analysis.performance_analysis')"
       class="mb-15"
     ></SectionTitle>
-    <CdpMessage :messageKey="performanceMessageKey" v-if="performanceApiSuccess === false" />
+    <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
     <div v-else>
       <CustomTable
         :serverSide="false"
@@ -181,6 +251,158 @@ onMounted(() => {
         :hasPagination="false"
         class="customTable2 customAnalysisTable"
       >
+        <template #activity_duration-header>
+          <span class="mr-5">{{ $t('activity_analysis.activity_duration') }}</span>
+          <el-tooltip effect="dark" placement="right">
+            <template #content>
+              <div class="font-size-14">
+                <div class="font-black mb-10">{{ $t('activity_analysis.data_stat_period') }}</div>
+                <div>{{ $t('activity_analysis.within_90_days') }}</div>
+                <div class="ml-14">{{ $t('activity_analysis.before_2_weeks') }}</div>
+                <div class="ml-14">{{ $t('activity_analysis.activity_now_with_colon') }}</div>
+                <div class="ml-28">
+                  <li>{{ $t('activity_analysis.status_ongoing') }}</li>
+                </div>
+                <div class="ml-28">
+                  <li>{{ $t('activity_analysis.status_ended') }}</li>
+                </div>
+                <div class="ml-14 mb-10">{{ $t('activity_analysis.after_2_weeks') }}</div>
+                <div>{{ $t('activity_analysis.beyond_90_days') }}</div>
+                <div class="ml-14">{{ $t('activity_analysis.before_2_weeks') }}</div>
+                <div class="ml-14">{{ $t('activity_analysis.activity_now_with_colon') }}</div>
+                <div class="ml-28">
+                  <li>{{ $t('activity_analysis.status_ongoing_last_90') }}</li>
+                </div>
+                <div class="ml-28">
+                  <li>{{ $t('activity_analysis.status_ended_last_90') }}</li>
+                </div>
+                <div class="ml-14 mb-10">{{ $t('activity_analysis.after_2_weeks') }}</div>
+              </div>
+            </template>
+            <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
+          </el-tooltip>
+        </template>
+        <template #data_duration="scope">
+          <div>
+            {{ scope.row.data_duration }}
+            <br />
+            {{ scope.row.date_count }}
+          </div>
+        </template>
+        <template #deposit_day_avg="scope">
+          <div>
+            {{ scope.row.deposit_day_avg }}
+            <br />
+            <PercentWithIcon
+              v-if="scope.idx > 0"
+              :percentData="scope.row.rate"
+              iconSize="12"
+              fontSize="14"
+              fontWeight="normal"
+            ></PercentWithIcon>
+          </div>
+        </template>
+        <template #commissionable_day_avg="scope">
+          <div>
+            {{ scope.row.commissionable_day_avg }}
+            <br />
+            <PercentWithIcon
+              v-if="scope.idx > 0"
+              :percentData="scope.row.rate"
+              iconSize="12"
+              fontSize="14"
+              fontWeight="normal"
+            ></PercentWithIcon>
+          </div>
+        </template>
+        <template #profit_day_avg="scope">
+          <div>
+            {{ scope.row.profit_day_avg }}
+            <br />
+            <PercentWithIcon
+              v-if="scope.idx > 0"
+              :percentData="scope.row.rate"
+              iconSize="12"
+              fontSize="14"
+              fontWeight="normal"
+            ></PercentWithIcon>
+          </div>
+        </template>
+        <template #bonus_day_avg="scope">
+          <div>
+            {{ scope.row.bonus_day_avg }}
+            <br />
+            <PercentWithIcon
+              v-if="scope.idx > 0"
+              :percentData="scope.row.rate"
+              iconSize="12"
+              fontSize="14"
+              fontWeight="normal"
+            ></PercentWithIcon>
+          </div>
+        </template>
+        <template #hall_profit_day_avg="scope">
+          <div>
+            {{ scope.row.hall_profit_day_avg }}
+            <br />
+            <PercentWithIcon
+              v-if="scope.idx > 0"
+              :percentData="scope.row.rate"
+              iconSize="12"
+              fontSize="14"
+              fontWeight="normal"
+            ></PercentWithIcon>
+          </div>
+        </template>
+      </CustomTable>
+    </div>
+  </section>
+  <section class="cdp-section-in mb-20">
+    <SectionTitle
+      :title="$t('activity_analysis.proportion_people_analysis')"
+      class="mb-15"
+    ></SectionTitle>
+    <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
+    <div v-else>
+      <CustomTable
+        :serverSide="false"
+        :tableData="proportionTableData"
+        :tableColumns="proportionTableColumns"
+        :stripe="true"
+        :hasPagination="false"
+        class="customTable2 customAnalysisTable"
+      >
+        <template #activity_duration-header>
+          <span class="mr-5">{{ $t('activity_analysis.activity_duration') }}</span>
+          <el-tooltip effect="dark" placement="right">
+            <template #content>
+              <div class="font-size-14">
+                <div class="font-black mb-10">{{ $t('activity_analysis.data_stat_period') }}</div>
+                <div>{{ $t('activity_analysis.within_90_days') }}</div>
+                <div class="ml-14">{{ $t('activity_analysis.before_2_weeks') }}</div>
+                <div class="ml-14">{{ $t('activity_analysis.activity_now_with_colon') }}</div>
+                <div class="ml-28">
+                  <li>{{ $t('activity_analysis.status_ongoing') }}</li>
+                </div>
+                <div class="ml-28">
+                  <li>{{ $t('activity_analysis.status_ended') }}</li>
+                </div>
+                <div class="ml-14 mb-10">{{ $t('activity_analysis.after_2_weeks') }}</div>
+                <div>{{ $t('activity_analysis.beyond_90_days') }}</div>
+                <div class="ml-14">{{ $t('activity_analysis.before_2_weeks') }}</div>
+                <div class="ml-14">{{ $t('activity_analysis.activity_now_with_colon') }}</div>
+                <div class="ml-28">
+                  <li>{{ $t('activity_analysis.status_ongoing_last_90') }}</li>
+                </div>
+                <div class="ml-28">
+                  <li>{{ $t('activity_analysis.status_ended_last_90') }}</li>
+                </div>
+                <div class="ml-14 mb-10">{{ $t('activity_analysis.after_2_weeks') }}</div>
+              </div>
+            </template>
+            <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
+          </el-tooltip>
+        </template>
         <template #data_duration="scope">
           <div>
             {{ scope.row.data_duration }}
