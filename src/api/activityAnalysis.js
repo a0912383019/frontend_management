@@ -362,3 +362,12 @@ export const apiActivityInfo = (params) => {
     activity_id
   })
 }
+
+export const apiQueryActivityCompareOverview = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_compare_overview', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide
+  })
+}

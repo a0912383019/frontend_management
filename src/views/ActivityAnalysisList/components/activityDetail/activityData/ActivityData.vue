@@ -7,6 +7,7 @@ import CdpButton from '@/components/Button/CdpButton.vue'
 import ChildActivityList from '@/views/ActivityAnalysisList/components/ChildActivityList.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import { ElNotification } from 'element-plus'
+import { storeToRefs } from 'pinia'
 
 const { t, locale } = useI18n()
 
@@ -14,10 +15,11 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const activityStore = useActivityAnalysisStore()
-const { childListData } = activityStore
+const { initChildData } = activityStore
+const { childListData } = storeToRefs(activityStore)
 
 const props = defineProps({
-  detailId: {
+  activityId: {
     type: Number
   }
 })
@@ -110,7 +112,7 @@ const queryActivityInfo = async () => {
   try {
     const result = await apiActivityInfo({
       hall_name: activeHall.hall_code,
-      activity_id: props.detailId
+      activity_id: props.activityId
     })
 
     const { return_code } = result.data.status
@@ -143,7 +145,7 @@ const initFormAndData = () => {
   validateForm.operatedAccount = ''
   validateForm.createdTime = ''
   validateForm.description = ''
-  childListData.value = []
+  initChildData()
 }
 
 const originalData = ref(null)
@@ -190,7 +192,6 @@ const confirmSaved = () => {
 }
 
 onMounted(() => {
-  initFormAndData()
   confirmWidth.value = locale.value === 'en' ? 400 : 350
   queryActivityInfo()
 })

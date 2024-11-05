@@ -91,5 +91,9 @@ echo "cdp_frontend/*" >> .git/modules/src/locales/info/sparse-checkout
 git submodule update --force --checkout src/locales
 
 後續更新 submodule
-git submodule update --remote
+git submodule update --remote --recursive
+
+或是
+git submodule update --force --checkout src/locales
+git submodule update --remote --recursive
 ```

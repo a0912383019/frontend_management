@@ -10,6 +10,7 @@ import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
 import AddChild from '@/components/Button/AddButton.vue'
 import { dayjs } from 'element-plus'
+import { storeToRefs } from 'pinia'
 
 const { t, locale } = useI18n()
 
@@ -17,7 +18,7 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const activityStore = useActivityAnalysisStore()
-const { childListData } = activityStore
+const { childListData } = storeToRefs(activityStore)
 
 const props = defineProps({
   canEdit: {
@@ -49,7 +50,6 @@ const tableColumns = computed(() => {
       minWidth: '30%'
     },
     {
-      label: t('activity_analysis.activity_date'),
       prop: 'activity_date',
       headerAlign: 'center',
       align: 'center',
@@ -300,6 +300,23 @@ defineExpose({ getSubActivities, validSubActivities })
             <template #content>
               <div class="font-size-14">
                 {{ $t('activity_analysis.activity_detail_connect_promotion_reminder') }}
+              </div>
+            </template>
+            <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
+          </el-tooltip>
+        </template>
+        <template #activity_date-header>
+          <span class="mr-5">{{ $t('activity_analysis.activity_date') }}</span>
+          <el-tooltip effect="dark" placement="top">
+            <template #content>
+              <div class="font-size-14">
+                <div class="font-black mb-10">{{ $t('activity_analysis.auto_fill') }}</div>
+                <div>{{ $t('activity_analysis.within_90_days') }}</div>
+                <div class="ml-14">{{ $t('activity_analysis.status_ongoing') }}</div>
+                <div class="ml-14 mb-10">{{ $t('activity_analysis.status_ended') }}</div>
+                <div>{{ $t('activity_analysis.beyond_90_days') }}</div>
+                <div class="ml-14">{{ $t('activity_analysis.status_ongoing_last_90') }}</div>
+                <div class="ml-14">{{ $t('activity_analysis.status_ended_last_90') }}</div>
               </div>
             </template>
             <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />

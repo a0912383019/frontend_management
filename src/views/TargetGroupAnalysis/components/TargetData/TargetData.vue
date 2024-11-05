@@ -299,7 +299,7 @@ onMounted(() => {
         >*{{ $t('data_name.click_to_edit') }}</span
       >
       <SwitchWithTooltip
-        :name="$t('target_group_analysis.is_open')"
+        :activeText="$t('target_group_analysis.is_open')"
         :tooltipContent="$t('target_group_analysis.is_open_reminder')"
         v-model="isOpen"
         :isDisabled="!edit"

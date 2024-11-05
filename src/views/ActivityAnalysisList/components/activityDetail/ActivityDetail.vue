@@ -4,18 +4,22 @@ import { useI18n } from 'vue-i18n'
 import { useActivityAnalysisStore } from '@/stores'
 import Tab from '@/components/Tab.vue'
 import ActivityData from '@/views/ActivityAnalysisList/components/activityDetail/activityData/ActivityData.vue'
+import Filter from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/Filter.vue'
+import ChildAnalysis from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/ChildAnalysis.vue'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
 
 const activityStore = useActivityAnalysisStore()
-const { childListData } = activityStore
+const { currentChildAnalysis, findSelectedOption, initChildData } = activityStore
+const { optionChildList, childListData } = storeToRefs(activityStore)
 
 const props = defineProps({
   modelValue: {
     type: Boolean,
     default: false
   },
-  detailId: {
+  activityId: {
     type: Number
   }
 })
@@ -41,8 +45,8 @@ const currentTabs = ref('ActivityData')
 
 // 整理所有 component
 const componentMap = {
-  ActivityData
-  //   GrowthRate
+  ActivityData,
+  ChildAnalysis
 }
 
 // 當前使用的 component
@@ -55,15 +59,32 @@ const disabledTab = ref([1])
 
 // 關閉 dialog
 const handleDialogClosed = () => {
-  childListData.value = []
+  disabledTab.value = [1]
+  currentTabs.value = 'ActivityData'
+  initChildData()
   emit('closeDialog')
+}
+
+// 產生子活動進階篩選選項
+const generateChildListOptions = () => {
+  optionChildList.value = childListData.value.map((ele) => {
+    return {
+      value: ele.activity_detail_id,
+      label: ele.activity_detail_name
+    }
+  })
+  currentChildAnalysis.id = optionChildList.value[0].value
+
+  findSelectedOption()
 }
 
 watch(
   () => childListData.value,
   () => {
     disabledTab.value = [1]
-    if (childListData.value.length !== 0) {
+    if (childListData.value.length > 0) {
+      // 選項產生完成後再 enable tab
+      generateChildListOptions()
       disabledTab.value = []
     }
   }
@@ -94,12 +115,12 @@ watch(
       </el-col>
       <el-col :span="16">
         <div v-if="currentTabs === 'ChildAnalysis'" class="flex items-center justify-end">
-          <!-- <Filter /> -->
+          <Filter :activityId="props.activityId" />
         </div>
       </el-col>
     </el-row>
     <keep-alive>
-      <component :is="currentTabComponent" :detailId="props.detailId"></component>
+      <component :is="currentTabComponent" :activityId="props.activityId"></component>
     </keep-alive>
   </el-dialog>
 </template>
