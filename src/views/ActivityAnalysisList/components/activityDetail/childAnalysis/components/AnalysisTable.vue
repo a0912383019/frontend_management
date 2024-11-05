@@ -129,7 +129,7 @@ const proportionTableColumns = computed(() => {
       prop: 'deposit_count',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '8%'
+      minWidth: '9%'
     },
     {
       label: t('data_name.active_member'),
@@ -150,7 +150,7 @@ const proportionTableColumns = computed(() => {
       prop: 'register_in_30_days',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '12%'
+      minWidth: '11%'
     }
   ]
 })
@@ -168,8 +168,8 @@ const queryActivityCompareOverview = async () => {
 
     const { return_code } = result.data.status
     if (return_code === '0000') {
-      apiSuccess.value = true
       if (result.data.result.length !== 0) {
+        apiSuccess.value = true
         performanceTableData.value = transformPerformance(result.data.result)
         proportionTableData.value = transformProportion(result.data.result)
       } else {
@@ -199,7 +199,6 @@ const queryActivityCompareOverview = async () => {
 
 // 轉換資料
 const transformProportion = (data) => {
-  if (!props.isRewarded) return
   let result = []
   let durationKey = ['before', 'current', 'after']
   let durationName = [
@@ -232,7 +231,6 @@ const transformProportion = (data) => {
 }
 
 const transformPerformance = (data) => {
-  if (!props.isRewarded) return
   let result = []
   let durationKey = ['before', 'current', 'after']
   let durationName = [
@@ -514,9 +512,6 @@ onMounted(() => {
 </template>
 <style lang="scss">
 .customAnalysisTable {
-  .el-table {
-    height: 204px !important;
-  }
   .el-table tbody .el-table__cell {
     padding: 5px 0;
     .cell {

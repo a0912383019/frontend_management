@@ -46,11 +46,11 @@ const tagsConfig = ref(getSessionStorageEntity('system_config').tags_config)
 const selectTypeLists = computed({
   get() {
     return [
-      // {
-      //   value: 'all',
-      //   label: t('vip_commercial_analysis.all'),
-      //   disabled: false
-      // },
+      {
+        value: 'all',
+        label: t('vip_commercial_analysis.all'),
+        disabled: false
+      },
       {
         value: 10001,
         label: tagsConfig.value[10001].tag_name,
