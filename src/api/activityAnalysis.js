@@ -371,3 +371,21 @@ export const apiQueryActivityCompareOverview = (params) => {
     activity_detail_id_hide
   })
 }
+
+export const apiQueryActivityTagsRank = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_tags_rank', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide
+  })
+}
+
+export const apiQueryActivityBetAmountGrowthSpanTags = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_betAmount_growth_span_tags', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide
+  })
+}

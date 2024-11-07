@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useActivityAnalysisStore } from '@/stores'
 import AnalysisTable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/AnalysisTable.vue'
+import AnalysisDetails from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/AnalysisDetails.vue'
 
 const props = defineProps({
   activityId: {
@@ -30,9 +31,6 @@ const key = computed(() => {
 })
 </script>
 <template>
-  <AnalysisTable
-    :key="key"
-    :isRewarded="isRewarded"
-    :activityId="props.activityId"
-  />
+  <AnalysisTable :key="key" :isRewarded="isRewarded" :activityId="props.activityId" />
+  <AnalysisDetails :key="key" :isRewarded="isRewarded" :activityId="props.activityId" />
 </template>

@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { useActivityAnalysisStore } from '@/stores'
 import AnalysisTable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/AnalysisTable.vue'
+import AnalysisDetails from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/AnalysisDetails.vue'
 
 const props = defineProps({
   activityId: {
@@ -16,7 +17,7 @@ const props = defineProps({
 })
 
 const activityStore = useActivityAnalysisStore()
-const {isChildFiltered } = activityStore
+const { isChildFiltered } = activityStore
 
 const isRewarded = ref(false)
 
@@ -30,9 +31,6 @@ const key = computed(() => {
 })
 </script>
 <template>
-  <AnalysisTable
-    :key="key"
-    :isRewarded="isRewarded"
-    :activityId="props.activityId"
-  />
+  <AnalysisTable :key="key" :isRewarded="isRewarded" :activityId="props.activityId" />
+  <AnalysisDetails :key="key" :isRewarded="isRewarded" :activityId="props.activityId" />
 </template>

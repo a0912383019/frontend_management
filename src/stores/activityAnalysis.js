@@ -45,6 +45,8 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     isChildFiltered.value = 0
   }
 
+  const currentDetailTab = ref('TagStatistics')
+
   return {
     searchActivity,
     islistFiltered,
@@ -55,6 +57,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     optionChildList,
     findSelectedOption,
     isChildFiltered,
-    initChildData
+    initChildData,
+    currentDetailTab
   }
 })
