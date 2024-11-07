@@ -1,22 +1,13 @@
 <script setup>
 import { ref, watch, onMounted, toRefs, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import {
-  generateRGBColors,
-  formatDateDuration,
-  generateMultipleColors
-} from '@/utils/commonUtils.js'
-import { useActivityAnalysisStore } from '@/stores'
-import { dayjs } from 'element-plus'
+import { generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
 import { latest_chart_color } from '@/../public/js/system_config.js'
 
 const { t } = useI18n()
-
-const activityStore = useActivityAnalysisStore()
-const { chartApiParams } = activityStore
 
 const props = defineProps({
   apiObject: {

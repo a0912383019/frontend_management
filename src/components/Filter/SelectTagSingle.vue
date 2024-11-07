@@ -23,6 +23,10 @@ const props = defineProps({
   },
   placeholder: {
     type: String
+  },
+  defaultValue: {
+    type: Array,
+    default: []
   }
 })
 
@@ -47,7 +51,7 @@ const dropClass = ref('dropClass' + dayjs() + Math.floor(Math.random() * 10))
 const currentTagAry = ref(
   props.showAllOption
     ? [{ value: 'all', label: t('vip_commercial_analysis.all'), disabled: false, active: false }]
-    : []
+    : props.defaultValue
 )
 
 // 標籤選取文字

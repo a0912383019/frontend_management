@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted, watch } from 'vue'
+import { reactive, onMounted, watch, onActivated } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import ActivityChart from '@/views/ActivityAnalysisList/components/ActivityChart.vue'
@@ -125,9 +125,13 @@ watch([() => activityStore.chartFiltered], () => {
   queryCharts()
 })
 
-onMounted(async () => {
-  queryCharts()
-})
+// onActivated(() => {
+//   queryCharts(true)
+// })
+
+// onMounted(async () => {
+//   queryCharts()
+// })
 </script>
 <template>
   <ActivityChart

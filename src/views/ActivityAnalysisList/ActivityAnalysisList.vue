@@ -19,6 +19,7 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const activityStore = useActivityAnalysisStore()
+const { filterData } = activityStore
 
 const { t } = useI18n()
 
@@ -113,6 +114,7 @@ const queryImportActivity = async (data, functionId) => {
 }
 
 onUnmounted(() => {
+  activityStore.resetState()
   activityStore.initListFilter()
 })
 </script>
@@ -131,14 +133,6 @@ onUnmounted(() => {
             @click="openAddDialog"
           />
           <Filter />
-        </div>
-        <div v-if="currentTabs !== 'Overview'" class="flex items-center justify-end">
-          <AddButton
-            class="mr-10"
-            :name="$t('activity_analysis.add_activity')"
-            @click="openAddDialog"
-          />
-          <ChartFilter />
         </div>
       </el-col>
     </el-row>

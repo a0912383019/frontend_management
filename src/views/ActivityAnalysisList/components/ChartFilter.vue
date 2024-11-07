@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick, watch, onMounted, computed } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryListActiveLimit } from '@/api'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
@@ -19,10 +19,10 @@ const { filterData } = activityStore
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
+// const emit = defineEmits(['update:filter'])
+
 // popover 開啟狀態
 const popoverVisible = ref(false)
-
-const isFirstLoad = ref(false)
 
 // api是否成功
 const apiSuccess = ref(false)
@@ -71,7 +71,7 @@ const selectRewardOptions = computed(() => {
 const selectActivityNameOptions = ref([])
 
 // 取得資料
-const queryActivityName = async () => {
+const queryActivityName = async (isFirst = false) => {
   apiSuccess.value = false
 
   try {
@@ -87,7 +87,8 @@ const queryActivityName = async () => {
       apiSuccess.value = true
 
       selectActivityNameOptions.value = []
-      transformActivityName(result.data.result)
+      transformActivityName(isFirst, result.data.result)
+      console.log('transformActivityName', result.data.result)
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
@@ -100,18 +101,64 @@ const queryActivityName = async () => {
   }
 }
 
+const defaultValue = ref([])
+
 // 處理資料
-const transformActivityName = (data) => {
+// const transformActivityName = (isFirst, data) => {
+//   selectActivityNameOptions.value = []
+//   const displayData = data.slice(0, 10)
+//   // const displayData = isFirst ? data.slice(0, 10) : data
+
+//   // selectActivityNameOptions.value = displayData.map((item) => ({
+//   //   value: item.activity_id,
+//   //   label: item.activity_name
+//   // }))
+
+//   data.forEach((item) => {
+//     selectActivityNameOptions.value.push({
+//       value: item.activity_id,
+//       label: item.activity_name
+//     })
+//   })
+//   console.log('data', data)
+//   if (isFirst) {
+//     defaultValue.value = displayData.map((item) => ({
+//       value: item.activity_id,
+//       label: item.activity_name
+//     }))
+//     filterData.activityNameList =
+//       displayData.length === 0 ? '-1' : displayData.map((item) => item.activity_id).join(',')
+
+//     handleSubmitClick()
+//     // console.log('displayData', displayData)
+//     console.log(defaultValue.value)
+//   }
+// }
+
+const transformActivityName = (isFirst, data) => {
+  console.log(data)
   selectActivityNameOptions.value = []
 
-  const displayData = !isFirstLoad.value ? data.slice(0, 10) : data
-
-  displayData.forEach((item) => {
+  data.forEach((item) => {
     selectActivityNameOptions.value.push({
       value: item.activity_id,
       label: item.activity_name
     })
   })
+
+  if (isFirst) {
+    const displayData = data.slice(0, 10)
+    displayData.forEach((item) => {
+      defaultValue.value.push({
+        value: item.activity_id,
+        label: item.activity_name
+      })
+    })
+    filterData.activityNameList =
+      displayData.length === 0 ? '-1' : displayData.map((item) => item.activity_id).join(',')
+
+    handleSubmitClick()
+  }
 }
 
 const popover = ref(null) //popover
@@ -180,15 +227,27 @@ const handleSubmitClick = () => {
   closePopover()
 }
 
+// onMounted(async () => {
+//   isFirstLoad.value = false // 初次載入時設為 false
+//   await queryActivityName() // 調用 API 取得資料
+//   isFirstLoad.value = true // 第一次載入完成後，設為 true
+//   await nextTick() // 確保畫面更新後處理下一步
+// })
+
 onMounted(() => {
-  isFirstLoad.value = false
-
-  queryActivityName().then(async () => {
-    isFirstLoad.value = true
-
-    await nextTick()
-  })
+  queryActivityName(true)
 })
+
+// onMounted(() => {
+//   queryActivityName()
+// })
+
+// watch(
+//   () => filterData,
+//   () => {
+//     emit('update:filters')
+//   }
+// )
 
 watch(
   [() => filterData.selectDuration, () => filterData.analysisDate, () => filterData.selectReward],
@@ -236,7 +295,7 @@ watch(
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-4"
-            :title="$t('activity_analysis.analysis_date')"
+            :title="$t('activity_analysis.analysis_duration')"
           >
           </SectionTitle>
           <DatepickerRange
@@ -284,6 +343,7 @@ watch(
           </div>
           <div v-else>
             <SelectTagSingle
+              :defaultValue="defaultValue"
               :lists="selectActivityNameOptions"
               :showAllOption="false"
               :placeholder="t('common.select')"

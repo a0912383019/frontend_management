@@ -2,11 +2,17 @@ import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 import { useDateStore } from '@/stores/dateConfig.js'
 import { dayjs } from 'element-plus'
+import { formatDateDuration } from '@/utils/commonUtils.js'
 
 export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   const searchActivity = ref('')
 
+<<<<<<< HEAD
   const islistFiltered = ref(0)
+=======
+  const filtered = ref(0)
+  const chartFiltered = 0
+>>>>>>> d6d128d ([add] activity growth filter)
 
   const initListFilter = () => {
     islistFiltered.value = 0
@@ -78,6 +84,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   })
 
   const transformChartParams = () => {
+    console.log(filterData.activityNameList)
     const dateArr = filterData.analysisDate.split('~')
     chartApiParams.start_date = dateArr[0].trim()
     chartApiParams.end_date = dateArr[1].trim()
@@ -89,11 +96,30 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   // 重置資料
   const resetState = () => {
     filterData.chartFiltered = 0
+<<<<<<< HEAD
     filterData.selectDuration = 'week'
     filterData.analysisDate = ''
     filterData.selectReward = 1
     filterData.activityNameList = ''
   }
+=======
+    let dateDuration = formatDateDuration(
+      dayjs(date_range_picker_config_2.startDate).format('YYYY-MM-DD') +
+        ' ~ ' +
+        dayjs(date_range_picker_config_2.endDate).format('YYYY-MM-DD')
+    )
+    filterData.selectDuration = 'week'
+    filterData.analysisDate = dateDuration
+    filterData.selectReward = 1
+    filterData.activityNameList = ''
+  }
+
+  // 用來監聽是否新增或是修改活動
+  const activityAddChange = 0
+
+  // 活動分析明細-子活動資料
+  const childListData = ref([])
+>>>>>>> d6d128d ([add] activity growth filter)
 
   return {
     searchActivity,
@@ -113,6 +139,10 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     filterData,
     chartApiParams,
     transformChartParams,
+<<<<<<< HEAD
+=======
+    childListData,
+>>>>>>> d6d128d ([add] activity growth filter)
     resetState
   }
 })
