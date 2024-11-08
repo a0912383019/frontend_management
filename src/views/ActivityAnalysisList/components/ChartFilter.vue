@@ -19,15 +19,13 @@ const { filterData } = activityStore
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-// const emit = defineEmits(['update:filter'])
-
 // popover 開啟狀態
 const popoverVisible = ref(false)
 
 // api是否成功
 const apiSuccess = ref(false)
 
-// 分析區間 options
+// 分析週期 options
 const selectDurationOptions = computed(() => {
   return [
     {
@@ -88,7 +86,6 @@ const queryActivityName = async (isFirst = false) => {
 
       selectActivityNameOptions.value = []
       transformActivityName(isFirst, result.data.result)
-      console.log('transformActivityName', result.data.result)
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
@@ -103,40 +100,7 @@ const queryActivityName = async (isFirst = false) => {
 
 const defaultValue = ref([])
 
-// 處理資料
-// const transformActivityName = (isFirst, data) => {
-//   selectActivityNameOptions.value = []
-//   const displayData = data.slice(0, 10)
-//   // const displayData = isFirst ? data.slice(0, 10) : data
-
-//   // selectActivityNameOptions.value = displayData.map((item) => ({
-//   //   value: item.activity_id,
-//   //   label: item.activity_name
-//   // }))
-
-//   data.forEach((item) => {
-//     selectActivityNameOptions.value.push({
-//       value: item.activity_id,
-//       label: item.activity_name
-//     })
-//   })
-//   console.log('data', data)
-//   if (isFirst) {
-//     defaultValue.value = displayData.map((item) => ({
-//       value: item.activity_id,
-//       label: item.activity_name
-//     }))
-//     filterData.activityNameList =
-//       displayData.length === 0 ? '-1' : displayData.map((item) => item.activity_id).join(',')
-
-//     handleSubmitClick()
-//     // console.log('displayData', displayData)
-//     console.log(defaultValue.value)
-//   }
-// }
-
 const transformActivityName = (isFirst, data) => {
-  console.log(data)
   selectActivityNameOptions.value = []
 
   data.forEach((item) => {
@@ -220,6 +184,7 @@ const updateActivityName = (idx) => {
   queryActivityName(idx)
 }
 
+// 確認篩選
 const handleSubmitClick = () => {
   popoverVisible.value = false
   activityStore.transformChartParams()
@@ -227,27 +192,9 @@ const handleSubmitClick = () => {
   closePopover()
 }
 
-// onMounted(async () => {
-//   isFirstLoad.value = false // 初次載入時設為 false
-//   await queryActivityName() // 調用 API 取得資料
-//   isFirstLoad.value = true // 第一次載入完成後，設為 true
-//   await nextTick() // 確保畫面更新後處理下一步
-// })
-
 onMounted(() => {
   queryActivityName(true)
 })
-
-// onMounted(() => {
-//   queryActivityName()
-// })
-
-// watch(
-//   () => filterData,
-//   () => {
-//     emit('update:filters')
-//   }
-// )
 
 watch(
   [() => filterData.selectDuration, () => filterData.analysisDate, () => filterData.selectReward],
@@ -280,7 +227,7 @@ watch(
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-4"
-            :title="$t('activity_analysis.analysis_duration')"
+            :title="$t('activity_analysis.analysis_cycle')"
           >
           </SectionTitle>
           <el-select-v2
@@ -339,7 +286,7 @@ watch(
           >
           </SectionTitle>
           <div class="loading" v-if="!apiSuccess">
-            <LoadingBox color="purple" size="sm" />
+            <LoadingBox color="purple" size="sm" class="mb-12" />
           </div>
           <div v-else>
             <SelectTagSingle
@@ -367,6 +314,10 @@ watch(
   </div>
 </template>
 <style lang="scss" scoped>
+.loading {
+  display: flex;
+  justify-content: center;
+}
 .drop {
   display: flex;
   align-items: center;

@@ -10,16 +10,17 @@ import TotalSum from '@/views/ActivityAnalysisList/components/TotalSum.vue'
 import AddButton from '@/components/Button/AddButton.vue'
 import AddDialog from '@/views/ActivityAnalysisList/AddActivity.vue'
 import Filter from '@/views/ActivityAnalysisList/Filter.vue'
-import ChartFilter from '@/views/ActivityAnalysisList/components/ChartFilter.vue'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import { apiImportActivity } from '@/api'
 import { ElNotification } from 'element-plus'
+import ChartFilter from '@/views/ActivityAnalysisList/components/ChartFilter.vue'
+import { storeToRefs } from 'pinia'
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const activityStore = useActivityAnalysisStore()
-const { filterData } = activityStore
+const { currentTabs } = storeToRefs(activityStore)
 
 const { t } = useI18n()
 
@@ -46,9 +47,6 @@ const tabData = computed(() => {
     }
   ]
 })
-
-// 當前顯示的tab
-const currentTabs = ref('Overview')
 
 // 整理所有 component
 const componentMap = {
@@ -133,6 +131,11 @@ onUnmounted(() => {
             @click="openAddDialog"
           />
           <Filter />
+        </div>
+        <div v-show="currentTabs !== 'Overview'">
+          <div class="flex items-center justify-end">
+            <ChartFilter />
+          </div>
         </div>
       </el-col>
     </el-row>

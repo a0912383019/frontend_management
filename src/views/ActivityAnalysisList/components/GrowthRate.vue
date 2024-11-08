@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted, watch, onActivated } from 'vue'
+import { reactive, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import ActivityChart from '@/views/ActivityAnalysisList/components/ActivityChart.vue'
@@ -10,7 +10,6 @@ import {
 } from '@/api'
 import { ElNotification } from 'element-plus'
 import { errorRespond } from '@/utils/commonUtils.js'
-import ChartFilter from '@/views/ActivityAnalysisList/components/ChartFilter.vue'
 
 const { t } = useI18n()
 
@@ -124,43 +123,24 @@ const queryCharts = () => {
   })
 }
 
-watch([() => activityStore.chartFiltered], () => {
-  queryCharts()
+watch([() => activityStore.chartFiltered, () => activityStore.currentTabs], () => {
+  if (
+    activityStore.chartFilteredArr[0] !== activityStore.chartFiltered &&
+    activityStore.currentTabs === 'GrowthRate'
+  ) {
+    activityStore.chartFilteredArr[0] = activityStore.chartFiltered
+    queryCharts()
+  }
 })
 
-// onActivated(() => {
-//   queryCharts(true)
-// })
-
-// watch(
-//   () => filterData.activityNameList,
-//   (newVal) => {
-//     if (newVal) {
-//       queryCharts()
-//     }
-//   }
-// )
-
-// onMounted(async () => {
-//   queryCharts()
-// })
-
-// onMounted(async () => {
-//   queryActivityApi.apiObject.apiSuccess = false // 初次載入時設為 false
-//   await queryCharts() // 調用 API 取得資料
-//   queryActivityApi.apiObject.apiSuccess = true // 第一次載入完成後，設為 true
-//   await nextTick() // 確保畫面更新後處理下一步
-// })
+onMounted(() => {
+  if (activityStore.chartFiltered !== 0) {
+    activityStore.chartFilteredArr[0] = activityStore.chartFiltered
+    queryCharts()
+  }
+})
 </script>
 <template>
-  <el-row class="mb-20">
-    <el-col>
-      <div class="flex items-center justify-end">
-        <ChartFilter @update:filter="queryCharts" />
-      </div>
-    </el-col>
-  </el-row>
-
   <ActivityChart
     :title="$t('activity_analysis.activity_commissionable')"
     :apiObject="apiObjectCommissionable"

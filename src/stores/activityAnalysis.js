@@ -2,9 +2,9 @@ import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 import { useDateStore } from '@/stores/dateConfig.js'
 import { dayjs } from 'element-plus'
-import { formatDateDuration } from '@/utils/commonUtils.js'
 
 export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
+<<<<<<< HEAD
   const searchActivity = ref('')
 
 <<<<<<< HEAD
@@ -67,6 +67,23 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     TotalSum: { status: 0 }
   })
 
+=======
+  const { date_range_picker_config_2 } = useDateStore()
+
+  const islistFiltered = ref(0)
+  const searchActivity = ref('')
+  const filtered = ref(0)
+  const chartFiltered = 0
+  const chartFilteredArr = ref([0, 0, 0])
+  const currentTabs = ref('Overview')
+
+  // 用來監聽是否新增或是修改活動
+  const activityAddChange = 0
+
+  // 活動分析明細-子活動資料
+  const childListData = ref([])
+
+>>>>>>> 0278979 ([add] activity growth filter)
   // 進階篩選options的預設值
   const filterData = reactive({
     selectDuration: 'week',
@@ -84,7 +101,6 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   })
 
   const transformChartParams = () => {
-    console.log(filterData.activityNameList)
     const dateArr = filterData.analysisDate.split('~')
     chartApiParams.start_date = dateArr[0].trim()
     chartApiParams.end_date = dateArr[1].trim()
@@ -97,6 +113,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   const resetState = () => {
     filterData.chartFiltered = 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     filterData.selectDuration = 'week'
     filterData.analysisDate = ''
     filterData.selectReward = 1
@@ -108,12 +125,15 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
         ' ~ ' +
         dayjs(date_range_picker_config_2.endDate).format('YYYY-MM-DD')
     )
+=======
+>>>>>>> 0278979 ([add] activity growth filter)
     filterData.selectDuration = 'week'
-    filterData.analysisDate = dateDuration
+    filterData.analysisDate = ''
     filterData.selectReward = 1
     filterData.activityNameList = ''
   }
 
+<<<<<<< HEAD
   // 用來監聽是否新增或是修改活動
   const activityAddChange = 0
 
@@ -124,6 +144,17 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   return {
     searchActivity,
     islistFiltered,
+=======
+  const initListFilter = () => {
+    islistFiltered.value = 0
+    searchActivity.value = ''
+    currentTabs.value = 'Overview'
+  }
+
+  return {
+    searchActivity,
+    filtered,
+>>>>>>> 0278979 ([add] activity growth filter)
     initListFilter,
     activityAddChange,
     childListData,
@@ -142,7 +173,13 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 <<<<<<< HEAD
 =======
     childListData,
+<<<<<<< HEAD
 >>>>>>> d6d128d ([add] activity growth filter)
     resetState
+=======
+    resetState,
+    currentTabs,
+    chartFilteredArr
+>>>>>>> 0278979 ([add] activity growth filter)
   }
 })

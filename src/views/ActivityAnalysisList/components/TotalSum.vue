@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted, watch, onActivated } from 'vue'
+import { reactive, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import ActivityChart from '@/views/ActivityAnalysisList/components/ActivityChart.vue'
@@ -120,18 +120,22 @@ const queryCharts = () => {
     }
   })
 }
-
-watch([() => activityStore.chartFiltered], () => {
-  queryCharts()
+watch([() => activityStore.chartFiltered, () => activityStore.currentTabs], () => {
+  if (
+    activityStore.chartFilteredArr[2] !== activityStore.chartFiltered &&
+    activityStore.currentTabs === 'TotalSum'
+  ) {
+    activityStore.chartFilteredArr[2] = activityStore.chartFiltered
+    queryCharts()
+  }
 })
 
-// onActivated(() => {
-//   queryCharts(true)
-// })
-
-// onMounted(async () => {
-//   queryCharts()
-// })
+onMounted(() => {
+  if (activityStore.chartFiltered !== 0) {
+    activityStore.chartFilteredArr[2] = activityStore.chartFiltered
+    queryCharts()
+  }
+})
 </script>
 <template>
   <ActivityChart
