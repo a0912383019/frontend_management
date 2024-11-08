@@ -1,14 +1,14 @@
 <script setup>
-import { onMounted, ref, computed, nextTick, reactive } from 'vue'
+import { onMounted, ref, computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useActivityAnalysisStore, useGlobalStore } from '@/stores'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
-import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
 import { apiQueryActivityTagsRank, apiQueryActivityBetAmountGrowthSpanTags } from '@/api'
 import { getSessionStorageEntity, generateMultipleColors } from '@/utils/commonUtils.js'
-import { tooltipDarkConfig, tooltipSingleShared } from '@/utils/highchartsConfig.js'
+import { tooltipDarkConfig, tooltipColumnSeparate } from '@/utils/highchartsConfig.js'
+import CustomTable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/tagStatisticsTable/CustomTable.vue'
 
 const { t } = useI18n()
 
@@ -48,10 +48,10 @@ const tableColumns = computed(() => {
       minWidth: '25%'
     },
     {
-      type: 'selection',
+      prop: 'selection',
       align: 'center',
       minWidth: '20%',
-      className: 'cdp-checkbox__blue checkbox-svg'
+      colClass: 'cdp-checkbox__blue checkbox-svg'
     }
   ]
 })
@@ -62,64 +62,57 @@ const betAmountGrowthMessageKey = ref('loading')
 
 const chartOptions = reactive({
   chart: {
-    type: 'column'
-    // height: 300
+    type: 'column',
+    height: 490,
+    marginLeft: 120
   },
   xAxis: {
-    // gridLineColor: '#e8e8e8',
-    // gridLineWidth: 1,
-    // lineColor: '#e8e8e8',
-    // tickColor: '#e8e8e8',
-    // tickWidth: 1,
+    gridLineColor: '#e8e8e8',
+    gridLineWidth: 1,
+    lineColor: '#e8e8e8',
+    tickColor: '#e8e8e8',
+    tickWidth: 1,
+    categories: [],
     labels: {
-      allowOverlap: false
+      rotation: -25,
+      style: {
+        whiteSpace: 'nowrap', // 避免文字換行
+        textOverflow: 'none', // 防止省略號(...)
+        fontSize: '12px'
+      }
     },
-    categories: []
+    min: 0,
+    max: 10
   },
   legend: {
-    enabled: true
+    enabled: false
   },
-  // yAxis: {
-  //   gridLineColor: '#e8e8e8'
-  // },
-  // tooltip: {
-  //   ...tooltipDarkConfig,
-  //   shared: true,
-  //   useHTML: true,
-  //   formatter() {
-  //     return tooltipSingleShared({ data: this.points, hallCode: activeHall.hall_code })
-  //   }
-  // },
+  yAxis: {
+    labels: {
+      enabled: false
+    }
+  },
+  tooltip: {
+    ...tooltipDarkConfig,
+    useHTML: true,
+    formatter() {
+      return tooltipColumnSeparate({ data: this, sign: t('unit.people') })
+    }
+  },
   plotOptions: {
     column: {
-      stacking: 'percent',
+      stacking: 'normal', // 柱狀堆疊
+      borderWidth: 0, // 去除柱狀邊框
+      borderRadius: 0,
       dataLabels: {
-        enabled: true,
-        // formatter: function () {
-        //   return FormatNumber(this.y)
-        // }
+        enabled: false // 柱狀上的 label
       }
+    },
+    series: {
+      pointWidth: 40 // 每個柱狀的寬度
     }
   },
-  series: [
-    {
-      name: 'Road',
-      data: [434, 290, 307],
-      color: '#4f84cf'
-    },
-    {
-      name: 'Rail',
-      data: [272, 153, 156]
-    },
-    {
-      name: 'Air',
-      data: [13, 7, 8]
-    },
-    {
-      name: 'Sea',
-      data: [55, 35, 41]
-    }
-  ]
+  series: []
 })
 
 const queryActivityTagsRank = async () => {
@@ -138,8 +131,6 @@ const queryActivityTagsRank = async () => {
       if (result.data.result.length !== 0) {
         tableData.value = transformTagsRank(result.data.result)
         tagsRankApiSuccess.value = true
-        await nextTick()
-        refTable.value.selectionAll(true)
       } else {
         tagsRankMessageKey.value = 'noResult'
       }
@@ -179,7 +170,8 @@ const transformTagsRank = (data) => {
       tag_name: tag_description_dict[ele.tag_code].tag_name,
       unit_people: ele.total_count,
       tag_code: ele.tag_code.toString(),
-      bar_color: color[idx]
+      bar_color: color[idx],
+      is_selected: true
     }
 
     tagColorObj.value[ele.tag_code] = color[idx]
@@ -187,7 +179,12 @@ const transformTagsRank = (data) => {
     result.push(tableData)
   })
 
-  queryActivityBetAmountGrowthSpanTags()
+  // 如果左邊沒資料，直接不打右邊 api
+  if (tagColorObj.value.length !== 0) {
+    queryActivityBetAmountGrowthSpanTags()
+  } else {
+    betAmountGrowthMessageKey.value = 'noResult'
+  }
 
   return result
 }
@@ -200,10 +197,7 @@ const generateCheckboxBar = ({ row }) => {
   return styleRes
 }
 
-const handleSelect = (selection, row) => {
-  console.log(selection)
-  console.log(row)
-}
+const checkAll = ref(true)
 
 const queryActivityBetAmountGrowthSpanTags = async () => {
   betAmountGrowthApiSuccess.value = false
@@ -247,9 +241,7 @@ const queryActivityBetAmountGrowthSpanTags = async () => {
 }
 
 const transformBetAmountGrowthSpanTags = (data) => {
-  // console.log(data)
   chartOptions.xAxis.categories = data.span.map((ele) => {
-    console.log(ele.upper)
     if (ele.upper !== null) {
       return t('activity_analysis.bet_amount_interval', { lower: ele.lower, upper: ele.upper })
     } else {
@@ -257,7 +249,54 @@ const transformBetAmountGrowthSpanTags = (data) => {
     }
   })
 
-  console.log(chartOptions.xAxis)
+  const result = Object.keys(tagColorObj.value).map((key) => ({
+    name: tag_description_dict[key].tag_name,
+    tagCode: key.toString(),
+    data: data.not_reward.map((item) => item[key]),
+    color: tagColorObj.value[key],
+    visible: true
+  }))
+
+  chartOptions.series = result
+}
+
+const chartRef = ref(null)
+// 是否勾選全部
+const selectAll = (val) => {
+  tableData.value.forEach((ele, idx) => {
+    tableData.value[idx].is_selected = val
+  })
+
+  // 圖表顯示隱藏
+  chartOptions.series.forEach((ele, idx) => {
+    chartOptions.series[idx].visible = val
+  })
+}
+
+// 單選
+const selectRow = (val, scope) => {
+  scope.row.is_selected = val
+
+  // 圖表顯示隱藏
+  chartOptions.series.forEach((ele, idx) => {
+    if (ele.tagCode === scope.row.tag_code) {
+      chartOptions.series[idx].visible = val
+      return
+    }
+  })
+
+  // 判斷是否全部勾選
+  if (val) {
+    checkAll.value = true
+    tableData.value.forEach((ele, idx) => {
+      if (!tableData.value[idx].is_selected) {
+        checkAll.value = false
+        return
+      }
+    })
+  } else {
+    checkAll.value = false
+  }
 }
 
 onMounted(() => {
@@ -284,14 +323,23 @@ onMounted(() => {
           :hasPagination="true"
           :hasTotalPagination="false"
           :cellStyle="generateCheckboxBar"
-          :selectCheckbox="handleSelect"
           class="customTable1 customTagNumberTable"
         >
+          <template #selection-header>
+            <el-checkbox v-model="checkAll" class="cdp-checkbox__blue" @change="selectAll" />
+          </template>
           <template #tag_name="scope">
             <GenerateTagsBadge
               v-if="scope.idx !== -1"
               :hall_name="activeHall.hall_code"
               :tag_code="scope.row.tag_code"
+            />
+          </template>
+          <template #selection="scope">
+            <el-checkbox
+              v-model="scope.row.is_selected"
+              class="cdp-checkbox__blue"
+              @change="selectRow($event, scope)"
             />
           </template>
         </CustomTable>
@@ -308,7 +356,7 @@ onMounted(() => {
       />
       <template v-else>
         <div class="cursor-pointer">
-          <highcharts :options="chartOptions"></highcharts>
+          <highcharts ref="chartRef" :options="chartOptions"></highcharts>
         </div>
       </template>
     </el-col>
@@ -346,18 +394,17 @@ onMounted(() => {
 </style>
 <style lang="scss">
 .customTagNumberTable {
-  // .el-table tbody .el-table__cell {
-  //   padding: 5px 0;
-  //   .cell {
-  //     line-height: normal;
-  //   }
-  // }
+  .el-table tbody .el-table__cell {
+    padding: 5px 0;
+    .cell {
+      line-height: normal;
+    }
+  }
   tr.el-table__row {
     .cell {
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 26px;
     }
   }
 }

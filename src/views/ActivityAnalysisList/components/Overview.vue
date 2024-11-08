@@ -69,7 +69,7 @@ const queryListActivity = async () => {
     const result = await apiQueryListActivity({
       hall_name: activeHall.hall_code,
       activity_name: activityStore.searchActivity,
-      search_date: '2024-01-01 ~ 2024-08-02'
+      search_date: '2024-01-01 ~ 2024-12-02'
     })
 
     const { return_code } = result.data.status
