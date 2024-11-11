@@ -1,17 +1,14 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useActivityAnalysisStore } from '@/stores'
 import Tab from '@/components/Tab.vue'
-import ActivityData from '@/views/ActivityAnalysisList/components/activityDetail/activityData/ActivityData.vue'
-import Filter from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/Filter.vue'
 import TagStatistics from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/TagStatistics.vue'
 import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
 
 const activityStore = useActivityAnalysisStore()
-const { currentChildAnalysis, findSelectedOption, initChildData } = activityStore
 const { currentDetailTab } = storeToRefs(activityStore)
 
 const props = defineProps({

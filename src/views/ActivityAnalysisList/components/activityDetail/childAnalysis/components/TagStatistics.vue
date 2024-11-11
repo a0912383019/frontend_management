@@ -24,8 +24,6 @@ const { activeHall } = globalStore
 const activityStore = useActivityAnalysisStore()
 const { currentChildAnalysis } = activityStore
 
-const refTable = ref(null)
-
 // 各標籤人數
 const tagsRankApiSuccess = ref(false)
 const tagsRankMessageKey = ref('loading')
@@ -260,7 +258,6 @@ const transformBetAmountGrowthSpanTags = (data) => {
   chartOptions.series = result
 }
 
-const chartRef = ref(null)
 // 是否勾選全部
 const selectAll = (isCheckedAll) => {
   tableData.value.forEach((ele) => {
@@ -313,7 +310,6 @@ onMounted(() => {
       <CdpMessage :messageKey="tagsRankMessageKey" v-if="tagsRankApiSuccess === false" />
       <div v-else>
         <CustomTable
-          ref="refTable"
           :serverSide="false"
           :pageSize="10"
           :tableData="tableData"
@@ -356,7 +352,7 @@ onMounted(() => {
       />
       <template v-else>
         <div class="cursor-pointer">
-          <highcharts ref="chartRef" :options="chartOptions"></highcharts>
+          <highcharts :options="chartOptions"></highcharts>
         </div>
       </template>
     </el-col>

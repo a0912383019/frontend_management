@@ -194,8 +194,6 @@ export const tooltipAddSignForCol = ({ data, sign = '' }) => {
  * tooltipColumnSeparate formatter排版
  * type: column
  * @param data 帶入tooltip的this
- * @param y 帶入tooltip的y number
- * @param key 帶入tooltip的x key
  * @param sign 帶入tooltip的符號
  */
 export const tooltipColumnSeparate = ({ data, sign = '' }) => {
