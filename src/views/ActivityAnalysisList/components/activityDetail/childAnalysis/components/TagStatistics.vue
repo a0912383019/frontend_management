@@ -10,7 +10,7 @@ import { getSessionStorageEntity, generateMultipleColors } from '@/utils/commonU
 import { tooltipDarkConfig, tooltipColumnSeparate } from '@/utils/highchartsConfig.js'
 import CustomTable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/tagStatisticsTable/CustomTable.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const props = defineProps({
   activityId: {
@@ -63,7 +63,7 @@ const betAmountGrowthMessageKey = ref('loading')
 const chartOptions = reactive({
   chart: {
     type: 'column',
-    height: 490,
+    height: 500,
     marginLeft: 120
   },
   xAxis: {
@@ -74,7 +74,7 @@ const chartOptions = reactive({
     tickWidth: 1,
     categories: [],
     labels: {
-      rotation: -25,
+      rotation: locale.value === 'en' ? -40 : -25,
       style: {
         whiteSpace: 'nowrap', // 避免文字換行
         textOverflow: 'none', // 防止省略號(...)
