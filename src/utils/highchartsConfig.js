@@ -189,3 +189,37 @@ export const tooltipAddSignForCol = ({ data, sign = '' }) => {
   `
   return result
 }
+
+/**
+ * tooltipColumnSeparate formatter排版
+ * type: column
+ * @param data 帶入tooltip的this
+ * @param sign 帶入tooltip的符號
+ */
+export const tooltipColumnSeparate = ({ data, sign = '' }) => {
+  let result = `
+    <div>
+      <div style="
+        padding: 6px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        background-color: rgba(0, 0, 0, 0.8)
+      ">
+        <div class="font-bold">${data.series.name}</div>
+        <div class="flex">
+          <div class="mr-4 mt-4" style="
+            width: 10px;
+            height: 10px;
+            background-color: ${data.series.userOptions.color};
+            border: 1px solid #FFF;
+            opacity: 1;
+          "></div>
+          <div>
+            ${data.x}：${data.y}${sign}
+          </div>
+        </div>
+      <div class="flex flex-col">
+    </div>
+  `
+  return result
+}
