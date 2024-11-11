@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useActivityAnalysisStore } from '@/stores'
 import Tab from '@/components/Tab.vue'
-import TagStatistics from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/TagStatistics.vue'
+import TagStatistics from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/tagStatistics/TagStatistics.vue'
 import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()

@@ -8,7 +8,7 @@ import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
 import { apiQueryActivityTagsRank, apiQueryActivityBetAmountGrowthSpanTags } from '@/api'
 import { getSessionStorageEntity, generateMultipleColors } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipColumnSeparate } from '@/utils/highchartsConfig.js'
-import CustomTable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/tagStatisticsTable/CustomTable.vue'
+import CustomTable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/tagStatistics/CustomTable.vue'
 
 const { t, locale } = useI18n()
 
