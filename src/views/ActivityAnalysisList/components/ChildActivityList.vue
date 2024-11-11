@@ -292,7 +292,7 @@ defineExpose({ getSubActivities, validSubActivities })
         :stripe="false"
         rowKey="detail_key"
         class="customTable2"
-        :class="{ 'is-empty': childListData.value && childListData.value.length === 0 }"
+        :class="{ 'is-empty': subActivities && subActivities.length === 0 }"
       >
         <template #promotion_list-header>
           <span class="mr-5">{{ $t('activity_analysis.promotion_list') }}</span>
