@@ -105,6 +105,7 @@ const chartOptions = reactive({
 })
 
 //轉換資料
+
 const transformBetAmountDailyRank = (data) => {
   clearChart()
   chartOptions.xAxis.categories = data.daily.map((ele) =>

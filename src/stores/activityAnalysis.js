@@ -74,8 +74,40 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   const searchActivity = ref('')
   const filtered = ref(0)
   const chartFiltered = 0
-  const chartFilteredArr = ref([0, 0, 0])
   const currentTabs = ref('Overview')
+  const isChildFiltered = ref(0)
+
+  const chartFilteredArr = reactive({
+    GrowthRate: { status: 0 },
+    GrowthGap: { status: 0 },
+    TotalSum: { status: 0 }
+  })
+
+  const initChildData = () => {
+    childListData.value = []
+    currentChildAnalysis.name = null
+    currentChildAnalysis.id = null
+    optionChildList.value = null
+    isChildFiltered.value = 0
+  }
+
+  // 活動分析明細-子活動分析->目前選取的子活動
+  const currentChildAnalysis = reactive({
+    name: null,
+    id: null
+  })
+
+  // 活動分析明細-子活動分析->進階篩選選項
+  const optionChildList = ref(null)
+
+  // 活動分析明細-子活動分析->取得篩選後的子活動
+  const findSelectedOption = () => {
+    const selectedOption = optionChildList.value.find(
+      (option) => option.value === currentChildAnalysis.id
+    )
+    currentChildAnalysis.name = selectedOption.label
+    currentChildAnalysis.id = selectedOption.value
+  }
 
   // 用來監聽是否新增或是修改活動
   const activityAddChange = 0
@@ -179,7 +211,15 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 =======
     resetState,
     currentTabs,
+<<<<<<< HEAD
     chartFilteredArr
 >>>>>>> 0278979 ([add] activity growth filter)
+=======
+    chartFilteredArr,
+    currentChildAnalysis,
+    findSelectedOption,
+    initChildData,
+    islistFiltered
+>>>>>>> 94c74fe ([add] activity growth filter)
   }
 })

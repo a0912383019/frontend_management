@@ -84,7 +84,6 @@ const queryActivityName = async (isFirst = false) => {
     if (return_code === '0000') {
       apiSuccess.value = true
 
-      selectActivityNameOptions.value = []
       transformActivityName(isFirst, result.data.result)
     } else {
       let failMsg = errorRespond(result.data.status)
@@ -145,14 +144,26 @@ const dateCount = (data) => {
   const diffDays = calculateDayDifference(start, end)
   const diffMonth = diffDays / 31
 
-  if (diffMonth > 3 && filterData.selectDuration === 'week') {
+  if (
+    diffMonth > 3 &&
+    diffMonth <= 12 &&
+    (filterData.selectDuration === 'week' ||
+      filterData.selectDuration === 'season' ||
+      filterData.selectDuration === 'year')
+  ) {
     filterData.selectDuration = 'month'
     selectDurationOptions.value[0].disabled = true
     ElNotification({
       title: t('activity_analysis.week_duration_validation_msg'),
       type: 'warning'
     })
-  } else if (diffMonth > 3 && filterData.selectDuration === 'month') {
+  } else if (
+    diffMonth > 12 &&
+    diffMonth <= 36 &&
+    (filterData.selectDuration === 'month' ||
+      filterData.selectDuration === 'week' ||
+      filterData.selectDuration === 'year')
+  ) {
     filterData.selectDuration = 'season'
     selectDurationOptions.value[0].disabled = true
     selectDurationOptions.value[1].disabled = true
@@ -160,7 +171,7 @@ const dateCount = (data) => {
       title: t('activity_analysis.month_duration_validation_msg'),
       type: 'warning'
     })
-  } else if (diffMonth > 3 && filterData.selectDuration === 'season') {
+  } else if (diffMonth > 36) {
     filterData.selectDuration = 'year'
     selectDurationOptions.value[0].disabled = true
     selectDurationOptions.value[1].disabled = true
@@ -169,6 +180,8 @@ const dateCount = (data) => {
       title: t('activity_analysis.season_duration_validation_msg'),
       type: 'warning'
     })
+  } else {
+    filterData.selectDuration = 'week'
   }
 }
 
@@ -180,8 +193,8 @@ const calculateDayDifference = (startDateStr, endDateStr) => {
   return dayDifference
 }
 
-const updateActivityName = (idx) => {
-  queryActivityName(idx)
+const updateActivityName = () => {
+  queryActivityName()
 }
 
 // 確認篩選
@@ -293,7 +306,7 @@ watch(
               :defaultValue="defaultValue"
               :lists="selectActivityNameOptions"
               :showAllOption="false"
-              :placeholder="t('common.select')"
+              :placeholder="$t('common.select')"
               v-model="filterData.activityNameList"
             />
           </div>

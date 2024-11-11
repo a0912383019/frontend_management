@@ -318,7 +318,6 @@ const deleteActivity = (idx) => {
   nextTick(() => {
     isDeleting.value = false
   })
-  console.log(isDeleting)
 }
 
 onMounted(() => {

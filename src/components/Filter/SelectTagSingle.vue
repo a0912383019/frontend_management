@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useVipCommercialAnalysisStore } from '@/stores'
 import SelectTagDropdown from '@/components/Filter/SelectTagDropdown.vue'
@@ -26,11 +26,12 @@ const props = defineProps({
   },
   defaultValue: {
     type: Array,
-    default: []
+    default: () => []
   }
 })
 
-const placeholderText = props.placeholder || t('tags.filter')
+// const placeholderText = props.placeholder || t('tags.filter')
+const placeholderText = computed(() => props.placeholder || t('tags.filter'))
 
 const vipStore = useVipCommercialAnalysisStore()
 const { defaultVipTag } = vipStore

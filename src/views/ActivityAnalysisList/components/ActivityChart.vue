@@ -5,6 +5,10 @@ import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
 import { latest_chart_color } from '@/../public/js/system_config.js'
+import { dayjs } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   apiObject: {
@@ -108,8 +112,14 @@ const chartOptions = reactive({
 // 轉換資料
 const transformChartSeries = (data) => {
   clearChart()
+
   chartOptions.xAxis.categories = data.map((ele) => {
-    return ele.interval_title
+    const dateformat = ele.interval_title.split('~')
+    return (
+      dayjs(dateformat[0]).format(t('date.format_date_rule')) +
+      '~' +
+      dayjs(dateformat[1]).format(t('date.format_date_rule'))
+    )
   })
 
   let dataClone = { ...data[0] }
