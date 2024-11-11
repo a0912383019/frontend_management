@@ -18,7 +18,7 @@ const closePopover = () => {
 // 確認篩選
 const handleClick = () => {
   activityStore.searchActivity = searchActivity.value
-  activityStore.filtered = Date.now()
+  activityStore.islistFiltered = Date.now()
   closePopover()
 }
 

@@ -262,34 +262,34 @@ const transformBetAmountGrowthSpanTags = (data) => {
 
 const chartRef = ref(null)
 // 是否勾選全部
-const selectAll = (val) => {
-  tableData.value.forEach((ele, idx) => {
-    tableData.value[idx].is_selected = val
+const selectAll = (isCheckedAll) => {
+  tableData.value.forEach((ele) => {
+    ele.is_selected = isCheckedAll
   })
 
   // 圖表顯示隱藏
-  chartOptions.series.forEach((ele, idx) => {
-    chartOptions.series[idx].visible = val
+  chartOptions.series.forEach((ele) => {
+    ele.visible = isCheckedAll
   })
 }
 
 // 單選
-const selectRow = (val, scope) => {
-  scope.row.is_selected = val
+const selectRow = (isChecked, scope) => {
+  scope.row.is_selected = isChecked
 
   // 圖表顯示隱藏
   chartOptions.series.forEach((ele, idx) => {
     if (ele.tagCode === scope.row.tag_code) {
-      chartOptions.series[idx].visible = val
+      chartOptions.series[idx].visible = isChecked
       return
     }
   })
 
   // 判斷是否全部勾選
-  if (val) {
+  if (isChecked) {
     checkAll.value = true
-    tableData.value.forEach((ele, idx) => {
-      if (!tableData.value[idx].is_selected) {
+    tableData.value.forEach((ele) => {
+      if (!ele.is_selected) {
         checkAll.value = false
         return
       }
