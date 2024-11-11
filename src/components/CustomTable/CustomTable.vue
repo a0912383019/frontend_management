@@ -64,12 +64,6 @@ const props = defineProps({
     //合併儲存格規則
     type: Function
   },
-  cellStyle: {
-    type: Function
-  },
-  selectCheckbox: {
-    type: Function
-  },
   paginationLayout: {
     //頁碼
     type: String,
@@ -156,11 +150,7 @@ const sortByFather = async (data) => {
   tableRef.value.sort(data.prop, data.order)
 }
 
-const selectionAll = (selectedAll) => {
-  tableRef.value.toggleAllSelection(selectedAll)
-}
-
-defineExpose({ goToFirstPage, showTableLoading, sortByFather, selectionAll })
+defineExpose({ goToFirstPage, showTableLoading, sortByFather })
 </script>
 <template>
   <div class="relative">
@@ -175,23 +165,12 @@ defineExpose({ goToFirstPage, showTableLoading, sortByFather, selectionAll })
       :show-summary="props.showSummary"
       :sum-text="props.sumText"
       :span-method="spanMethod"
-      :cell-style="props.cellStyle"
-      @select="props.selectCheckbox"
       class="cdp-table"
       @sort-change="handleTableSort"
       style="width: 100%"
     >
       <template v-for="column in tableColumns" :key="column.prop">
         <el-table-column
-          v-if="column.type === 'selection'"
-          type="selection"
-          :min-width="column.minWidth"
-          :align="column.align"
-          :class-name="column.className"
-        >
-        </el-table-column>
-        <el-table-column
-          v-else
           :prop="column.prop"
           :label="column.label"
           :width="column.width"
