@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, nextTick, watch } from 'vue'
+import { ref, computed, nextTick, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryPromotionList } from '@/api'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
@@ -278,6 +278,11 @@ watch(
   }
 )
 
+onMounted(() => {
+  if(props.canEdit) {
+    addChild()
+  }
+})
 defineExpose({ getSubActivities, validSubActivities })
 </script>
 <template>

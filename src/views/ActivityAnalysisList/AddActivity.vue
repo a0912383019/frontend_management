@@ -1,17 +1,12 @@
 <script setup>
-import { ref, computed, reactive, nextTick, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryPromotionList, apiAddActivity } from '@/api'
+import { apiAddActivity } from '@/api'
 import { useGlobalStore } from '@/stores'
 import CdpButton from '@/components/Button/CdpButton.vue'
-import SectionTitle from '@/components/Title/SectionTitle.vue'
-import CustomTable from '@/components/CustomTable/CustomTable.vue'
-import ButtonIcon from '@/components/Button/ButtonIcon.vue'
-import DatepickerRange from '@/components/Date/DatepickerRange.vue'
-import LoadingBox from '@/components/Loading/LoadingBox.vue'
-import AddActivity from '@/components/Button/AddButton.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import { ElNotification } from 'element-plus'
+import ChildActivityList from '@/views/ActivityAnalysisList/components/ChildActivityList.vue'
 
 const { t, locale } = useI18n()
 
@@ -27,39 +22,8 @@ const props = defineProps({
   }
 })
 
-const tableColumns = computed(() => {
-  return [
-    {
-      label: t('activity_analysis.activity_detail_name'),
-      prop: 'activity_detail_name',
-      headerAlign: 'center',
-      align: 'center',
-      minWidth: '29%'
-    },
-    {
-      label: t('activity_analysis.activity_date'),
-      prop: 'activity_date',
-      headerAlign: 'center',
-      align: 'center',
-      minWidth: '27%'
-    },
-    {
-      prop: 'promotion_list',
-      headerAlign: 'center',
-      align: 'center',
-      minWidth: '36%'
-    },
-    {
-      label: t('common.operation'),
-      prop: 'operation',
-      headerAlign: 'center',
-      align: 'center',
-      minWidth: '8%'
-    }
-  ]
-})
-
 const formRef = ref(null)
+const childRef = ref(null)
 
 const activityForm = reactive({
   activityName: '',
@@ -78,91 +42,27 @@ const rules = reactive({
   ]
 })
 
-const subActivities = ref([createSubActivity('0')])
-
-function createSubActivity(key) {
-  return {
-    detail_key: key.toString(),
-    activity_detail_name: '',
-    activity_date: '',
-    promotion_list: '',
-    promotion_options: [],
-    api_success: false,
-    detail_valid: { valid: true, msg: '' },
-    promotion_valid: { valid: true, msg: '' }
-  }
-}
-
-const addActivity = () => {
-  const rowKey = Date.now().toString()
-  subActivities.value.push(createSubActivity(rowKey))
-}
-
-const confirmBox = ref(false)
+const subActivities = ref([])
 
 // 驗證資料
-const validActivityAdd = () => {
+const validActivityAdd = async () => {
   activityForm.activityName = activityForm.activityName.trim()
   activityForm.purpose = activityForm.purpose.trim()
   activityForm.description = activityForm.description.trim()
 
-  let activityError = false
-  formRef.value.validate((valid) => {
-    if (!valid) {
-      activityError = true
-    }
+  const infoValid = formRef.value.validate((valid) => {
+    return valid
   })
 
-  let detailActivityError = false
-  subActivities.value.forEach((val, idx) => {
-    let errClass = ''
-    subActivities.value[idx].detail_valid.valid = true
-    subActivities.value[idx].promotion_valid.valid = true
+  const subValid = childRef.value.validSubActivities()
 
-    // 優惠名單驗證必選（此驗證msg不會有換行的情況因此放在前面）
-    if (subActivities.value[idx].promotion_list === '') {
-      detailActivityError = true
-      subActivities.value[idx].promotion_valid.valid = false
-      subActivities.value[idx].promotion_valid.msg = t(
-        'activity_analysis.blank_promotion_error_msg'
-      )
-      errClass = 'row-err'
-    }
-
-    // 子活動名稱驗證（不可空白 && 字數不可超過100）
-    if (subActivities.value[idx].activity_detail_name.trim() === '') {
-      detailActivityError = true
-      subActivities.value[idx].detail_valid.valid = false
-      subActivities.value[idx].detail_valid.msg = t(
-        'activity_analysis.blank_activity_detail_name_error_msg'
-      )
-      errClass = 'row-err'
-    } else if (subActivities.value[idx].activity_detail_name.length > 100) {
-      detailActivityError = true
-      subActivities.value[idx].detail_valid.valid = false
-      subActivities.value[idx].detail_valid.msg = t(
-        'activity_analysis.activity_detail_name_length_limit_error_msg'
-      )
-      errClass = locale.value === 'en' ? 'row-err-long' : 'row-err'
-    }
-
-    // 變化驗證文字的高度
-    const cells = document.querySelectorAll(`.el-dialog .el-table tr:nth-child(${idx + 1}) .cell`)
-    cells.forEach((cell) => {
-      cell.classList.remove('row-err', 'row-err-long')
-      if (detailActivityError) {
-        cell.classList.add(errClass)
-      }
-    })
-  })
-
-  // 驗證未通過，返回
-  if (activityError || detailActivityError) {
-    return
+  if (subValid && infoValid) {
+    subActivities.value = await childRef.value.getSubActivities()
+    confirmBox.value = true
   }
-
-  confirmBox.value = true
 }
+
+const confirmBox = ref(false)
 
 const cancelSaved = () => {
   confirmBox.value = false
@@ -180,33 +80,13 @@ const initActivity = () => {
   activityForm.activityName = ''
   activityForm.purpose = ''
   activityForm.description = ''
-  subActivities.value = [createSubActivity('0')]
+  subActivities.value = []
 }
 
 // 關閉 dialog
 const handleDialogClosed = () => {
   initActivity()
   emit('closeDialog')
-}
-
-const organizeActivityDatail = () => {
-  let activity_detail = []
-  subActivities.value.forEach((val, idx) => {
-    let dataJson = JSON.parse(val.promotion_list)
-    let activityDetailData = {
-      activity_detail_id: (idx + 1).toString(),
-      activity_detail_name: val.activity_detail_name,
-      activity_detail_date: val.activity_date,
-      promotion_id: dataJson.promotion_id,
-      promotion_name: dataJson.promotion_name,
-      original_id: dataJson.original_id,
-      offer_id: dataJson.offer_id
-    }
-
-    activity_detail[idx + 1] = JSON.stringify(activityDetailData)
-  })
-
-  return activity_detail
 }
 
 const queryAddActivity = async () => {
@@ -251,75 +131,6 @@ const queryAddActivity = async () => {
   }
 }
 
-const generateOptions = (arr) => {
-  let options = [
-    {
-      value: '',
-      label: t('common.select'),
-      selected: true
-    }
-  ]
-
-  arr.forEach((val) => {
-    let optionValue = JSON.stringify(val)
-    options.push({
-      value: optionValue,
-      label: val.promotion_name
-    })
-  })
-
-  return options
-}
-
-// 取得優惠活動
-const queryPromotionList = async (idx) => {
-  subActivities.value[idx].api_success = false
-  subActivities.value[idx].promotion_list = ''
-  const [start_date, end_date] = subActivities.value[idx].activity_date
-    .split('~')
-    .map((date) => date.trim())
-
-  try {
-    const result = await apiQueryPromotionList({
-      hall_name: activeHall.hall_code,
-      start_date: start_date,
-      end_date: end_date
-    })
-
-    const { return_code } = result.data.status
-    if (return_code === '0000') {
-      subActivities.value[idx].promotion_options = generateOptions(result.data.result)
-      subActivities.value[idx].api_success = true
-    }
-  } catch (error) {
-    console.error(error)
-    if (error.response.status === 401) {
-      globalStore.storeHandleApiError()
-    }
-  }
-}
-
-const updatePromotionList = (idx) => {
-  if (isDeleting.value) return
-  // 第一次渲染組件會有不同步問題，el-table 尚未渲染完畢 scope.$index 會是 -1
-  // 但是 daterangepicker 已開始渲染，所以在跑 onMounted 這邊的idx 會是-1
-  if (idx !== -1) {
-    queryPromotionList(idx)
-  }
-}
-
-const isDeleting = ref(false)
-
-const deleteActivity = (idx) => {
-  // 刪除會觸發table重新渲染，導致組件也刷新觸發updatePromotionList
-  // 所以設定此參數擋住
-  isDeleting.value = true
-  subActivities.value.splice(idx, 1)
-  nextTick(() => {
-    isDeleting.value = false
-  })
-}
-
 onMounted(() => {
   confirmWidth.value = locale.value === 'en' ? 400 : 350
 })
@@ -329,7 +140,7 @@ onMounted(() => {
     :model-value="props.modelValue"
     class="cdp-dialog overflow-visible dialog-mt-40"
     :append-to-body="true"
-    width="1000"
+    width="1280"
     :destroy-on-close="true"
     @closed="handleDialogClosed"
   >
@@ -387,108 +198,7 @@ onMounted(() => {
               </el-form-item>
             </el-col>
             <el-col :span="24">
-              <section class="cdp-section-in">
-                <SectionTitle class="mb-15" :title="$t('activity_analysis.activity_detail_list')" />
-                <CustomTable
-                  :serverSide="false"
-                  :tableData="subActivities"
-                  :tableColumns="tableColumns"
-                  :hasPagination="false"
-                  :stripe="false"
-                  rowKey="detail_key"
-                  class="customTable2 customTagListTable"
-                >
-                  <template #promotion_list-header>
-                    <span class="mr-5">{{ $t('activity_analysis.promotion_list') }}</span>
-                    <el-tooltip effect="dark" placement="top">
-                      <template #content>
-                        <div class="font-size-14">
-                          {{ $t('activity_analysis.activity_detail_connect_promotion_reminder') }}
-                        </div>
-                      </template>
-                      <font-awesome-icon
-                        class="title__icon activeStepBtn"
-                        icon="fa-solid fa-circle-info"
-                      />
-                    </el-tooltip>
-                  </template>
-                  <template #activity_detail_name="scope">
-                    <div class="w-full text-left mr-5">
-                      <el-input
-                        v-model="scope.row.activity_detail_name"
-                        class="cdp-input"
-                        :class="{ 'is-error': !scope.row.detail_valid.valid }"
-                      ></el-input>
-                      <div
-                        v-if="!scope.row.detail_valid.valid"
-                        class="cdp-text-candypink font-size-12 line-1-5"
-                      >
-                        {{ scope.row.detail_valid.msg }}
-                      </div>
-                    </div>
-                  </template>
-                  <template #activity_date="scope">
-                    <DatepickerRange
-                      v-model="scope.row.activity_date"
-                      :rangeDate="scope.row.activity_date"
-                      :config="8"
-                      :shortcutsConfig="1"
-                      :disableDate="false"
-                      @update:modelValue="updatePromotionList(scope.idx)"
-                      class="w-full filter-datepicker activity-date-picker ml-5 mr-5"
-                    />
-                  </template>
-                  <template #promotion_list="scope">
-                    <div class="loading" v-if="!scope.row.api_success">
-                      <LoadingBox color="blue" size="sm" />
-                    </div>
-                    <div v-else class="w-full text-left mr-5">
-                      <el-select
-                        v-model="scope.row.promotion_list"
-                        class="cdp-select cdp-select__blue w-full ml-5"
-                        :class="{ 'is-error': !scope.row.promotion_valid.valid }"
-                        popper-class="cdp-select-popper__blue"
-                        filterable
-                        :fallback-placements="['bottom-end', 'top-end']"
-                        :teleported="true"
-                      >
-                        <el-option
-                          v-for="item in scope.row.promotion_options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value"
-                          :selected="item.selected"
-                        />
-                      </el-select>
-                      <div
-                        v-if="!scope.row.promotion_valid.valid"
-                        class="cdp-text-candypink font-size-12 line-1-5 ml-5"
-                      >
-                        {{ scope.row.promotion_valid.msg }}
-                      </div>
-                    </div>
-                  </template>
-                  <template #operation="scope">
-                    <div class="text-right w-full">
-                      <ButtonIcon
-                        v-if="scope.idx !== 0"
-                        class="detail-button"
-                        color="red"
-                        icon="trash"
-                        :isSvg="true"
-                        @click="deleteActivity(scope.idx)"
-                      />
-                    </div>
-                  </template>
-                </CustomTable>
-                <AddActivity
-                  class="mt-5"
-                  :name="$t('activity_analysis.add_activity_detail')"
-                  size="long"
-                  :bg="true"
-                  @click="addActivity()"
-                />
-              </section>
+              <ChildActivityList ref="childRef" :canEdit="true" />
             </el-col>
           </el-row>
         </el-form>

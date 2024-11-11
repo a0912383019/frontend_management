@@ -145,6 +145,7 @@ const initFormAndData = () => {
   validateForm.operatedAccount = ''
   validateForm.createdTime = ''
   validateForm.description = ''
+  subActivities.value = []
   initChildData()
 }
 
