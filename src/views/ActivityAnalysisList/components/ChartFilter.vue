@@ -71,6 +71,7 @@ const selectActivityNameOptions = ref([])
 // 取得資料
 const queryActivityName = async (isFirst = false) => {
   apiSuccess.value = false
+  selectActivityNameOptions.value = []
 
   try {
     const result = await apiQueryListActiveLimit({
@@ -100,8 +101,6 @@ const queryActivityName = async (isFirst = false) => {
 const defaultValue = ref([])
 
 const transformActivityName = (isFirst, data) => {
-  selectActivityNameOptions.value = []
-
   data.forEach((item) => {
     selectActivityNameOptions.value.push({
       value: item.activity_id,

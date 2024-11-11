@@ -30,7 +30,6 @@ const props = defineProps({
   }
 })
 
-// const placeholderText = props.placeholder || t('tags.filter')
 const placeholderText = computed(() => props.placeholder || t('tags.filter'))
 
 const vipStore = useVipCommercialAnalysisStore()
