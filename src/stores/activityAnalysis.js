@@ -77,6 +77,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   const currentTabs = ref('Overview')
   const isChildFiltered = ref(0)
 
+  // 成長率 成長差額 總和 -> 各頁籤篩選狀態
   const chartFilteredArr = reactive({
     GrowthRate: { status: 0 },
     GrowthGap: { status: 0 },
