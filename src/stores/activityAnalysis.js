@@ -5,6 +5,7 @@ import { dayjs } from 'element-plus'
 
 export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
   const searchActivity = ref('')
 
 <<<<<<< HEAD
@@ -71,26 +72,21 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   const { date_range_picker_config_2 } = useDateStore()
 
   const islistFiltered = ref(0)
+=======
+>>>>>>> 0968fbf ([add] activity growth filter)
   const searchActivity = ref('')
-  const filtered = ref(0)
-  const chartFiltered = 0
-  const currentTabs = ref('Overview')
-  const isChildFiltered = ref(0)
 
-  // 成長率 成長差額 總和 -> 各頁籤篩選狀態
-  const chartFilteredArr = reactive({
-    GrowthRate: { status: 0 },
-    GrowthGap: { status: 0 },
-    TotalSum: { status: 0 }
-  })
-
-  const initChildData = () => {
-    childListData.value = []
-    currentChildAnalysis.name = null
-    currentChildAnalysis.id = null
-    optionChildList.value = null
-    isChildFiltered.value = 0
+  const initListFilter = () => {
+    islistFiltered.value = 0
+    searchActivity.value = ''
+    currentTabs.value = 'Overview'
   }
+
+  // 用來監聽是否新增或是修改活動
+  const activityAddChange = 0
+
+  // 活動分析明細-子活動資料
+  const childListData = ref([])
 
   // 活動分析明細-子活動分析->目前選取的子活動
   const currentChildAnalysis = reactive({
@@ -110,11 +106,28 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     currentChildAnalysis.id = selectedOption.value
   }
 
-  // 用來監聽是否新增或是修改活動
-  const activityAddChange = 0
+  const isChildFiltered = ref(0)
 
-  // 活動分析明細-子活動資料
-  const childListData = ref([])
+  const initChildData = () => {
+    childListData.value = []
+    currentChildAnalysis.name = null
+    currentChildAnalysis.id = null
+    optionChildList.value = null
+    isChildFiltered.value = 0
+  }
+
+  const islistFiltered = ref(0)
+  const filtered = ref(0)
+  const chartFiltered = 0
+  const currentTabs = ref('Overview')
+  const { date_range_picker_config_2 } = useDateStore()
+
+  // 成長率 成長差額 總和 -> 各頁籤篩選狀態
+  const chartFilteredArr = reactive({
+    GrowthRate: { status: 0 },
+    GrowthGap: { status: 0 },
+    TotalSum: { status: 0 }
+  })
 
 >>>>>>> 0278979 ([add] activity growth filter)
   // 進階篩選options的預設值
@@ -167,6 +180,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   // 用來監聽是否新增或是修改活動
   const activityAddChange = 0
 
@@ -184,8 +198,11 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     currentTabs.value = 'Overview'
   }
 
+=======
+>>>>>>> 0968fbf ([add] activity growth filter)
   return {
     searchActivity,
+    islistFiltered,
     filtered,
 >>>>>>> 0278979 ([add] activity growth filter)
     initListFilter,
@@ -218,9 +235,15 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 =======
     chartFilteredArr,
     currentChildAnalysis,
+    optionChildList,
     findSelectedOption,
+<<<<<<< HEAD
     initChildData,
     islistFiltered
 >>>>>>> 94c74fe ([add] activity growth filter)
+=======
+    isChildFiltered,
+    initChildData
+>>>>>>> 0968fbf ([add] activity growth filter)
   }
 })
