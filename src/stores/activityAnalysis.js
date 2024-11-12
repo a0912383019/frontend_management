@@ -118,6 +118,8 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     isChildFiltered.value = 0
   }
 
+  const currentDetailTab = ref('TagStatistics')
+
   const filtered = ref(0)
   const chartFiltered = 0
   const currentTabs = ref('Overview')
@@ -214,6 +216,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     findSelectedOption,
     isChildFiltered,
     initChildData,
+<<<<<<< HEAD
     currentDetailTab,
     chartFiltered,
     currentTabs,
@@ -246,5 +249,8 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     isChildFiltered,
     initChildData
 >>>>>>> 0968fbf ([add] activity growth filter)
+=======
+    currentDetailTab
+>>>>>>> 20ad569 ([add] activity growth filter)
   }
 })
