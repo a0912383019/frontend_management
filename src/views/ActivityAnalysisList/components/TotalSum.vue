@@ -122,17 +122,17 @@ const queryCharts = () => {
 }
 watch([() => activityStore.chartFiltered, () => activityStore.currentTabs], () => {
   if (
-    activityStore.chartFilteredArr[2] !== activityStore.chartFiltered &&
+    activityStore.chartFilteredArr[3] !== activityStore.chartFiltered &&
     activityStore.currentTabs === 'TotalSum'
   ) {
-    activityStore.chartFilteredArr[2] = activityStore.chartFiltered
+    activityStore.chartFilteredArr[3] = activityStore.chartFiltered
     queryCharts()
   }
 })
 
 onMounted(() => {
   if (activityStore.chartFiltered !== 0) {
-    activityStore.chartFilteredArr[2] = activityStore.chartFiltered
+    activityStore.chartFilteredArr[3] = activityStore.chartFiltered
     queryCharts()
   }
 })

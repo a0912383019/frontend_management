@@ -114,12 +114,17 @@ const transformChartSeries = (data) => {
   clearChart()
 
   chartOptions.xAxis.categories = data.map((ele) => {
-    const dateformat = ele.interval_title.split('~')
-    return (
-      dayjs(dateformat[0]).format(t('date.format_date_rule')) +
-      '~' +
-      dayjs(dateformat[1]).format(t('date.format_date_rule'))
-    )
+    if (ele.interval_title.includes('~')) {
+      const dateformat = ele.interval_title.split('~')
+
+      return (
+        dayjs(dateformat[0]).format(t('date.format_date_rule')) +
+        '~' +
+        dayjs(dateformat[1]).format(t('date.format_date_rule'))
+      )
+    } else {
+      return ele.interval_title
+    }
   })
 
   let dataClone = { ...data[0] }

@@ -211,6 +211,61 @@ export const useDateStore = defineStore('dateStore', () => {
     ]
   }
 
+  // 近1週、近2週、近1個月、近2個月、近1季、近2季、近1年、近2年
+  const shortcutsConfig3 = () => {
+    const { t } = i18n.global
+    return [
+      {
+        text: t('date_range_picker.last_week'),
+        value: () => {
+          return [dayjs(LAST_DATE.value).subtract(7, 'day'), LAST_DATE.value]
+        }
+      },
+      {
+        text: t('date_range_picker.last_two_weeks'),
+        value: () => {
+          return [dayjs(LAST_DATE.value).subtract(14, 'day'), LAST_DATE.value]
+        }
+      },
+      {
+        text: t('date_range_picker.last_month'),
+        value: () => {
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(1, 'month'), LAST_DATE.value]
+        }
+      },
+      {
+        text: t('date_range_picker.last_two_months'),
+        value: () => {
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(2, 'month'), LAST_DATE.value]
+        }
+      },
+      {
+        text: t('date_range_picker.last_month'),
+        value: () => {
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(3, 'month'), LAST_DATE.value]
+        }
+      },
+      {
+        text: t('date_range_picker.last_two_months'),
+        value: () => {
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(6, 'month'), LAST_DATE.value]
+        }
+      },
+      {
+        text: t('date_range_picker.last_year'),
+        value: () => {
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(1, 'year'), LAST_DATE.value]
+        }
+      },
+      {
+        text: t('date_range_picker.last_two_years'),
+        value: () => {
+          return [dayjs(LAST_DATE.value).add(1, 'day').subtract(2, 'year'), LAST_DATE.value]
+        }
+      }
+    ]
+  }
+
   return {
     LAST_DATE,
     updateDate,
@@ -224,6 +279,7 @@ export const useDateStore = defineStore('dateStore', () => {
     date_range_picker_config_8,
     date_range_picker_config_9,
     shortcutsConfig1,
-    shortcutsConfig2
+    shortcutsConfig2,
+    shortcutsConfig3
   }
 })

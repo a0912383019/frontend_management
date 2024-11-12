@@ -262,7 +262,7 @@ watch(
             :config="2"
             :disableDate="false"
             @update:modelValue="dateCount"
-            :shortcutsConfig="1"
+            :shortcutsConfig="3"
             class="w-full filter-datepicker custom-tag-date-picker"
             classColor="purple"
           />

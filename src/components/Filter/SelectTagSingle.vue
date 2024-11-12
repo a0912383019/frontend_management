@@ -263,7 +263,7 @@ watch(
         v-model="tagInputText"
         class="select-tag-single__input"
         :class="dropClass"
-        :placeholder="placeholderText"
+        :placeholder="currentTagAry.length === 0 ? placeholderText : null"
         ref="refTagInput"
         @focus="handleInputFocus"
         @keyup="handleInputKeyup"
