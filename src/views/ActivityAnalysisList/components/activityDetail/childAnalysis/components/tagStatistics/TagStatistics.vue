@@ -62,7 +62,7 @@ const chartOptions = reactive({
   chart: {
     type: 'column',
     height: 500,
-    marginLeft: 120
+    // marginLeft: 120
   },
   xAxis: {
     gridLineColor: '#e8e8e8',
@@ -72,10 +72,10 @@ const chartOptions = reactive({
     tickWidth: 1,
     categories: [],
     labels: {
-      rotation: locale.value === 'en' ? -40 : -25,
+      // rotation: locale.value === 'en' ? -40 : -25,
       style: {
-        whiteSpace: 'nowrap', // 避免文字換行
-        textOverflow: 'none', // 防止省略號(...)
+        // whiteSpace: 'nowrap', // 避免文字換行
+        // textOverflow: 'none', // 防止省略號(...)
         fontSize: '12px'
       }
     },
