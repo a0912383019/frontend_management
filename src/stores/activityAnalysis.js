@@ -120,7 +120,6 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 
   const currentDetailTab = ref('TagStatistics')
 
-  const filtered = ref(0)
   const chartFiltered = 0
   const currentTabs = ref('Overview')
   const { date_range_picker_config_2 } = useDateStore()
@@ -210,33 +209,13 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 >>>>>>> 0278979 ([add] activity growth filter)
     initListFilter,
     activityAddChange,
-    childListData,
-    currentChildAnalysis,
-    optionChildList,
-    findSelectedOption,
-    isChildFiltered,
-    initChildData,
-<<<<<<< HEAD
-    currentDetailTab,
     chartFiltered,
-    currentTabs,
-    chartFilteredArr,
     filterData,
     chartApiParams,
     transformChartParams,
-<<<<<<< HEAD
-=======
     childListData,
-<<<<<<< HEAD
->>>>>>> d6d128d ([add] activity growth filter)
-    resetState
-=======
     resetState,
     currentTabs,
-<<<<<<< HEAD
-    chartFilteredArr
->>>>>>> 0278979 ([add] activity growth filter)
-=======
     chartFilteredArr,
     currentChildAnalysis,
     optionChildList,
@@ -247,10 +226,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 >>>>>>> 94c74fe ([add] activity growth filter)
 =======
     isChildFiltered,
-    initChildData
->>>>>>> 0968fbf ([add] activity growth filter)
-=======
+    initChildData,
     currentDetailTab
->>>>>>> 20ad569 ([add] activity growth filter)
   }
 })
