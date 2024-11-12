@@ -76,6 +76,8 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 >>>>>>> 0968fbf ([add] activity growth filter)
   const searchActivity = ref('')
 
+  const islistFiltered = ref(0)
+
   const initListFilter = () => {
     islistFiltered.value = 0
     searchActivity.value = ''
@@ -116,7 +118,6 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     isChildFiltered.value = 0
   }
 
-  const islistFiltered = ref(0)
   const filtered = ref(0)
   const chartFiltered = 0
   const currentTabs = ref('Overview')
