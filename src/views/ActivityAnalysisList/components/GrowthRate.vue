@@ -125,17 +125,18 @@ const queryCharts = () => {
 
 watch([() => activityStore.chartFiltered, () => activityStore.currentTabs], () => {
   if (
-    activityStore.chartFilteredArr[1] !== activityStore.chartFiltered &&
+    activityStore.chartFilteredArr[activityStore.currentTabs].status !==
+      activityStore.chartFiltered &&
     activityStore.currentTabs === 'GrowthRate'
   ) {
-    activityStore.chartFilteredArr[1] = activityStore.chartFiltered
+    activityStore.chartFilteredArr[activityStore.currentTabs].status = activityStore.chartFiltered
     queryCharts()
   }
 })
 
 onMounted(() => {
   if (activityStore.chartFiltered !== 0) {
-    activityStore.chartFilteredArr[1] = activityStore.chartFiltered
+    activityStore.chartFilteredArr[activityStore.currentTabs].status = activityStore.chartFiltered
     queryCharts()
   }
 })

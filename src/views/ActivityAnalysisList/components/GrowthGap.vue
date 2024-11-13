@@ -123,17 +123,18 @@ const queryCharts = () => {
 
 watch([() => activityStore.chartFiltered, () => activityStore.currentTabs], () => {
   if (
-    activityStore.chartFilteredArr[2] !== activityStore.chartFiltered &&
+    activityStore.chartFilteredArr[activityStore.currentTabs].status !==
+      activityStore.chartFiltered &&
     activityStore.currentTabs === 'GrowthGap'
   ) {
-    activityStore.chartFilteredArr[2] = activityStore.chartFiltered
+    activityStore.chartFilteredArr[activityStore.currentTabs].status = activityStore.chartFiltered
     queryCharts()
   }
 })
 
 onMounted(() => {
   if (activityStore.chartFiltered !== 0) {
-    activityStore.chartFilteredArr[2] = activityStore.chartFiltered
+    activityStore.chartFilteredArr[activityStore.currentTabs].status = activityStore.chartFiltered
     queryCharts()
   }
 })
