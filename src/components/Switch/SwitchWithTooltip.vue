@@ -1,6 +1,10 @@
 <script setup>
 const props = defineProps({
-  name: {
+  activeText: {
+    type: String,
+    default: ''
+  },
+  inactiveText: {
     type: String,
     default: ''
   },
@@ -20,7 +24,15 @@ const props = defineProps({
   modelValue: {
     type: Boolean,
     default: false
-  }
+  },
+  inlinePrompt: {
+    type: Boolean,
+    default: false
+  },
+  width: {
+    type: Number,
+    default: 50
+  },
 })
 
 const switchColor = 'cdp-switch-' + props.color
@@ -36,9 +48,12 @@ const handleSwitchChange = (data) => {
     <el-switch
       :model-value="props.modelValue"
       @change="handleSwitchChange"
-      :active-text="props.name"
+      :inline-prompt="props.inlinePrompt"
+      :active-text="props.activeText"
+      :inactive-text="props.inactiveText"
+      :width="props.width"
       class="mr-5"
-      :class="switchColor"
+      :class="[switchColor, {'off-class': props.inlinePrompt && !props.modelValue}]"
       :disabled="props.isDisabled"
     />
     <el-tooltip
@@ -59,5 +74,10 @@ const handleSwitchChange = (data) => {
 // 淡化
 .dilute {
   opacity: 0.5;
+}
+:deep(.el-switch.off-class) {
+  .el-switch__inner .is-text {
+    color: rgb(133, 133, 133);
+  }
 }
 </style>

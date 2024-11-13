@@ -166,7 +166,7 @@ const transformCustomTags = () => {
         </section>
         <div class="flex justify-end">
           <SwitchWithTooltip
-            :name="$t('target_group_analysis.is_open')"
+            :activeText="$t('target_group_analysis.is_open')"
             :tooltipContent="$t('target_group_analysis.is_open_reminder')"
             v-model="isOpen"
             :isDisabled="false"

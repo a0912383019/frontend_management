@@ -9,6 +9,7 @@ import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
+import ActivityDetail from '@/views/ActivityAnalysisList/components/activityDetail/ActivityDetail.vue'
 import { ElNotification } from 'element-plus'
 import { sortTableDate } from '@/utils/commonUtils.js'
 
@@ -68,7 +69,7 @@ const queryListActivity = async () => {
     const result = await apiQueryListActivity({
       hall_name: activeHall.hall_code,
       activity_name: activityStore.searchActivity,
-      search_date: '2024-01-01 ~ 2024-08-02'
+      search_date: '2024-01-01 ~ 2024-12-02'
     })
 
     const { return_code } = result.data.status
@@ -105,8 +106,16 @@ const transformActivityList = (data) => {
   return activityList
 }
 
+const showDetail = ref(false)
+const detailActivityId = ref(null)
 const openActivityDetail = (activityId) => {
-  console.log('activity_id', activityId)
+  showDetail.value = true
+  detailActivityId.value = activityId
+}
+
+const closeDetail = () => {
+  showDetail.value = false
+  detailActivityId.value = null
 }
 
 const deleteBox = ref(false) // 刪除彈窗
@@ -173,7 +182,7 @@ const upadteCurrentSort = ({ prop, order }) => {
 }
 
 watch(
-  () => activityStore.filtered,
+  () => activityStore.islistFiltered,
   () => {
     queryListActivity()
   }
@@ -205,7 +214,7 @@ onMounted(() => {
       :pageSize="10"
       :stripe="true"
       @sort="upadteCurrentSort"
-      class="customTable2 customTagListTable"
+      class="customTable2 customActivityListTable"
     >
       <template #operation="scope">
         <div>
@@ -240,6 +249,7 @@ onMounted(() => {
         {{ $t('modal.are_you_sure_to_delete') + '「' + deleteActivityName + '」?' }}
       </template>
     </ConfirmBox>
+    <ActivityDetail v-model="showDetail" @closeDialog="closeDetail" :activityId="detailActivityId" />
   </section>
 </template>
 <style lang="scss" scoped>
@@ -248,7 +258,7 @@ onMounted(() => {
 }
 </style>
 <style lang="scss">
-.customTagListTable {
+.customActivityListTable {
   button.detail-button {
     min-width: 80px;
   }

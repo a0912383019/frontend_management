@@ -1,6 +1,40 @@
 import axiosInstance from './axiosInstance'
 import axiosGoInstance from './axiosGoInstance.js'
 
+// 進階篩選
+export const apiQueryListActiveLimit = (params) => {
+  const {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_list_limit', {
+    hall_name,
+    start_search_year,
+    start_search_month,
+    start_search_week,
+    start_date,
+    end_search_year,
+    end_search_month,
+    end_search_week,
+    end_date,
+    cut_type,
+    reward_flag,
+    reward_date_flag,
+    search_activity
+  })
+}
+
 // 總和_活動中-淨利
 export const apiQueryTotalActiveProfit = (params) => {
   const {
@@ -352,5 +386,40 @@ export const apiImportActivity = (params) => {
     activity_id,
     activity_detail_id,
     function_id
+  })
+}
+
+export const apiActivityInfo = (params) => {
+  const { hall_name, activity_id } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_analysis_info', {
+    hall_name,
+    activity_id
+  })
+}
+
+export const apiQueryActivityCompareOverview = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_compare_overview', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide
+  })
+}
+
+export const apiQueryActivityTagsRank = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_tags_rank', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide
+  })
+}
+
+export const apiQueryActivityBetAmountGrowthSpanTags = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_betAmount_growth_span_tags', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide
   })
 }

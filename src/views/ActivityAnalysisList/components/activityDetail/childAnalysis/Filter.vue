@@ -1,12 +1,17 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { useActivityAnalysisStore } from '@/stores'
 
 const activityStore = useActivityAnalysisStore()
+const { findSelectedOption, currentChildAnalysis, optionChildList } = activityStore
 
-const searchActivity = ref('')
+const props = defineProps({
+  activityId: {
+    type: Number
+  }
+})
 
 const popover = ref(null) // popover
 
@@ -17,14 +22,10 @@ const closePopover = () => {
 
 // 確認篩選
 const handleClick = () => {
-  activityStore.searchActivity = searchActivity.value
-  activityStore.islistFiltered = Date.now()
+  findSelectedOption()
+  activityStore.isChildFiltered = Date.now()
   closePopover()
 }
-
-onMounted(() => {
-  searchActivity.value = activityStore.searchActivity
-})
 </script>
 <template>
   <div class="cdp-popover-container">
@@ -50,14 +51,24 @@ onMounted(() => {
             <SectionTitle
               size="small"
               class="cdp-text-purple mb-4"
-              :title="$t('activity_analysis.activity_name')"
+              :title="$t('activity_analysis.activity_detail')"
             >
             </SectionTitle>
-            <el-input
-              v-model="searchActivity"
-              class="cdp-input__purple"
-              :placeholder="$t('activity_analysis.input_activity_name_to_search')"
-            />
+            <el-select
+              v-model="currentChildAnalysis.id"
+              class="cdp-select cdp-select__purple w-full"
+              popper-class="cdp-select-popper cdp-select-popper__purple"
+              :teleported="false"
+              :filterable="true"
+            >
+              <el-option
+                v-for="item in optionChildList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
           </div>
         </div>
         <div class="drop__footer">

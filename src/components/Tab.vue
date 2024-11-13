@@ -9,6 +9,12 @@ const props = defineProps({
   activeName: {
     type: String,
     default: ''
+  },
+  disabledTab: {
+    type: Array,
+    default() {
+      return []
+    }
   }
 })
 const emit = defineEmits(['update:modelValue'])
@@ -22,8 +28,12 @@ const handleTabChange = (data) => {
     <li
       v-for="(item, index) in props.tabData"
       :key="index"
-      :class="{ active: props.activeName === item.name }"
+      :class="{
+        active: props.activeName === item.name,
+        'disabled-tab': props.disabledTab.includes(index)
+      }"
       @click="handleTabChange(item.name)"
+      disabled
     >
       <div class="tabs__item">
         {{ item.label }}
@@ -79,6 +89,14 @@ const handleTabChange = (data) => {
             color: #ffffff;
             z-index: -1;
           }
+        }
+      }
+    }
+    &.disabled-tab {
+      pointer-events: none;
+      .tabs {
+        &__item {
+          color: rgb(211, 209, 209);
         }
       }
     }
