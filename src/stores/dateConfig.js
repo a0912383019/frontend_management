@@ -240,13 +240,13 @@ export const useDateStore = defineStore('dateStore', () => {
         }
       },
       {
-        text: t('date_range_picker.last_month'),
+        text: t('date_range_picker.last_one_season'),
         value: () => {
           return [dayjs(LAST_DATE.value).add(1, 'day').subtract(3, 'month'), LAST_DATE.value]
         }
       },
       {
-        text: t('date_range_picker.last_two_months'),
+        text: t('date_range_picker.last_two_season'),
         value: () => {
           return [dayjs(LAST_DATE.value).add(1, 'day').subtract(6, 'month'), LAST_DATE.value]
         }
