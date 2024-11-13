@@ -43,6 +43,10 @@ const props = defineProps({
   border-color: rgba(79, 132, 207, 0.5) rgba(79, 132, 207, 0.25) rgba(79, 132, 207, 0.75)
     rgba(79, 132, 207, 1) !important;
 }
+.purple {
+  border-color: rgba(130, 61, 169, 0.5) rgba(130, 61, 169, 0.25) rgba(130, 61, 169, 0.75)
+    rgb(130, 61, 169) !important;
+}
 @keyframes rotation {
   0% {
     transform: rotate(0deg);

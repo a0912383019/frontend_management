@@ -12,7 +12,8 @@ const {
   date_range_picker_config_8,
   date_range_picker_config_9,
   shortcutsConfig1,
-  shortcutsConfig2
+  shortcutsConfig2,
+  shortcutsConfig3
 } = useDateStore()
 
 const { t, locale: i18nLocale } = useI18n()
@@ -128,6 +129,8 @@ const shortcuts = computed(() => {
     return shortcutsConfig1()
   } else if (props.shortcutsConfig === 2) {
     return shortcutsConfig2()
+  } else if (props.shortcutsConfig === 3) {
+    return shortcutsConfig3()
   } else {
     return []
   }

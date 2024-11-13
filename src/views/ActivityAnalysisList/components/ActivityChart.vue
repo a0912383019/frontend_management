@@ -1,12 +1,12 @@
 <script setup>
 import { ref, watch, onMounted, toRefs, reactive } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { generateRGBColors, formatDateDuration } from '@/utils/commonUtils.js'
-import { dayjs } from 'element-plus'
+import { generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
 import { latest_chart_color } from '@/../public/js/system_config.js'
+import { dayjs } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
@@ -112,13 +112,19 @@ const chartOptions = reactive({
 // 轉換資料
 const transformChartSeries = (data) => {
   clearChart()
+
   chartOptions.xAxis.categories = data.map((ele) => {
-    let date = ele.interval_title.split('~')
-    return formatDateDuration(
-      dayjs(date[0]).format(t('date.format_date_rule')) +
+    if (ele.interval_title.includes('~')) {
+      const dateformat = ele.interval_title.split('~')
+
+      return (
+        dayjs(dateformat[0]).format(t('date.format_date_rule')) +
         '~' +
-        dayjs(date[1]).format(t('date.format_date_rule'))
-    )
+        dayjs(dateformat[1]).format(t('date.format_date_rule'))
+      )
+    } else {
+      return ele.interval_title
+    }
   })
 
   let dataClone = { ...data[0] }
@@ -131,11 +137,17 @@ const transformChartSeries = (data) => {
 
   let dataSet = {}
 
+  let colorCount = dataKey.length
+  let colorArr = []
+  if (colorCount > 20) {
+    colorArr = generateMultipleColors(colorCount)['bg']
+  }
+
   dataKey.forEach((ele, idx) => {
     dataSet[ele] = {
       name: dataClone[ele].activity_name,
       type: 'line',
-      color: generateRGBColors(latest_chart_color[idx], 1),
+      color: colorCount > 20 ? colorArr[idx] : generateRGBColors(latest_chart_color[idx], 1),
       lineWidth: 2,
       marker: {
         symbol: 'circle',

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useVipCommercialAnalysisStore } from '@/stores'
 import SelectTagDropdown from '@/components/Filter/SelectTagDropdown.vue'
@@ -16,8 +16,21 @@ const props = defineProps({
   },
   defaultAll: {
     type: String
+  },
+  showAllOption: {
+    type: Boolean,
+    default: true
+  },
+  placeholder: {
+    type: String
+  },
+  defaultValue: {
+    type: Array,
+    default: () => []
   }
 })
+
+const placeholderText = computed(() => props.placeholder || t('tags.filter'))
 
 const vipStore = useVipCommercialAnalysisStore()
 const { defaultVipTag } = vipStore
@@ -35,9 +48,12 @@ const defaultAll = props.defaultAll === undefined ? defaultVipTag : props.defaul
 const dropClass = ref('dropClass' + dayjs() + Math.floor(Math.random() * 10))
 
 // 已選標籤列表
-const currentTagAry = ref([
-  { value: 'all', label: t('vip_commercial_analysis.all'), disabled: false, active: false }
-])
+const currentTagAry = ref(
+  props.showAllOption
+    ? [{ value: 'all', label: t('vip_commercial_analysis.all'), disabled: false, active: false }]
+    : props.defaultValue
+)
+
 // 標籤選取文字
 const tagTextAry = ref([])
 // 篩選標籤input欄位
@@ -247,7 +263,7 @@ watch(
         v-model="tagInputText"
         class="select-tag-single__input"
         :class="dropClass"
-        :placeholder="$t('tags.filter')"
+        :placeholder="currentTagAry.length === 0 ? placeholderText : null"
         ref="refTagInput"
         @focus="handleInputFocus"
         @keyup="handleInputKeyup"
