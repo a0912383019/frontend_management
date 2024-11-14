@@ -124,6 +124,7 @@ watch([() => activityStore.chartFiltered, () => activityStore.currentTabs], () =
   if (
     activityStore.chartFilteredArr[activityStore.currentTabs].status !==
       activityStore.chartFiltered &&
+    activityStore.currentTabs !== 'Overview' &&
     activityStore.currentTabs === 'TotalSum'
   ) {
     activityStore.chartFilteredArr[activityStore.currentTabs].status = activityStore.chartFiltered
@@ -142,6 +143,8 @@ onMounted(() => {
   <ActivityChart
     :title="$t('activity_analysis.activity_commissionable')"
     :apiObject="apiObjectCommissionable"
+    :sign="'¥'"
+    :signPositionFront="true"
   />
   <ActivityChart
     :title="$t('activity_analysis.activity_active_people')"
@@ -150,6 +153,8 @@ onMounted(() => {
   <ActivityChart
     :title="$t('activity_analysis.activity_net_profit')"
     :apiObject="apiObjectProfit"
+    :sign="'¥'"
+    :signPositionFront="true"
   />
 </template>
 <style lang="scss" scoped></style>

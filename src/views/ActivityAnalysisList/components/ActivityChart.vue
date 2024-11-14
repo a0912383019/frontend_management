@@ -3,7 +3,11 @@ import { ref, watch, onMounted, toRefs, reactive } from 'vue'
 import { generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import { tooltipDarkConfig, tooltipAddSign } from '@/utils/highchartsConfig.js'
+import {
+  tooltipDarkConfig,
+  tooltipAddSign,
+  tooltipAddSignInFront
+} from '@/utils/highchartsConfig.js'
 import { latest_chart_color } from '@/../public/js/system_config.js'
 import { dayjs } from 'element-plus'
 import { useI18n } from 'vue-i18n'
@@ -18,6 +22,14 @@ const props = defineProps({
   },
   title: {
     type: String
+  },
+  signPositionFront: {
+    type: Boolean,
+    default: false
+  },
+  sign: {
+    type: String,
+    default: ''
   }
 })
 const { apiObject } = toRefs(props)
@@ -68,7 +80,11 @@ const chartOptions = reactive({
     shared: true,
     useHTML: true,
     formatter: function () {
-      return tooltipAddSign({ data: this.points, date: this.x, sign: '%' })
+      if (props.signPositionFront) {
+        return tooltipAddSignInFront({ data: this.points, date: this.x, sign: props.sign })
+      } else {
+        return tooltipAddSign({ data: this.points, date: this.x, sign: props.sign })
+      }
     },
     stickOnContact: true // 需要加這個才能使overflow 生效
   },
