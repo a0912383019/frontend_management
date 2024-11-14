@@ -56,6 +56,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 
   // 成長率 成長差額 總和 -> 各頁籤篩選狀態
   const chartFilteredArr = reactive({
+    Overview: { status: 0 },
     GrowthRate: { status: 0 },
     GrowthGap: { status: 0 },
     TotalSum: { status: 0 }

@@ -125,7 +125,6 @@ watch([() => activityStore.chartFiltered, () => activityStore.currentTabs], () =
   if (
     activityStore.chartFilteredArr[activityStore.currentTabs].status !==
       activityStore.chartFiltered &&
-    activityStore.currentTabs !== 'Overview' &&
     activityStore.currentTabs === 'GrowthGap'
   ) {
     activityStore.chartFilteredArr[activityStore.currentTabs].status = activityStore.chartFiltered
