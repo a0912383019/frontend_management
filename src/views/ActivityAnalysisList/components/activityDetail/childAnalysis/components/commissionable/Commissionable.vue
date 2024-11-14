@@ -80,11 +80,6 @@ const chartOptions = reactive({
   legend: {
     enabled: false
   },
-  yAxis: {
-    labels: {
-      // enabled: false
-    }
-  },
   tooltip: {
     ...tooltipDarkConfig,
     useHTML: true,
@@ -303,34 +298,6 @@ onMounted(() => {
 :deep(.el-input__suffix-inner) {
   color: rgb(59, 59, 59);
 }
-// :deep(.el-table) {
-//   tbody {
-//     .checkbox-svg {
-//       .cell:before {
-//         width: 18px;
-//         height: 12px;
-//         content: '';
-//         mask: url(@/assets/icons/bar.svg) no-repeat;
-//         mask-size: cover;
-//         background-color: var(--my-color-var);
-//         margin-right: 7px;
-//       }
-//     }
-//   }
-// }
-// :deep(.paginationBox) {
-//   flex-direction: column;
-//   .el-pagination {
-//     order: 2;
-//     padding-top: 5px;
-//   }
-//   .totalPagination {
-//     order: 1;
-//     position: relative;
-//     transform: none;
-//     text-align: center;
-//   }
-// }
 </style>
 <style lang="scss">
 .customCommisionableTable {
