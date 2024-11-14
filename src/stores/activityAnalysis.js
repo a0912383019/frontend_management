@@ -48,7 +48,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     isChildFiltered.value = 0
   }
 
-  const currentDetailTab = ref('TagStatistics')
+  const currentDetailTab = ref('Commissionable')
 
   const chartFiltered = 0
   const currentTabs = ref('Overview')
