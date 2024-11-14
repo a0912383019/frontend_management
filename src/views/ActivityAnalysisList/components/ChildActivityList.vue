@@ -364,7 +364,7 @@ defineExpose({ getSubActivities, validSubActivities })
             :rangeDate="scope.row.filter_date"
             :config="8"
             :shortcutsConfig="1"
-            :disableDate="false"
+            :enabledThreeMonth="false"
             @update:modelValue="
               updatePromotionList(scope.row.disabled, scope.row.detail_key, scope.idx)
             "

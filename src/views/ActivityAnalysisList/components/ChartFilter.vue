@@ -260,7 +260,7 @@ watch(
           <DatepickerRange
             v-model="filterData.analysisDate"
             :config="2"
-            :disableDate="false"
+            :enabledThreeMonth="false"
             @update:modelValue="dateCount"
             :shortcutsConfig="3"
             class="w-full filter-datepicker custom-tag-date-picker"
