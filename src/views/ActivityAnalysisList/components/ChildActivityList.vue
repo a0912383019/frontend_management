@@ -297,7 +297,7 @@ defineExpose({ getSubActivities, validSubActivities })
         :stripe="false"
         rowKey="detail_key"
         class="customTable2"
-        :class="{ 'is-empty': subActivities && subActivities.length === 0 }"
+        :class="{ 'is-empty': subActivities && subActivities.length.toString() === '0' }"
       >
         <template #promotion_list-header>
           <span class="mr-5">{{ $t('activity_analysis.promotion_list') }}</span>
@@ -364,7 +364,7 @@ defineExpose({ getSubActivities, validSubActivities })
             :rangeDate="scope.row.filter_date"
             :config="8"
             :shortcutsConfig="1"
-            :enabledThreeMonth="false"
+            :disableDate="false"
             @update:modelValue="
               updatePromotionList(scope.row.disabled, scope.row.detail_key, scope.idx)
             "
