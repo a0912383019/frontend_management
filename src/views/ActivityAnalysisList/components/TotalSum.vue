@@ -142,7 +142,7 @@ onMounted(() => {
   <ActivityChart
     :title="$t('activity_analysis.activity_commissionable')"
     :apiObject="apiObjectCommissionable"
-    :sign="'¥'"
+    sign="¥"
     :signPositionFront="true"
   />
   <ActivityChart
@@ -152,7 +152,7 @@ onMounted(() => {
   <ActivityChart
     :title="$t('activity_analysis.activity_net_profit')"
     :apiObject="apiObjectProfit"
-    :sign="'¥'"
+    sign="¥"
     :signPositionFront="true"
   />
 </template>

@@ -145,17 +145,17 @@ onMounted(() => {
   <ActivityChart
     :title="$t('activity_analysis.activity_commissionable')"
     :apiObject="apiObjectCommissionable"
-    :sign="'%'"
+    sign="%"
   />
   <ActivityChart
     :title="$t('activity_analysis.activity_active_people')"
     :apiObject="apiObjectReal"
-    :sign="'%'"
+    sign="%"
   />
   <ActivityChart
     :title="$t('activity_analysis.activity_net_profit')"
     :apiObject="apiObjectProfit"
-    :sign="'%'"
+    sign="%"
   />
 </template>
 <style lang="scss" scoped></style>
