@@ -150,6 +150,7 @@ const handleCalendarChange = (val) => {
 const disabledDate = (day) => {
   // 禁選條件一：選擇的起始日往前往後大於三個月的日期disabled
   let diff = null
+
   if (
     selectDate.value !== null &&
     selectDate.value[1] === null &&

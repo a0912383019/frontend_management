@@ -160,6 +160,43 @@ export const tooltipAddSign = ({ data, date = '', sign = '' }) => {
 }
 
 /**
+ * tooltipAddSignInFront formatter排版
+ * type: line
+ * @param data 帶入tooltip的this.points
+ * @param date 帶入tooltip的this.x
+ * @param sign 帶入tooltip的符號
+ */
+export const tooltipAddSignInFront = ({ data, date = '', sign = '' }) => {
+  let result = `
+    <div style="
+      padding: 6px 10px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.8)
+    ">
+    <div class="font-bold mb-3">${date}</div>
+    <div class="flex flex-col">
+  `
+  for (let i = 0; i < data.length; i++) {
+    result += `
+    <div class="flex">
+      <div class="mr-4 mt-4" style="
+        width: 10px;
+        height: 10px;
+        background-color: ${data[i].color};
+      "></div>
+      <div>
+        ${data[i]['point']['series']['name']}：
+        ${sign}
+        ${FormatNumber(data[i]['y'])}
+      </div>
+    </div>
+    `
+  }
+  result += `</div></div>`
+  return result
+}
+
+/**
  * tooltipAddSignForCol formatter排版
  * type: column
  * @param data 帶入tooltip的this
