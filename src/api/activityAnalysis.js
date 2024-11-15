@@ -447,3 +447,36 @@ export const apiQueryActivityBetAmountGrowthSpan = (params) => {
     activity_detail_id_hide
   })
 }
+
+export const apiQueryActivityCompareDetail = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
+
+  const search_name = '',
+    draw = 2,
+    start = 0,
+    length = 10,
+    order = [
+      {
+        column: 2,
+        dir: 'asc'
+      }
+    ],
+    columns = [
+      {},
+      {},
+      {
+        name: 'current_bet_amount_avg'
+      }
+    ]
+  return axiosInstance.post('/api/auth/activity/query_activity_compare_detail', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide,
+    search_name,
+    draw,
+    start,
+    length,
+    order,
+    columns
+  })
+}

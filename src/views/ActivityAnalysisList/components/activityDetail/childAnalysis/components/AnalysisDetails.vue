@@ -5,6 +5,7 @@ import { useActivityAnalysisStore } from '@/stores'
 import Tab from '@/components/Tab.vue'
 import TagStatistics from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/tagStatistics/TagStatistics.vue'
 import Commissionable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/commissionable/Commissionable.vue'
+import DetailList from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/detailList/DetailList.vue'
 import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
@@ -43,7 +44,8 @@ const tabData = computed(() => {
 // 整理所有 component
 const componentMap = {
   Commissionable,
-  TagStatistics
+  TagStatistics,
+  DetailList
 }
 
 // 當前使用的 component
