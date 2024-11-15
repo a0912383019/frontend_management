@@ -135,8 +135,11 @@ watch(
 .activity-dialog {
   min-height: 600px;
   max-height: 890px;
-  overflow: auto !important;
+  display: flex;
+  flex-direction: column;
   .el-dialog__body {
+    flex: 1;
+    overflow-y: auto; /* 垂直滾動 */
     height: 100%;
   }
 }

@@ -154,7 +154,6 @@ const pageTableTotal = computed(() => {
         :page="page.currentPage"
         :pageSize="props.pageSize"
         :total="pageTableTotal"
-        :filtered="props.filtered"
       />
     </div>
   </div>
