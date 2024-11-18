@@ -184,48 +184,6 @@ const pageTableTotal = computed(() => {
       background-color: #f6f8fb;
       color: #3b4667;
     }
-    .sort-caret {
-      &.descending {
-        border-top-color: #ccd3e0;
-      }
-      &.ascending {
-        border-bottom-color: #ccd3e0;
-      }
-    }
-    .descending {
-      .sort-caret {
-        &.descending {
-          border-top-color: #868ea3;
-        }
-      }
-    }
-    .ascending {
-      .sort-caret {
-        &.ascending {
-          border-bottom-color: #868ea3;
-        }
-      }
-    }
-  }
-  &.el-table--enable-row-hover {
-    .el-table__body {
-      tr {
-        &:hover {
-          > td.el-table__cell {
-            background-color: rgba(107, 207, 223, 0.05);
-          }
-        }
-      }
-    }
-  }
-  &.el-table--striped {
-    .el-table__body {
-      tr.el-table__row--striped {
-        td.el-table__cell {
-          background-color: #f4f6f9;
-        }
-      }
-    }
   }
 }
 .paginationBox {

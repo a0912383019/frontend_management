@@ -72,11 +72,11 @@ const queryActivityCompareDetail = async () => {
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      messageKey.value = 'noPermission' //更改message內容
+      messageKey.value = 'noPermission' // 更改message內容
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      messageKey.value = 'queryFailed' //更改message內容
+      messageKey.value = 'queryFailed' // 更改message內容
     }
   }
 }
@@ -145,6 +145,10 @@ const pageTableTotal = computed(() => {
   }
 })
 
+const handleTableSort = (data) => {
+  console.log(data)
+}
+
 const chartShow = ref(false)
 const memberStepData = reactive({
   member_name: null,
@@ -177,6 +181,8 @@ watch(
     <CurrencySignText class="text-right mb-5" />
     <el-table
       :data="tableData"
+      :default-sort="{ prop: 'comm_before', order: 'descending' }"
+      @sort-change="handleTableSort"
       :border="false"
       :stripe="true"
       class="activity-detail-table"
@@ -199,6 +205,7 @@ watch(
         <el-table-column
           prop="comm_before"
           :label="$t('activity_analysis.activity_before')"
+          sortable
           min-width="14%"
           align="center"
           header-align="center"
@@ -206,6 +213,7 @@ watch(
         <el-table-column
           prop="comm_now"
           :label="$t('activity_analysis.activity_now')"
+          sortable
           min-width="13%"
           align="center"
           header-align="center"
@@ -226,6 +234,7 @@ watch(
         <el-table-column
           prop="comm_after"
           :label="$t('activity_analysis.activity_after')"
+          sortable
           min-width="13%"
           align="center"
           header-align="center"
@@ -248,6 +257,7 @@ watch(
         <el-table-column
           prop="profit_before"
           :label="$t('activity_analysis.activity_before')"
+          sortable
           min-width="13%"
           align="center"
           header-align="center"
@@ -261,6 +271,7 @@ watch(
         <el-table-column
           prop="profit_now"
           :label="$t('activity_analysis.activity_now')"
+          sortable
           min-width="13%"
           align="center"
           header-align="center"
@@ -283,6 +294,7 @@ watch(
         <el-table-column
           prop="profit_after"
           :label="$t('activity_analysis.activity_after')"
+          sortable
           min-width="13%"
           align="center"
           header-align="center"
@@ -419,28 +431,28 @@ watch(
         background: #f3f6f9;
       }
     }
-    // .sort-caret {
-    //   &.descending {
-    //     border-top-color: #ccd3e0;
-    //   }
-    //   &.ascending {
-    //     border-bottom-color: #ccd3e0;
-    //   }
-    // }
-    // .descending {
-    //   .sort-caret {
-    //     &.descending {
-    //       border-top-color: #868ea3;
-    //     }
-    //   }
-    // }
-    // .ascending {
-    //   .sort-caret {
-    //     &.ascending {
-    //       border-bottom-color: #868ea3;
-    //     }
-    //   }
-    // }
+    .sort-caret {
+      &.descending {
+        border-top-color: #ccd3e0;
+      }
+      &.ascending {
+        border-bottom-color: #ccd3e0;
+      }
+    }
+    .descending {
+      .sort-caret {
+        &.descending {
+          border-top-color: #868ea3;
+        }
+      }
+    }
+    .ascending {
+      .sort-caret {
+        &.ascending {
+          border-bottom-color: #868ea3;
+        }
+      }
+    }
   }
   //   &.el-table--enable-row-hover {
   //     .el-table__body {
