@@ -1,12 +1,10 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { useActivityAnalysisStore } from '@/stores'
 
 const activityStore = useActivityAnalysisStore()
-
-const searchMember = ref('')
 
 const popover = ref(null) // popover
 
@@ -17,14 +15,9 @@ const closePopover = () => {
 
 // 確認篩選
 const handleClick = () => {
-  activityStore.searchChildDetailMemberName = searchMember.value
   activityStore.isChildDetailListFiltered = Date.now()
   closePopover()
 }
-
-onMounted(() => {
-  searchMember.value = activityStore.searchChildDetailMemberName
-})
 </script>
 <template>
   <div class="cdp-popover-container">
@@ -54,7 +47,7 @@ onMounted(() => {
             >
             </SectionTitle>
             <el-input
-              v-model="searchMember"
+              v-model="activityStore.searchChildDetailMemberName"
               class="cdp-input__purple"
               :placeholder="$t('common.input_member_name_search')"
             />

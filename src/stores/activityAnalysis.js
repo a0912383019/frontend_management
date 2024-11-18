@@ -4,15 +4,11 @@ import { useDateStore } from '@/stores/dateConfig.js'
 import { dayjs } from 'element-plus'
 
 export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
+  // 活動成效分析頁籤
+  const currentTabs = ref('Overview')
+
   const searchActivity = ref('')
-
   const islistFiltered = ref(0)
-
-  const initListFilter = () => {
-    islistFiltered.value = 0
-    searchActivity.value = ''
-    currentTabs.value = 'Overview'
-  }
 
   // 用來監聽是否新增或是修改活動
   const activityAddChange = 0
@@ -38,8 +34,17 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     currentChildAnalysis.id = selectedOption.value
   }
 
+  // 子活動分析-進階篩選
   const isChildFiltered = ref(0)
 
+  // 子活動分析-下方頁籤
+  const currentDetailTab = ref('Commissionable')
+
+  // 子活動分析-詳細名單-進階篩選
+  const searchChildDetailMemberName = ref('')
+  const isChildDetailListFiltered = ref(0)
+
+  // 初始化子活動分析
   const initChildData = () => {
     childListData.value = []
     currentChildAnalysis.name = null
@@ -47,16 +52,11 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     optionChildList.value = null
     isChildFiltered.value = 0
     currentDetailTab.value = 'Commissionable'
+    searchChildDetailMemberName.value = ''
+    isChildDetailListFiltered.value = 0
   }
 
-  const currentDetailTab = ref('Commissionable')
-
-  // 子活動分析-詳細名單-進階篩選
-  const searchChildDetailMemberName = ref('')
-  const isChildDetailListFiltered = ref(0)
-
   const chartFiltered = 0
-  const currentTabs = ref('Overview')
   const { date_range_picker_config_2 } = useDateStore()
 
   // 成長率 成長差額 總和 -> 各頁籤篩選狀態
@@ -94,6 +94,10 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
 
   // 重置資料
   const resetState = () => {
+    islistFiltered.value = 0
+    searchActivity.value = ''
+    currentTabs.value = 'Overview'
+
     filterData.chartFiltered = 0
     filterData.selectDuration = 'week'
     filterData.analysisDate = ''
@@ -104,7 +108,6 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   return {
     searchActivity,
     islistFiltered,
-    initListFilter,
     activityAddChange,
     childListData,
     currentChildAnalysis,
