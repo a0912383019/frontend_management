@@ -93,7 +93,7 @@ watch(
 <template>
   <el-dialog
     :model-value="props.modelValue"
-    class="cdp-dialog overflow-visible dialog-mt-40"
+    class="cdp-dialog dialog-mt-40 activity-dialog"
     :append-to-body="true"
     width="1280"
     :destroy-on-close="true"
@@ -128,6 +128,19 @@ watch(
 .cdp-dialog {
   &__header {
     color: #fff;
+  }
+}
+</style>
+<style lang="scss">
+.activity-dialog {
+  min-height: 600px;
+  max-height: 890px;
+  display: flex;
+  flex-direction: column;
+  .el-dialog__body {
+    flex: 1;
+    overflow-y: auto; /* 垂直滾動 */
+    height: 100%;
   }
 }
 </style>

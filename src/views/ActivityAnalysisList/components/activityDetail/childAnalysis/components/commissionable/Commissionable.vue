@@ -14,6 +14,10 @@ import { latest_chart_color } from '@/../public/js/system_config.js'
 const { t, locale } = useI18n()
 
 const props = defineProps({
+  isRewarded: {
+    type: Boolean,
+    default: true
+  },
   activityId: {
     type: Number
   }

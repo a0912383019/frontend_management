@@ -13,6 +13,10 @@ import CustomTable from '@/views/ActivityAnalysisList/components/activityDetail/
 const { t, locale } = useI18n()
 
 const props = defineProps({
+  isRewarded: {
+    type: Boolean,
+    default: true
+  },
   activityId: {
     type: Number
   }

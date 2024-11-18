@@ -364,6 +364,7 @@ defineExpose({ getSubActivities, validSubActivities })
             :rangeDate="scope.row.filter_date"
             :config="8"
             :shortcutsConfig="1"
+            :teleported="true"
             :enabledThreeMonth="false"
             @update:modelValue="
               updatePromotionList(scope.row.disabled, scope.row.detail_key, scope.idx)
@@ -384,9 +385,9 @@ defineExpose({ getSubActivities, validSubActivities })
             <div v-else>
               <el-select
                 v-model="scope.row.promotion_list"
-                class="cdp-select cdp-select__blue w-full"
+                class="cdp-select cdp-select__blue"
                 :class="{ 'is-error': !scope.row.promotion_valid.valid }"
-                popper-class="cdp-select-popper__blue"
+                popper-class="cdp-select-popper__blue popper-custom"
                 filterable
                 :fallback-placements="['bottom-end', 'top-end']"
                 :teleported="true"
@@ -574,5 +575,10 @@ defineExpose({ getSubActivities, validSubActivities })
 }
 .line-1-5 {
   line-height: 1.5;
+}
+.popper-custom {
+  .el-select-dropdown__item {
+    min-width: 337px !important;
+  }
 }
 </style>

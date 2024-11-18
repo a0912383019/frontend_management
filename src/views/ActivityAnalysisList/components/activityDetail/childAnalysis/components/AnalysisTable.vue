@@ -8,7 +8,7 @@ import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import PercentWithIcon from '@/components/PercentWithIcon.vue'
-import { errorRespond } from '@/utils/commonUtils.js'
+import { errorRespond, FormatNumber } from '@/utils/commonUtils.js'
 
 const { t } = useI18n()
 
@@ -217,7 +217,7 @@ const transformProportion = (data) => {
         .join(' ~ '),
       date_count: t('activity_analysis.total_day_num', { day_num: dataObj.day_diff }),
       deposit_day_avg: dataObj.commissionable_avg,
-      rate: '-20',
+      rate: FormatNumber('-2072783'),
       commissionable_day_avg: dataObj.commissionable_avg,
       profit_day_avg: dataObj.commissionable_avg,
       bonus_day_avg: dataObj.commissionable_avg,
@@ -249,7 +249,7 @@ const transformPerformance = (data) => {
         .join(' ~ '),
       date_count: t('activity_analysis.total_day_num', { day_num: dataObj.day_diff }),
       deposit_day_avg: dataObj.commissionable_avg,
-      rate: '-20',
+      rate: FormatNumber('-2000923'),
       commissionable_day_avg: dataObj.commissionable_avg,
       profit_day_avg: dataObj.commissionable_avg,
       bonus_day_avg: dataObj.commissionable_avg,
