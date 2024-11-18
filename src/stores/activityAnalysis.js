@@ -46,9 +46,14 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     currentChildAnalysis.id = null
     optionChildList.value = null
     isChildFiltered.value = 0
+    currentDetailTab.value = 'Commissionable'
   }
 
   const currentDetailTab = ref('Commissionable')
+
+  // 子活動分析-詳細名單-進階篩選
+  const searchChildDetailMemberName = ref('')
+  const isChildDetailListFiltered = ref(0)
 
   const chartFiltered = 0
   const currentTabs = ref('Overview')
@@ -114,6 +119,8 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     filterData,
     chartApiParams,
     transformChartParams,
-    resetState
+    resetState,
+    searchChildDetailMemberName,
+    isChildDetailListFiltered
   }
 })

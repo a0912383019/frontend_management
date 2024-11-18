@@ -449,13 +449,10 @@ export const apiQueryActivityBetAmountGrowthSpan = (params) => {
 }
 
 export const apiQueryActivityCompareDetail = (params) => {
-  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
+  const { hall_name, activity_id_hide, activity_detail_id_hide, search_name, length, draw, start } =
+    params
 
-  const search_name = '',
-    draw = 1,
-    start = 0,
-    length = 20,
-    order = [
+  const order = [
       {
         column: 1,
         dir: 'desc'
@@ -472,5 +469,16 @@ export const apiQueryActivityCompareDetail = (params) => {
     length,
     order,
     columns
+  })
+}
+
+export const apiExportActivityCompareDetail = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide, reward_flag, locale } = params
+  return axiosInstance.post('/api/auth/activity/export_activity_compare_detail', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide,
+    reward_flag,
+    locale
   })
 }

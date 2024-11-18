@@ -1,6 +1,5 @@
 <script setup>
-import { onMounted, ref, computed, reactive } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { onMounted, ref, computed, reactive, watch } from 'vue'
 import { useActivityAnalysisStore, useGlobalStore, useDialogMemberDetailStore } from '@/stores'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { apiQueryActivityCompareDetail } from '@/api'
@@ -12,9 +11,11 @@ import PercentWithIcon from '@/components/PercentWithIcon.vue'
 import LifeCycleHistory from '@/components/Chart/LifeCycleHistory.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 
-const { t, locale } = useI18n()
-
 const props = defineProps({
+  isRewarded: {
+    type: Boolean,
+    default: true
+  },
   activityId: {
     type: Number
   }
@@ -42,12 +43,17 @@ const queryActivityCompareDetail = async () => {
     const result = await apiQueryActivityCompareDetail({
       hall_name: activeHall.hall_code,
       activity_id_hide: props.activityId,
-      activity_detail_id_hide: currentChildAnalysis.id
+      activity_detail_id_hide: currentChildAnalysis.id,
+      search_name: activityStore.searchChildDetailMemberName,
+      length: apiLength.value,
+      draw: apiDraw.value,
+      start: apiStart.value
     })
 
     const { return_code } = result.data.status
     if (return_code === '0000') {
       if (result.data) {
+        tableData.value = []
         transformCompareDetail(result.data)
         apiSuccess.value = true
       } else {
@@ -76,7 +82,6 @@ const queryActivityCompareDetail = async () => {
 }
 
 const transformCompareDetail = (data) => {
-  console.log()
   tableTotal.value = data.not_reward_recordsTotal
   let result = []
   data.data.not_reward.forEach((ele) => {
@@ -106,8 +111,13 @@ const transformCompareDetail = (data) => {
       activity_detail_date: data.activity_detail_date
     })
   })
+
   tableData.value = result
 }
+
+const apiDraw = ref(1) // 第幾頁
+const apiStart = ref(0) // 起始筆數
+const apiLength = ref(20) // 每頁顯示筆數
 
 // 頁碼相關
 const page = reactive({
@@ -116,23 +126,15 @@ const page = reactive({
 })
 
 const updateCurrentPage = (val) => {
+  apiDraw.value = val
+  apiStart.value = apiDraw.value * apiLength.value - apiLength.value
+  queryActivityCompareDetail()
   page.currentPage = val
-  // emit('update:currentPage', val)
 }
 
 const updatePageSize = (val) => {
   page.pageSize = val
 }
-
-// 表格資料
-const pageTableData = computed(() => {
-  let data = tableData.value.slice(
-    (page.currentPage - 1) * page.pageSize,
-    page.pageSize * page.currentPage
-  )
-
-  return data
-})
 
 const tableTotal = ref(0)
 const pageTableTotal = computed(() => {
@@ -151,7 +153,6 @@ const memberStepData = reactive({
 })
 
 const handleStepClick = (row) => {
-  console.log(row)
   memberStepData.member_name = row.member_name.user_name
   memberStepData.member_id = row.member_name.user_id
   memberStepData.member_step_detail_date = row.activity_detail_date
@@ -162,13 +163,20 @@ const handleStepClick = (row) => {
 onMounted(() => {
   queryActivityCompareDetail()
 })
+
+watch(
+  () => activityStore.isChildDetailListFiltered,
+  () => {
+    queryActivityCompareDetail()
+  }
+)
 </script>
 <template>
   <CdpMessage :messageKey="messageKey" v-if="apiSuccess === false" />
   <div v-else>
     <CurrencySignText class="text-right mb-5" />
     <el-table
-      :data="pageTableData"
+      :data="tableData"
       :border="false"
       :stripe="true"
       class="activity-detail-table"
