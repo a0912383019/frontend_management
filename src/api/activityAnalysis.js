@@ -482,3 +482,12 @@ export const apiExportActivityCompareDetail = (params) => {
     locale
   })
 }
+
+export const apiQueryMemberStepChanges = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
+  return axiosInstance.post('/api/auth/activity/query_member_step_changes', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide
+  })
+}

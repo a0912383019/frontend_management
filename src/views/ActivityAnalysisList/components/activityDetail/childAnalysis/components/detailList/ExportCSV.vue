@@ -36,7 +36,7 @@ const handelExportReport = async () => {
       hall_name: activeHall.hall_code,
       activity_id_hide: props.activityId,
       activity_detail_id_hide: currentChildAnalysis.id,
-      reward_flag: false,
+      reward_flag: props.isRewarded,
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status

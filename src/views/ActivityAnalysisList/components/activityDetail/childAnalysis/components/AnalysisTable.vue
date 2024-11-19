@@ -40,7 +40,7 @@ const performanceTableColumns = computed(() => {
       prop: 'activity_duration',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '12%'
     },
     {
       label: t('activity_analysis.data_duration'),
@@ -61,7 +61,7 @@ const performanceTableColumns = computed(() => {
       prop: 'commissionable_day_avg',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '15%'
+      minWidth: '14%'
     },
     {
       label: t('activity_analysis.profit_day_avg'),
@@ -75,7 +75,7 @@ const performanceTableColumns = computed(() => {
       prop: 'bonus_day_avg',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '15%'
+      minWidth: '14%'
     },
     {
       label: t('activity_analysis.hall_profit_day_avg'),
@@ -94,7 +94,7 @@ const proportionTableColumns = computed(() => {
       prop: 'activity_duration',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '12%'
     },
     {
       label: t('activity_analysis.data_duration'),
@@ -122,7 +122,7 @@ const proportionTableColumns = computed(() => {
       prop: 'deposit_proportion',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '11%'
+      minWidth: '10%'
     },
     {
       label: t('activity_analysis.deposit_count'),
@@ -150,7 +150,7 @@ const proportionTableColumns = computed(() => {
       prop: 'register_in_30_days',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '11%'
+      minWidth: '10%'
     }
   ]
 })
