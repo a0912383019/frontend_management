@@ -148,8 +148,8 @@ onMounted(() => {
           </SectionTitle>
           <el-select
             v-model="selectDepositValue"
-            class="cdp-select cdp-select__purple w-full"
-            popper-class="cdp-select-popper cdp-select-popper__purple"
+            class="cdp-select cdp-select__purple"
+            popper-class="cdp-select-popper cdp-select-popper__purple w-full"
             filterable
             :teleported="false"
           >
@@ -204,7 +204,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .deposit-date-picker {
   :deep(.el-popper.el-picker__popper) {
-    inset: 67px -13px auto auto !important;
+    inset: 78px -13px auto auto !important;
   }
 }
 .drop {
