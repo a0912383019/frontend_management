@@ -27,6 +27,10 @@ const props = defineProps({
   defaultValue: {
     type: Array,
     default: () => []
+  },
+  color: {
+    type: String,
+    default: 'purple'
   }
 })
 
@@ -238,7 +242,7 @@ watch(
 )
 </script>
 <template>
-  <div class="select-tag-single">
+  <div class="select-tag-single" :class="`select-tag-single__${props.color}`">
     <div class="select-tag__box">
       <div
         class="select-tag-single__box__tag"
@@ -246,7 +250,13 @@ watch(
         :key="index"
         @click="handleTagDelete({ item, index })"
       >
-        <div class="select-tag-single__box__tag__item" :class="{ isActive: item.active }">
+        <div
+          class="select-tag-single__box__tag__item"
+          :class="{
+            isActive: item.active,
+            [`select-tag-single__box__tag__item__${props.color}`]: true
+          }"
+        >
           {{ item.label }}
           <div class="select-tag-single__box__tag__close"></div>
         </div>
@@ -262,7 +272,7 @@ watch(
         type="text"
         v-model="tagInputText"
         class="select-tag-single__input"
-        :class="dropClass"
+        :class="[dropClass, `select-tag-single__input__${props.color}`]"
         :placeholder="currentTagAry.length === 0 ? placeholderText : null"
         ref="refTagInput"
         @focus="handleInputFocus"
@@ -272,6 +282,7 @@ watch(
         v-model="selectTypeValue"
         :class="dropClass"
         :lists="selectTypeLists"
+        :color="props.color"
         :operator="false"
         v-show="tagTextAry && tagTextAry.length === 0 && isDropShow === true"
         @update:tagtext="handleTagAddText"
