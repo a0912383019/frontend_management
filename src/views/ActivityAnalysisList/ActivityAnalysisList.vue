@@ -12,6 +12,7 @@ import AddDialog from '@/views/ActivityAnalysisList/AddActivity.vue'
 import Filter from '@/views/ActivityAnalysisList/Filter.vue'
 import { useActivityAnalysisStore } from '@/stores'
 import ChartFilter from '@/views/ActivityAnalysisList/components/ChartFilter.vue'
+import ExportList from '@/views/ActivityAnalysisList/components/ExportList.vue'
 import { storeToRefs } from 'pinia'
 
 const activityStore = useActivityAnalysisStore()
@@ -90,7 +91,17 @@ onUnmounted(() => {
         </div>
         <div v-show="currentTabs !== 'Overview'">
           <div class="flex items-center justify-end">
+            <ExportList class="mr-10" />
             <ChartFilter />
+          </div>
+          <div class="flex items-center justify-end">
+            <!-- <ExportList
+              v-if="tableData.length !== 0"
+              class="mr-10"
+              :formData="formData"
+              :total="apiRecordsTotal"
+            /> -->
+            <!-- <Filter :key="key" @update:filter-submit="handleFilterSubmit" /> -->
           </div>
         </div>
       </el-col>

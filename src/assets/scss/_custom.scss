@@ -629,7 +629,24 @@
 .badge-custom-sky-blue {
   background-color: $sky-blue;
 }
-
+// .select-tag-single__purple__box  {
+//   border: 1px solid #ccc5e1;
+//   &:hover {
+//     border-color: $purple;
+//   }
+//   &__box {
+//     &__tag {
+//       &__item {
+//         background-color: $purple;
+//       }
+//     }
+//   }
+//   &__input {
+//     &::placeholder {
+//       color: rgba($purple, 0.4);
+//     }
+//   }
+// }
 .select-tag-single {
   display: flex;
   flex-wrap: wrap;
