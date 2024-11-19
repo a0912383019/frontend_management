@@ -723,7 +723,8 @@
       }
     }
   }
-  .el-month-table {
+  .el-month-table,
+  .el-year-table {
     td {
       &.current {
         &:not(.disabled) {
@@ -772,7 +773,8 @@
         color: $purple;
       }
     }
-    .el-month-table {
+    .el-month-table,
+    .el-year-table {
       td {
         &.current {
           &:not(.disabled) {
@@ -784,28 +786,6 @@
         .cell {
           &:hover {
             color: $purple;
-          }
-        }
-      }
-    }
-    .el-year-table {
-      td {
-        .cell {
-          &:hover {
-            color: $purple;
-          }
-        }
-        &.available {
-          &.today {
-            .cell {
-              color: $purple;
-            }
-          }
-          &.current {
-            .cell {
-              color: #f2f3f4;
-              background-color: $purple;
-            }
           }
         }
       }
@@ -843,7 +823,8 @@
         color: $blue;
       }
     }
-    .el-month-table {
+    .el-month-table,
+    .el-year-table {
       td {
         &.current {
           &:not(.disabled) {
@@ -855,28 +836,6 @@
         .cell {
           &:hover {
             color: $blue;
-          }
-        }
-      }
-    }
-    .el-year-table {
-      td {
-        .cell {
-          &:hover {
-            color: $blue;
-          }
-        }
-        &.available {
-          &.today {
-            .cell {
-              color: $blue;
-            }
-          }
-          &.current {
-            .cell {
-              color: #f2f3f4;
-              background-color: $blue;
-            }
           }
         }
       }
