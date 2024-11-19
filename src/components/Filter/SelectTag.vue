@@ -442,6 +442,7 @@ watch(
         :lists="selectTypeLists"
         :tagTitle="$t('tags.type')"
         :operator="isOperatorShow"
+        :color="props.color"
         v-show="tagTextAry && tagTextAry.length === 0 && isDropShow === true"
         @update:tagtext="handleTagAddText"
       />
@@ -451,6 +452,7 @@ watch(
         :lists="selectCategoryLists"
         :tagTitle="$t('tags.category')"
         :operator="false"
+        :color="props.color"
         v-show="tagTextAry && tagTextAry.length === 1 && isDropShow === true"
         @update:tagtext="handleTagAddText"
       />
@@ -459,6 +461,7 @@ watch(
         :class="dropClass"
         :tagTitle="$t('tags.select_tag')"
         :operator="false"
+        :color="props.color"
         v-show="tagTextAry && tagTextAry.length === 2 && isDropShow === true"
         @update:tagtext="handleTagAddText"
       />

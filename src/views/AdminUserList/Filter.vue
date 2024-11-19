@@ -111,8 +111,8 @@ const handleClick = () => {
             </SectionTitle>
             <el-select
               v-model="form.userType"
-              class="cdp-select cdp-select__purple w-full"
-              popper-class="cdp-select-popper cdp-select-popper__purple"
+              class="cdp-select cdp-select__purple"
+              popper-class="cdp-select-popper cdp-select-popper__purple w-full"
               :teleported="false"
             >
               <el-option
@@ -133,8 +133,8 @@ const handleClick = () => {
             </SectionTitle>
             <el-select
               v-model="form.userStatus"
-              class="cdp-select cdp-select__purple w-full"
-              popper-class="cdp-select-popper cdp-select-popper__purple"
+              class="cdp-select cdp-select__purple"
+              popper-class="cdp-select-popper cdp-select-popper__purple w-full"
               :teleported="false"
             >
               <el-option

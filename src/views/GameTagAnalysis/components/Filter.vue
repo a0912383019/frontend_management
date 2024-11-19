@@ -102,7 +102,7 @@ const closePopover = () => {
   //   height: 36px;
   // }
   :deep(.el-popper.el-picker__popper) {
-    inset: 63px -21px auto auto !important;
+    inset: 74px -21px auto auto !important;
   }
 }
 </style>

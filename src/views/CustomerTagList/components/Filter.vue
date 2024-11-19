@@ -170,7 +170,7 @@ watch(
           </SectionTitle>
           <el-select-v2
             v-model="form.selectAcount"
-            class="cdp-select cdp-select__purple w-full"
+            class="cdp-select cdp-select__purple"
             popper-class="cdp-select-popper cdp-select-popper__purple"
             filterable
             :teleported="false"
@@ -187,8 +187,8 @@ watch(
           </SectionTitle>
           <el-select
             v-model="form.selectLevel"
-            class="cdp-select cdp-select__purple w-full"
-            popper-class="cdp-select-popper cdp-select-popper__purple"
+            class="cdp-select cdp-select__purple"
+            popper-class="cdp-select-popper cdp-select-popper__purple w-full"
             filterable
             :teleported="false"
             :disabled="formDisabled"
@@ -311,7 +311,7 @@ watch(
 }
 .custom-tag-date-picker {
   :deep(.el-popper.el-picker__popper) {
-    inset: 147px -13px auto auto !important;
+    inset: 157px -13px auto auto !important;
   }
 }
 </style>

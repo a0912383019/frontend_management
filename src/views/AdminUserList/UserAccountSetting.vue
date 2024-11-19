@@ -265,8 +265,8 @@ const updateUserByAdmin = async () => {
               <el-select
                 v-else
                 v-model="form.userType"
-                class="cdp-select cdp-select__blue w-full"
-                popper-class="cdp-select-popper cdp-select-popper__blue"
+                class="cdp-select cdp-select__blue"
+                popper-class="cdp-select-popper cdp-select-popper__blue w-full"
                 :teleported="false"
               >
                 <el-option
@@ -291,8 +291,8 @@ const updateUserByAdmin = async () => {
               <el-select
                 v-else
                 v-model="form.userStatus"
-                class="cdp-select cdp-select__blue w-full"
-                popper-class="cdp-select-popper cdp-select-popper__blue"
+                class="cdp-select cdp-select__blue"
+                popper-class="cdp-select-popper cdp-select-popper__blue w-full"
                 :teleported="false"
               >
                 <el-option
