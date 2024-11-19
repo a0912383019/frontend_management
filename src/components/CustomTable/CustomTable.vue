@@ -582,11 +582,18 @@ defineExpose({ goToFirstPage, showTableLoading, sortByFather })
     }
   }
 }
-
 .cdp-link-box {
   padding: 8px 12px;
   &.selected {
     background-color: rgba(107, 207, 223, 0.1);
+  }
+}
+.customTable5 {
+  td.el-table__cell {
+    padding: 0;
+    .cell {
+      padding: 0;
+    }
   }
 }
 </style>

@@ -8,6 +8,7 @@ import Commissionable from '@/views/ActivityAnalysisList/components/activityDeta
 import DetailList from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/detailList/DetailList.vue'
 import ExportCSV from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/detailList/ExportCSV.vue'
 import Filter from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/detailList/Filter.vue'
+import History from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/history/History.vue'
 import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
@@ -42,7 +43,7 @@ const tabData = computed(() => {
     },
     {
       name: 'History',
-      label: t('activity_analysis.activity_compare_tag_chart')
+      label: t('activity_analysis.history_statistics')
     }
   ]
 })
@@ -51,7 +52,8 @@ const tabData = computed(() => {
 const componentMap = {
   Commissionable,
   TagStatistics,
-  DetailList
+  DetailList,
+  History
 }
 
 // 當前使用的 component

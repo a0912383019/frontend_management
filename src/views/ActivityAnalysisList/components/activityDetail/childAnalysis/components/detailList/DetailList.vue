@@ -258,7 +258,7 @@ watch(
           prop="profit_before"
           :label="$t('activity_analysis.activity_before')"
           sortable
-          min-width="13%"
+          min-width="14%"
           align="center"
           header-align="center"
         >
@@ -318,7 +318,7 @@ watch(
       <el-table-column
         prop="life_cycle_step"
         :label="$t('data_name.life_cycle_step')"
-        min-width="9%"
+        min-width="8%"
         header-align="center"
       >
         <template #default="scope">
