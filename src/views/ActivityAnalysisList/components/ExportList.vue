@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed, reactive, watch, onMounted } from 'vue'
+import { ref, reactive, computed, watch, onMounted, onUpdated } from 'vue'
 import { ElDialog } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { useGlobalStore } from '@/stores'
+import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import { apiExportActivityList } from '@/api'
 import SelectTagSingle from '@/components/Filter/SelectTagSingle.vue'
 import { ElNotification } from 'element-plus'
@@ -13,14 +13,11 @@ import ExportReport from '@/components/Button/ExportReport.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
 import { apiQueryListActiveLimit } from '@/api'
-import { useDateStore } from '@/stores/dateConfig.js'
-import { dayjs } from 'element-plus'
 
 const { t } = useI18n()
 
-const { date_range_picker_config_2 } = useDateStore()
-
-// const activityStore = useActivityAnalysisStore()
+const activityStore = useActivityAnalysisStore()
+const { chartApiParams, filterData } = activityStore
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
@@ -31,13 +28,17 @@ const exportDialogVisible = ref(false)
 
 const dialogVisible = ref(false) //dialog開啟狀態
 
-// options的預設值
-const exportData = reactive({
-  selectDuration: 'week',
-  analysisDate: '',
-  selectReward: 1,
-  activityNameList: ''
-})
+///// good good exportData 的預設值 /////
+const exportData = reactive({ ...filterData })
+
+watch(
+  () => filterData, // 監聽目標
+  (newVal) => {
+    Object.assign(exportData, newVal) // 更新本地副本
+    console.log('filterData 更新, exportData 同步')
+  },
+  { deep: true } // 深度監聽
+)
 
 // 分析週期 options
 const selectDurationOptions = computed(() => {
@@ -82,45 +83,33 @@ const selectRewardOptions = computed(() => {
 // 活動名稱 options
 const selectActivityNameOptions = ref([])
 
-const exportApiParams = reactive({
-  start_date: dayjs(date_range_picker_config_2.startDate).format('YYYY-MM-DD'),
-  end_date: dayjs(date_range_picker_config_2.endDate).format('YYYY-MM-DD'),
-  cut_type: 'week',
-  reward_flag: 1,
-  search_activity: []
-})
-
-// const transformExportParams = () => {
-//   const dateArr = exportData.analysisDate.split('~')
-//   exportApiParams.start_date = dateArr[0].trim()
-//   exportApiParams.end_date = dateArr[1].trim()
-//   exportApiParams.cut_type = exportData.selectDuration
-//   exportApiParams.reward_flag = exportData.selectReward
-//   exportApiParams.search_activity = exportData.activityNameList.split(',')
-// }
-
 const handelExportList = async () => {
   globalStore.isLoading = true
+  activityStore.transformChartParams() // 沒有作用
+  activityStore.chartFiltered = Date.now()
   try {
     const result = await apiExportActivityList({
       hall_name: activeHall.hall_code,
       start_search_year: 2024,
       start_search_month: 6,
       start_search_week: 1,
-      start_date: exportApiParams.start_date,
+      start_date: chartApiParams.start_date,
       end_search_year: 2024,
       end_search_month: 9,
       end_search_week: 1,
-      end_date: exportApiParams.end_date,
-      cut_type: exportApiParams.cut_type,
-      reward_flag: exportApiParams.reward_flag,
+      end_date: chartApiParams.end_date,
+      cut_type: chartApiParams.cut_type,
+      reward_flag: chartApiParams.reward_flag,
       reward_date_flag: 0,
-      search_activity: exportApiParams.search_activity
+      search_activity: chartApiParams.search_activity
     })
+
     const { return_code } = result.data.status
+
     globalStore.isLoading = false
+
     if (return_code === '0000') {
-      console.log(result.data.status)
+      console.log(result)
       exportDialogVisible.value = true
     } else if (return_code === '0001') {
       ElNotification({
@@ -214,15 +203,34 @@ const transformActivityName = (isFirst, data) => {
   }
 }
 
+const updateDate = ref(exportData.analysisDate)
+
+// const synchronousDate = ref('2024-06-01 ~ 2024-08-31')
+
+watch(
+  () => exportData.analysisDate,
+  (newVal) => {
+    console.log('analysisDate 更新為:', newVal)
+    updateDate.value = newVal // 更新日期初始值
+  }
+)
 // 處理時間變化
 const dateCount = (data) => {
+  console.log('預設日期-data', data)
+
+  console.log('更新日期-updateDate', updateDate)
+
   selectDurationOptions.value.forEach((option) => {
     option.disabled = false
   })
 
-  const dateArr = data.split('~')
+  const dateArr = updateDate.value.split('~')
   const start = dateArr[0].trim()
   const end = dateArr[1].trim()
+
+  console.log('start', start)
+  console.log('end', end)
+  // const diffDays = calculateDayDifference(start, end) backup
 
   const diffDays = calculateDayDifference(start, end)
   const diffMonth = diffDays / 31
@@ -281,7 +289,13 @@ const updateActivityName = () => {
 }
 
 onMounted(() => {
+  console.log('onMounted exportData', exportData)
+
   queryActivityName(true)
+})
+
+onUpdated(() => {
+  console.log('onUpdated exportData', exportData)
 })
 
 watch(
@@ -329,7 +343,7 @@ watch(
           <el-col class="mb-20">
             <div class="col-title">{{ $t('activity_analysis.analysis_duration') }}</div>
             <DatepickerRange
-              v-model="exportData.analysisDate"
+              v-model="filterData.analysisDate"
               :config="2"
               :teleported="true"
               :enabledThreeMonth="false"
