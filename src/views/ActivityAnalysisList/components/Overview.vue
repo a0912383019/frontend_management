@@ -68,8 +68,7 @@ const queryListActivity = async () => {
   try {
     const result = await apiQueryListActivity({
       hall_name: activeHall.hall_code,
-      activity_name: activityStore.searchActivity,
-      search_date: '2024-01-01 ~ 2024-12-02'
+      activity_name: activityStore.searchActivity
     })
 
     const { return_code } = result.data.status
@@ -77,7 +76,6 @@ const queryListActivity = async () => {
       apiSuccess.value = true
       if (result.data.result.length !== 0) {
         tableData.value = transformActivityList(result.data.result)
-        upadteCurrentSort({ prop: 'createdTime', order: 'descending' })
       }
     }
   } catch (error) {
@@ -96,10 +94,10 @@ const transformActivityList = (data) => {
   let activityList = []
   data.forEach((ele) => {
     activityList.push({
-      activityName: ele.activity_name,
+      activityName: ele.name,
       operator: ele.operator_name,
       createdTime: dayjs(ele.created_time).format(t('date.format_datetime_rule')),
-      activityId: ele.activity_id,
+      activityId: ele.id,
       canOperate: ele.can_operate
     })
   })
@@ -107,15 +105,12 @@ const transformActivityList = (data) => {
 }
 
 const showDetail = ref(false)
-const detailActivityId = ref(null)
 const openActivityDetail = (activityId) => {
   showDetail.value = true
-  detailActivityId.value = activityId
 }
 
 const closeDetail = () => {
   showDetail.value = false
-  detailActivityId.value = null
 }
 
 const deleteBox = ref(false) // 刪除彈窗
@@ -142,7 +137,7 @@ const queryDeleteActivity = async (activityId) => {
   try {
     const result = await apiDeleteActivity({
       hall_name: activeHall.hall_code,
-      delete_activity_id: activityId
+      id: activityId
     })
 
     const { return_code } = result.data.status
@@ -249,7 +244,11 @@ onMounted(() => {
         {{ $t('modal.are_you_sure_to_delete') + '「' + deleteActivityName + '」?' }}
       </template>
     </ConfirmBox>
-    <ActivityDetail v-model="showDetail" @closeDialog="closeDetail" :activityId="detailActivityId" />
+    <ActivityDetail
+      v-model="showDetail"
+      @closeDialog="closeDetail"
+      :activityId="66"
+    />
   </section>
 </template>
 <style lang="scss" scoped>

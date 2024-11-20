@@ -342,19 +342,16 @@ export const apiQueryGrowthRateActiveCommissionable = (params) => {
 }
 
 export const apiQueryListActivity = (params) => {
-  const { hall_name, activity_name, search_date } = params
-  return axiosInstance.post('/api/auth/activity/list_activity_analysis', {
-    hall_name,
-    activity_name,
-    search_date
+  const { hall_name, activity_name } = params
+  return axiosGoInstance.get('/api/auth/activity', {
+    params: { hall_name, activity_name }
   })
 }
 
 export const apiDeleteActivity = (params) => {
-  const { hall_name, delete_activity_id } = params
-  return axiosInstance.post('/api/auth/activity/delete_activity_analysis', {
-    hall_name,
-    delete_activity_id
+  const { hall_name, id } = params
+  return axiosGoInstance.delete(`/api/auth/activity/${id}`, {
+    params: { hall_name }
   })
 }
 
