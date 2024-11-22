@@ -37,6 +37,9 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   // 子活動分析-進階篩選
   const isChildFiltered = ref(0)
 
+  // 子活動分析-已獲獎/未獲獎按鈕
+  const childActiveView = ref('RewardComponents')
+
   // 子活動分析-下方頁籤
   const currentDetailTab = ref('Commissionable')
 
@@ -54,6 +57,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     currentDetailTab.value = 'Commissionable'
     searchChildDetailMemberName.value = ''
     isChildDetailListFiltered.value = 0
+    childActiveView.value = 'RewardComponents'
   }
 
   const chartFiltered = 0
@@ -124,6 +128,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
     transformChartParams,
     resetState,
     searchChildDetailMemberName,
-    isChildDetailListFiltered
+    isChildDetailListFiltered,
+    childActiveView
   }
 })
