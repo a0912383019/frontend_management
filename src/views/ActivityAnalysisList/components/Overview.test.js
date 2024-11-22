@@ -45,14 +45,14 @@ describe('Overview', () => {
           {
             id: 36,
             name: '新增驗證測試',
-            created_time: '2024-11-14T23:03:13-04:00',
+            created_time: '2024-11-14 23:03:13',
             can_operate: true,
             operator_name: 'tomtest'
           },
           {
             id: 31,
             name: '新增測試',
-            created_time: '2024-11-11T00:10:45-04:00',
+            created_time: '2024-11-11 00:10:45',
             can_operate: true,
             operator_name: 'tomtest'
           }
@@ -145,14 +145,14 @@ describe('Overview', () => {
         activityId: 36,
         activityName: '新增驗證測試',
         canOperate: true,
-        createdTime: '2024/11/15 11:03:13',
+        createdTime: '2024/11/14 23:03:13',
         operator: 'tomtest'
       },
       {
         activityId: 31,
         activityName: '新增測試',
         canOperate: true,
-        createdTime: '2024/11/11 12:10:45',
+        createdTime: '2024/11/11 00:10:45',
         operator: 'tomtest'
       }
     ]
@@ -207,14 +207,14 @@ describe('Overview', () => {
           activityId: 36,
           activityName: '新增驗證測試',
           canOperate: true,
-          createdTime: '2024/11/15 11:03:13',
+          createdTime: '2024/11/14 23:03:13',
           operator: 'tomtest'
         },
         {
           activityId: 31,
           activityName: '新增測試',
           canOperate: true,
-          createdTime: '2024/11/11 12:10:45',
+          createdTime: '2024/11/11 00:10:45',
           operator: 'tomtest'
         }
       ]

@@ -78,8 +78,8 @@ describe('TargetGroupAnalysis.vue', () => {
   })
 
   afterEach(() => {
-    wrapper.unmount()
     vi.useRealTimers()
+    wrapper.unmount()
   })
 
   it('test components exists', async () => {
