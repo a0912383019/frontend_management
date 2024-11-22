@@ -105,7 +105,7 @@ const transformActivityList = (data) => {
 }
 
 const showDetail = ref(false)
-const openActivityDetail = (activityId) => {
+const openActivityDetail = () => {
   showDetail.value = true
 }
 
@@ -114,8 +114,8 @@ const closeDetail = () => {
 }
 
 const deleteBox = ref(false) // 刪除彈窗
-const deleteActivityName = ref('')
-const deleteId = ref('') // 要刪除的id
+const deleteActivityName = ref(null)
+const deleteId = ref(null) // 要刪除的id
 
 const openDeleteBox = (activityName, activityId) => {
   deleteActivityName.value = activityName
@@ -124,6 +124,8 @@ const openDeleteBox = (activityName, activityId) => {
 }
 
 const cancelDelete = () => {
+  deleteActivityName.value = null
+  deleteId.value = null
   deleteBox.value = false
 }
 

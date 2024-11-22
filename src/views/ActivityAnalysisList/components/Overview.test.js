@@ -1,11 +1,17 @@
 import { it, describe, expect, afterEach, beforeEach, vi } from 'vitest'
-import { shallowMount } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import ElementPlus from 'element-plus'
 import Overview from '@/views/ActivityAnalysisList/components/Overview.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
+import { sortTableDate } from '@/utils/commonUtils.js'
+import CustomTable from '@/components/CustomTable/CustomTable.vue'
+import CdpMessage from '@/components/CdpMessage.vue'
+import SectionTitle from '@/components/Title/SectionTitle.vue'
+import ConfirmBox from '@/components/ConfirmBox.vue'
+import ActivityDetail from '@/views/ActivityAnalysisList/components/activityDetail/ActivityDetail.vue'
 
 describe('Overview', () => {
   let wrapper = null
@@ -13,9 +19,6 @@ describe('Overview', () => {
   let spyDelete
   let globalStore
   let activityStore
-  // const date = new Date(2000, 1, 1, 13)
-  // const hide = vi.fn()
-  // let activityStore
 
   beforeEach(() => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
@@ -25,8 +28,17 @@ describe('Overview', () => {
       hall_name: 'esx'
     }
     activityStore = useActivityAnalysisStore(pinia)
-    // vi.useFakeTimers()
-    // vi.setSystemTime(date)
+
+    vi.mock('@/utils/commonUtils.js', async () => {
+      const actual = await vi.importActual('@/utils/commonUtils.js')
+      const sortTableDate = vi.fn()
+
+      return {
+        ...actual,
+        sortTableDate
+      }
+    })
+
     const result1 = {
       data: {
         result: [
@@ -63,22 +75,31 @@ describe('Overview', () => {
 
     spyGet = vi.spyOn(axiosGoInstance, 'get')
     spyDelete = vi.spyOn(axiosGoInstance, 'delete')
-    spyGet.mockResolvedValueOnce(result1)
-    spyDelete.mockResolvedValueOnce(result2)
+    spyGet.mockResolvedValue(result1)
+    spyDelete.mockResolvedValue(result2)
 
     wrapper = shallowMount(Overview, {
       global: {
         plugins: [i18n, ElementPlus]
       }
     })
-
-    // wrapper.vm.$refs.popover.hide = hide
   })
 
   afterEach(() => {
-    // vi.clearAllMocks()
-    // vi.useRealTimers()
     wrapper.unmount()
+  })
+
+  it('components', async () => {
+    expect(wrapper.findComponent(CdpMessage).exists()).toBe(false)
+    expect(wrapper.findComponent(CustomTable).exists()).toBe(true)
+    expect(wrapper.findComponent(SectionTitle).exists()).toBe(true)
+    expect(wrapper.findComponent(ConfirmBox).exists()).toBe(true)
+    expect(wrapper.findComponent(ActivityDetail).exists()).toBe(true)
+
+    wrapper.vm.apiSuccess = false
+    await wrapper.vm.$nextTick()
+    expect(wrapper.findComponent(CdpMessage).exists()).toBe(true)
+    expect(wrapper.findComponent(CustomTable).exists()).toBe(false)
   })
 
   it('tableColumns', () => {
@@ -138,24 +159,78 @@ describe('Overview', () => {
     expect(wrapper.vm.tableData).toStrictEqual(tableData)
   })
 
-  it('')
-  // // 測試 closePopover
-  // it('closePopover', () => {
-  //   wrapper.vm.closePopover()
-  //   expect(hide).toHaveBeenCalledOnce()
-  // })
+  it('openActivityDetail & closeDetail', () => {
+    expect(wrapper.vm.showDetail).toBeFalsy()
+    wrapper.vm.openActivityDetail()
+    expect(wrapper.vm.showDetail).toBeTruthy()
+    wrapper.vm.closeDetail()
+    expect(wrapper.vm.showDetail).toBeFalsy()
+  })
 
-  // it('handleClick', async () => {
-  //   expect(wrapper.vm.searchActivity).toStrictEqual('')
-  //   expect(activityStore.searchActivity).toStrictEqual('')
-  //   expect(activityStore.islistFiltered).toStrictEqual(0)
+  it('openDeleteBox & cancelDelete & confirmDelete', async () => {
+    expect(wrapper.vm.deleteBox).toBeFalsy()
+    expect(wrapper.vm.deleteActivityName).toStrictEqual(null)
+    expect(wrapper.vm.deleteId).toStrictEqual(null)
 
-  //   const searchActivity = 'Tom tom activity'
-  //   wrapper.vm.searchActivity = searchActivity
-  //   wrapper.vm.handleClick()
-  //   expect(wrapper.vm.searchActivity).toStrictEqual(searchActivity)
-  //   expect(activityStore.searchActivity).toStrictEqual(searchActivity)
-  //   expect(activityStore.islistFiltered).toStrictEqual(date.getTime())
-  //   expect(hide).toHaveBeenCalledOnce()
-  // })
+    wrapper.vm.openDeleteBox('yuyu activity', 22)
+    expect(wrapper.vm.deleteBox).toBeTruthy()
+    expect(wrapper.vm.deleteActivityName).toStrictEqual('yuyu activity')
+    expect(wrapper.vm.deleteId).toStrictEqual(22)
+
+    wrapper.vm.cancelDelete()
+    expect(wrapper.vm.deleteBox).toBeFalsy()
+    expect(wrapper.vm.deleteActivityName).toStrictEqual(null)
+    expect(wrapper.vm.deleteId).toStrictEqual(null)
+
+    expect(spyGet).toBeCalledTimes(1)
+
+    wrapper.vm.openDeleteBox('yuyu activity', 22)
+    expect(wrapper.vm.deleteBox).toBeTruthy()
+    wrapper.vm.confirmDelete()
+    await flushPromises()
+    expect(spyDelete).toBeCalledTimes(1)
+    expect(spyDelete).toBeCalledWith('/api/auth/activity/22', {
+      params: {
+        hall_name: 'esx'
+      }
+    })
+    expect(spyGet).toBeCalledTimes(2)
+    expect(wrapper.vm.deleteBox).toBeFalsy()
+  })
+
+  it('test upadteCurrentSort', () => {
+    const sortParams = {
+      order: 'descending',
+      prop: 'createdTime',
+      tableData: [
+        {
+          activityId: 36,
+          activityName: '新增驗證測試',
+          canOperate: true,
+          createdTime: '2024/11/15 11:03:13',
+          operator: 'tomtest'
+        },
+        {
+          activityId: 31,
+          activityName: '新增測試',
+          canOperate: true,
+          createdTime: '2024/11/11 12:10:45',
+          operator: 'tomtest'
+        }
+      ]
+    }
+
+    wrapper.vm.upadteCurrentSort({ prop: 'createdTime', order: 'descending' })
+    expect(sortTableDate).toHaveBeenCalledWith(sortParams)
+  })
+
+  it('test watch', async () => {
+    expect(spyGet).toBeCalledTimes(1)
+    activityStore.islistFiltered = 2
+    await flushPromises()
+    expect(spyGet).toBeCalledTimes(2)
+    activityStore.activityAddChange = 2
+    await flushPromises()
+    expect(spyGet).toBeCalledTimes(3)
+  })
 })
