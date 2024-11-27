@@ -1,23 +1,23 @@
 <script setup>
-import { ref, reactive, computed, watch, onMounted, onUpdated } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { ElDialog } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
-import { apiExportActivityList } from '@/api'
-import SelectTagSingle from '@/components/Filter/SelectTagSingle.vue'
-import { ElNotification } from 'element-plus'
 import { errorRespond } from '@/utils/commonUtils.js'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import ExportDialog from '@/components/ExportDialog.vue'
 import ExportReport from '@/components/Button/ExportReport.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
-import { apiQueryListActiveLimit } from '@/api'
+import { apiQueryListActiveLimit, apiExportActivityList } from '@/api'
+import SectionTitle from '@/components/Title/SectionTitle.vue'
+import { ElNotification } from 'element-plus'
 
 const { t } = useI18n()
 
 const activityStore = useActivityAnalysisStore()
-const { chartApiParams, filterData } = activityStore
+const { dateRestraintion } = activityStore
+
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
@@ -28,17 +28,13 @@ const exportDialogVisible = ref(false)
 
 const dialogVisible = ref(false) //dialog開啟狀態
 
-///// good good exportData 的預設值 /////
-const exportData = reactive({ ...filterData })
-
-watch(
-  () => filterData, // 監聽目標
-  (newVal) => {
-    Object.assign(exportData, newVal) // 更新本地副本
-    console.log('filterData 更新, exportData 同步')
-  },
-  { deep: true } // 深度監聽
-)
+// exportData 的預設值
+const exportData = reactive({
+  selectDuration: 'week',
+  analysisDate: '',
+  selectReward: 1,
+  activityNameList: []
+})
 
 // 分析週期 options
 const selectDurationOptions = computed(() => {
@@ -83,33 +79,96 @@ const selectRewardOptions = computed(() => {
 // 活動名稱 options
 const selectActivityNameOptions = ref([])
 
+// 取得資料
+const queryListActiveLimit = async () => {
+  apiSuccess.value = false
+  selectActivityNameOptions.value = []
+
+  try {
+    const result = await apiQueryListActiveLimit({
+      hall_name: activeHall.hall_code
+    })
+
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      if (activityStore.chartFiltered === 0) {
+        transformDefaultActivityName(result.data.result)
+      } else {
+        transformActivityName(result.data.result)
+      }
+      apiSuccess.value = true
+    } else {
+      let failMsg = errorRespond(result.data.status)
+      console.error(failMsg)
+    }
+  } catch (error) {
+    console.error(error)
+    if (error.response && error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    }
+  }
+}
+
+const transformActivityName = (data) => {
+  selectActivityNameOptions.value = []
+  data.forEach((item) => {
+    selectActivityNameOptions.value.push({
+      value: item.activity_id,
+      label: item.activity_name
+    })
+  })
+}
+
+const transformDefaultActivityName = (data) => {
+  const displayData = data.slice(0, 10)
+
+  exportData.activityNameList =
+    displayData.length === 0 ? [-1] : displayData.map((item) => item.activity_id)
+
+  selectActivityNameOptions.value = []
+  data.forEach((item) => {
+    selectActivityNameOptions.value.push({
+      value: item.activity_id,
+      label: item.activity_name
+    })
+  })
+}
+
+const handleOpenDialog = () => {
+  queryListActiveLimit()
+}
+
+// Close事件觸發時，讓其回到初始狀態
+const handleCloseDialog = () => {
+  Object.assign(exportData, activityStore.filterData) // 屬性複製到目標物件
+}
+
+// 匯出名單
 const handelExportList = async () => {
   globalStore.isLoading = true
-  activityStore.transformChartParams() // 沒有作用
-  activityStore.chartFiltered = Date.now()
+  const dateArr = exportData.analysisDate.split('~')
+  exportData.start_date = dateArr[0].trim()
+  exportData.end_date = dateArr[1].trim()
   try {
     const result = await apiExportActivityList({
       hall_name: activeHall.hall_code,
       start_search_year: 2024,
       start_search_month: 6,
       start_search_week: 1,
-      start_date: chartApiParams.start_date,
+      start_date: exportData.start_date,
       end_search_year: 2024,
       end_search_month: 9,
       end_search_week: 1,
-      end_date: chartApiParams.end_date,
-      cut_type: chartApiParams.cut_type,
-      reward_flag: chartApiParams.reward_flag,
+      end_date: exportData.end_date,
+      cut_type: exportData.selectDuration,
+      reward_flag: exportData.selectReward,
       reward_date_flag: 0,
-      search_activity: chartApiParams.search_activity
+      search_activity: exportData.activityNameList
     })
-
     const { return_code } = result.data.status
-
     globalStore.isLoading = false
-
     if (return_code === '0000') {
-      console.log(result)
+      dialogVisible.value = false
       exportDialogVisible.value = true
     } else if (return_code === '0001') {
       ElNotification({
@@ -151,166 +210,56 @@ const handelExportList = async () => {
   }
 }
 
-// 取得資料
-const queryActivityName = async (isFirst = false) => {
-  apiSuccess.value = false
-  selectActivityNameOptions.value = []
+const dateRestraint = (event) => {
+  dateRestraintion(event, selectDurationOptions, exportData)
+}
 
-  try {
-    const result = await apiQueryListActiveLimit({
-      hall_name: activeHall.hall_code,
-      duration: exportData.selectDuration,
-      reward: exportData.selectReward,
-      name: exportData.activityNameList
-    })
+// 全選預設狀態
+const checkAll = ref(false)
 
-    const { return_code } = result.data.status
-    if (return_code === '0000') {
-      apiSuccess.value = true
-      transformActivityName(isFirst, result.data.result)
-    } else {
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-    }
-  } catch (error) {
-    console.error(error)
-    if (error.response && error.response.status === 401) {
-      globalStore.storeHandleApiError()
-    }
+// 部份選擇預設狀態
+const indeterminate = ref(false)
+const handleCheckAll = (val) => {
+  indeterminate.value = false
+  if (val) {
+    exportData.activityNameList = selectActivityNameOptions.value.map((_) => _.value)
+  } else {
+    exportData.activityNameList = []
   }
 }
 
-const defaultValue = ref([])
+const isExportDisabled = computed(() => {
+  return exportData.activityNameList.length === 0
+})
 
-const transformActivityName = (isFirst, data) => {
-  data.forEach((item) => {
-    selectActivityNameOptions.value.push({
-      value: item.activity_id,
-      label: item.activity_name
-    })
-  })
-
-  if (isFirst) {
-    const displayData = data.slice(0, 10)
-    displayData.forEach((item) => {
-      defaultValue.value.push({
-        value: item.activity_id,
-        label: item.activity_name
-      })
-    })
-    exportData.activityNameList =
-      displayData.length === 0 ? '-1' : displayData.map((item) => item.activity_id).join(',')
+// 監聽條件一：當列表長度為 0（未選中任何活動）
+// 監聽條件二：當列表長度等於所有活動選項的長度（已選中所有活動）
+// 監聽條件三：當列表長度既不為 0，也不等於所有活動的總數（即部分活動被選中）
+watch(exportData.activityNameList, (val) => {
+  if (val.length === 0) {
+    checkAll.value = false
+    indeterminate.value = false
+  } else if (val.length === selectActivityNameOptions.value.length) {
+    checkAll.value = true
+    indeterminate.value = false
+  } else {
+    indeterminate.value = true
   }
-}
-
-const updateDate = ref(exportData.analysisDate)
-
-// const synchronousDate = ref('2024-06-01 ~ 2024-08-31')
+})
 
 watch(
-  () => exportData.analysisDate,
-  (newVal) => {
-    console.log('analysisDate 更新為:', newVal)
-    updateDate.value = newVal // 更新日期初始值
+  () => activityStore.chartFiltered,
+  () => {
+    Object.assign(exportData, activityStore.filterData) // 屬性複製到目標物件
   }
 )
-// 處理時間變化
-const dateCount = (data) => {
-  console.log('預設日期-data', data)
-
-  console.log('更新日期-updateDate', updateDate)
-
-  selectDurationOptions.value.forEach((option) => {
-    option.disabled = false
-  })
-
-  const dateArr = updateDate.value.split('~')
-  const start = dateArr[0].trim()
-  const end = dateArr[1].trim()
-
-  console.log('start', start)
-  console.log('end', end)
-  // const diffDays = calculateDayDifference(start, end) backup
-
-  const diffDays = calculateDayDifference(start, end)
-  const diffMonth = diffDays / 31
-
-  if (
-    diffMonth > 3 &&
-    diffMonth <= 12 &&
-    (exportData.selectDuration === 'week' ||
-      exportData.selectDuration === 'season' ||
-      exportData.selectDuration === 'year')
-  ) {
-    exportData.selectDuration = 'month'
-    selectDurationOptions.value[0].disabled = true
-    ElNotification({
-      title: t('activity_analysis.week_duration_validation_msg'),
-      type: 'warning'
-    })
-  } else if (
-    diffMonth > 12 &&
-    diffMonth <= 36 &&
-    (exportData.selectDuration === 'month' ||
-      exportData.selectDuration === 'week' ||
-      exportData.selectDuration === 'year')
-  ) {
-    exportData.selectDuration = 'season'
-    selectDurationOptions.value[0].disabled = true
-    selectDurationOptions.value[1].disabled = true
-    ElNotification({
-      title: t('activity_analysis.month_duration_validation_msg'),
-      type: 'warning'
-    })
-  } else if (diffMonth > 36) {
-    exportData.selectDuration = 'year'
-    selectDurationOptions.value[0].disabled = true
-    selectDurationOptions.value[1].disabled = true
-    selectDurationOptions.value[2].disabled = true
-    ElNotification({
-      title: t('activity_analysis.season_duration_validation_msg'),
-      type: 'warning'
-    })
-  } else {
-    exportData.selectDuration = 'week'
-  }
-}
-
-const calculateDayDifference = (startDateStr, endDateStr) => {
-  const startDate = new Date(startDateStr)
-  const endDate = new Date(endDateStr)
-  const timeDifference = endDate - startDate // 毫秒差
-  const dayDifference = timeDifference / (1000 * 60 * 60 * 24) // 換算為天數
-  return dayDifference
-}
-
-const updateActivityName = () => {
-  queryActivityName()
-}
-
-onMounted(() => {
-  console.log('onMounted exportData', exportData)
-
-  queryActivityName(true)
-})
-
-onUpdated(() => {
-  console.log('onUpdated exportData', exportData)
-})
 
 watch(
   [() => exportData.selectDuration, () => exportData.analysisDate, () => exportData.selectReward],
   () => {
-    updateActivityName()
+    queryListActiveLimit()
   }
 )
-
-// watch(
-//   () => activityStore.chartFiltered,
-//   () => {
-//     handelExportList()
-//   }
-// )
 </script>
 <template>
   <div>
@@ -319,45 +268,59 @@ watch(
     <el-dialog
       v-model="dialogVisible"
       class="cdp-dialog customer-tag-dialog"
+      @open="handleOpenDialog"
+      @close="handleCloseDialog"
       :append-to-body="true"
+      :destroy-on-close="true"
       :title="$t('import_export_file.export')"
     >
       <div class="dialog-inner">
         <el-row>
           <el-col class="mb-20">
-            <div class="col-title">{{ $t('activity_analysis.analysis_cycle') }}</div>
-            <el-select
-              v-model="exportData.selectDuration"
-              class="cdp-select cdp-select__blue mr-6"
-              popper-class="cdp-select-popper"
+            <SectionTitle
+              size="small"
+              class="cdp-text-blue mb-4"
+              :title="$t('activity_analysis.analysis_cycle')"
             >
-              <el-option
-                v-for="item in selectDurationOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-                :disabled="item.disabled"
-              />
-            </el-select>
-          </el-col>
-          <el-col class="mb-20">
-            <div class="col-title">{{ $t('activity_analysis.analysis_duration') }}</div>
-            <DatepickerRange
-              v-model="filterData.analysisDate"
-              :config="2"
-              :teleported="true"
-              :enabledThreeMonth="false"
-              @update:modelValue="dateCount"
-              :shortcutsConfig="3"
-              class="w-full filter-datepicker custom-tag-date-picker"
+            </SectionTitle>
+            <el-select-v2
+              v-model="exportData.selectDuration"
+              class="cdp-select cdp-select__blue"
+              popper-class="cdp-select-popper cdp-select-popper__blue  w-full"
+              :teleported="false"
+              :options="selectDurationOptions"
             />
           </el-col>
           <el-col class="mb-20">
-            <div class="col-title">{{ $t('activity_analysis.reward_status') }}</div>
+            <SectionTitle
+              size="small"
+              class="cdp-text-blue mb-4"
+              :title="$t('activity_analysis.analysis_duration')"
+            >
+            </SectionTitle>
+            <DatepickerRange
+              v-model="exportData.analysisDate"
+              :rangeDate="exportData.analysisDate"
+              :config="2"
+              :teleported="true"
+              :enabledThreeMonth="false"
+              @update:modelValue="dateRestraint"
+              :shortcutsConfig="3"
+              class="w-full filter-datepicker custom-tag-date-picker"
+              classColor="blue"
+            />
+          </el-col>
+          <el-col class="mb-20">
+            <SectionTitle
+              size="small"
+              class="cdp-text-blue mb-4"
+              :title="$t('activity_analysis.reward_status')"
+            >
+            </SectionTitle>
             <el-select
               v-model="exportData.selectReward"
-              class="cdp-select cdp-select__blue mr-6"
-              popper-class="cdp-select-popper"
+              class="cdp-select cdp-select__blue"
+              popper-class="cdp-select-popper cdp-select-popper__blue w-full"
               :teleported="false"
             >
               <el-option
@@ -370,18 +333,43 @@ watch(
             </el-select>
           </el-col>
           <el-col class="mb-4">
-            <div class="col-title">{{ $t('activity_analysis.activity_name') }}</div>
+            <SectionTitle
+              size="small"
+              class="cdp-text-blue mb-4"
+              :title="$t('activity_analysis.activity_name')"
+            >
+            </SectionTitle>
             <div class="loading" v-if="!apiSuccess">
               <LoadingBox color="blue" size="sm" class="mb-12" />
             </div>
             <div v-else>
-              <SelectTagSingle
-                :defaultValue="defaultValue"
-                :lists="selectActivityNameOptions"
-                :showAllOption="false"
-                :placeholder="$t('common.select')"
+              <el-select
                 v-model="exportData.activityNameList"
-              />
+                multiple
+                clearable
+                collapse-tags
+                :teleported="false"
+                :placeholder="$t('common.select')"
+                :max-collapse-tags="3"
+                class="cdp-select cdp-select__blue"
+                popper-class="cdp-select-popper cdp-select-popper__blue w-full"
+              >
+                <template #header>
+                  <el-checkbox
+                    v-model="checkAll"
+                    :indeterminate="indeterminate"
+                    @change="handleCheckAll"
+                  >
+                    {{ $t('common.select_all_option') }}
+                  </el-checkbox>
+                </template>
+                <el-option
+                  v-for="item in selectActivityNameOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </div>
           </el-col>
           <el-col>
@@ -394,6 +382,7 @@ watch(
                 :name="$t('modal.confirm_export')"
                 color="blue"
                 @click="handelExportList"
+                :disabled="isExportDisabled"
               />
             </div>
           </el-col>
