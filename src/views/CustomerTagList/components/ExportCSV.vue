@@ -160,8 +160,9 @@ const handelExportReport = async () => {
             <div class="col-title">{{ $t('customer_tag_list.average_type') }}</div>
             <el-select
               v-model="averageTypeValue"
-              class="cdp-select full mr-6"
-              popper-class="cdp-select-popper"
+              class="cdp-select cdp-select__blue mr-6"
+              popper-class="cdp-select-popper cdp-select-popper__blue w-full"
+              :teleported="false"
             >
               <el-option
                 v-for="item in averageTypeOptions"

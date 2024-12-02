@@ -633,11 +633,7 @@
 .select-tag-single {
   display: flex;
   flex-wrap: wrap;
-  border: 1px solid #ccc5e1;
   border-radius: 5px;
-  &:hover {
-      border-color: $purple;
-  }
   &__input {
     padding-left: 10px;
   }
@@ -656,7 +652,6 @@
         border-radius: 20px;
         margin-top: 5px;
         margin-bottom: 5px;
-        background-color: $purple;
         color: #fff;
         line-height: 1;
         cursor: pointer;
@@ -709,8 +704,46 @@
     border: none;
     border-radius: 5px;
     &::placeholder {
-      color: rgba($purple, 0.4);
       opacity: 1;
+    }
+  }
+}
+
+.select-tag-single {
+  &__purple {
+    border: 1px solid $purple-light;
+    &:hover {
+        border-color: $purple;
+    }
+  }
+  &__blue {
+    border: 1px solid $blue-light;
+    &:hover {
+        border-color: $blue;
+    }
+  }
+  &__box {
+    &__tag {
+      &__item {
+        &__purple {
+          background-color: $purple;
+        }
+        &__blue {
+          background-color: $blue;
+        }
+      }
+    }
+  }
+  &__input {
+    &__purple {
+      &::placeholder {
+        color: rgba($purple, 0.4);
+      }
+    }
+    &__blue {
+      &::placeholder {
+        color: rgba($blue, 0.4);
+      }
     }
   }
 }

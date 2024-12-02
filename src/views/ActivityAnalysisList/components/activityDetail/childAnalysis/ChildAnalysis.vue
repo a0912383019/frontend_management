@@ -20,8 +20,6 @@ const props = defineProps({
 
 const isRewarded = ref(true)
 
-const activeView = ref('RewardComponents')
-
 // 整理所有 component
 const componentMap = {
   RewardComponents,
@@ -30,11 +28,11 @@ const componentMap = {
 
 // 當前使用的 component
 const currentActiveComponent = computed(() => {
-  return componentMap[activeView.value] || null
+  return componentMap[activityStore.childActiveView] || null
 })
 
 const switchRewarded = (val) => {
-  activeView.value = val ? 'RewardComponents' : 'NotRewardComponents'
+  activityStore.childActiveView = val ? 'RewardComponents' : 'NotRewardComponents'
 }
 
 const switchBtnWidth = ref(72)
@@ -63,8 +61,6 @@ onMounted(() => {
     <keep-alive>
       <component
         :is="currentActiveComponent"
-        :currentView="activeView"
-        :isChildFiltered="activityStore.isChildFiltered"
         :activityId="props.activityId"
       ></component>
     </keep-alive>

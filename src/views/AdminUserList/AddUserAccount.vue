@@ -208,8 +208,8 @@ const emailChange = () => {
               />
               <el-select
                 v-model="user.userType"
-                class="cdp-select cdp-select__blue w-full"
-                popper-class="cdp-select-popper cdp-select-popper__blue"
+                class="cdp-select cdp-select__blue"
+                popper-class="cdp-select-popper cdp-select-popper__blue w-full"
                 :teleported="false"
               >
                 <el-option
@@ -229,8 +229,8 @@ const emailChange = () => {
               />
               <el-select
                 v-model="user.userStatus"
-                class="cdp-select cdp-select__blue w-full"
-                popper-class="cdp-select-popper cdp-select-popper__blue"
+                class="cdp-select cdp-select__blue"
+                popper-class="cdp-select-popper cdp-select-popper__blue w-full"
                 :teleported="false"
               >
                 <el-option

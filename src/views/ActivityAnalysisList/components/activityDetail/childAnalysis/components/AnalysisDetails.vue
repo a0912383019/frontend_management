@@ -4,6 +4,11 @@ import { useI18n } from 'vue-i18n'
 import { useActivityAnalysisStore } from '@/stores'
 import Tab from '@/components/Tab.vue'
 import TagStatistics from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/tagStatistics/TagStatistics.vue'
+import Commissionable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/commissionable/Commissionable.vue'
+import DetailList from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/detailList/DetailList.vue'
+import ExportCSV from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/detailList/ExportCSV.vue'
+import Filter from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/detailList/Filter.vue'
+import History from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/history/History.vue'
 import { storeToRefs } from 'pinia'
 
 const { t } = useI18n()
@@ -12,6 +17,10 @@ const activityStore = useActivityAnalysisStore()
 const { currentDetailTab } = storeToRefs(activityStore)
 
 const props = defineProps({
+  isRewarded: {
+    type: Boolean,
+    default: true
+  },
   activityId: {
     type: Number
   }
@@ -34,14 +43,17 @@ const tabData = computed(() => {
     },
     {
       name: 'History',
-      label: t('activity_analysis.activity_compare_tag_chart')
+      label: t('activity_analysis.history_statistics')
     }
   ]
 })
 
 // 整理所有 component
 const componentMap = {
-  TagStatistics
+  Commissionable,
+  TagStatistics,
+  DetailList,
+  History
 }
 
 // 當前使用的 component
@@ -53,14 +65,21 @@ const currentTabComponent = computed(() => {
   <section class="cdp-section-in">
     <el-row class="mb-20">
       <el-col :span="14">
-        <Tab
-          :tabData="tabData"
-          :activeName="currentDetailTab"
-          v-model="currentDetailTab"
-        ></Tab> </el-col
-    ></el-row>
+        <Tab :tabData="tabData" :activeName="currentDetailTab" v-model="currentDetailTab"></Tab>
+      </el-col>
+      <el-col :span="10">
+        <div v-if="currentDetailTab === 'DetailList'" class="flex items-center justify-end">
+          <ExportCSV :activityId="props.activityId" :isRewarded="props.isRewarded" class="mr-10" />
+          <Filter />
+        </div>
+      </el-col>
+    </el-row>
     <keep-alive>
-      <component :is="currentTabComponent" :activityId="props.activityId"></component>
+      <component
+        :is="currentTabComponent"
+        :activityId="props.activityId"
+        :isRewarded="props.isRewarded"
+      ></component>
     </keep-alive>
   </section>
 </template>

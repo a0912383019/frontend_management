@@ -13,6 +13,10 @@ import CustomTable from '@/views/ActivityAnalysisList/components/activityDetail/
 const { t, locale } = useI18n()
 
 const props = defineProps({
+  isRewarded: {
+    type: Boolean,
+    default: true
+  },
   activityId: {
     type: Number
   }
@@ -61,8 +65,8 @@ const betAmountGrowthMessageKey = ref('loading')
 const chartOptions = reactive({
   chart: {
     type: 'column',
-    height: 500,
-    marginLeft: 120
+    height: locale.value === 'en' ? 550 : 500,
+    marginLeft: locale.value === 'en' ? 130 : 120
   },
   xAxis: {
     gridLineColor: '#e8e8e8',

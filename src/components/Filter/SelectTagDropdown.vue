@@ -12,6 +12,10 @@ const props = defineProps({
     //運算子
     type: Boolean,
     default: false
+  },
+  color: {
+    type: String,
+    default: 'purple'
   }
 })
 const emit = defineEmits(['update:tagtext', 'update:modelValue'])
@@ -21,7 +25,7 @@ const handleTagAddText = (data) => {
 }
 </script>
 <template>
-  <div class="drop">
+  <div class="drop" :class="`drop__${color}`">
     <div v-show="props.operator">
       <div class="drop__title">{{ $t('tags.operator_math') }}</div>
       <div class="drop__item" @click="handleTagAddText({ value: 'OR', label: 'OR' })">OR</div>
@@ -29,7 +33,7 @@ const handleTagAddText = (data) => {
     <div class="drop__title" v-show="props.tagTitle">{{ props.tagTitle }}</div>
     <div
       class="drop__item"
-      :class="{ disabled: item.disabled }"
+      :class="{ disabled: item.disabled, [`drop__item__${props.color}`]: true }"
       v-for="(item, index) in props.lists"
       :key="index"
       @click="handleTagAddText(item)"
@@ -48,7 +52,12 @@ const handleTagAddText = (data) => {
   max-height: 270px;
   overflow-y: auto;
   border-radius: 5px;
-  border: 1px solid rgba(106, 83, 186, 0.3);
+  &__purple {
+    border: 1px solid rgba(106, 83, 186, 0.3);
+  }
+  &__blue {
+    border: 1px solid rgba(120, 150, 177, 0.3);
+  }
   background: #fff;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.15);
   &__title {
@@ -77,7 +86,16 @@ const handleTagAddText = (data) => {
     }
     &:hover {
       background: rgba(106, 83, 186, 0.06);
-      color: $purple;
+    }
+    &__purple {
+      &:hover {
+        color: $purple;
+      }
+    }
+    &__blue {
+      &:hover {
+        color: $blue;
+      }
     }
   }
 }

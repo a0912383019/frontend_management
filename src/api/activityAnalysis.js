@@ -342,19 +342,16 @@ export const apiQueryGrowthRateActiveCommissionable = (params) => {
 }
 
 export const apiQueryListActivity = (params) => {
-  const { hall_name, activity_name, search_date } = params
-  return axiosInstance.post('/api/auth/activity/list_activity_analysis', {
-    hall_name,
-    activity_name,
-    search_date
+  const { hall_name, activity_name } = params
+  return axiosGoInstance.get('/api/auth/activity', {
+    params: { hall_name, activity_name }
   })
 }
 
 export const apiDeleteActivity = (params) => {
-  const { hall_name, delete_activity_id } = params
-  return axiosInstance.post('/api/auth/activity/delete_activity_analysis', {
-    hall_name,
-    delete_activity_id
+  const { hall_name, id } = params
+  return axiosGoInstance.delete(`/api/auth/activity/${id}`, {
+    params: { hall_name }
   })
 }
 
@@ -418,6 +415,74 @@ export const apiQueryActivityTagsRank = (params) => {
 export const apiQueryActivityBetAmountGrowthSpanTags = (params) => {
   const { hall_name, activity_id_hide, activity_detail_id_hide } = params
   return axiosInstance.post('/api/auth/activity/query_activity_betAmount_growth_span_tags', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide
+  })
+}
+
+export const apiQueryActivityMemberParticipation = (params) => {
+  const {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide,
+    activity_member_betAmount_growth_percent_hide
+  } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_member_participation', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide,
+    activity_member_betAmount_growth_percent_hide
+  })
+}
+
+export const apiQueryActivityBetAmountGrowthSpan = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
+  return axiosInstance.post('/api/auth/activity/query_activity_betAmount_growth_span', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide
+  })
+}
+
+export const apiQueryActivityCompareDetail = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide, search_name, length, draw, start } =
+    params
+
+  const order = [
+      {
+        column: 1,
+        dir: 'desc'
+      }
+    ],
+    columns = [{}, { name: 'before_bet_amount_avg' }, {}]
+  return axiosInstance.post('/api/auth/activity/query_activity_compare_detail', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide,
+    search_name,
+    draw,
+    start,
+    length,
+    order,
+    columns
+  })
+}
+
+export const apiExportActivityCompareDetail = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide, reward_flag, locale } = params
+  return axiosInstance.post('/api/auth/activity/export_activity_compare_detail', {
+    hall_name,
+    activity_id_hide,
+    activity_detail_id_hide,
+    reward_flag,
+    locale
+  })
+}
+
+export const apiQueryMemberStepChanges = (params) => {
+  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
+  return axiosInstance.post('/api/auth/activity/query_member_step_changes', {
     hall_name,
     activity_id_hide,
     activity_detail_id_hide

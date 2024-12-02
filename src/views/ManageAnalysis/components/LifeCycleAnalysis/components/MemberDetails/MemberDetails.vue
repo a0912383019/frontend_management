@@ -296,7 +296,9 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
       <template #life_cycle_step="scope">
         <ButtonIcon
           @click="handleStepClick(scope.row)"
-          icon="eye"
+          class="history-button"
+          icon="history"
+          :isSvg="true"
           :name="$t('manage_analysis.life_cycle_history')"
         />
       </template>
@@ -321,5 +323,9 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
 .top-box {
   display: flex;
   justify-content: space-between;
+}
+.history-button {
+  min-width: 40px !important;
+  width: 100%;
 }
 </style>

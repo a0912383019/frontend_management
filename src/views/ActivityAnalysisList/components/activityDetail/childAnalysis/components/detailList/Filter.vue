@@ -5,7 +5,6 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { useActivityAnalysisStore } from '@/stores'
 
 const activityStore = useActivityAnalysisStore()
-const { findSelectedOption, currentChildAnalysis, optionChildList } = activityStore
 
 const popover = ref(null) // popover
 
@@ -16,8 +15,7 @@ const closePopover = () => {
 
 // 確認篩選
 const handleClick = () => {
-  findSelectedOption()
-  activityStore.isChildFiltered = Date.now()
+  activityStore.isChildDetailListFiltered = Date.now()
   closePopover()
 }
 </script>
@@ -45,24 +43,14 @@ const handleClick = () => {
             <SectionTitle
               size="small"
               class="cdp-text-purple mb-4"
-              :title="$t('activity_analysis.activity_detail')"
+              :title="$t('data_name.member_name')"
             >
             </SectionTitle>
-            <el-select
-              v-model="currentChildAnalysis.id"
-              class="cdp-select cdp-select__purple w-full"
-              popper-class="cdp-select-popper cdp-select-popper__purple"
-              :teleported="false"
-              :filterable="true"
-            >
-              <el-option
-                v-for="item in optionChildList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
+            <el-input
+              v-model="activityStore.searchChildDetailMemberName"
+              class="cdp-input__purple"
+              :placeholder="$t('common.input_member_name_search')"
+            />
           </div>
         </div>
         <div class="drop__footer">
