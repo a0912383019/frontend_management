@@ -81,10 +81,10 @@ npm run lint
 
 ### Get latest submodules
 .gitmodules 的 remote 地址
-url = ssh://git@swissknife.vip:2224/bi/cdp/weblate.git
+url = ssh://git@swissknife.vip:2224/bi/cdp/bbin/tools/weblate.git
 
 ```sh
-第一次請下
+第一次 clone 專案請下
 git submodule update --init --recursive
 git -C src/locales config core.sparseCheckout true
 echo "cdp_frontend/*" >> .git/modules/src/locales/info/sparse-checkout
@@ -96,4 +96,10 @@ git submodule update --remote --recursive
 或是
 git submodule update --force --checkout src/locales
 git submodule update --remote --recursive
+```
+
+```sh
+如果 submodule 位址改變請修改 .gitmodules 的 url
+然後下 git submodule sync --recursive
+之後重複第一次 clone 專案的步驟
 ```
