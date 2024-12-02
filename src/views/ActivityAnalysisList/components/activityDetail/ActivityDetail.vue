@@ -115,7 +115,7 @@ watch(
       </el-col>
       <el-col :span="16">
         <div v-if="currentTabs === 'ChildAnalysis'" class="flex items-center justify-end">
-          <Filter :activityId="props.activityId" />
+          <Filter />
         </div>
       </el-col>
     </el-row>

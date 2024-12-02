@@ -7,12 +7,6 @@ import { useActivityAnalysisStore } from '@/stores'
 const activityStore = useActivityAnalysisStore()
 const { findSelectedOption, currentChildAnalysis, optionChildList } = activityStore
 
-const props = defineProps({
-  activityId: {
-    type: Number
-  }
-})
-
 const popover = ref(null) // popover
 
 // 關閉 popover

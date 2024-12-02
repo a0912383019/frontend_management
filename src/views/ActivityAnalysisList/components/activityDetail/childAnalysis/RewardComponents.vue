@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useActivityAnalysisStore } from '@/stores'
 import AnalysisTable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/AnalysisTable.vue'
 import AnalysisDetails from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/AnalysisDetails.vue'
@@ -7,27 +7,18 @@ import AnalysisDetails from '@/views/ActivityAnalysisList/components/activityDet
 const props = defineProps({
   activityId: {
     type: Number
-  },
-  currentView: {
-    type: String
-  },
-  isChildFiltered: {
-    type: Number
   }
 })
 
 const activityStore = useActivityAnalysisStore()
-const { isChildFiltered } = activityStore
 
+const key = ref(0)
 const isRewarded = ref(true)
 
-const key = computed(() => {
-  let newKey = 0
-  if (props.currentView === 'RewardComponents' && props.isChildFiltered !== isChildFiltered) {
-    newKey = props.isChildFiltered
+watch([() => activityStore.childActiveView, () => activityStore.isChildFiltered], () => {
+  if (activityStore.childActiveView === 'RewardComponents') {
+    key.value = activityStore.isChildFiltered
   }
-
-  return newKey
 })
 </script>
 <template>

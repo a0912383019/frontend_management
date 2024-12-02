@@ -21,6 +21,7 @@ describe('Login', () => {
   const consoleErrMock = vi.spyOn(console, 'error').mockImplementation(() => {})
 
   afterEach(() => {
+    vi.useRealTimers()
     wrapper.unmount()
   })
 

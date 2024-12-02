@@ -44,6 +44,7 @@ describe('TagGroupSetting.vue', () => {
   })
 
   afterEach(() => {
+    vi.useRealTimers()
     wrapper.unmount()
   })
 
