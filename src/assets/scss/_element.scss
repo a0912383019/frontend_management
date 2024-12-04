@@ -880,7 +880,6 @@
 
 .cdp-datepicker-range-popper {
   &.el-picker__popper.el-popper  {
-    // padding-right: 4px;
     border-radius: 5px;
     overflow: hidden;
   }
@@ -899,9 +898,6 @@
       transition: all .4s;
     }
   }
-  // .el-date-table td.in-range .el-date-table-cell {
-  //   background-color: rgba(106, 83, 186, 0.08);
-  // }
   .el-date-table td.today .el-date-table-cell__text {
     color: inherit;
     font-weight: 400;

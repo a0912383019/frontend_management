@@ -1,8 +1,7 @@
 <script setup>
 import { ref, computed, nextTick, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryPromotionList } from '@/api'
-import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
+import { useActivityAnalysisStore } from '@/stores'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
@@ -12,9 +11,6 @@ import { dayjs } from 'element-plus'
 import { storeToRefs } from 'pinia'
 
 const { t, locale } = useI18n()
-
-const globalStore = useGlobalStore()
-const { activeHall } = globalStore
 
 const activityStore = useActivityAnalysisStore()
 const { childListData } = storeToRefs(activityStore)
@@ -129,7 +125,7 @@ const updatePromotion = (val, scope) => {
   const startDate = dayjs(proObj.start_time).format(t('date.format_date_rule'))
   const endDate =
     dayjs(proObj.end_time).year() >= 2100
-      ? dayjs(proObj.end_time).format(t('date.format_date_rule')).replace(/\d/g, '–')
+      ? dayjs(proObj.end_time).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
       : dayjs(proObj.end_time).format(t('date.format_date_rule'))
   scope.row.activity_date = startDate + ' ~ ' + endDate
   scope.row.promotion_name = proObj.promotion_name
