@@ -233,6 +233,17 @@ const transformBetAmountGrowthSpan = (data) => {
   })
 }
 
+const handleInput = (val) => {
+  participateRate.value = val
+    .replace(/[^0-9-]/g, '') // 保留數字和負號
+    .replace(/(?!^)-/g, '') // 只允許負號出現在開頭
+
+  // 限制最小值-100
+  if (Number(participateRate.value) < -100) {
+    participateRate.value = -100
+  }
+}
+
 const handleSerach = () => {
   queryActivityMemberParticipation()
 }
@@ -253,23 +264,24 @@ onMounted(() => {
           ></div>
         </template>
       </SectionTitle>
+      <el-input
+        v-model.number="participateRate"
+        @input="handleInput"
+        :formatter="(value) => value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+        :parser="(value) => value.replace(/(,*)/g, '')"
+        class="mb-10"
+      >
+        <template #suffix>
+          <span>%</span>
+        </template>
+        <template #append>
+          <el-button @click="handleSerach">
+            <font-awesome-icon class="search__iconsearch" icon="fa-magnifying-glass" />
+          </el-button>
+        </template>
+      </el-input>
       <CdpMessage :messageKey="memberPartiMessageKey" v-if="memberPartiApiSuccess === false" />
       <div v-else>
-        <el-input
-          v-model="participateRate"
-          :formatter="(value) => value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-          :parser="(value) => value.replace(/(,*)/g, '')"
-          class="mb-10"
-        >
-          <template #suffix>
-            <span>%</span>
-          </template>
-          <template #append>
-            <el-button @click="handleSerach">
-              <font-awesome-icon class="search__iconsearch" icon="fa-magnifying-glass" />
-            </el-button>
-          </template>
-        </el-input>
         <CustomTable
           :stripe="false"
           :tableData="tableData"
