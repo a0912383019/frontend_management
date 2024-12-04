@@ -357,40 +357,26 @@ export const apiDeleteActivity = (params) => {
 
 export const apiQueryPromotionList = (params) => {
   const { hall_name, start_date, end_date } = params
-  return axiosInstance.post('/api/auth/activity/query_promotion_list', {
-    hall_name,
-    start_date,
-    end_date
+  return axiosGoInstance.get('/api/auth/activity/promotions', {
+    params: { hall_name, start_date, end_date }
   })
 }
 
 export const apiAddActivity = (params) => {
-  const { hall_name, activity_name, activity_purpose, activity_description, activity_detail } =
-    params
-  return axiosInstance.post('/api/auth/activity/add_activity_analysis', {
+  const { hall_name, name, description, purpose, details } = params
+  return axiosGoInstance.post('/api/auth/activity', {
     hall_name,
-    activity_name,
-    activity_purpose,
-    activity_description,
-    activity_detail
-  })
-}
-
-export const apiImportActivity = (params) => {
-  const { hall_name, activity_id, activity_detail_id, function_id } = params
-  return axiosInstance.post('/api/auth/activity/import_activity_member_list', {
-    hall_name,
-    activity_id,
-    activity_detail_id,
-    function_id
+    name,
+    description,
+    purpose,
+    details
   })
 }
 
 export const apiActivityInfo = (params) => {
   const { hall_name, activity_id } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_analysis_info', {
-    hall_name,
-    activity_id
+  return axiosGoInstance.get(`/api/auth/activity/${activity_id}`, {
+    params: { hall_name }
   })
 }
 

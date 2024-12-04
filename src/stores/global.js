@@ -23,8 +23,8 @@ export const useGlobalStore = defineStore(
     // 切換廳需區分是否從首頁切
     const lastRoute = ref('')
 
+    const router = useRouter()
     const storeHandleApiError = () => {
-      const router = useRouter()
       //當api錯誤時，會執行的內容
       //清除所有sessionStorage與localStorage
       sessionStorage.clear()
