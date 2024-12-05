@@ -1,0 +1,30 @@
+# gcloud auth print-access-token | helm registry login -u oauth2accesstoken --password-stdin https://asia-docker.pkg.dev
+# gcloud container clusters get-credentials cdp-bbin-devqa-cluster --region us-east1 --project gcp-20230911-001
+# helm upgrade --install --create-namespace dev-cdp-frontend oci://asia-docker.pkg.dev/gcp-20240315-004/bi-cdp/helm-gke/istio-deployment --namespace cdp-web --reuse-values -f istio-deployment/helm_values/dev-cdp-frontend.yaml --set deployment.container.image=asia-docker.pkg.dev/gcp-20240315-004/bi-cdp/cdp_frontend_bbin:dev-8d6391e0 --atomic
+
+# namespace 預設 default
+namespace: cdp-web
+replicaCount: 1
+nodePool: web
+
+# deployment 設定
+deployment:
+  # 服務的名稱(必填)
+  appName: dev-cdp-vue-frontend
+  appVersion: frontend-vue
+  container:
+    image: none
+    containerPort: 80
+  resources:
+    request:
+      memory: "250Mi"
+      cpu: "50m"
+    limits:
+      memory: "500Mi"
+      cpu: "100m"
+  serviceAccountName: kube-ksa
+
+# service 設定
+service:
+  name: cdp-inner-service
+  type: ClusterIP
