@@ -171,6 +171,7 @@ onMounted(() => {
       :class="{ 'is-error': !props.isValid }"
       :popper-class="'cdp-datepicker-range-popper cdp-datepicker-range-popper__blue'"
       @change="getPromotionList"
+      @keydown.enter="($event) => $event.preventDefault()"
     />
     <div class="w-full text-left ml-5 mr-5" v-else>
       <div class="loading" v-if="!apiSuccess">

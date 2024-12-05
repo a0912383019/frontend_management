@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, nextTick, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useActivityAnalysisStore } from '@/stores'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -80,7 +80,7 @@ const addBtnDisabled = computed({
   }
 })
 
-const addChild = () => {
+const addChildActivity = () => {
   if (!addBtnDisabled.value) {
     subActivities.value.push(createSubActivity())
   }
@@ -139,8 +139,9 @@ const getSubActivities = () => {
 
 // 驗證資料
 const validSubActivities = () => {
-  let subActivityError = false
+  let allValid = false
   subActivities.value.forEach((val, idx) => {
+    let subActivityError = false
     let errClass = ''
     subActivities.value[idx].name_valid.valid = true
     subActivities.value[idx].promotion_valid.valid = true
@@ -181,8 +182,11 @@ const validSubActivities = () => {
         cell.classList.add(errClass)
       }
     })
+
+    allValid = allValid || subActivityError
   })
-  return !subActivityError
+
+  return !allValid // true 才是通過驗證
 }
 
 watch(
@@ -212,7 +216,7 @@ watch(
 
 onMounted(() => {
   if (props.canEdit) {
-    addChild()
+    addChildActivity()
   }
 })
 
@@ -258,6 +262,7 @@ defineExpose({ getSubActivities, validSubActivities })
           <div v-else>
             <el-input
               v-model="scope.row.name"
+              @keydown.enter="($event) => $event.preventDefault()"
               class="cdp-input"
               :class="{ 'is-error': !scope.row.name_valid.valid }"
             ></el-input>
@@ -290,7 +295,12 @@ defineExpose({ getSubActivities, validSubActivities })
       </template>
       <template #activity_date="scope">
         <div class="w-full text-left ml-5 mr-5">
-          <el-input v-model="scope.row.activity_date" class="cdp-input cdp-input-disabled" readonly>
+          <el-input
+            @keydown.enter="($event) => $event.preventDefault()"
+            v-model="scope.row.activity_date"
+            class="cdp-input cdp-input-disabled"
+            readonly
+          >
             <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
           </el-input>
         </div>
@@ -314,7 +324,7 @@ defineExpose({ getSubActivities, validSubActivities })
       size="long"
       :bg="true"
       :disabled="addBtnDisabled"
-      @click="addChild()"
+      @click="addChildActivity"
     />
   </section>
 </template>

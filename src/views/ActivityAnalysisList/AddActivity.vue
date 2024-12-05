@@ -170,16 +170,17 @@ onMounted(() => {
     </template>
     <div class="cdp-dialog__content">
       <section class="cdp-section">
-        <el-form ref="formRef" :model="activityForm" @submit.prevent :rules="rules">
+        <el-form ref="formRef" :model="activityForm" @submit.stop.prevent :rules="rules">
           <el-row :gutter="20" class="mb-16">
             <el-col :span="12">
               <div class="mb-20">
                 <div class="cdp-text-blue mb-3">
                   {{ $t('activity_analysis.activity_name') }}
                 </div>
-                <el-form-item prop="activityName">
+                <el-form-item prop="activityName" @submit.stop>
                   <el-input
                     v-model="activityForm.activityName"
+                    @keydown.enter="($event) => $event.preventDefault()"
                     class="cdp-input"
                     :placeholder="$t('activity_analysis.input_activity_name')"
                     :validate-event="false"
@@ -195,6 +196,7 @@ onMounted(() => {
               <el-form-item prop="purpose">
                 <el-input
                   v-model="activityForm.purpose"
+                  @keydown.enter="($event) => $event.preventDefault()"
                   class="cdp-input"
                   :placeholder="$t('activity_analysis.input_activity_purpose')"
                   :validate-event="false"
