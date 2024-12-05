@@ -69,8 +69,8 @@ const handleDialogClosed = () => {
 const generateChildListOptions = () => {
   optionChildList.value = childListData.value.map((ele) => {
     return {
-      value: ele.activity_detail_id,
-      label: ele.activity_detail_name
+      value: ele.id,
+      label: ele.name
     }
   })
   currentChildAnalysis.id = optionChildList.value[0].value

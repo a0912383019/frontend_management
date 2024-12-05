@@ -408,17 +408,9 @@ export const apiQueryActivityBetAmountGrowthSpanTags = (params) => {
 }
 
 export const apiQueryActivityMemberParticipation = (params) => {
-  const {
-    hall_name,
-    activity_id_hide,
-    activity_detail_id_hide,
-    activity_member_betAmount_growth_percent_hide
-  } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_member_participation', {
-    hall_name,
-    activity_id_hide,
-    activity_detail_id_hide,
-    activity_member_betAmount_growth_percent_hide
+  const { hall_name, id, is_reward, threshold } = params
+  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/member_participation`, {
+    params: { hall_name, is_reward, threshold }
   })
 }
 
