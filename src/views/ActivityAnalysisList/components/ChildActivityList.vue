@@ -183,10 +183,10 @@ const validSubActivities = () => {
       }
     })
 
-    allValid = !allValid && !subActivityError
+    allValid = allValid || subActivityError
   })
 
-  return allValid
+  return !allValid // true 才是通過驗證
 }
 
 watch(
