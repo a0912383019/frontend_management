@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiAddActivity } from '@/api'
 import { useGlobalStore } from '@/stores'
@@ -31,15 +31,19 @@ const activityForm = reactive({
   description: ''
 })
 
-const rules = reactive({
-  activityName: [
-    { required: true, message: t('activity_analysis.blank_activity_name_error_msg') },
-    { max: 100, message: t('activity_analysis.activity_name_length_limit_error_msg') }
-  ],
-  purpose: [{ max: 100, message: t('activity_analysis.activity_purpose_length_limit_error_msg') }],
-  description: [
-    { max: 1000, message: t('activity_analysis.activity_description_length_limit_error_msg') }
-  ]
+const rules = computed(() => {
+  return {
+    activityName: [
+      { required: true, message: t('activity_analysis.blank_activity_name_error_msg') },
+      { max: 100, message: t('activity_analysis.activity_name_length_limit_error_msg') }
+    ],
+    purpose: [
+      { max: 100, message: t('activity_analysis.activity_purpose_length_limit_error_msg') }
+    ],
+    description: [
+      { max: 1000, message: t('activity_analysis.activity_description_length_limit_error_msg') }
+    ]
+  }
 })
 
 const subActivities = ref([])
@@ -89,14 +93,29 @@ const handleDialogClosed = () => {
   emit('closeDialog')
 }
 
+const organizeActivityDatail = () => {
+  let subDetails = []
+  subDetails = subActivities.value.map((ele) => {
+    return {
+      end_date: '2024-11-01',
+      name: ele.name,
+      offer_id: ele.offer_id,
+      original_id: ele.original_id,
+      start_date: '2024-01-01'
+    }
+  })
+
+  return subDetails
+}
+
 const queryAddActivity = async () => {
   try {
     const result = await apiAddActivity({
       hall_name: activeHall.hall_code,
-      activity_name: activityForm.activityName,
-      activity_purpose: activityForm.purpose,
-      activity_description: activityForm.description,
-      activity_detail: organizeActivityDatail()
+      name: activityForm.activityName,
+      description: activityForm.description,
+      purpose: activityForm.purpose,
+      details: organizeActivityDatail()
     })
 
     const { return_code } = result.data.status
@@ -106,7 +125,7 @@ const queryAddActivity = async () => {
         type: 'success'
       })
       handleDialogClosed()
-      emit('addSuccess', result.data.result)
+      emit('addSuccess')
     } else {
       ElNotification({
         title: t('msg.add_failed'),
@@ -183,7 +202,7 @@ onMounted(() => {
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="24" class="mb-20">
+            <el-col :span="24" class="mb-5">
               <div class="cdp-text-blue mb-3">
                 {{ $t('activity_analysis.activity_description') }}
               </div>
@@ -247,7 +266,7 @@ onMounted(() => {
           <td class="text-center">：</td>
           <td class="text-left">
             <div v-for="(item, idx) in subActivities" :key="idx" class="word-break">
-              {{ item.activity_detail_name + '(' + item.activity_date.replaceAll('-', '/') + ')' }}
+              {{ item.name + '(' + item.activity_date.replaceAll('-', '/') + ')' }}
             </div>
           </td>
         </tr>

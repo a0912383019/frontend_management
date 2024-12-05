@@ -10,14 +10,9 @@ import TotalSum from '@/views/ActivityAnalysisList/components/TotalSum.vue'
 import AddButton from '@/components/Button/AddButton.vue'
 import AddDialog from '@/views/ActivityAnalysisList/AddActivity.vue'
 import Filter from '@/views/ActivityAnalysisList/Filter.vue'
-import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
-import { apiImportActivity } from '@/api'
-import { ElNotification } from 'element-plus'
+import { useActivityAnalysisStore } from '@/stores'
 import ChartFilter from '@/views/ActivityAnalysisList/components/ChartFilter.vue'
 import { storeToRefs } from 'pinia'
-
-const globalStore = useGlobalStore()
-const { activeHall } = globalStore
 
 const activityStore = useActivityAnalysisStore()
 const { currentTabs } = storeToRefs(activityStore)
@@ -69,46 +64,8 @@ const closeDialog = () => {
   dialogVisible.value = false
 }
 
-const addSuccess = (data) => {
-  queryImportActivity(data, 2)
+const addSuccess = () => {
   activityStore.activityAddChange = Date.now()
-}
-
-// function_id 1:使用者上傳名單 2:活動成效名單(整筆) 3:活動成效名單(單筆)
-const queryImportActivity = async (data, functionId) => {
-  try {
-    const result = await apiImportActivity({
-      hall_name: activeHall.hall_code,
-      activity_id: data.activity_id,
-      activity_detail_id: data.activity_detail_id,
-      function_id: functionId
-    })
-
-    const { return_code } = result.data.status
-    if (return_code === '0000') {
-      // nothing to do
-    } else {
-      ElNotification({
-        title: t('msg.import_failed'),
-        type: 'error'
-      })
-    }
-  } catch (error) {
-    console.error(error)
-    if (error.response.status === 403) {
-      ElNotification({
-        title: t('msg.no_permission'),
-        type: 'error'
-      })
-    } else if (error.response.status === 401) {
-      globalStore.storeHandleApiError()
-    } else {
-      ElNotification({
-        title: t('msg.import_failed'),
-        type: 'error'
-      })
-    }
-  }
 }
 
 onUnmounted(() => {

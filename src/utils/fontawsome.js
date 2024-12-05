@@ -2,6 +2,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faExclamationTriangle,
   faAngleDown,
+  faAngleLeft,
   faHistory,
   faBook,
   faMagnifyingGlass,
@@ -65,6 +66,7 @@ import { faVimeoV } from '@fortawesome/free-brands-svg-icons'
 library.add(
   faExclamationTriangle,
   faAngleDown,
+  faAngleLeft,
   faHistory,
   faBook,
   faMagnifyingGlass,

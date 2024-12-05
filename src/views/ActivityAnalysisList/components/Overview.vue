@@ -105,11 +105,14 @@ const transformActivityList = (data) => {
 }
 
 const showDetail = ref(false)
-const openActivityDetail = () => {
+const activityId = ref(null)
+const openActivityDetail = (val) => {
+  activityId.value = val
   showDetail.value = true
 }
 
 const closeDetail = () => {
+  activityId.value = null
   showDetail.value = false
 }
 
@@ -246,11 +249,7 @@ onMounted(() => {
         {{ $t('modal.are_you_sure_to_delete') + '「' + deleteActivityName + '」?' }}
       </template>
     </ConfirmBox>
-    <ActivityDetail
-      v-model="showDetail"
-      @closeDialog="closeDetail"
-      :activityId="66"
-    />
+    <ActivityDetail v-model="showDetail" @closeDialog="closeDetail" :activityId="activityId" />
   </section>
 </template>
 <style lang="scss" scoped>
