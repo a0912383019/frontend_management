@@ -81,7 +81,7 @@ npm run lint
 
 ### Get latest submodules
 .gitmodules 的 remote 地址
-url = ssh://git@swissknife.vip:2224/bi/cdp/bbin/tools/weblate.git
+url = ssh://git@swissknife.vip:2224/bi/cdp/submodule/weblate.git
 
 ```sh
 第一次 clone 專案請下

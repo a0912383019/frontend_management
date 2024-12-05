@@ -94,13 +94,14 @@ const deleteActivity = (idx) => {
 const transformChildData = () => {
   subActivities.value = []
   childListData.value.forEach((ele, idx) => {
+    const startDate = dayjs(ele.promotion_start_date).format(t('date.format_date_rule'))
+    const endDate =
+      dayjs(ele.promotion_end_date).year() >= 2100
+        ? dayjs(ele.promotion_end_date).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
+        : dayjs(ele.promotion_end_date).format(t('date.format_date_rule'))
     subActivities.value[idx] = {
       name: ele.name, // 子活動名稱
-      // 子活動優惠區間
-      activity_date:
-        dayjs(ele.promotion_start_date).format(t('date.format_date_rule')) +
-        ' ~ ' +
-        dayjs(ele.promotion_end_date).format(t('date.format_date_rule')),
+      activity_date: startDate + ' ~ ' + endDate, // 子活動優惠區間
       promotion_name: ele.promotion_name, // 子活動優惠名稱
       offer_id: ele.offer_id, // 子活動優惠名稱 offer_id
       original_id: ele.original_id, // 子活動優惠名稱 original_id

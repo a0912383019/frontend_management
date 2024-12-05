@@ -20,9 +20,6 @@ const props = defineProps({
   isRewarded: {
     type: Boolean,
     default: true
-  },
-  activityId: {
-    type: Number
   }
 })
 
@@ -69,7 +66,7 @@ const currentTabComponent = computed(() => {
       </el-col>
       <el-col :span="10">
         <div v-if="currentDetailTab === 'DetailList'" class="flex items-center justify-end">
-          <ExportCSV :activityId="props.activityId" :isRewarded="props.isRewarded" class="mr-10" />
+          <ExportCSV :isRewarded="props.isRewarded" class="mr-10" />
           <Filter />
         </div>
       </el-col>
@@ -77,7 +74,6 @@ const currentTabComponent = computed(() => {
     <keep-alive>
       <component
         :is="currentTabComponent"
-        :activityId="props.activityId"
         :isRewarded="props.isRewarded"
       ></component>
     </keep-alive>

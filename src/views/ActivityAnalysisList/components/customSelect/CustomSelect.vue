@@ -142,7 +142,8 @@ onMounted(() => {
     showDatePicker.value = false
     const infoDate = props.promotionData.activity_date.split('~')
     const infoStartDate = formatDate(infoDate[0].trim())
-    const infoEndDate = formatDate(infoDate[1].trim())
+    const infoEndDate =
+      infoDate[1].trim() === '⎻⎻⎻⎻/⎻⎻/⎻⎻' ? '2100-01-01' : formatDate(infoDate[1].trim())
 
     queryPromotionList(
       infoStartDate,

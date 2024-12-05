@@ -5,7 +5,7 @@ import { useActivityAnalysisStore, useGlobalStore } from '@/stores'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { apiQueryActivityMemberParticipation, apiQueryActivityBetAmountGrowthSpan } from '@/api'
-import { errorRespond, generateRGBColors } from '@/utils/commonUtils.js'
+import { errorRespond, generateRGBColors, FormatNumber } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipColumnSeparate } from '@/utils/highchartsConfig.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import { dayjs } from 'element-plus'
@@ -17,9 +17,6 @@ const props = defineProps({
   isRewarded: {
     type: Boolean,
     default: true
-  },
-  activityId: {
-    type: Number
   }
 })
 
@@ -119,9 +116,9 @@ const queryActivityMemberParticipation = async () => {
   try {
     const result = await apiQueryActivityMemberParticipation({
       hall_name: activeHall.hall_code,
-      activity_id_hide: props.activityId,
-      activity_detail_id_hide: currentChildAnalysis.id,
-      activity_member_betAmount_growth_percent_hide: participateRate.value
+      id: currentChildAnalysis.id,
+      is_reward: props.isRewarded,
+      threshold: participateRate.value
     })
 
     const { return_code } = result.data.status
@@ -144,6 +141,8 @@ const queryActivityMemberParticipation = async () => {
       memberPartiMessageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
+    } else if (error.response.status === 404) {
+      memberPartiMessageKey.value = 'noResult'
     } else {
       memberPartiMessageKey.value = 'queryFailed' //更改message內容
     }
@@ -154,22 +153,22 @@ const transformMemberParticipation = (data) => {
   tableData.value = [
     {
       col_name: t('activity_analysis.activity_date'),
-      col_value: data.activity_detail_date
-        .split(' ~ ')
-        .map((date) => dayjs(date).format(t('date.format_date_rule')))
+      col_value: data.activity_analysis_date
+        .split('~')
+        .map((date) => dayjs(date.trim()).format(t('date.format_date_rule')))
         .join(' ~ ')
     },
     {
       col_name: t('activity_analysis.member_list_num'),
-      col_value: data.not_reward_member_count
+      col_value: data.member_count
     },
     {
       col_name: t('activity_analysis.achieve_member_count'),
-      col_value: data.not_reward_achieve_member_count
+      col_value: data.achieve_member_count
     },
     {
       col_name: t('activity_analysis.member_participation_percent'),
-      col_value: data.not_reward_member_participation_percent + '%'
+      col_value: FormatNumber(data.participation_percent) + '%'
     }
   ]
 }
@@ -181,7 +180,7 @@ const queryActivityBetAmountGrowthSpan = async () => {
   try {
     const result = await apiQueryActivityBetAmountGrowthSpan({
       hall_name: activeHall.hall_code,
-      activity_id_hide: props.activityId,
+      activity_id_hide: 88,
       activity_detail_id_hide: currentChildAnalysis.id
     })
 
