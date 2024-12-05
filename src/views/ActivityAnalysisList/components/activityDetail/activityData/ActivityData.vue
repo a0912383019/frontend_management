@@ -344,9 +344,7 @@ onMounted(() => {
             <td class="text-center">：</td>
             <td class="text-left">
               <div v-for="(item, idx) in subActivities" :key="idx" class="word-break">
-                {{
-                  item.name + '(' + item.activity_date + ')'
-                }}
+                {{ item.name + '(' + item.activity_date + ')' }}
               </div>
             </td>
           </tr>

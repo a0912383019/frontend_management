@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick, watch, onMounted } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryPromotionList } from '@/api'
 import { useGlobalStore, useDateStore } from '@/stores'
@@ -122,7 +122,6 @@ const handleReturn = async () => {
 
 // 日曆禁用日期
 const disabledDate = (day) => {
-  // 禁選條件二：日期小於最小日期 或 日期大於結束日
   let activeDate = dayjs(day).format(t('date.format_date_rule'))
   let minDate = dayjs(date_range_picker_config_8.minDate).format(t('date.format_date_rule'))
   let endDate = dayjs(date_range_picker_config_8.endDate).format(t('date.format_date_rule'))

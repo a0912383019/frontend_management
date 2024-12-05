@@ -86,16 +86,8 @@ const addChild = () => {
   }
 }
 
-const isDeleting = ref(false)
-
 const deleteActivity = (idx) => {
-  // 刪除會觸發table重新渲染，導致組件也刷新觸發updatePromotionList
-  // 所以設定此參數擋住
-  isDeleting.value = true
   subActivities.value.splice(idx, 1)
-  nextTick(() => {
-    isDeleting.value = false
-  })
 }
 
 // 轉換活動分析明細的子活動
