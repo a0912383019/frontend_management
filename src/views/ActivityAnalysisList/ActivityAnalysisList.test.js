@@ -130,6 +130,6 @@ describe('ActivityAnalysisList', () => {
   it('addSuccess', () => {
     expect(activityStore.activityAddChange).toBe(0)
     wrapper.vm.addSuccess()
-    expect(activityStore.activityAddChange).toBe(949381200000)
+    expect(activityStore.activityAddChange).toBe(date.getTime())
   })
 })

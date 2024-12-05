@@ -29,6 +29,7 @@ describe('Filter', () => {
   })
 
   afterEach(() => {
+    vi.clearAllMocks()
     vi.useRealTimers()
     wrapper.unmount()
   })
