@@ -113,6 +113,10 @@ const queryActivityMemberParticipation = async () => {
   memberPartiApiSuccess.value = false
   memberPartiMessageKey.value = 'loading'
   tableData.value = []
+  transformMemberParticipation()
+  memberPartiApiSuccess.value = true
+
+  return
   try {
     const result = await apiQueryActivityMemberParticipation({
       hall_name: activeHall.hall_code,
@@ -150,12 +154,26 @@ const queryActivityMemberParticipation = async () => {
 }
 
 const transformMemberParticipation = (data) => {
+  data = {
+    activity_analysis_date: props.isRewarded
+      ? '2010-12-12 ~ 2100-01-01'
+      : '2010-12-12 ~ 2022-09-21',
+    member_count: 22,
+    achieve_member_count: 11,
+    participation_percent: 50
+  }
   tableData.value = [
     {
-      col_name: t('activity_analysis.activity_date'),
+      col_name: t('activity_analysis.activity_duration_now'),
       col_value: data.activity_analysis_date
         .split('~')
-        .map((date) => dayjs(date.trim()).format(t('date.format_date_rule')))
+        .map((date) => {
+          const formatDate = dayjs(date.trim())
+          if (formatDate.year() >= 2100) {
+            return formatDate.format(t('date.format_date_rule')).replace(/\d/g, '⎻')
+          }
+          return formatDate.format(t('date.format_date_rule'))
+        })
         .join(' ~ ')
     },
     {
@@ -176,7 +194,6 @@ const transformMemberParticipation = (data) => {
 const queryActivityBetAmountGrowthSpan = async () => {
   commissionableApiSuccess.value = false
   commissionableMessageKey.value = 'loading'
-  tableData.value = []
   try {
     const result = await apiQueryActivityBetAmountGrowthSpan({
       hall_name: activeHall.hall_code,

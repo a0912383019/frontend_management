@@ -86,8 +86,6 @@ url = ssh://git@swissknife.vip:2224/bi/cdp/submodule/weblate.git
 ```sh
 第一次 clone 專案請下
 git submodule update --init --recursive
-git -C src/locales config core.sparseCheckout true
-echo "cdp_frontend/*" >> .git/modules/src/locales/info/sparse-checkout
 git submodule update --force --checkout src/locales
 
 後續更新 submodule
