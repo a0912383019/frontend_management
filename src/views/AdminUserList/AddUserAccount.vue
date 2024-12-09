@@ -347,8 +347,3 @@ const emailChange = () => {
   }
 }
 </style>
-<style lang="scss">
-.dialog-mt-25 {
-  margin-top: 25px;
-}
-</style>

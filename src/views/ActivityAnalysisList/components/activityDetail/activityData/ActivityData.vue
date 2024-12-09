@@ -120,6 +120,11 @@ const queryActivityInfo = async () => {
     if (return_code === '0000') {
       transformActivityData(result.data.result)
       editDisabled.value = false
+    } else {
+      ElNotification({
+        title: t('msg.query_failed'),
+        type: 'error'
+      })
     }
   } catch (error) {
     console.error(error)

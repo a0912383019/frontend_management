@@ -59,8 +59,9 @@ const handleDialogClosed = () => {
 <template>
   <el-dialog
     :model-value="props.modelValue"
-    class="cdp-dialog overflow-visible dialog-mt-40"
+    class="cdp-dialog overflow-visible"
     :append-to-body="true"
+    top="40px"
     width="1280"
     :destroy-on-close="true"
     @closed="handleDialogClosed"
@@ -76,7 +77,6 @@ const handleDialogClosed = () => {
           <Tab
             :tabData="tabList"
             :activeName="currentTabs"
-            class="tabs-manage-analysis"
             v-model="currentTabs"
           ></Tab>
         </el-col>
@@ -86,7 +86,10 @@ const handleDialogClosed = () => {
       </el-row>
       <div class="cdp-dialog__component">
         <keep-alive>
-          <component :is="currentTabComponent" :targetId="props.targetId" @updateSuccess="handleDialogClosed"></component>
+          <component
+            :is="currentTabComponent"
+            :targetId="props.targetId"
+          ></component>
         </keep-alive>
       </div>
     </div>
@@ -109,8 +112,5 @@ const handleDialogClosed = () => {
 <style lang="scss">
 .overflow-visible {
   overflow: visible !important;
-}
-.dialog-mt-40 {
-  margin-top: 40px;
 }
 </style>

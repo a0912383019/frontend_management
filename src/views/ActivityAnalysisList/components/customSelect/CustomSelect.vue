@@ -25,7 +25,7 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const dateStore = useDateStore()
-const { date_range_picker_config_8, shortcutsConfig3 } = dateStore
+const { shortcutsConfig3 } = dateStore
 
 const emit = defineEmits(['update:promotion', 'update:activityDate'])
 
@@ -39,8 +39,14 @@ const selectDateRef = ref(null)
 
 const promotionList = ref('')
 const promotionOptions = ref([])
+const promotionReturnMsg = ref(t('activity_analysis.reselect_activity_start_date'))
 
-const getPromotionList = () => {
+const getPromotionList = (val) => {
+  const selectDate =
+    dayjs(val[0]).format(t('date.format_date_rule')) +
+    ' ~ ' +
+    dayjs(val[1]).format(t('date.format_date_rule'))
+  promotionReturnMsg.value = promotionReturnMsg.value + ` --- ${selectDate} --- `
   showDatePicker.value = false
   promotionOptions.value = []
   queryPromotionList()
@@ -62,6 +68,11 @@ const queryPromotionList = async (infoStartDate = null, infoEndDate = null) => {
     const { return_code } = result.data.status
     if (return_code === '0000' && result.data.result.length !== 0) {
       promotionOptions.value = generateOptions(result.data.result)
+    } else {
+      ElNotification({
+        title: t('msg.query_failed'),
+        type: 'error'
+      })
     }
   } catch (error) {
     console.error(error)
@@ -74,7 +85,7 @@ const queryPromotionList = async (infoStartDate = null, infoEndDate = null) => {
       globalStore.storeHandleApiError()
     } else {
       ElNotification({
-        title: t('msg.login_error'),
+        title: t('msg.query_failed'),
         type: 'error'
       })
     }
@@ -112,25 +123,13 @@ const generateOptions = (arr) => {
 }
 
 const handleReturn = async () => {
+  promotionReturnMsg.value = t('activity_analysis.select_promotion_activity')
   duration.value = ''
   showDatePicker.value = true
   emit('update:activityDate')
 
   await nextTick()
   selectDateRef.value.handleOpen()
-}
-
-// 日曆禁用日期
-const disabledDate = (day) => {
-  let activeDate = dayjs(day).format(t('date.format_date_rule'))
-  let minDate = dayjs(date_range_picker_config_8.minDate).format(t('date.format_date_rule'))
-  let endDate = dayjs(date_range_picker_config_8.endDate).format(t('date.format_date_rule'))
-
-  if (activeDate < minDate || activeDate > endDate) {
-    return true
-  }
-
-  return false
 }
 
 const handleChange = () => {
@@ -164,7 +163,6 @@ onMounted(() => {
       range-separator=""
       :start-placeholder="$t('activity_analysis.select_activity_start_date')"
       :shortcuts="shortcutsConfig3()"
-      :disabled-date="disabledDate"
       :teleported="false"
       :editable="false"
       class="cdp-datepicker-range cdp-datepicker-range__blue ml-5 mr-5 promotion-date-picker"
@@ -196,7 +194,7 @@ onMounted(() => {
                 <div class="mr-10">
                   <font-awesome-icon icon="fa-solid fa-angle-left" />
                 </div>
-                {{ $t('activity_analysis.reselect_activity_start_date') }}
+                {{ promotionReturnMsg }}
               </div>
             </div>
           </template>
