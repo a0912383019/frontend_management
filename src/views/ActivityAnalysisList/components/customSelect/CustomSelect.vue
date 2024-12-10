@@ -92,7 +92,6 @@ const queryPromotionList = async (infoStartDate = null, infoEndDate = null) => {
   } finally {
     apiSuccess.value = true
     await nextTick()
-    console.log(props.promotionData)
     if (
       props.promotionData.offer_id === null &&
       props.promotionData.original_id === null
