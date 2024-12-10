@@ -92,7 +92,10 @@ const queryPromotionList = async (infoStartDate = null, infoEndDate = null) => {
   } finally {
     apiSuccess.value = true
     await nextTick()
-    if (!props.promotionData.disabled) {
+    if (
+      props.promotionData.offer_id === null &&
+      props.promotionData.original_id === null
+    ) {
       selectPromotionRef.value.toggleMenu()
     }
   }
@@ -124,6 +127,7 @@ const generateOptions = (arr) => {
 
 const handleReturn = async () => {
   promotionReturnMsg.value = t('activity_analysis.select_promotion_activity')
+  promotionList.value = ''
   duration.value = ''
   showDatePicker.value = true
   emit('update:activityDate')
@@ -147,8 +151,8 @@ onMounted(() => {
     queryPromotionList(
       infoStartDate,
       infoEndDate,
-      props.promotionData.offerId,
-      props.promotionData.originalId
+      props.promotionData.offer_id,
+      props.promotionData.original_id
     )
   }
 })
