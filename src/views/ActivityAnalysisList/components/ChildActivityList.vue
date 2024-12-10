@@ -329,55 +329,55 @@ defineExpose({ getSubActivities, validSubActivities })
   </section>
 </template>
 <style lang="scss" scoped>
-.cdp-dialog {
-  &__component {
-    padding: 20px;
-    padding-bottom: 0;
-    background-color: #fff;
-    border-radius: 5px;
-    border: 1px #e6eaf2 solid;
-  }
-  &__header {
-    color: #fff;
-  }
-}
-:deep(.el-form) {
-  .cdp-activity-textarea {
-    border: solid 1px #cfd8e6;
-    border-radius: 5px;
-    .el-textarea {
-      &__inner {
-        box-shadow: none;
-        height: 180px;
-        resize: none;
-        &:hover {
-          box-shadow: 0 0 0 1px #4f84cf !important;
-        }
-        &:focus {
-          box-shadow: none;
-        }
-      }
-    }
-  }
-  .is-error {
-    .cdp-input {
-      border: none;
-      .el-input__wrapper:hover {
-        box-shadow: 0 0 0 1px #f56c6c !important;
-      }
-    }
-    .cdp-activity-textarea {
-      border: solid 1px #f56c6c;
-      .el-textarea {
-        &__inner {
-          &:hover {
-            box-shadow: 0 0 0 1px #f56c6c !important;
-          }
-        }
-      }
-    }
-  }
-}
+// .cdp-dialog {
+//   &__component {
+//     padding: 20px;
+//     padding-bottom: 0;
+//     background-color: #fff;
+//     border-radius: 5px;
+//     border: 1px #e6eaf2 solid;
+//   }
+//   &__header {
+//     color: #fff;
+//   }
+// }
+// :deep(.el-form) {
+//   .cdp-activity-textarea {
+//     border: solid 1px #cfd8e6;
+//     border-radius: 5px;
+//     .el-textarea {
+//       &__inner {
+//         box-shadow: none;
+//         height: 180px;
+//         resize: none;
+//         &:hover {
+//           box-shadow: 0 0 0 1px #4f84cf !important;
+//         }
+//         &:focus {
+//           box-shadow: none;
+//         }
+//       }
+//     }
+//   }
+//   .is-error {
+//     .cdp-input {
+//       border: none;
+//       .el-input__wrapper:hover {
+//         box-shadow: 0 0 0 1px #f56c6c !important;
+//       }
+//     }
+//     .cdp-activity-textarea {
+//       border: solid 1px #f56c6c;
+//       .el-textarea {
+//         &__inner {
+//           &:hover {
+//             box-shadow: 0 0 0 1px #f56c6c !important;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 // 當無資料時隱藏查無資料
 .is-empty {
   :deep(.el-table__body-wrapper) {

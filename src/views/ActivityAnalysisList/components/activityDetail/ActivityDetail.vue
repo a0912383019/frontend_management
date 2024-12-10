@@ -93,7 +93,8 @@ watch(
 <template>
   <el-dialog
     :model-value="props.modelValue"
-    class="cdp-dialog dialog-mt-40 cdp-activity-detail-dialog"
+    class="cdp-dialog cdp-activity-detail-dialog"
+    top="40px"
     :append-to-body="true"
     width="1280"
     :destroy-on-close="true"

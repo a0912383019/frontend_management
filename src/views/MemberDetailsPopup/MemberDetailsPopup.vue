@@ -89,7 +89,6 @@ const updateTimestamp = (data) => {
         <Tab
           :tabData="tabList"
           :activeName="currentTabs"
-          class="tabs-manage-analysis"
           v-model="currentTabs"
         ></Tab>
       </el-col>

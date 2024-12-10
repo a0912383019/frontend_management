@@ -258,7 +258,8 @@ watch(
     <div class="lineUger"></div>
     <el-dialog
       v-model="dialogTableVisible"
-      class="cdp-dialog dialog-mt-50"
+      class="cdp-dialog"
+      top="50px"
       :append-to-body="true"
       width="1000"
       :title="$t('tags.tag_description')"
@@ -338,9 +339,6 @@ watch(
 }
 </style>
 <style lang="scss">
-.dialog-mt-50 {
-  margin-top: 50px !important;
-}
 .lineUger {
   width: 3px;
   height: 15px;

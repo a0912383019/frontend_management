@@ -77,15 +77,17 @@ const queryListActivity = async () => {
       if (result.data.result.length !== 0) {
         tableData.value = transformActivityList(result.data.result)
       }
+    } else {
+      messageKey.value = 'queryFailed'
     }
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      messageKey.value = 'noPermission' //更改message內容
+      messageKey.value = 'noPermission' // 更改message內容
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      messageKey.value = 'queryFailed' //更改message內容
+      messageKey.value = 'queryFailed' // 更改message內容
     }
   }
 }

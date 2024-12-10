@@ -10,6 +10,8 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  // 要禁選的 index 陣列
+  // ex: [0, 3] index = 0 跟 3 的選項不可選
   disabledTab: {
     type: Array,
     default() {
