@@ -316,18 +316,6 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
       min-height: 54px;
     }
   }
-  // .el-table {
-  //   th.el-table__cell.is-leaf {
-  //     background-color: #e9eef6;
-  //   }
-  //   th.el-table__cell.is-leaf,
-  //   td.el-table__cell {
-  //     border: none;
-  //   }
-  //   td.el-table__cell {
-  //     height: 54px;
-  //   }
-  // }
 }
 .top-box {
   display: flex;
