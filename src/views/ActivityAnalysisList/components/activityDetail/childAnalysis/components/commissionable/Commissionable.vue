@@ -5,7 +5,7 @@ import { useActivityAnalysisStore, useGlobalStore } from '@/stores'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { apiQueryActivityMemberParticipation, apiQueryActivityBetAmountGrowthSpan } from '@/api'
-import { errorRespond, generateRGBColors } from '@/utils/commonUtils.js'
+import { errorRespond, generateRGBColors, FormatNumber } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipColumnSeparate } from '@/utils/highchartsConfig.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import { dayjs } from 'element-plus'
@@ -17,9 +17,6 @@ const props = defineProps({
   isRewarded: {
     type: Boolean,
     default: true
-  },
-  activityId: {
-    type: Number
   }
 })
 
@@ -116,12 +113,16 @@ const queryActivityMemberParticipation = async () => {
   memberPartiApiSuccess.value = false
   memberPartiMessageKey.value = 'loading'
   tableData.value = []
+  transformMemberParticipation()
+  memberPartiApiSuccess.value = true
+
+  return
   try {
     const result = await apiQueryActivityMemberParticipation({
       hall_name: activeHall.hall_code,
-      activity_id_hide: props.activityId,
-      activity_detail_id_hide: currentChildAnalysis.id,
-      activity_member_betAmount_growth_percent_hide: participateRate.value
+      id: currentChildAnalysis.id,
+      is_reward: props.isRewarded,
+      threshold: participateRate.value
     })
 
     const { return_code } = result.data.status
@@ -144,6 +145,8 @@ const queryActivityMemberParticipation = async () => {
       memberPartiMessageKey.value = 'noPermission' //更改message內容
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
+    } else if (error.response.status === 404) {
+      memberPartiMessageKey.value = 'noResult'
     } else {
       memberPartiMessageKey.value = 'queryFailed' //更改message內容
     }
@@ -151,25 +154,39 @@ const queryActivityMemberParticipation = async () => {
 }
 
 const transformMemberParticipation = (data) => {
+  data = {
+    activity_analysis_date: props.isRewarded
+      ? '2010-12-12 ~ 2100-01-01'
+      : '2010-12-12 ~ 2022-09-21',
+    member_count: 22,
+    achieve_member_count: 11,
+    participation_percent: 50
+  }
   tableData.value = [
     {
-      col_name: t('activity_analysis.activity_date'),
-      col_value: data.activity_detail_date
-        .split(' ~ ')
-        .map((date) => dayjs(date).format(t('date.format_date_rule')))
+      col_name: t('activity_analysis.activity_duration_now'),
+      col_value: data.activity_analysis_date
+        .split('~')
+        .map((date) => {
+          const formatDate = dayjs(date.trim())
+          if (formatDate.year() >= 2100) {
+            return formatDate.format(t('date.format_date_rule')).replace(/\d/g, '⎻')
+          }
+          return formatDate.format(t('date.format_date_rule'))
+        })
         .join(' ~ ')
     },
     {
       col_name: t('activity_analysis.member_list_num'),
-      col_value: data.not_reward_member_count
+      col_value: data.member_count
     },
     {
       col_name: t('activity_analysis.achieve_member_count'),
-      col_value: data.not_reward_achieve_member_count
+      col_value: data.achieve_member_count
     },
     {
       col_name: t('activity_analysis.member_participation_percent'),
-      col_value: data.not_reward_member_participation_percent + '%'
+      col_value: FormatNumber(data.participation_percent) + '%'
     }
   ]
 }
@@ -177,11 +194,10 @@ const transformMemberParticipation = (data) => {
 const queryActivityBetAmountGrowthSpan = async () => {
   commissionableApiSuccess.value = false
   commissionableMessageKey.value = 'loading'
-  tableData.value = []
   try {
     const result = await apiQueryActivityBetAmountGrowthSpan({
       hall_name: activeHall.hall_code,
-      activity_id_hide: props.activityId,
+      activity_id_hide: 88,
       activity_detail_id_hide: currentChildAnalysis.id
     })
 
@@ -233,6 +249,17 @@ const transformBetAmountGrowthSpan = (data) => {
   })
 }
 
+const handleInput = (val) => {
+  participateRate.value = val
+    .replace(/[^0-9-]/g, '') // 保留數字和負號
+    .replace(/(?!^)-/g, '') // 只允許負號出現在開頭
+
+  // 限制最小值-100
+  if (Number(participateRate.value) < -100) {
+    participateRate.value = -100
+  }
+}
+
 const handleSerach = () => {
   queryActivityMemberParticipation()
 }
@@ -253,23 +280,24 @@ onMounted(() => {
           ></div>
         </template>
       </SectionTitle>
+      <el-input
+        v-model.number="participateRate"
+        @input="handleInput"
+        :formatter="(value) => value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+        :parser="(value) => value.replace(/(,*)/g, '')"
+        class="mb-10"
+      >
+        <template #suffix>
+          <span>%</span>
+        </template>
+        <template #append>
+          <el-button @click="handleSerach">
+            <font-awesome-icon class="search__iconsearch" icon="fa-magnifying-glass" />
+          </el-button>
+        </template>
+      </el-input>
       <CdpMessage :messageKey="memberPartiMessageKey" v-if="memberPartiApiSuccess === false" />
       <div v-else>
-        <el-input
-          v-model="participateRate"
-          :formatter="(value) => value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-          :parser="(value) => value.replace(/(,*)/g, '')"
-          class="mb-10"
-        >
-          <template #suffix>
-            <span>%</span>
-          </template>
-          <template #append>
-            <el-button @click="handleSerach">
-              <font-awesome-icon class="search__iconsearch" icon="fa-magnifying-glass" />
-            </el-button>
-          </template>
-        </el-input>
         <CustomTable
           :stripe="false"
           :tableData="tableData"

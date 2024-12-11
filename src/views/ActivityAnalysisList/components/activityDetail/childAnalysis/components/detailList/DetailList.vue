@@ -15,9 +15,6 @@ const props = defineProps({
   isRewarded: {
     type: Boolean,
     default: true
-  },
-  activityId: {
-    type: Number
   }
 })
 
@@ -42,7 +39,7 @@ const queryActivityCompareDetail = async () => {
   try {
     const result = await apiQueryActivityCompareDetail({
       hall_name: activeHall.hall_code,
-      activity_id_hide: props.activityId,
+      activity_id_hide: 88,
       activity_detail_id_hide: currentChildAnalysis.id,
       search_name: activityStore.searchChildDetailMemberName,
       length: apiLength.value,

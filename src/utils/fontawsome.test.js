@@ -3,6 +3,7 @@ import { library } from '@/utils/fontawsome.js'
 import {
   faExclamationTriangle,
   faAngleDown,
+  faAngleLeft,
   faHistory,
   faBook,
   faMagnifyingGlass,
@@ -66,6 +67,7 @@ describe('Font Awesome Icon Library Configuration', () => {
     const solidIcons = [
       faExclamationTriangle,
       faAngleDown,
+      faAngleLeft,
       faHistory,
       faBook,
       faMagnifyingGlass,

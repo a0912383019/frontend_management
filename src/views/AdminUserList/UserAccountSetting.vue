@@ -223,7 +223,8 @@ const updateUserByAdmin = async () => {
 <template>
   <el-dialog
     :model-value="props.modelValue"
-    class="cdp-dialog dialog-mt-25"
+    class="cdp-dialog"
+    top="25px"
     :append-to-body="true"
     width="1150"
     :destroy-on-close="false"
@@ -472,10 +473,5 @@ const updateUserByAdmin = async () => {
     max-height: 300px;
     overflow: scroll;
   }
-}
-</style>
-<style lang="scss">
-.dialog-mt-25 {
-  margin-top: 25px;
 }
 </style>

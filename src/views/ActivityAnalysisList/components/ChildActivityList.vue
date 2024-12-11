@@ -1,21 +1,16 @@
 <script setup>
-import { ref, computed, nextTick, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryPromotionList } from '@/api'
-import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
+import { useActivityAnalysisStore } from '@/stores'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
-import DatepickerRange from '@/components/Date/DatepickerRange.vue'
-import LoadingBox from '@/components/Loading/LoadingBox.vue'
+import CustomSelect from '@/views/ActivityAnalysisList/components/customSelect/CustomSelect.vue'
 import AddChild from '@/components/Button/AddButton.vue'
 import { dayjs } from 'element-plus'
 import { storeToRefs } from 'pinia'
 
 const { t, locale } = useI18n()
-
-const globalStore = useGlobalStore()
-const { activeHall } = globalStore
 
 const activityStore = useActivityAnalysisStore()
 const { childListData } = storeToRefs(activityStore)
@@ -34,26 +29,20 @@ const tableColumns = computed(() => {
       prop: 'activity_detail_name',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '22%'
+      minWidth: '26%'
     },
     {
-      label: t('activity_analysis.filter_date'),
-      prop: 'filter_date',
-      headerAlign: 'center',
-      align: 'center',
-      minWidth: '21%'
-    },
-    {
+      label: t('activity_analysis.promotion_list'),
       prop: 'promotion_list',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '30%'
+      minWidth: '46%'
     },
     {
       prop: 'activity_date',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '21%'
+      minWidth: '22%'
     },
     {
       label: t('common.operation'),
@@ -67,12 +56,11 @@ const tableColumns = computed(() => {
 
 const createSubActivity = () => {
   return {
-    activity_detail_name: '',
-    filter_date: '',
-    promotion_list: '',
-    promotion_options: [],
+    name: '',
     activity_date: '',
-    api_success: false,
+    promotion_name: '',
+    offer_id: null,
+    original_id: null,
     name_valid: { valid: true, msg: '' },
     promotion_valid: { valid: true, msg: '' },
     disabled: false,
@@ -92,114 +80,57 @@ const addBtnDisabled = computed({
   }
 })
 
-const addChild = () => {
+const addChildActivity = () => {
   if (!addBtnDisabled.value) {
     subActivities.value.push(createSubActivity())
   }
 }
 
-const generateOptions = (arr) => {
-  let options = [
-    {
-      value: '',
-      label: t('common.select'),
-      selected: true
-    }
-  ]
-
-  arr.forEach((val) => {
-    let optionValue = JSON.stringify(val)
-    options.push({
-      value: optionValue,
-      label: val.promotion_name
-    })
-  })
-
-  return options
-}
-
-// 取得優惠活動
-const queryPromotionList = async (detailKey) => {
-  let start_date = ''
-  let end_date = ''
-  subActivities.value.forEach((ele, idx) => {
-    if (ele.detail_key === detailKey) {
-      subActivities.value[idx].api_success = false
-      subActivities.value[idx].promotion_list = ''
-      start_date = ele.filter_date.split('~').map((date) => date.trim())[0]
-      end_date = ele.filter_date.split('~').map((date) => date.trim())[1]
-    }
-  })
-
-  try {
-    const result = await apiQueryPromotionList({
-      hall_name: activeHall.hall_code,
-      start_date: start_date,
-      end_date: end_date
-    })
-
-    const { return_code } = result.data.status
-    if (return_code === '0000') {
-      let promotionOptions = generateOptions(result.data.result)
-      subActivities.value.forEach((ele, idx) => {
-        if (ele.detail_key === detailKey) {
-          subActivities.value[idx].promotion_options = promotionOptions
-          subActivities.value[idx].api_success = true
-        }
-      })
-    }
-  } catch (error) {
-    console.error(error)
-    if (error.response.status === 401) {
-      globalStore.storeHandleApiError()
-    }
-  }
-}
-
-const updatePromotionList = (disabled, detailKey, idx) => {
-  if (isDeleting.value || disabled) return
-  // 第一次渲染組件會有不同步問題，el-table 尚未渲染完畢 scope.$index 會是 -1
-  // 但是 daterangepicker 已開始渲染，所以在跑 onMounted 這邊的idx 會是-1
-  if (idx !== -1) {
-    queryPromotionList(detailKey)
-  }
-}
-
-const isDeleting = ref(false)
-
 const deleteActivity = (idx) => {
-  // 刪除會觸發table重新渲染，導致組件也刷新觸發updatePromotionList
-  // 所以設定此參數擋住
-  isDeleting.value = true
   subActivities.value.splice(idx, 1)
-  nextTick(() => {
-    isDeleting.value = false
-  })
 }
 
+// 轉換活動分析明細的子活動
 const transformChildData = () => {
   subActivities.value = []
   childListData.value.forEach((ele, idx) => {
+    const startDate = dayjs(ele.promotion_start_date).format(t('date.format_date_rule'))
+    const endDate =
+      dayjs(ele.promotion_end_date).year() >= 2100
+        ? dayjs(ele.promotion_end_date).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
+        : dayjs(ele.promotion_end_date).format(t('date.format_date_rule'))
     subActivities.value[idx] = {
-      activity_detail_name: ele.activity_detail_name,
-      filter_date:
-        dayjs(ele.activity_start_date).format(t('date.format_date_rule')) +
-        ' ~ ' +
-        dayjs(ele.activity_end_date).format(t('date.format_date_rule')),
-      promotion_name: ele.promotion_name,
-      promotion_list: ele.promotion_name,
-      promotion_options: ele.promotion_name,
-      activity_date:
-        dayjs(ele.activity_start_date).format(t('date.format_date_rule')) +
-        ' ~ ' +
-        dayjs(ele.activity_end_date).format(t('date.format_date_rule')),
+      name: ele.name, // 子活動名稱
+      activity_date: startDate + ' ~ ' + endDate, // 子活動優惠區間
+      promotion_name: ele.promotion_name, // 子活動優惠名稱
+      offer_id: ele.offer_id, // 子活動優惠名稱 offer_id
+      original_id: ele.original_id, // 子活動優惠名稱 original_id
       name_valid: { valid: true, msg: '' },
       promotion_valid: { valid: true, msg: '' },
       disabled: true,
-      api_success: true,
       detail_key: idx
     }
   })
+}
+
+const updatePromotion = (val, scope) => {
+  const proObj = JSON.parse(val)
+  const startDate = dayjs(proObj.start_time).format(t('date.format_date_rule'))
+  const endDate =
+    dayjs(proObj.end_time).year() >= 2100
+      ? dayjs(proObj.end_time).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
+      : dayjs(proObj.end_time).format(t('date.format_date_rule'))
+  scope.row.activity_date = startDate + ' ~ ' + endDate
+  scope.row.promotion_name = proObj.promotion_name
+  scope.row.offer_id = proObj.offer_id
+  scope.row.original_id = proObj.original_id
+}
+
+const clearActivityDate = (scope) => {
+  scope.row.activity_date = ''
+  scope.row.promotion_name = ''
+  scope.row.offer_id = null
+  scope.row.original_id = null
 }
 
 const getSubActivities = () => {
@@ -208,31 +139,33 @@ const getSubActivities = () => {
 
 // 驗證資料
 const validSubActivities = () => {
-  let subActivityError = false
+  let allValid = false
   subActivities.value.forEach((val, idx) => {
+    let subActivityError = false
     let errClass = ''
     subActivities.value[idx].name_valid.valid = true
     subActivities.value[idx].promotion_valid.valid = true
 
     // 優惠名單驗證必選（此驗證msg不會有換行的情況因此放在前面）
-    if (subActivities.value[idx].promotion_list === '') {
-      subActivityError = true
+    if (
+      subActivities.value[idx].promotion_name === '' ||
+      subActivities.value[idx].offer_id === null ||
+      subActivities.value[idx].original_id === null
+    ) {
       subActivities.value[idx].promotion_valid.valid = false
-      subActivities.value[idx].promotion_valid.msg = t(
-        'activity_analysis.blank_promotion_error_msg'
-      )
+      subActivityError = true
       errClass = 'row-err'
     }
 
     // 子活動名稱驗證（不可空白 && 字數不可超過100）
-    if (subActivities.value[idx].activity_detail_name.trim() === '') {
+    if (subActivities.value[idx].name.trim() === '') {
       subActivityError = true
       subActivities.value[idx].name_valid.valid = false
       subActivities.value[idx].name_valid.msg = t(
         'activity_analysis.blank_activity_detail_name_error_msg'
       )
       errClass = 'row-err'
-    } else if (subActivities.value[idx].activity_detail_name.length > 100) {
+    } else if (subActivities.value[idx].name.length > 100) {
       subActivityError = true
       subActivities.value[idx].name_valid.valid = false
       subActivities.value[idx].name_valid.msg = t(
@@ -249,8 +182,11 @@ const validSubActivities = () => {
         cell.classList.add(errClass)
       }
     })
+
+    allValid = allValid || subActivityError
   })
-  return !subActivityError
+
+  return !allValid // true 才是通過驗證
 }
 
 watch(
@@ -280,220 +216,168 @@ watch(
 
 onMounted(() => {
   if (props.canEdit) {
-    addChild()
+    addChildActivity()
   }
 })
+
 defineExpose({ getSubActivities, validSubActivities })
 </script>
 <template>
-  <el-col :span="24">
-    <section class="cdp-section-in">
-      <SectionTitle class="mb-15" :title="$t('activity_analysis.activity_detail_list')" />
-      <CustomTable
-        :serverSide="false"
-        :tableData="subActivities"
-        :tableColumns="tableColumns"
-        :hasPagination="false"
-        :stripe="false"
-        rowKey="detail_key"
-        class="customTable2"
-        :class="{ 'is-empty': subActivities && subActivities.length.toString() === '0' }"
-      >
-        <template #promotion_list-header>
-          <span class="mr-5">{{ $t('activity_analysis.promotion_list') }}</span>
-          <el-tooltip effect="dark" placement="top">
-            <template #content>
-              <div class="font-size-14">
-                {{ $t('activity_analysis.activity_detail_connect_promotion_reminder') }}
-              </div>
-            </template>
-            <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
-          </el-tooltip>
-        </template>
-        <template #activity_date-header>
-          <span class="mr-5">{{ $t('activity_analysis.activity_date') }}</span>
-          <el-tooltip effect="dark" placement="top">
-            <template #content>
-              <div class="font-size-14">
-                <div class="font-black mb-10">{{ $t('activity_analysis.auto_fill') }}</div>
-                <div>{{ $t('activity_analysis.within_90_days') }}</div>
-                <div class="ml-14">{{ $t('activity_analysis.status_ongoing') }}</div>
-                <div class="ml-14 mb-10">{{ $t('activity_analysis.status_ended') }}</div>
-                <div>{{ $t('activity_analysis.beyond_90_days') }}</div>
-                <div class="ml-14">{{ $t('activity_analysis.status_ongoing_last_90') }}</div>
-                <div class="ml-14">{{ $t('activity_analysis.status_ended_last_90') }}</div>
-              </div>
-            </template>
-            <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
-          </el-tooltip>
-        </template>
-        <template #activity_detail_name="scope">
-          <div class="w-full text-left mr-5">
-            <div v-if="scope.row.disabled">
-              <el-input
-                v-model="scope.row.activity_detail_name"
-                class="cdp-input cdp-input-disabled"
-              >
-                <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
-              </el-input>
+  <section class="cdp-section-in">
+    <SectionTitle class="mb-15" :title="$t('activity_analysis.activity_detail_list')" />
+    <CustomTable
+      :serverSide="false"
+      :tableData="subActivities"
+      :tableColumns="tableColumns"
+      :hasPagination="false"
+      :stripe="false"
+      rowKey="detail_key"
+      class="customTable2"
+      :class="{ 'is-empty': subActivities && subActivities.length.toString() === '0' }"
+    >
+      <template #activity_date-header>
+        <span class="mr-5">{{ $t('activity_analysis.activity_date') }}</span>
+        <el-tooltip effect="dark" placement="top">
+          <template #content>
+            <div class="font-size-14">
+              <div class="font-black mb-10">{{ $t('activity_analysis.auto_fill') }}</div>
+              <div>{{ $t('activity_analysis.within_90_days') }}</div>
+              <div class="ml-14">{{ $t('activity_analysis.status_ongoing') }}</div>
+              <div class="ml-14 mb-10">{{ $t('activity_analysis.status_ended') }}</div>
+              <div>{{ $t('activity_analysis.beyond_90_days') }}</div>
+              <div class="ml-14">{{ $t('activity_analysis.status_ongoing_last_90') }}</div>
+              <div class="ml-14">{{ $t('activity_analysis.status_ended_last_90') }}</div>
             </div>
-            <div v-else>
-              <el-input
-                v-model="scope.row.activity_detail_name"
-                class="cdp-input"
-                :class="{ 'is-error': !scope.row.name_valid.valid }"
-              ></el-input>
-              <div
-                v-if="!scope.row.name_valid.valid"
-                class="cdp-text-candypink font-size-12 line-1-5"
-              >
-                {{ scope.row.name_valid.msg }}
-              </div>
-            </div>
-          </div>
-        </template>
-        <template #filter_date="scope">
-          <div v-if="scope.row.disabled" class="w-full text-left ml-5 mr-5">
-            <el-input v-model="scope.row.filter_date" class="cdp-input cdp-input-disabled" readonly>
+          </template>
+          <font-awesome-icon class="title__icon activeStepBtn" icon="fa-solid fa-circle-info" />
+        </el-tooltip>
+      </template>
+      <template #activity_detail_name="scope">
+        <div class="w-full text-left mr-5">
+          <div v-if="!props.canEdit">
+            <el-input v-model="scope.row.name" class="cdp-input cdp-input-disabled">
               <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
             </el-input>
           </div>
-          <DatepickerRange
-            v-else
-            v-model="scope.row.filter_date"
-            :rangeDate="scope.row.filter_date"
-            :config="8"
-            :shortcutsConfig="1"
-            :teleported="true"
-            :enabledThreeMonth="false"
-            @update:modelValue="
-              updatePromotionList(scope.row.disabled, scope.row.detail_key, scope.idx)
-            "
-            class="w-full filter-datepicker activity-date-picker ml-5 mr-5"
-          />
-        </template>
-        <template #promotion_list="scope">
-          <div class="loading" v-if="!scope.row.api_success">
-            <LoadingBox color="blue" size="sm" />
-          </div>
-          <div v-else class="w-full text-left ml-5 mr-5">
-            <div v-if="scope.row.disabled">
-              <el-input v-model="scope.row.promotion_name" class="cdp-input cdp-input-disabled">
-                <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
-              </el-input>
-            </div>
-            <div v-else>
-              <el-select
-                v-model="scope.row.promotion_list"
-                class="cdp-select cdp-select__blue"
-                :class="{ 'is-error': !scope.row.promotion_valid.valid }"
-                popper-class="cdp-select-popper__blue popper-custom"
-                filterable
-                :fallback-placements="['bottom-end', 'top-end']"
-                :teleported="true"
-              >
-                <el-option
-                  v-for="item in scope.row.promotion_options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                  :selected="item.selected"
-                />
-              </el-select>
-              <div
-                v-if="!scope.row.promotion_valid.valid"
-                class="cdp-text-candypink font-size-12 line-1-5"
-              >
-                {{ scope.row.promotion_valid.msg }}
-              </div>
-            </div>
-          </div>
-        </template>
-        <template #activity_date="scope">
-          <div class="w-full text-left ml-5 mr-5">
+          <div v-else>
             <el-input
-              v-model="scope.row.activity_date"
-              class="cdp-input cdp-input-disabled"
-              readonly
+              v-model="scope.row.name"
+              @keydown.enter="($event) => $event.preventDefault()"
+              class="cdp-input"
+              :class="{ 'is-error': !scope.row.name_valid.valid }"
+            ></el-input>
+            <div
+              v-if="!scope.row.name_valid.valid"
+              class="cdp-text-candypink font-size-12 line-1-5"
             >
-              <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
-            </el-input>
+              {{ scope.row.name_valid.msg }}
+            </div>
           </div>
-        </template>
-        <template #operation="scope">
-          <div class="text-right w-full">
-            <ButtonIcon
-              v-if="subActivities.length > 1 && props.canEdit"
-              class="detail-button"
-              color="red"
-              icon="trash"
-              :isSvg="true"
-              @click="deleteActivity(scope.idx)"
-            />
-          </div>
-        </template>
-      </CustomTable>
-      <AddChild
-        class="mt-5"
-        :name="$t('activity_analysis.add_activity_detail')"
-        size="long"
-        :bg="true"
-        :disabled="addBtnDisabled"
-        @click="addChild()"
-      />
-    </section>
-  </el-col>
+        </div>
+      </template>
+      <template #promotion_list="scope">
+        <div class="w-full text-left ml-5 mr-5" v-if="!props.canEdit">
+          <el-input
+            v-model="scope.row.promotion_name"
+            class="cdp-input cdp-input-disabled"
+            readonly
+          >
+            <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+          </el-input>
+        </div>
+        <CustomSelect
+          v-else
+          :isValid="scope.row.promotion_valid.valid"
+          :promotionData="scope.row"
+          @update:promotion="updatePromotion($event, scope)"
+          @update:activityDate="clearActivityDate(scope)"
+        />
+      </template>
+      <template #activity_date="scope">
+        <div class="w-full text-left ml-5 mr-5">
+          <el-input
+            @keydown.enter="($event) => $event.preventDefault()"
+            v-model="scope.row.activity_date"
+            class="cdp-input cdp-input-disabled"
+            readonly
+          >
+            <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
+          </el-input>
+        </div>
+      </template>
+      <template #operation="scope">
+        <div class="text-right w-full">
+          <ButtonIcon
+            v-if="subActivities.length > 1 && props.canEdit"
+            class="detail-button"
+            color="red"
+            icon="trash"
+            :isSvg="true"
+            @click="deleteActivity(scope.idx)"
+          />
+        </div>
+      </template>
+    </CustomTable>
+    <AddChild
+      class="mt-5"
+      :name="$t('activity_analysis.add_activity_detail')"
+      size="long"
+      :bg="true"
+      :disabled="addBtnDisabled"
+      @click="addChildActivity"
+    />
+  </section>
 </template>
 <style lang="scss" scoped>
-.cdp-dialog {
-  &__component {
-    padding: 20px;
-    padding-bottom: 0;
-    background-color: #fff;
-    border-radius: 5px;
-    border: 1px #e6eaf2 solid;
-  }
-  &__header {
-    color: #fff;
-  }
-}
-:deep(.el-form) {
-  .cdp-activity-textarea {
-    border: solid 1px #cfd8e6;
-    border-radius: 5px;
-    .el-textarea {
-      &__inner {
-        box-shadow: none;
-        height: 180px;
-        resize: none;
-        &:hover {
-          box-shadow: 0 0 0 1px #4f84cf !important;
-        }
-        &:focus {
-          box-shadow: none;
-        }
-      }
-    }
-  }
-  .is-error {
-    .cdp-input {
-      border: none;
-      .el-input__wrapper:hover {
-        box-shadow: 0 0 0 1px #f56c6c !important;
-      }
-    }
-    .cdp-activity-textarea {
-      border: solid 1px #f56c6c;
-      .el-textarea {
-        &__inner {
-          &:hover {
-            box-shadow: 0 0 0 1px #f56c6c !important;
-          }
-        }
-      }
-    }
-  }
-}
+// .cdp-dialog {
+//   &__component {
+//     padding: 20px;
+//     padding-bottom: 0;
+//     background-color: #fff;
+//     border-radius: 5px;
+//     border: 1px #e6eaf2 solid;
+//   }
+//   &__header {
+//     color: #fff;
+//   }
+// }
+// :deep(.el-form) {
+//   .cdp-activity-textarea {
+//     border: solid 1px #cfd8e6;
+//     border-radius: 5px;
+//     .el-textarea {
+//       &__inner {
+//         box-shadow: none;
+//         height: 180px;
+//         resize: none;
+//         &:hover {
+//           box-shadow: 0 0 0 1px #4f84cf !important;
+//         }
+//         &:focus {
+//           box-shadow: none;
+//         }
+//       }
+//     }
+//   }
+//   .is-error {
+//     .cdp-input {
+//       border: none;
+//       .el-input__wrapper:hover {
+//         box-shadow: 0 0 0 1px #f56c6c !important;
+//       }
+//     }
+//     .cdp-activity-textarea {
+//       border: solid 1px #f56c6c;
+//       .el-textarea {
+//         &__inner {
+//           &:hover {
+//             box-shadow: 0 0 0 1px #f56c6c !important;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 // 當無資料時隱藏查無資料
 .is-empty {
   :deep(.el-table__body-wrapper) {
@@ -542,11 +426,6 @@ defineExpose({ getSubActivities, validSubActivities })
     margin-bottom: 10px;
   }
 }
-.activity-date-picker {
-  :deep(.el-popper.el-picker__popper) {
-    inset: 50px auto auto auto !important;
-  }
-}
 :deep(.el-scrollbar__wrap) {
   overflow: visible !important;
 }
@@ -565,20 +444,7 @@ defineExpose({ getSubActivities, validSubActivities })
   height: 38px;
   display: inline-block !important;
 }
-.loading {
-  z-index: 2098;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 38px;
-}
 .line-1-5 {
   line-height: 1.5;
-}
-.popper-custom {
-  .el-select-dropdown__item {
-    min-width: 337px !important;
-  }
 }
 </style>

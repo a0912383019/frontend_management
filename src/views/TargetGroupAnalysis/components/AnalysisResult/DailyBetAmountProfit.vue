@@ -261,7 +261,6 @@ onMounted(() => {
           <Tab
             :tabData="tabList"
             :activeName="currentTabs"
-            class="tabs-manage-analysis"
             v-model="currentTabs"
           ></Tab>
         </el-col>
@@ -277,18 +276,6 @@ onMounted(() => {
   </section>
 </template>
 <style lang="scss" scoped>
-.cdp-dialog {
-  &__component {
-    padding: 20px;
-    padding-bottom: 0;
-    background-color: #fff;
-    border-radius: 5px;
-    border: 1px #e6eaf2 solid;
-  }
-  &__header {
-    color: #fff;
-  }
-}
 .mt-100 {
   margin-top: 100px;
 }

@@ -66,7 +66,7 @@ const handelExportReport = async () => {
   try {
     const result = await apiExportMemberList({
       activated_date: activatedDate,
-      ag_name: selectAcount,
+      ag_name: selectAcount === '0' ? '' : selectAcount,
       average_date: averageDate.value,
       average_type: averageTypeValue.value,
       current_date: currentDate.value,
@@ -80,7 +80,7 @@ const handelExportReport = async () => {
       search_name: member,
       search_tag: searchTag,
       show_report_data: false, // true -> 會在response印出整張報表的資料
-      user_level_id: selectLevel
+      user_level_id: parseInt(selectLevel)
     })
     globalStore.isLoading = false
     const { return_code } = result.data.status

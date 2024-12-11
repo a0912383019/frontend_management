@@ -77,15 +77,17 @@ const queryListActivity = async () => {
       if (result.data.result.length !== 0) {
         tableData.value = transformActivityList(result.data.result)
       }
+    } else {
+      messageKey.value = 'queryFailed'
     }
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      messageKey.value = 'noPermission' //更改message內容
+      messageKey.value = 'noPermission' // 更改message內容
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      messageKey.value = 'queryFailed' //更改message內容
+      messageKey.value = 'queryFailed' // 更改message內容
     }
   }
 }
@@ -105,11 +107,14 @@ const transformActivityList = (data) => {
 }
 
 const showDetail = ref(false)
-const openActivityDetail = () => {
+const activityId = ref(null)
+const openActivityDetail = (val) => {
+  activityId.value = val
   showDetail.value = true
 }
 
 const closeDetail = () => {
+  activityId.value = null
   showDetail.value = false
 }
 
@@ -246,11 +251,7 @@ onMounted(() => {
         {{ $t('modal.are_you_sure_to_delete') + '「' + deleteActivityName + '」?' }}
       </template>
     </ConfirmBox>
-    <ActivityDetail
-      v-model="showDetail"
-      @closeDialog="closeDetail"
-      :activityId="66"
-    />
+    <ActivityDetail v-model="showDetail" @closeDialog="closeDetail" :activityId="activityId" />
   </section>
 </template>
 <style lang="scss" scoped>

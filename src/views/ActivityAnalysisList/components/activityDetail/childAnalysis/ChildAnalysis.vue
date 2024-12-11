@@ -12,12 +12,6 @@ const { locale } = useI18n()
 const activityStore = useActivityAnalysisStore()
 const { currentChildAnalysis } = activityStore
 
-const props = defineProps({
-  activityId: {
-    type: Number
-  }
-})
-
 const isRewarded = ref(true)
 
 // 整理所有 component
@@ -61,7 +55,6 @@ onMounted(() => {
     <keep-alive>
       <component
         :is="currentActiveComponent"
-        :activityId="props.activityId"
       ></component>
     </keep-alive>
   </section>

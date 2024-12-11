@@ -8,6 +8,7 @@ import ChildActivityList from '@/views/ActivityAnalysisList/components/ChildActi
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import { ElNotification } from 'element-plus'
 import { storeToRefs } from 'pinia'
+import { dayjs } from 'element-plus'
 
 const { t, locale } = useI18n()
 
@@ -29,7 +30,7 @@ const confirmWidth = ref(350)
 const validateForm = reactive({
   name: '',
   purpose: '',
-  operatedAccount: '',
+  operatedName: '',
   createdTime: '',
   description: ''
 })
@@ -119,6 +120,11 @@ const queryActivityInfo = async () => {
     if (return_code === '0000') {
       transformActivityData(result.data.result)
       editDisabled.value = false
+    } else {
+      ElNotification({
+        title: t('msg.query_failed'),
+        type: 'error'
+      })
     }
   } catch (error) {
     console.error(error)
@@ -142,7 +148,7 @@ const initFormAndData = () => {
   originalData.value = null
   validateForm.name = ''
   validateForm.purpose = ''
-  validateForm.operatedAccount = ''
+  validateForm.operatedName = ''
   validateForm.createdTime = ''
   validateForm.description = ''
   subActivities.value = []
@@ -151,15 +157,15 @@ const initFormAndData = () => {
 
 const originalData = ref(null)
 const transformActivityData = (data) => {
-  validateForm.name = data.activity_name
-  validateForm.purpose = data.activity_purpose ? data.activity_purpose : ''
-  validateForm.operatedAccount = data.operator_name
-  validateForm.createdTime = data.created_time
-  validateForm.description = data.activity_description ? data.activity_description : ''
+  validateForm.name = data.name
+  validateForm.purpose = data.purpose ? data.purpose : ''
+  validateForm.operatedName = data.operator_name
+  validateForm.createdTime = dayjs(data.created_time).format(t('date.format_date_rule'))
+  validateForm.description = data.description ? data.description : ''
 
   originalData.value = JSON.parse(JSON.stringify(validateForm))
 
-  childListData.value = data.activity_detail_data
+  childListData.value = data.detail_data
 }
 
 const cancelEditBox = ref(false)
@@ -173,7 +179,7 @@ const confirmExecute = () => {
 
   validateForm.name = originalData.value.name
   validateForm.purpose = originalData.value.purpose
-  validateForm.operatedAccount = originalData.value.operatedAccount
+  validateForm.operatedName = originalData.value.operatedName
   validateForm.createdTime = originalData.value.createdTime
   validateForm.description = originalData.value.description
   edit.value = false
@@ -236,7 +242,7 @@ onMounted(() => {
         <el-col :span="6">
           <div class="cdp-text-blue mb-3">{{ $t('data_name.operator_account') }}</div>
           <el-input
-            v-model="validateForm.operatedAccount"
+            v-model="validateForm.operatedName"
             class="cdp-input cdp-input-disabled"
             readonly
           >
@@ -343,9 +349,7 @@ onMounted(() => {
             <td class="text-center">：</td>
             <td class="text-left">
               <div v-for="(item, idx) in subActivities" :key="idx" class="word-break">
-                {{
-                  item.activity_detail_name + '(' + item.activity_date.replaceAll('-', '/') + ')'
-                }}
+                {{ item.name + '(' + item.activity_date + ')' }}
               </div>
             </td>
           </tr>

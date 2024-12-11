@@ -222,7 +222,8 @@ const downloadFile = (url) => {
 <template>
   <el-dialog
     :model-value="props.modelValue"
-    class="cdp-dialog dialog-mt-50"
+    class="cdp-dialog"
+    top="50px"
     :append-to-body="true"
     width="1150"
     :destroy-on-close="true"
@@ -301,9 +302,6 @@ const downloadFile = (url) => {
       min-height: 40px;
     }
   }
-}
-.dialog-mt-50 {
-  margin-top: 50px !important;
 }
 :deep(.break-work) {
   .cell {

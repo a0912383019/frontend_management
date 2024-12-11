@@ -111,6 +111,7 @@ defineExpose({ handleOpenDialog })
   <div>
     <el-dialog
       v-model="dialogVisible"
+      top="55px"
       class="cdp-dialog cdp-member-detail-dialog"
       :append-to-body="true"
       :title="headerTitle"
@@ -133,7 +134,6 @@ defineExpose({ handleOpenDialog })
             <Tab
               :tabData="tabList"
               :activeName="currentTabs"
-              class="tabs-manage-analysis"
               v-model="currentTabs"
             ></Tab>
           </el-col>
@@ -189,7 +189,6 @@ defineExpose({ handleOpenDialog })
 </style>
 <style lang="scss">
 .cdp-member-detail-dialog {
-  margin-top: 55px;
   &.cdp-dialog {
     width: 100%;
     max-width: 90%;

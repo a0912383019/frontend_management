@@ -14,11 +14,7 @@ describe('RewardComponents', () => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
     activityStore = useActivityAnalysisStore(pinia)
 
-    wrapper = shallowMount(RewardComponents, {
-      props: {
-        activityId: 22
-      }
-    })
+    wrapper = shallowMount(RewardComponents)
   })
 
   afterEach(() => {
@@ -32,7 +28,6 @@ describe('RewardComponents', () => {
 
   it('expect variables correctly by watch', async () => {
     expect(wrapper.vm.key).toStrictEqual(0)
-    expect(wrapper.vm.props.activityId).toStrictEqual(22)
     expect(wrapper.vm.isRewarded).toBeTruthy()
 
     // watch
