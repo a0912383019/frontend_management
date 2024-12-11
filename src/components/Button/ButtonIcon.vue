@@ -167,6 +167,9 @@ button {
         &__blue {
           color: $blue;
         }
+        &__slateblue {
+          color: $slateblue;
+        }
         &__white {
           color: #f4f4f4;
         }
@@ -228,6 +231,10 @@ button {
         background-color: $blue-hover;
         border-color: $blue-hover;
       }
+      &__slateblue {
+        background-color: #646C8B;
+        border-color: #646C8B;
+        }
       &__white {
         background-color: #dfdfdf;
         border-color: #dfdfdf;

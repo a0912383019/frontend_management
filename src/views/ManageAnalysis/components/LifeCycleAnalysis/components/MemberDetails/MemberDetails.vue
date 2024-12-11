@@ -108,7 +108,7 @@ const tableColumns = computed(() => {
       prop: 'bet_amount_avg',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '11%',
       sortable: 'custom'
     },
     {
@@ -116,7 +116,7 @@ const tableColumns = computed(() => {
       prop: 'payoff_avg',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '11%',
       sortable: 'custom'
     },
     {
@@ -124,7 +124,7 @@ const tableColumns = computed(() => {
       prop: 'life_cycle_step',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%'
+      minWidth: '8%'
     }
   ]
 })
@@ -245,7 +245,7 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
       :defaultSort="{ prop: 'deposit_amount', order: 'descending' }"
       stripe
       ref="refTable"
-      class="cdp-life-cycle-member-table"
+      class="customTable2 cdp-life-cycle-member-table"
       @sort="upadteCurrentSort"
       @update:currentPage="updateCurrentPage"
     >
@@ -296,10 +296,11 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
       <template #life_cycle_step="scope">
         <ButtonIcon
           @click="handleStepClick(scope.row)"
+          color="slateblue"
           class="history-button"
           icon="history"
           :isSvg="true"
-          :name="$t('manage_analysis.life_cycle_history')"
+          :name="$t('custom_tags_setting.history')"
         />
       </template>
     </CustomTable>
@@ -307,25 +308,34 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
 </template>
 <style lang="scss">
 .cdp-life-cycle-member-table {
-  .el-table {
-    th.el-table__cell.is-leaf {
-      background-color: #e9eef6;
-    }
-    th.el-table__cell.is-leaf,
-    td.el-table__cell {
-      border: none;
-    }
-    td.el-table__cell {
-      height: 54px;
+  tr.el-table__row {
+    .cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
     }
   }
+  // .el-table {
+  //   th.el-table__cell.is-leaf {
+  //     background-color: #e9eef6;
+  //   }
+  //   th.el-table__cell.is-leaf,
+  //   td.el-table__cell {
+  //     border: none;
+  //   }
+  //   td.el-table__cell {
+  //     height: 54px;
+  //   }
+  // }
 }
 .top-box {
   display: flex;
   justify-content: space-between;
 }
 .history-button {
-  min-width: 40px !important;
+  min-width: 80px !important;
+  width: 80px !important;
   width: 100%;
 }
 </style>

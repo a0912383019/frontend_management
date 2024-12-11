@@ -339,7 +339,7 @@ onMounted(() => {
       </template>
       <template #manage="scope">
         <ButtonIcon
-          class="detail-button mr-5 op-btn"
+          class="mr-5 op-btn"
           color="blue"
           icon="union"
           :disabled="scope.row.status === 3"
@@ -348,7 +348,7 @@ onMounted(() => {
           @click="openImportCsv(scope.row)"
         />
         <ButtonIcon
-          class="detail-button ml-5 op-btn"
+          class="ml-5 op-btn"
           icon="edit"
           :isSvg="true"
           :name="$t('common.edit') + $t('common.detail_short')"
@@ -357,18 +357,16 @@ onMounted(() => {
       </template>
       <template #operation="scope">
         <ButtonIcon
-          class="detail-button mr-5 ot-btn"
+          class="mr-5 ot-btn small-btn"
           color="slateblue"
-          size="small"
           icon="history"
           :isSvg="true"
           :name="$t('custom_tags_setting.history')"
           @click="openHistory(scope.row)"
         />
         <ButtonIcon
-          class="detail-button ml-5 ot-btn"
+          class="ml-5 ot-btn small-btn"
           color="red"
-          size="small"
           icon="trash"
           :disabled="scope.row.status === 3"
           :isSvg="true"
@@ -415,9 +413,8 @@ onMounted(() => {
 :deep(.op-btn.button__medium) {
   min-width: 106px !important;
 }
-:deep(.ot-btn.button__small) {
-  min-height: 36px !important;
-  font-size: 13px;
+:deep(.small-btn) {
+  min-width: 36px !important;
 }
 :deep(.customTagSettingTable) {
   button.detail-button {
