@@ -66,7 +66,7 @@ const closeDialog = () => {
 }
 
 const addSuccess = () => {
-  activityStore.activityAddChange = Date.now()
+  activityStore.activityChange = Date.now()
 }
 
 onUnmounted(() => {
@@ -93,15 +93,6 @@ onUnmounted(() => {
           <div class="flex items-center justify-end">
             <ExportList class="mr-10" />
             <ChartFilter />
-          </div>
-          <div class="flex items-center justify-end">
-            <!-- <ExportList
-              v-if="tableData.length !== 0"
-              class="mr-10"
-              :formData="formData"
-              :total="apiRecordsTotal"
-            /> -->
-            <!-- <Filter :key="key" @update:filter-submit="handleFilterSubmit" /> -->
           </div>
         </div>
       </el-col>

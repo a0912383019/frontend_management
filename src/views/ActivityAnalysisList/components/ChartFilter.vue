@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryListActiveLimit } from '@/api'
+import { apiQueryListActivity } from '@/api'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import { errorRespond } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
@@ -67,10 +67,10 @@ const selectRewardOptions = computed(() => {
 const selectActivityNameOptions = ref([])
 
 // 取得資料
-const queryActivityName = async (isFirst = false) => {
+const queryListActivity = async (isFirst = false) => {
   apiSuccess.value = false
   try {
-    const result = await apiQueryListActiveLimit({
+    const result = await apiQueryListActivity({
       hall_name: activeHall.hall_code
     })
 
@@ -90,6 +90,24 @@ const queryActivityName = async (isFirst = false) => {
   }
 }
 
+const transformActivityName = (isFirst, data) => {
+  if (isFirst) {
+    const displayData = data.slice(0, 10)
+    filterData.activityNameList =
+      displayData.length === 0 ? [-1] : displayData.map((item) => item.id)
+
+    handleSubmitClick()
+  }
+
+  selectActivityNameOptions.value = []
+  data.forEach((item) => {
+    selectActivityNameOptions.value.push({
+      value: item.id,
+      label: item.name
+    })
+  })
+}
+
 const checkAll = ref(false)
 const indeterminate = ref(false)
 const handleCheckAll = (val) => {
@@ -99,24 +117,6 @@ const handleCheckAll = (val) => {
   } else {
     filterData.activityNameList = []
   }
-}
-
-const transformActivityName = (isFirst, data) => {
-  if (isFirst) {
-    const displayData = data.slice(0, 10)
-    filterData.activityNameList =
-      displayData.length === 0 ? [-1] : displayData.map((item) => item.activity_id)
-
-    handleSubmitClick()
-  }
-
-  selectActivityNameOptions.value = []
-  data.forEach((item) => {
-    selectActivityNameOptions.value.push({
-      value: item.activity_id,
-      label: item.activity_name
-    })
-  })
 }
 
 const popover = ref(null) //popover
@@ -139,25 +139,29 @@ const handleSubmitClick = () => {
 }
 
 onMounted(() => {
-  queryActivityName(true)
-})
-
-watch(filterData.activityNameList, (val) => {
-  if (val.length === 0) {
-    checkAll.value = false
-    indeterminate.value = false
-  } else if (val.length === selectActivityNameOptions.value.length) {
-    checkAll.value = true
-    indeterminate.value = false
-  } else {
-    indeterminate.value = true
-  }
+  queryListActivity(true)
 })
 
 watch(
-  [() => filterData.selectDuration, () => filterData.analysisDate, () => filterData.selectReward],
+  () => activityStore.activityChange,
   () => {
-    queryActivityName()
+    console.log('ijijijij');
+    queryListActivity(true)
+  }
+)
+
+watch(
+  () => filterData.activityNameList,
+  (val) => {
+    if (val.length === 0) {
+      checkAll.value = false
+      indeterminate.value = false
+    } else if (val.length === selectActivityNameOptions.value.length) {
+      checkAll.value = true
+      indeterminate.value = false
+    } else {
+      indeterminate.value = true
+    }
   }
 )
 </script>
@@ -209,7 +213,7 @@ watch(
             :enabledThreeMonth="false"
             @update:modelValue="dateRestraint"
             :shortcutsConfig="3"
-            class="w-full filter-datepicker custom-tag-date-picker"
+            class="w-full activity-filter-date-picker"
             classColor="purple"
           />
         </el-col>
@@ -235,7 +239,6 @@ watch(
             />
           </el-select>
         </el-col>
-
         <el-col :span="24" class="mb-19">
           <SectionTitle
             size="small"
@@ -250,12 +253,12 @@ watch(
             <el-select
               v-model="filterData.activityNameList"
               multiple
-              clearable
+              filterable
               collapse-tags
               :teleported="false"
               :placeholder="$t('common.select')"
-              :max-collapse-tags="4"
-              class="cdp-select cdp-select__purple"
+              :max-collapse-tags="5"
+              class="cdp-select-multiple cdp-select-multiple__purple"
               popper-class="cdp-select-popper cdp-select-popper__purple w-full"
             >
               <template #header>
@@ -306,25 +309,9 @@ watch(
     margin-left: 30px;
   }
 }
-
-.custom-tag-date-picker {
+.activity-filter-date-picker {
   :deep(.el-popper.el-picker__popper) {
     inset: 70px 8px auto auto !important;
-  }
-}
-</style>
-<style lang="scss">
-.filter-datepicker {
-  .el-date-editor {
-    width: 100%;
-    height: 36px;
-  }
-}
-
-.custom-header {
-  .el-checkbox {
-    display: flex;
-    height: unset;
   }
 }
 </style>

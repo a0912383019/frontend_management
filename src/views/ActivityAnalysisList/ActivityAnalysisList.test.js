@@ -128,8 +128,8 @@ describe('ActivityAnalysisList', () => {
   })
 
   it('addSuccess', () => {
-    expect(activityStore.activityAddChange).toBe(0)
+    expect(activityStore.activityChange).toBe(0)
     wrapper.vm.addSuccess()
-    expect(activityStore.activityAddChange).toBe(date.getTime())
+    expect(activityStore.activityChange).toBe(date.getTime())
   })
 })

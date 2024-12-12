@@ -15,7 +15,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   const islistFiltered = ref(0)
 
   // 用來監聽是否新增或是修改活動
-  const activityAddChange = 0
+  const activityChange = 0
 
   // 活動分析明細-子活動資料
   const childListData = ref([])
@@ -174,7 +174,7 @@ export const useActivityAnalysisStore = defineStore('activityAnalysis', () => {
   return {
     searchActivity,
     islistFiltered,
-    activityAddChange,
+    activityChange,
     childListData,
     currentChildAnalysis,
     optionChildList,

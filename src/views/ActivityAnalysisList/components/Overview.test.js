@@ -229,7 +229,7 @@ describe('Overview', () => {
     activityStore.islistFiltered = 2
     await flushPromises()
     expect(spyGet).toBeCalledTimes(2)
-    activityStore.activityAddChange = 2
+    activityStore.activityChange = 2
     await flushPromises()
     expect(spyGet).toBeCalledTimes(3)
   })

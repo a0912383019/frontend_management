@@ -9,7 +9,7 @@ import ExportDialog from '@/components/ExportDialog.vue'
 import ExportReport from '@/components/Button/ExportReport.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
-import { apiQueryListActiveLimit, apiExportActivityList } from '@/api'
+import { apiQueryListActivity, apiExportActivityList } from '@/api'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import { ElNotification } from 'element-plus'
 
@@ -80,12 +80,12 @@ const selectRewardOptions = computed(() => {
 const selectActivityNameOptions = ref([])
 
 // 取得資料
-const queryListActiveLimit = async () => {
+const queryListActivity = async () => {
   apiSuccess.value = false
   selectActivityNameOptions.value = []
 
   try {
-    const result = await apiQueryListActiveLimit({
+    const result = await apiQueryListActivity({
       hall_name: activeHall.hall_code
     })
 
@@ -113,8 +113,8 @@ const transformActivityName = (data) => {
   selectActivityNameOptions.value = []
   data.forEach((item) => {
     selectActivityNameOptions.value.push({
-      value: item.activity_id,
-      label: item.activity_name
+      value: item.id,
+      label: item.name
     })
   })
 }
@@ -123,19 +123,19 @@ const transformDefaultActivityName = (data) => {
   const displayData = data.slice(0, 10)
 
   exportData.activityNameList =
-    displayData.length === 0 ? [-1] : displayData.map((item) => item.activity_id)
+    displayData.length === 0 ? [-1] : displayData.map((item) => item.id)
 
   selectActivityNameOptions.value = []
   data.forEach((item) => {
     selectActivityNameOptions.value.push({
-      value: item.activity_id,
-      label: item.activity_name
+      value: item.id,
+      label: item.name
     })
   })
 }
 
 const handleOpenDialog = () => {
-  queryListActiveLimit()
+  queryListActivity()
 }
 
 // Close事件觸發時，讓其回到初始狀態
@@ -235,7 +235,7 @@ const isExportDisabled = computed(() => {
 // 監聽條件一：當列表長度為 0（未選中任何活動）
 // 監聽條件二：當列表長度等於所有活動選項的長度（已選中所有活動）
 // 監聽條件三：當列表長度既不為 0，也不等於所有活動的總數（即部分活動被選中）
-watch(exportData.activityNameList, (val) => {
+watch(() => exportData.activityNameList, (val) => {
   if (val.length === 0) {
     checkAll.value = false
     indeterminate.value = false
@@ -253,13 +253,6 @@ watch(
     Object.assign(exportData, activityStore.filterData) // 屬性複製到目標物件
   }
 )
-
-watch(
-  [() => exportData.selectDuration, () => exportData.analysisDate, () => exportData.selectReward],
-  () => {
-    queryListActiveLimit()
-  }
-)
 </script>
 <template>
   <div>
@@ -267,7 +260,7 @@ watch(
     <ExportReport @click="dialogVisible = true" />
     <el-dialog
       v-model="dialogVisible"
-      class="cdp-dialog customer-tag-dialog"
+      class="cdp-dialog activity-export-dialog overflow-visible"
       @open="handleOpenDialog"
       @close="handleCloseDialog"
       :append-to-body="true"
@@ -346,12 +339,13 @@ watch(
               <el-select
                 v-model="exportData.activityNameList"
                 multiple
-                clearable
+                filterable
                 collapse-tags
                 :teleported="false"
                 :placeholder="$t('common.select')"
                 :max-collapse-tags="3"
-                class="cdp-select cdp-select__blue"
+                :fallback-placements="['bottom-end']"
+                class="cdp-select-multiple cdp-select-multiple__blue"
                 popper-class="cdp-select-popper cdp-select-popper__blue w-full"
               >
                 <template #header>
@@ -398,7 +392,7 @@ watch(
 }
 </style>
 <style lang="scss">
-.customer-tag-dialog {
+.activity-export-dialog {
   max-width: 530px;
   .dialog-inner {
     padding: 20px;

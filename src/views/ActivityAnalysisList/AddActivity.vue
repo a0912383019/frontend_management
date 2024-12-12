@@ -157,7 +157,7 @@ onMounted(() => {
 <template>
   <el-dialog
     :model-value="props.modelValue"
-    class="cdp-dialog overflow-visible"
+    class="cdp-dialog"
     top="40px"
     :append-to-body="true"
     width="1280"
@@ -169,71 +169,69 @@ onMounted(() => {
         {{ $t('activity_analysis.header_add_activity') }}
       </div>
     </template>
-    <div class="cdp-dialog__content">
-      <section class="cdp-section">
-        <el-form ref="formRef" :model="activityForm" @submit.stop.prevent :rules="rules">
-          <el-row :gutter="20" class="mb-16">
-            <el-col :span="12">
-              <div class="mb-20">
-                <div class="cdp-text-blue mb-3">
-                  {{ $t('activity_analysis.activity_name') }}
-                </div>
-                <el-form-item prop="activityName" @submit.stop>
-                  <el-input
-                    v-model="activityForm.activityName"
-                    @keydown.enter="($event) => $event.preventDefault()"
-                    class="cdp-input"
-                    :placeholder="$t('activity_analysis.input_activity_name')"
-                    :validate-event="false"
-                  >
-                  </el-input>
-                </el-form-item>
-              </div>
-            </el-col>
-            <el-col :span="12">
+    <section class="cdp-section">
+      <el-form ref="formRef" :model="activityForm" @submit.stop.prevent :rules="rules">
+        <el-row :gutter="20" class="mb-16">
+          <el-col :span="12">
+            <div class="mb-20">
               <div class="cdp-text-blue mb-3">
-                {{ $t('activity_analysis.activity_purpose') }}
+                {{ $t('activity_analysis.activity_name') }}
               </div>
-              <el-form-item prop="purpose">
+              <el-form-item prop="activityName" @submit.stop>
                 <el-input
-                  v-model="activityForm.purpose"
+                  v-model="activityForm.activityName"
                   @keydown.enter="($event) => $event.preventDefault()"
                   class="cdp-input"
-                  :placeholder="$t('activity_analysis.input_activity_purpose')"
+                  :placeholder="$t('activity_analysis.input_activity_name')"
                   :validate-event="false"
                 >
                 </el-input>
               </el-form-item>
-            </el-col>
-            <el-col :span="24" class="mb-5">
-              <div class="cdp-text-blue mb-3">
-                {{ $t('activity_analysis.activity_description') }}
-              </div>
-              <el-form-item prop="description">
-                <el-input
-                  v-model="activityForm.description"
-                  type="textarea"
-                  :placeholder="$t('activity_analysis.input_activity_description')"
-                  class="cdp-activity-textarea"
-                  :validate-event="false"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="24">
-              <ChildActivityList ref="childRef" :canEdit="true" />
-            </el-col>
-          </el-row>
-        </el-form>
-        <div class="flex justify-end">
-          <CdpButton
-            class="custom-bg-dark__blue"
-            :name="$t('modal.add')"
-            size="sm-130"
-            @click="validActivityAdd()"
-          />
-        </div>
-      </section>
-    </div>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="cdp-text-blue mb-3">
+              {{ $t('activity_analysis.activity_purpose') }}
+            </div>
+            <el-form-item prop="purpose">
+              <el-input
+                v-model="activityForm.purpose"
+                @keydown.enter="($event) => $event.preventDefault()"
+                class="cdp-input"
+                :placeholder="$t('activity_analysis.input_activity_purpose')"
+                :validate-event="false"
+              >
+              </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24" class="mb-5">
+            <div class="cdp-text-blue mb-3">
+              {{ $t('activity_analysis.activity_description') }}
+            </div>
+            <el-form-item prop="description">
+              <el-input
+                v-model="activityForm.description"
+                type="textarea"
+                :placeholder="$t('activity_analysis.input_activity_description')"
+                class="cdp-activity-textarea"
+                :validate-event="false"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <ChildActivityList ref="childRef" :canEdit="true" />
+          </el-col>
+        </el-row>
+      </el-form>
+      <div class="flex justify-end">
+        <CdpButton
+          class="custom-bg-dark__blue"
+          :name="$t('modal.add')"
+          size="sm-130"
+          @click="validActivityAdd()"
+        />
+      </div>
+    </section>
   </el-dialog>
   <ConfirmBox
     color="blue"
@@ -279,13 +277,6 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 .cdp-dialog {
-  &__component {
-    padding: 20px;
-    padding-bottom: 0;
-    background-color: #fff;
-    border-radius: 5px;
-    border: 1px #e6eaf2 solid;
-  }
   &__header {
     color: #fff;
   }
@@ -337,10 +328,5 @@ onMounted(() => {
       word-break: break-all;
     }
   }
-}
-</style>
-<style lang="scss">
-.overflow-visible {
-  overflow: visible !important;
 }
 </style>
