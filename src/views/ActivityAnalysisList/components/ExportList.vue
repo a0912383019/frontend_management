@@ -82,8 +82,6 @@ const selectActivityNameOptions = ref([])
 // 取得資料
 const queryListActivity = async () => {
   apiSuccess.value = false
-  selectActivityNameOptions.value = []
-
   try {
     const result = await apiQueryListActivity({
       hall_name: activeHall.hall_code
@@ -120,11 +118,6 @@ const transformActivityName = (data) => {
 }
 
 const transformDefaultActivityName = (data) => {
-  const displayData = data.slice(0, 10)
-
-  exportData.activityNameList =
-    displayData.length === 0 ? [-1] : displayData.map((item) => item.id)
-
   selectActivityNameOptions.value = []
   data.forEach((item) => {
     selectActivityNameOptions.value.push({
@@ -132,6 +125,9 @@ const transformDefaultActivityName = (data) => {
       label: item.name
     })
   })
+
+  const displayData = data.slice(0, 10)
+  exportData.activityNameList = displayData.length === 0 ? [-1] : displayData.map((item) => item.id)
 }
 
 const handleOpenDialog = () => {
@@ -216,9 +212,9 @@ const dateRestraint = (event) => {
 
 // 全選預設狀態
 const checkAll = ref(false)
-
 // 部份選擇預設狀態
 const indeterminate = ref(false)
+
 const handleCheckAll = (val) => {
   indeterminate.value = false
   if (val) {
@@ -235,11 +231,11 @@ const isExportDisabled = computed(() => {
 // 監聽條件一：當列表長度為 0（未選中任何活動）
 // 監聽條件二：當列表長度等於所有活動選項的長度（已選中所有活動）
 // 監聽條件三：當列表長度既不為 0，也不等於所有活動的總數（即部分活動被選中）
-watch(() => exportData.activityNameList, (val) => {
-  if (val.length === 0) {
+watch([() => exportData.activityNameList, () => selectActivityNameOptions.value], () => {
+  if (exportData.activityNameList.length === 0) {
     checkAll.value = false
     indeterminate.value = false
-  } else if (val.length === selectActivityNameOptions.value.length) {
+  } else if (exportData.activityNameList.length === selectActivityNameOptions.value.length) {
     checkAll.value = true
     indeterminate.value = false
   } else {
@@ -344,7 +340,6 @@ watch(
                 :teleported="false"
                 :placeholder="$t('common.select')"
                 :max-collapse-tags="3"
-                :fallback-placements="['bottom-end']"
                 class="cdp-select-multiple cdp-select-multiple__blue"
                 popper-class="cdp-select-popper cdp-select-popper__blue w-full"
               >

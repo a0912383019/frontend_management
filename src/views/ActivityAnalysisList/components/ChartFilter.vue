@@ -110,6 +110,7 @@ const transformActivityName = (isFirst, data) => {
 
 const checkAll = ref(false)
 const indeterminate = ref(false)
+
 const handleCheckAll = (val) => {
   indeterminate.value = false
   if (val) {
@@ -145,7 +146,6 @@ onMounted(() => {
 watch(
   () => activityStore.activityChange,
   () => {
-    console.log('ijijijij');
     queryListActivity(true)
   }
 )
