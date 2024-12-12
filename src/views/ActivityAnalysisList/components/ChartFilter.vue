@@ -1,20 +1,18 @@
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { apiQueryListActiveLimit } from '@/api'
+import { apiQueryListActivity } from '@/api'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import { errorRespond } from '@/utils/commonUtils.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
-import SelectTagSingle from '@/components/Filter/SelectTagSingle.vue'
-import { ElNotification } from 'element-plus'
 
 const { t } = useI18n()
 
 const activityStore = useActivityAnalysisStore()
-const { filterData } = activityStore
+const { filterData, dateRestraintion } = activityStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -69,22 +67,16 @@ const selectRewardOptions = computed(() => {
 const selectActivityNameOptions = ref([])
 
 // 取得資料
-const queryActivityName = async (isFirst = false) => {
+const queryListActivity = async (isFirst = false) => {
   apiSuccess.value = false
-  selectActivityNameOptions.value = []
-
   try {
-    const result = await apiQueryListActiveLimit({
-      hall_name: activeHall.hall_code,
-      duration: filterData.selectDuration,
-      reward: filterData.selectReward,
-      name: filterData.activityNameList
+    const result = await apiQueryListActivity({
+      hall_name: activeHall.hall_code
     })
 
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true
-
       transformActivityName(isFirst, result.data.result)
     } else {
       let failMsg = errorRespond(result.data.status)
@@ -98,28 +90,33 @@ const queryActivityName = async (isFirst = false) => {
   }
 }
 
-const defaultValue = ref([])
-
 const transformActivityName = (isFirst, data) => {
-  data.forEach((item) => {
-    selectActivityNameOptions.value.push({
-      value: item.activity_id,
-      label: item.activity_name
-    })
-  })
-
   if (isFirst) {
     const displayData = data.slice(0, 10)
-    displayData.forEach((item) => {
-      defaultValue.value.push({
-        value: item.activity_id,
-        label: item.activity_name
-      })
-    })
     filterData.activityNameList =
-      displayData.length === 0 ? '-1' : displayData.map((item) => item.activity_id).join(',')
+      displayData.length === 0 ? [-1] : displayData.map((item) => item.id)
 
     handleSubmitClick()
+  }
+
+  selectActivityNameOptions.value = []
+  data.forEach((item) => {
+    selectActivityNameOptions.value.push({
+      value: item.id,
+      label: item.name
+    })
+  })
+}
+
+const checkAll = ref(false)
+const indeterminate = ref(false)
+
+const handleCheckAll = (val) => {
+  indeterminate.value = false
+  if (val) {
+    filterData.activityNameList = selectActivityNameOptions.value.map((_) => _.value)
+  } else {
+    filterData.activityNameList = []
   }
 }
 
@@ -130,70 +127,8 @@ const closePopover = () => {
   popover.value.hide()
 }
 
-// 處理時間變化
-const dateCount = (data) => {
-  selectDurationOptions.value.forEach((option) => {
-    option.disabled = false
-  })
-
-  const dateArr = data.split('~')
-  const start = dateArr[0].trim()
-  const end = dateArr[1].trim()
-
-  const diffDays = calculateDayDifference(start, end)
-  const diffMonth = diffDays / 31
-
-  if (
-    diffMonth > 3 &&
-    diffMonth <= 12 &&
-    (filterData.selectDuration === 'week' ||
-      filterData.selectDuration === 'season' ||
-      filterData.selectDuration === 'year')
-  ) {
-    filterData.selectDuration = 'month'
-    selectDurationOptions.value[0].disabled = true
-    ElNotification({
-      title: t('activity_analysis.week_duration_validation_msg'),
-      type: 'warning'
-    })
-  } else if (
-    diffMonth > 12 &&
-    diffMonth <= 36 &&
-    (filterData.selectDuration === 'month' ||
-      filterData.selectDuration === 'week' ||
-      filterData.selectDuration === 'year')
-  ) {
-    filterData.selectDuration = 'season'
-    selectDurationOptions.value[0].disabled = true
-    selectDurationOptions.value[1].disabled = true
-    ElNotification({
-      title: t('activity_analysis.month_duration_validation_msg'),
-      type: 'warning'
-    })
-  } else if (diffMonth > 36) {
-    filterData.selectDuration = 'year'
-    selectDurationOptions.value[0].disabled = true
-    selectDurationOptions.value[1].disabled = true
-    selectDurationOptions.value[2].disabled = true
-    ElNotification({
-      title: t('activity_analysis.season_duration_validation_msg'),
-      type: 'warning'
-    })
-  } else {
-    filterData.selectDuration = 'week'
-  }
-}
-
-const calculateDayDifference = (startDateStr, endDateStr) => {
-  const startDate = new Date(startDateStr)
-  const endDate = new Date(endDateStr)
-  const timeDifference = endDate - startDate // 毫秒差
-  const dayDifference = timeDifference / (1000 * 60 * 60 * 24) // 換算為天數
-  return dayDifference
-}
-
-const updateActivityName = () => {
-  queryActivityName()
+const dateRestraint = (event) => {
+  dateRestraintion(event, selectDurationOptions, filterData)
 }
 
 // 確認篩選
@@ -205,13 +140,28 @@ const handleSubmitClick = () => {
 }
 
 onMounted(() => {
-  queryActivityName(true)
+  queryListActivity(true)
 })
 
 watch(
-  [() => filterData.selectDuration, () => filterData.analysisDate, () => filterData.selectReward],
+  () => activityStore.activityChange,
   () => {
-    updateActivityName()
+    queryListActivity(true)
+  }
+)
+
+watch(
+  () => filterData.activityNameList,
+  (val) => {
+    if (val.length === 0) {
+      checkAll.value = false
+      indeterminate.value = false
+    } else if (val.length === selectActivityNameOptions.value.length) {
+      checkAll.value = true
+      indeterminate.value = false
+    } else {
+      indeterminate.value = true
+    }
   }
 )
 </script>
@@ -261,9 +211,9 @@ watch(
             v-model="filterData.analysisDate"
             :config="2"
             :enabledThreeMonth="false"
-            @update:modelValue="dateCount"
+            @update:modelValue="dateRestraint"
             :shortcutsConfig="3"
-            class="w-full filter-datepicker custom-tag-date-picker"
+            class="w-full activity-filter-date-picker"
             classColor="purple"
           />
         </el-col>
@@ -276,8 +226,8 @@ watch(
           </SectionTitle>
           <el-select
             v-model="filterData.selectReward"
-            class="cdp-select cdp-select__purple w-full"
-            popper-class="cdp-select-popper cdp-select-popper__purple"
+            class="cdp-select cdp-select__purple"
+            popper-class="cdp-select-popper cdp-select-popper__purple w-full"
             :teleported="false"
           >
             <el-option
@@ -289,7 +239,6 @@ watch(
             />
           </el-select>
         </el-col>
-
         <el-col :span="24" class="mb-19">
           <SectionTitle
             size="small"
@@ -301,13 +250,33 @@ watch(
             <LoadingBox color="purple" size="sm" class="mb-12" />
           </div>
           <div v-else>
-            <SelectTagSingle
-              :defaultValue="defaultValue"
-              :lists="selectActivityNameOptions"
-              :showAllOption="false"
-              :placeholder="$t('common.select')"
+            <el-select
               v-model="filterData.activityNameList"
-            />
+              multiple
+              filterable
+              collapse-tags
+              :teleported="false"
+              :placeholder="$t('common.select')"
+              :max-collapse-tags="5"
+              class="cdp-select-multiple cdp-select-multiple__purple"
+              popper-class="cdp-select-popper cdp-select-popper__purple w-full"
+            >
+              <template #header>
+                <el-checkbox
+                  v-model="checkAll"
+                  :indeterminate="indeterminate"
+                  @change="handleCheckAll"
+                >
+                  {{ $t('common.select_all_option') }}
+                </el-checkbox>
+              </template>
+              <el-option
+                v-for="item in selectActivityNameOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </div>
         </el-col>
       </el-row>
@@ -340,18 +309,9 @@ watch(
     margin-left: 30px;
   }
 }
-
-.custom-tag-date-picker {
+.activity-filter-date-picker {
   :deep(.el-popper.el-picker__popper) {
     inset: 70px 8px auto auto !important;
-  }
-}
-</style>
-<style lang="scss">
-.filter-datepicker {
-  .el-date-editor {
-    width: 100%;
-    height: 36px;
   }
 }
 </style>

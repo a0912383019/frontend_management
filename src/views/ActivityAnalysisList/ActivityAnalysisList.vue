@@ -12,6 +12,7 @@ import AddDialog from '@/views/ActivityAnalysisList/AddActivity.vue'
 import Filter from '@/views/ActivityAnalysisList/Filter.vue'
 import { useActivityAnalysisStore } from '@/stores'
 import ChartFilter from '@/views/ActivityAnalysisList/components/ChartFilter.vue'
+import ExportList from '@/views/ActivityAnalysisList/components/ExportList.vue'
 import { storeToRefs } from 'pinia'
 
 const activityStore = useActivityAnalysisStore()
@@ -65,7 +66,7 @@ const closeDialog = () => {
 }
 
 const addSuccess = () => {
-  activityStore.activityAddChange = Date.now()
+  activityStore.activityChange = Date.now()
 }
 
 onUnmounted(() => {
@@ -90,6 +91,7 @@ onUnmounted(() => {
         </div>
         <div v-show="currentTabs !== 'Overview'">
           <div class="flex items-center justify-end">
+            <ExportList class="mr-10" />
             <ChartFilter />
           </div>
         </div>

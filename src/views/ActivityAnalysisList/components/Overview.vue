@@ -153,7 +153,7 @@ const queryDeleteActivity = async (activityId) => {
         title: t('msg.delete_successful'),
         type: 'success'
       })
-      queryListActivity()
+      activityStore.activityChange = Date.now()
     } else {
       ElNotification({
         title: t('msg.delete_failed'),
@@ -191,7 +191,7 @@ watch(
 )
 
 watch(
-  () => activityStore.activityAddChange,
+  () => activityStore.activityChange,
   () => {
     queryListActivity()
   }
