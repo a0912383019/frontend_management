@@ -362,11 +362,7 @@ watch(
             </div>
           </el-col>
           <el-col>
-            <div class="note">
-              <font-awesome-icon icon="fa-info-circle" />
-              {{ $t('customer_tag_list.increase_condition_reduce_time') }}
-            </div>
-            <div class="flex justify-end">
+            <div class="flex justify-end mt-20">
               <ButtonIcon
                 :name="$t('modal.confirm_export')"
                 color="blue"
@@ -399,16 +395,6 @@ watch(
     padding-bottom: 3px;
     font-size: 14px;
     color: $blue;
-  }
-  .note {
-    display: flex;
-    align-items: center;
-    margin-bottom: 17px;
-    font-size: 13px;
-    color: $orange;
-    svg {
-      margin-right: 5px;
-    }
   }
 }
 </style>
