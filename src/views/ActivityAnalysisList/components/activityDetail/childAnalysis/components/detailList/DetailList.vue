@@ -322,6 +322,7 @@ watch(
           <ButtonIcon
             @click="handleStepClick(scope.row)"
             class="step-button"
+            color="slateblue"
             icon="history"
             :isSvg="true"
             :name="$t('custom_tags_setting.history')"

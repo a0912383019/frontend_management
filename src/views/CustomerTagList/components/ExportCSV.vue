@@ -178,11 +178,7 @@ const handelExportReport = async () => {
             <el-input v-model="apiTotal" class="cdp-input cdp-input-disabled" readonly>
               <template #append><font-awesome-icon icon="fa-lock" /></template>
             </el-input>
-            <div class="note">
-              <font-awesome-icon icon="fa-info-circle" />
-              {{ $t('customer_tag_list.increase_condition_reduce_time') }}
-            </div>
-            <div class="flex justify-end">
+            <div class="flex justify-end mt-20">
               <ButtonIcon
                 :name="$t('modal.confirm_export')"
                 color="blue"
@@ -218,17 +214,6 @@ const handelExportReport = async () => {
     padding-bottom: 3px;
     font-size: 14px;
     color: $blue;
-  }
-  .note {
-    display: flex;
-    align-items: center;
-    margin-bottom: 17px;
-    padding-top: 5px;
-    font-size: 13px;
-    color: $orange;
-    svg {
-      margin-right: 5px;
-    }
   }
 }
 </style>

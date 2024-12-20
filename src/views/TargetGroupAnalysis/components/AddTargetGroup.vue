@@ -228,9 +228,6 @@ const transformCustomTags = () => {
 <style lang="scss" scoped>
 .cdp-dialog {
   border-radius: 10px !important;
-  .overflow-visible {
-    overflow: visible;
-  }
   &__component {
     padding: 20px;
     padding-bottom: 0;

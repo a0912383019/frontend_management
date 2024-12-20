@@ -11,7 +11,7 @@
     "build:dev": "vite build --mode dev",
     "build:staging": "vite build --mode staging",
     "build:prod": "vite build --mode production",
-    "preview": "vite preview",
+    "preview": "vite --port 63342 preview",
     "test:unit": "vitest",
     "coverage": "vitest run --coverage",
     "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",

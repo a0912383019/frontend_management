@@ -109,8 +109,3 @@ const handleDialogClosed = () => {
   }
 }
 </style>
-<style lang="scss">
-.overflow-visible {
-  overflow: visible !important;
-}
-</style>

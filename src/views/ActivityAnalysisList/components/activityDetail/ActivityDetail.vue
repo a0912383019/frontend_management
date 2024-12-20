@@ -93,7 +93,7 @@ watch(
 <template>
   <el-dialog
     :model-value="props.modelValue"
-    class="cdp-dialog cdp-activity-detail-dialog"
+    class="cdp-dialog"
     top="40px"
     :append-to-body="true"
     width="1280"
@@ -129,22 +129,6 @@ watch(
 .cdp-dialog {
   &__header {
     color: #fff;
-  }
-}
-</style>
-<style lang="scss">
-.cdp-activity-detail-dialog {
-  min-height: 600px;
-  max-height: 890px;
-  display: flex;
-  flex-direction: column;
-  .el-dialog__header {
-    min-height: 60px;
-  }
-  .el-dialog__body {
-    flex: 1;
-    overflow-y: auto; /* 垂直滾動 */
-    height: 100%;
   }
 }
 </style>
