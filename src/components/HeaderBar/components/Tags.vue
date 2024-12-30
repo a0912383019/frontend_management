@@ -371,6 +371,9 @@ watch(
     td.el-table__cell {
       height: 54px;
     }
+    &__empty-block {
+      height: auto !important;
+    }
   }
 }
 </style>

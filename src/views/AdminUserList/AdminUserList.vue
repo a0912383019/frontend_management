@@ -157,7 +157,7 @@ const transformUserList = (data) => {
       status: ele.user_status,
       login_num: ele.login_num,
       last_login_time:
-        ele.last_login_date === null
+        ele.last_login_date === null || ele.last_login_date === ""
           ? '-'
           : dayjs(ele.last_login_date).format(t('date.format_datetime_rule'))
     }
