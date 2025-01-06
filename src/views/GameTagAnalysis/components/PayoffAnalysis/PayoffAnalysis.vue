@@ -188,10 +188,14 @@ const chartStretch = () => {
 }
 
 const transformTagsGamePayoffRank = (order, data) => {
+  const dataLength = data.length < 20 ? data.length : 20
   const pushData = (arr, xAxis) => {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < dataLength; i++) {
+      const payoff = parseFloat(data[i].payoff)
+      if (order === 'DESC' && payoff > 0) break
+      if (order === 'ASC' && payoff < 0) break
       arr.push({
-        y: parseFloat(data[i].payoff),
+        y: payoff,
         color: generateRGBColors(chart_fixed_bgColor[i], 0.7),
         pointWidth: 55 //柱子寬度
       })

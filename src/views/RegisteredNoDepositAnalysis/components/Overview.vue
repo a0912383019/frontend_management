@@ -69,6 +69,7 @@ const tableColumns = computed(() => {
 const queryActionScoreSpan = async () => {
   apiSuccess.value = false
   messageKey.value = 'shortLoading'
+  tableData.value = []
   try {
     const result = await apiQueryActionScoreSpan({
       hall_name: activeHall.hall_code,
@@ -79,7 +80,6 @@ const queryActionScoreSpan = async () => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true
-      tableData.value = []
       tableData.value = transformActionScoreSpan(result.data.result)
     } else {
       const { error_code } = result.data.status
@@ -119,7 +119,8 @@ const transformActionScoreSpan = (data) => {
       )}`,
       total_people_num: item.span_count,
       total_deposit_people_num: item.deposited_count,
-      deposit_ratio: roundDecimal(item.deposited_ratio) + '%',
+      deposit_ratio:
+        item.deposited_ratio === null ? '--' : roundDecimal(item.deposited_ratio) + '%',
       avg_first_deposit_day: FormatNumber(item.deposited_avg_day),
       has_bg: item.deposited_ratio >= 30 ? true : false
     }

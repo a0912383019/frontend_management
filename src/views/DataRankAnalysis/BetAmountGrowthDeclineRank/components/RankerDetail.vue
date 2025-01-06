@@ -45,8 +45,7 @@ const { apiObject, sectionWidth } = toRefs(props)
 const apiSuccess = ref(apiObject.value.apiSuccess)
 const messageKey = ref(apiObject.value.messageKey)
 
-const tag_description_dict =
-  getSessionStorageEntity('system_config').tags_config
+const tag_description_dict = getSessionStorageEntity('system_config').tags_config
 
 const tableColumns = computed(() => {
   return [
@@ -105,7 +104,10 @@ const transformMemberData = (data) => {
       index,
       rank: index,
       commissionable: FormatNumber(item.commissionable_total),
-      commissionable_growth_percent: FormatNumber(item.commissionable_growth_percent),
+      commissionable_growth_percent:
+        item.commissionable_growth_percent === null
+          ? '--'
+          : FormatNumber(item.commissionable_growth_percent),
       tag_name_str: [],
       tag_transfrom_obj: [],
       tag_show: false,

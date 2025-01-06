@@ -89,6 +89,7 @@ const handleDialogClosed = () => {
           <component
             :is="currentTabComponent"
             :targetId="props.targetId"
+            @updateSuccess="handleDialogClosed"
           ></component>
         </keep-alive>
       </div>

@@ -158,11 +158,11 @@ const updateTargetGroups = async () => {
 
     const { return_code } = result.data.status
     if (return_code === '0000') {
+      emit('updateSuccess')
       ElNotification({
         title: t('msg.updated_successfully'),
         type: 'success'
       })
-      emit('updateSuccess')
     } else {
       ElNotification({
         title: t('msg.update_failed'),
@@ -193,9 +193,11 @@ const cancelSaved = () => {
   confirmEditBox.value = false
 }
 
-const confirmSaved = () => {
-  updateTargetGroups()
+const confirmSaved = async () => {
   confirmEditBox.value = false
+  globalStore.isLoading = true
+  await updateTargetGroups()
+  globalStore.isLoading = false
 }
 
 const tagGroups = ref(null)
