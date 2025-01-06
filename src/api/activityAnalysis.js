@@ -41,40 +41,6 @@ export const apiExportActivityList = (params) => {
   )
 }
 
-// 進階篩選
-export const apiQueryListActiveLimit = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_list_limit', {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  })
-}
-
 // 總和_活動中-淨利
 export const apiQueryTotalActiveProfit = (params) => {
   const {
@@ -349,35 +315,9 @@ export const apiQueryGrowthRateActiveReal = (params) => {
 
 // 成長率_活動中-有效投注
 export const apiQueryGrowthRateActiveCommissionable = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_commissionable_growth_rate', {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
+  const { hall_name, activity_id_list, analysis_date, interval_type, is_reward } = params
+  return axiosGoInstance.get('/api/auth/activity/growth_rate/commissionable', {
+    params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward }
   })
 }
 
@@ -447,6 +387,7 @@ export const apiQueryActivityBetAmountGrowthSpanTags = (params) => {
   })
 }
 
+// 子活動分析-有效投注統計-會員參與率
 export const apiQueryActivityMemberParticipation = (params) => {
   const { hall_name, id, is_reward, threshold } = params
   return axiosGoInstance.get(`/api/auth/activity_detail/${id}/member_participation`, {
@@ -454,36 +395,18 @@ export const apiQueryActivityMemberParticipation = (params) => {
   })
 }
 
+// 子活動分析-有效投注統計-區間人數
 export const apiQueryActivityBetAmountGrowthSpan = (params) => {
-  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_betAmount_growth_span', {
-    hall_name,
-    activity_id_hide,
-    activity_detail_id_hide
+  const { hall_name, id, is_reward } = params
+  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/betAmount_growth_span`, {
+    params: { hall_name, is_reward }
   })
 }
 
 export const apiQueryActivityCompareDetail = (params) => {
-  const { hall_name, activity_id_hide, activity_detail_id_hide, search_name, length, draw, start } =
-    params
-
-  const order = [
-      {
-        column: 1,
-        dir: 'desc'
-      }
-    ],
-    columns = [{}, { name: 'before_bet_amount_avg' }, {}]
-  return axiosInstance.post('/api/auth/activity/query_activity_compare_detail', {
-    hall_name,
-    activity_id_hide,
-    activity_detail_id_hide,
-    search_name,
-    draw,
-    start,
-    length,
-    order,
-    columns
+  const { hall_name, id, is_reward, search_name, length, start, sort, order } = params
+  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/compare_detail`, {
+    params: { hall_name, is_reward, search_name, length, start, sort, order }
   })
 }
 
@@ -499,10 +422,8 @@ export const apiExportActivityCompareDetail = (params) => {
 }
 
 export const apiQueryMemberStepChanges = (params) => {
-  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
-  return axiosInstance.post('/api/auth/activity/query_member_step_changes', {
-    hall_name,
-    activity_id_hide,
-    activity_detail_id_hide
+  const { hall_name, id, is_reward } = params
+  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/member_step_changes`, {
+    params: { hall_name, is_reward }
   })
 }
