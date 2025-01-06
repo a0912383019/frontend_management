@@ -10,7 +10,7 @@ nodePool: web
 # deployment 設定
 deployment:
   # 服務的名稱(必填)
-  appName: dev-cdp-vue-frontend
+  appName: prod-cdp-vue-frontend
   appVersion: cdp-v2
   container:
     containerPort: 80
