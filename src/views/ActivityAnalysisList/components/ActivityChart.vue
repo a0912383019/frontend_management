@@ -50,10 +50,10 @@ const chartOptions = reactive({
       return `
         <div style="display: flex;">
           <div style="
-            width: 14px; 
-            height: 14px; 
-            background-color:${this.color}; 
-            display: inline-block; 
+            width: 14px;
+            height: 14px;
+            background-color:${this.color};
+            display: inline-block;
             margin-right: 6px;
           "></div>
           <span>${this.name}</span>
@@ -135,7 +135,7 @@ const transformChartSeries = (data) => {
 
       return (
         dayjs(dateformat[0]).format(t('date.format_date_rule')) +
-        '~' +
+        ' ~ ' +
         dayjs(dateformat[1]).format(t('date.format_date_rule'))
       )
     } else {
@@ -145,23 +145,28 @@ const transformChartSeries = (data) => {
 
   let dataClone = { ...data[0] }
   delete dataClone.interval_title
-  let dataKey = Object.keys(dataClone)
+  let activityIdList = Object.keys(dataClone.activities)
 
-  let valueKeys = { ...dataClone[dataKey[0]] }
-  delete valueKeys.activity_name
-  let valueKey = Object.entries(valueKeys)[0]
+  const firstActivity = dataClone.activities[activityIdList[0]]
+  const valueKey = Object.keys(firstActivity).find((key) => key !== 'activity_name')
+  if (!valueKey) {
+    console.error('api result key error');
+    apiSuccess.value = false
+    messageKey.value = 'chartFailed'
+    return
+  }
 
   let dataSet = {}
 
-  let colorCount = dataKey.length
+  let colorCount = activityIdList.length
   let colorArr = []
   if (colorCount > 20) {
     colorArr = generateMultipleColors(colorCount)['bg']
   }
 
-  dataKey.forEach((ele, idx) => {
+  activityIdList.forEach((ele, idx) => {
     dataSet[ele] = {
-      name: dataClone[ele].activity_name,
+      name: dataClone.activities[ele].activity_name,
       type: 'line',
       color: colorCount > 20 ? colorArr[idx] : generateRGBColors(latest_chart_color[idx], 1),
       lineWidth: 2,
@@ -169,7 +174,9 @@ const transformChartSeries = (data) => {
         symbol: 'circle',
         radius: 3
       },
-      data: data.map((item) => parseFloat(item[ele][valueKey[0]]))
+      data: data.map((item) => {
+        return parseFloat(item.activities[ele][valueKey])
+      })
     }
   })
 

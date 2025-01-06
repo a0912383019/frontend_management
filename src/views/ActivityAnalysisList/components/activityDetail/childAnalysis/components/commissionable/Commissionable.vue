@@ -58,7 +58,7 @@ const chartOptions = reactive({
   chart: {
     type: 'column',
     height: locale.value === 'en' ? 400 : 300,
-    marginLeft: locale.value === 'en' ? 120 : 100
+    marginLeft: locale.value === 'en' ? 120 : 50
   },
   xAxis: {
     gridLineColor: '#e8e8e8',
@@ -68,7 +68,7 @@ const chartOptions = reactive({
     tickWidth: 1,
     categories: [],
     labels: {
-      rotation: locale.value === 'en' ? -40 : -18,
+      rotation: locale.value === 'en' ? -40 : -19,
       style: {
         whiteSpace: 'nowrap', // 避免文字換行
         textOverflow: 'none', // 防止省略號(...)
@@ -76,7 +76,7 @@ const chartOptions = reactive({
       }
     },
     min: 0,
-    max: 10
+    max: 11
   },
   legend: {
     enabled: false
@@ -113,10 +113,7 @@ const queryActivityMemberParticipation = async () => {
   memberPartiApiSuccess.value = false
   memberPartiMessageKey.value = 'loading'
   tableData.value = []
-  transformMemberParticipation()
-  memberPartiApiSuccess.value = true
 
-  return
   try {
     const result = await apiQueryActivityMemberParticipation({
       hall_name: activeHall.hall_code,
@@ -154,14 +151,6 @@ const queryActivityMemberParticipation = async () => {
 }
 
 const transformMemberParticipation = (data) => {
-  data = {
-    activity_analysis_date: props.isRewarded
-      ? '2010-12-12 ~ 2100-01-01'
-      : '2010-12-12 ~ 2022-09-21',
-    member_count: 22,
-    achieve_member_count: 11,
-    participation_percent: 50
-  }
   tableData.value = [
     {
       col_name: t('activity_analysis.activity_duration_now'),
@@ -186,7 +175,8 @@ const transformMemberParticipation = (data) => {
     },
     {
       col_name: t('activity_analysis.member_participation_percent'),
-      col_value: FormatNumber(data.participation_percent) + '%'
+      col_value:
+        data.participation_percent === null ? '--' : FormatNumber(data.participation_percent) + '%'
     }
   ]
 }
@@ -197,8 +187,8 @@ const queryActivityBetAmountGrowthSpan = async () => {
   try {
     const result = await apiQueryActivityBetAmountGrowthSpan({
       hall_name: activeHall.hall_code,
-      activity_id_hide: 88,
-      activity_detail_id_hide: currentChildAnalysis.id
+      id: currentChildAnalysis.id,
+      is_reward: props.isRewarded
     })
 
     const { return_code } = result.data.status
@@ -232,18 +222,20 @@ const queryActivityBetAmountGrowthSpan = async () => {
 }
 
 const transformBetAmountGrowthSpan = (data) => {
-  chartOptions.xAxis.categories = data.span.map((ele) => {
-    if (ele.upper !== null) {
-      return t('activity_analysis.bet_amount_interval', { lower: ele.lower, upper: ele.upper })
-    } else {
+  chartOptions.xAxis.categories = data.map((ele) => {
+    if (ele.upper === 0 && ele.lower === 0) {
+      return t('activity_analysis.no_bet_amount_interval')
+    } else if (ele.upper === 0 && ele.lower === 100) {
       return t('activity_analysis.upper_bet_amount_interval', { lower: ele.lower })
+    } else {
+      return t('activity_analysis.bet_amount_interval', { lower: ele.lower, upper: ele.upper })
     }
   })
 
-  data.not_reward.forEach((ele, idx) => {
+  data.forEach((ele, idx) => {
     chartOptions.series[0].data.push({
       name: idx,
-      y: ele,
+      y: ele.span_count,
       color: generateRGBColors(latest_chart_color[idx], 0.7)
     })
   })

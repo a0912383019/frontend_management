@@ -69,8 +69,8 @@ const queryMemberStepChanges = async () => {
   try {
     const result = await apiQueryMemberStepChanges({
       hall_name: activeHall.hall_code,
-      activity_id_hide: 88,
-      activity_detail_id_hide: currentChildAnalysis.id
+      id: currentChildAnalysis.id,
+      is_reward: props.isRewarded,
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -94,16 +94,15 @@ const queryMemberStepChanges = async () => {
 }
 
 const transformMemberStepChanges = (data) => {
-  const stepDatas = data.not_reward
   const result = [] // 存放轉換後的資料
   // 階段0不處理，從階段1開始
-  for (let i = 1; i < stepDatas.length; i++) {
+  for (let i = 1; i < data.length; i++) {
     // 產生階段對應文字
     let tempObj = {}
-    tempObj.step_index = i // 階段名稱的設定
-    tempObj.activity_before = FormatNumber(stepDatas[i].before_num)
-    tempObj.activity_now = FormatNumber(stepDatas[i].current_num)
-    tempObj.activity_after = FormatNumber(stepDatas[i].after_num)
+    tempObj.step_index = data[i].step // 階段名稱的設定
+    tempObj.activity_before = FormatNumber(data[i].before_num)
+    tempObj.activity_now = FormatNumber(data[i].current_num)
+    tempObj.activity_after = FormatNumber(data[i].after_num)
 
     result.push(tempObj)
   }
