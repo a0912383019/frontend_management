@@ -140,13 +140,18 @@ const transformSmallBoxData = (data) => {
     if (ele === 'active_people') {
       topCardData.value[idx].monthAvg = FormatNumber(data[ele].month_avg)
       topCardData.value[idx].weekAvg = FormatNumber(data[ele].week_avg)
-      topCardData.value[idx].growth = FormatNumber(data[ele].growth)
+      topCardData.value[idx].growth =
+        data[ele].growth === null ? '--' : FormatNumber(data[ele].growth)
       return
     }
 
-    topCardData.value[idx].monthAvg = FormatNumber(data[ele].month_avg, currentSign)
-    topCardData.value[idx].weekAvg = FormatNumber(data[ele].week_avg, currentSign)
-    topCardData.value[idx].growth = FormatNumber(data[ele].growth)
+    if (ele === 'bet_amount') {
+      topCardData.value[idx].monthAvg = FormatNumber(data[ele].month_avg, currentSign)
+      topCardData.value[idx].weekAvg = FormatNumber(data[ele].week_avg, currentSign)
+      topCardData.value[idx].growth =
+        data[ele].growth === null ? '--' : FormatNumber(data[ele].growth)
+      return
+    }
   })
 }
 

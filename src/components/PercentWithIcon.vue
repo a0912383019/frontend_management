@@ -51,7 +51,7 @@ const icon = computed(() => {
   <span :class="color" v-if="percentData === '--'">
     <span :class="[fontSizeClass, fontWeightClass]">{{ percentData }}</span>
   </span>
-  <span class="flex items-center" :class="color" v-else>
+  <span :class="color" v-else>
     <font-awesome-icon class="mr-3" :class="iconSizeClass" :icon="icon" />
     <span :class="[fontSizeClass, fontWeightClass]">{{ percentData.replace('-', '') + '%' }}</span>
   </span>
