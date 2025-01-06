@@ -51,8 +51,6 @@ const queryActivityCompareDetail = async () => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       if (result.data.result.length !== 0) {
-        console.log('aaa');
-        tableData.value = []
         transformCompareDetail(result.data.result)
         apiSuccess.value = true
       } else {
