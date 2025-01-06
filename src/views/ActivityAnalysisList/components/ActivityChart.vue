@@ -11,6 +11,10 @@ import {
 import { latest_chart_color } from '@/../public/js/system_config.js'
 import { dayjs } from 'element-plus'
 import { useI18n } from 'vue-i18n'
+import { useActivityAnalysisStore } from '@/stores'
+
+const activityStore = useActivityAnalysisStore()
+const { chartApiParams } = activityStore
 
 const { t } = useI18n()
 
@@ -70,6 +74,7 @@ const chartOptions = reactive({
     categories: [],
     labels: {
       style: {
+        textOverflow: 'none', // 防止省略號(...)
         fontSize: '12px'
       }
     }
@@ -150,7 +155,7 @@ const transformChartSeries = (data) => {
   const firstActivity = dataClone.activities[activityIdList[0]]
   const valueKey = Object.keys(firstActivity).find((key) => key !== 'activity_name')
   if (!valueKey) {
-    console.error('api result key error');
+    console.error('api result key error')
     apiSuccess.value = false
     messageKey.value = 'chartFailed'
     return
@@ -179,6 +184,8 @@ const transformChartSeries = (data) => {
       })
     }
   })
+
+  chartOptions.chart.marginLeft = chartApiParams.cut_type === 'week' ? 80 : 51
 
   Object.keys(dataSet).forEach((item) => {
     chartOptions.series.push(dataSet[item])
