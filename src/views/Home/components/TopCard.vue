@@ -118,7 +118,8 @@ const transformSmallBoxData = (data) => {
         FormatNumber(data[ele].week_avg, currentSign),
         'text-danger font-black'
       )
-      topCardData.value[idx].growth = FormatNumber(data[ele].growth)
+      topCardData.value[idx].growth =
+        data[ele].growth === null ? '--' : FormatNumber(data[ele].growth)
       return
     }
 
@@ -131,7 +132,8 @@ const transformSmallBoxData = (data) => {
         FormatNumber(data[ele].week_avg, currentSign),
         'text-danger font-black'
       )
-      topCardData.value[idx].growth = FormatNumber(data[ele].growth)
+      topCardData.value[idx].growth =
+        data[ele].growth === null ? '--' : FormatNumber(data[ele].growth)
       return
     }
 

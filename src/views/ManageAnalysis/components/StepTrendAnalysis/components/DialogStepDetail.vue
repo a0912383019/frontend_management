@@ -4,11 +4,7 @@ import { ref, reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { apiQueryStepDetail } from '@/api/manageAnalysis.js'
-import {
-  addNumberColor,
-  FormatNumber,
-  errorRespond
-} from '@/utils/commonUtils.js'
+import { addNumberColor, FormatNumber, errorRespond } from '@/utils/commonUtils.js'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import StepConfig from '@/components/StepConfig.vue'
@@ -112,9 +108,13 @@ const transform_step_detail_tbl = (data) => {
   const tempObj = {}
   const hallCurrencySign = globalStore.currencySign
   tempObj['bet_amount'] = FormatNumber(data.bet_amount, hallCurrencySign)
-  tempObj['bet_amount_percent'] = FormatNumber(data.bet_amount_percent) + ' %'
+  tempObj['bet_amount_percent'] =
+    data.bet_amount_percent === null ? '--' : FormatNumber(data.bet_amount_percent) + ' %'
   tempObj['payoff'] = addNumberColor(FormatNumber(data.payoff.toString(), hallCurrencySign))
-  tempObj['gross_percent'] = addNumberColor(FormatNumber(data.gross_percent.toString()) + '%')
+  tempObj['gross_percent'] =
+    data.gross_percent === null
+      ? '--'
+      : addNumberColor(FormatNumber(data.gross_percent.toString()) + '%')
   tableData.value = []
   tableData.value.push(tempObj)
 }
