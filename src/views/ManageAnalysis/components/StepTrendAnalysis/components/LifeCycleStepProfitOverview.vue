@@ -124,10 +124,10 @@ const transform_step_trend_analysis_overview_tbl = (data) => {
       FormatNumber(data[i].payoff.toString()),
       'cdp-text-candypink'
     ) //損益
-    tempObj['gross_percent'] = addNumberColor(
-      FormatNumber(data[i].gross_percent.toString()) + '%',
-      'cdp-text-candypink'
-    ) //獲利率
+    tempObj['gross_percent'] =
+      data[i].gross_percent === null
+        ? '--'
+        : addNumberColor(FormatNumber(data[i].gross_percent.toString()) + '%', 'cdp-text-candypink') //獲利率
     ary.push(tempObj)
   }
   tableData.value = []
