@@ -44,18 +44,10 @@ const queryActivityApi = async (api, apiObject) => {
   try {
     const result = await api({
       hall_name: activeHall.hall_code,
-      start_search_year: 2024,
-      start_search_month: 6,
-      start_search_week: 1,
-      start_date: chartApiParams.start_date,
-      end_search_year: 2024,
-      end_search_month: 9,
-      end_search_week: 1,
-      end_date: chartApiParams.end_date,
-      cut_type: chartApiParams.cut_type,
-      reward_flag: chartApiParams.reward_flag,
-      reward_date_flag: 0,
-      search_activity: chartApiParams.search_activity
+      analysis_date: chartApiParams.start_date + '~' + chartApiParams.end_date,
+      interval_type: chartApiParams.cut_type,
+      is_reward: chartApiParams.reward_flag,
+      activity_id_list: chartApiParams.search_activity
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -64,14 +56,13 @@ const queryActivityApi = async (api, apiObject) => {
         apiObject.result = result.data.result
       } else {
         apiObject.messageKey = 'noResult'
-        apiObject.apiSuccess = false
       }
     } else if (return_code === '0001') {
       apiObject.messageKey = 'noResult'
-      apiObject.apiSuccess = false
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
+      apiObject.messageKey = 'chartFailed'
       hasError = true
     }
     return hasError
@@ -79,11 +70,10 @@ const queryActivityApi = async (api, apiObject) => {
     hasError = true
     console.error(error)
     if (error.response.status === 403) {
-      apiObject.messageKey = 'noPermission' //更改message內容
-    } else if (error.response.status === 401) {
+      apiObject.messageKey = 'noPermission'
       globalStore.storeHandleApiError()
     } else {
-      apiObject.messageKey = 'queryFailed' //更改message內容
+      apiObject.messageKey = 'queryFailed'
     }
     return hasError
   }

@@ -3,3 +3,4 @@ include:
     ref: originmain
     file:
       - "/project-yml/bbin/Frontend_Vue.yml"
+      # - "/gke-helm-ci/project-yml/bbin/Frontend_Vue.yml"  # GKE

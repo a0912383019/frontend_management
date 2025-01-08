@@ -156,7 +156,10 @@ const transformWeekReport = (data) => {
       user_name: item.user_name,
       deposit_amount: FormatNumber(item.deposit_amount),
       bet_amount: FormatNumber(item.bet_amount),
-      compare_bet_amount_percent: FormatNumber(item.compare_bet_amount_percent),
+      compare_bet_amount_percent:
+        item.compare_bet_amount_percent === null
+          ? '--'
+          : FormatNumber(item.compare_bet_amount_percent),
       payoff: addNumberColor(FormatNumber(item.payoff)),
       offer_amount: FormatNumber(item.offer_amount),
       profit_loss: addNumberColor(FormatNumber(item.profit_loss)),

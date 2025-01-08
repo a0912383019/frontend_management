@@ -39,19 +39,19 @@ const queryActivityCompareDetail = async () => {
   try {
     const result = await apiQueryActivityCompareDetail({
       hall_name: activeHall.hall_code,
-      activity_id_hide: 88,
-      activity_detail_id_hide: currentChildAnalysis.id,
+      id: currentChildAnalysis.id,
+      is_reward: props.isRewarded,
       search_name: activityStore.searchChildDetailMemberName,
       length: apiLength.value,
-      draw: apiDraw.value,
-      start: apiStart.value
+      start: apiStart.value,
+      sort: 'before_commissionable_avg',
+      order: 'DESC'
     })
 
     const { return_code } = result.data.status
     if (return_code === '0000') {
-      if (result.data) {
-        tableData.value = []
-        transformCompareDetail(result.data)
+      if (result.data.result.length !== 0) {
+        transformCompareDetail(result.data.result)
         apiSuccess.value = true
       } else {
         messageKey.value = 'noResult'
@@ -79,33 +79,32 @@ const queryActivityCompareDetail = async () => {
 }
 
 const transformCompareDetail = (data) => {
-  tableTotal.value = data.not_reward_recordsTotal
+  tableTotal.value = data.records_total
   let result = []
-  data.data.not_reward.forEach((ele) => {
+  data.data.forEach((ele) => {
     result.push({
       member_name: {
         user_name: ele.user_name,
         user_id: ele.user_id
       },
-      comm_before: FormatNumber(ele.before_bet_amount_avg),
+      comm_before: FormatNumber(ele.before_commissionable_avg),
       comm_now: {
-        val: FormatNumber(ele.current_bet_amount_avg),
-        rate: FormatNumber(ele.current_bet_amount_rate)
+        val: FormatNumber(ele.activity_commissionable_avg),
+        rate: FormatNumber(ele.commissionable_rate_activity)
       },
       comm_after: {
-        val: FormatNumber(ele.after_bet_amount_avg),
-        rate: FormatNumber(ele.after_bet_amount_rate)
+        val: FormatNumber(ele.after_commissionable_avg),
+        rate: FormatNumber(ele.commissionable_rate_after)
       },
       profit_before: FormatNumber(ele.before_profit_avg),
       profit_now: {
-        val: FormatNumber(ele.current_profit_avg),
-        rate: FormatNumber(ele.current_profit_rate)
+        val: FormatNumber(ele.activity_profit_avg),
+        rate: FormatNumber(ele.profit_rate_activity)
       },
       profit_after: {
         val: FormatNumber(ele.after_profit_avg),
-        rate: FormatNumber(ele.after_profit_rate)
-      },
-      activity_detail_date: data.activity_detail_date
+        rate: FormatNumber(ele.profit_rate_after)
+      }
     })
   })
 
@@ -178,7 +177,6 @@ watch(
     <CurrencySignText class="text-right mb-5" />
     <el-table
       :data="tableData"
-      :default-sort="{ prop: 'comm_before', order: 'descending' }"
       @sort-change="handleTableSort"
       :border="false"
       :stripe="true"
@@ -452,26 +450,26 @@ watch(
       }
     }
   }
-    &.el-table--enable-row-hover {
-      .el-table__body {
-        tr {
-          &:hover {
-            > td.el-table__cell {
-              background-color: rgba(107, 207, 223, 0.05);
-            }
+  &.el-table--enable-row-hover {
+    .el-table__body {
+      tr {
+        &:hover {
+          > td.el-table__cell {
+            background-color: rgba(107, 207, 223, 0.05);
           }
         }
       }
     }
-    &.el-table--striped {
-      .el-table__body {
-        tr.el-table__row--striped {
-          td.el-table__cell {
-            background-color: #f4f6f9;
-          }
+  }
+  &.el-table--striped {
+    .el-table__body {
+      tr.el-table__row--striped {
+        td.el-table__cell {
+          background-color: #f4f6f9;
         }
       }
     }
+  }
   .step-button {
     min-width: 80px !important;
   }

@@ -4,7 +4,7 @@ import { computed } from 'vue'
 const props = defineProps({
   percentData: {
     type: String,
-    default: '-'
+    default: '--'
   },
   hasColor: {
     type: Boolean,
@@ -28,7 +28,7 @@ const iconSizeClass = 'font-size-' + props.iconSize
 const fontSizeClass = 'font-size-' + props.fontSize
 const fontWeightClass = 'font-' + props.fontWeight
 const color = computed(() => {
-  if (!props.hasColor || props.percentData === '0' || props.percentData === '-') {
+  if (!props.hasColor || props.percentData === '0' || props.percentData === '--') {
     return 'cdp-text-light__slate__gray'
   } else if (props.hasColor && props.percentData.indexOf('-') !== -1) {
     return 'text-danger'
@@ -38,7 +38,7 @@ const color = computed(() => {
 })
 
 const icon = computed(() => {
-  if (props.percentData === '0') {
+  if (props.percentData === '0' || props.percentData === '--') {
     return 'fa-caret-left'
   } else if (props.percentData.indexOf('-') !== -1) {
     return 'fa-caret-down'
@@ -48,10 +48,10 @@ const icon = computed(() => {
 })
 </script>
 <template>
-  <span :class="color" v-if="percentData === '-'">
+  <span :class="color" v-if="percentData === '--'">
     <span :class="[fontSizeClass, fontWeightClass]">{{ percentData }}</span>
   </span>
-  <span class="flex items-center" :class="color" v-else>
+  <span :class="color" v-else>
     <font-awesome-icon class="mr-3" :class="iconSizeClass" :icon="icon" />
     <span :class="[fontSizeClass, fontWeightClass]">{{ percentData.replace('-', '') + '%' }}</span>
   </span>

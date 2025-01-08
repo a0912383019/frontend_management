@@ -153,7 +153,8 @@ const transformLifeCycleAnalysisOverviewTbl = (data) => {
       step: i,
       detail: 0
     } //本日人數
-    tempObj['people_percent'] = FormatNumber(result[i].people_percent) + ' %' //人數佔比
+    tempObj['people_percent'] =
+      result[i].people_percent === null ? '--' : FormatNumber(result[i].people_percent) + ' %' //人數佔比
     //對比前日差異
     tempObj['diff_pre_day'] = {
       class: '',

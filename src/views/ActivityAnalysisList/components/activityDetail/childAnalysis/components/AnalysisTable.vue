@@ -159,8 +159,9 @@ const queryActivityCompareOverview = async () => {
   try {
     const result = await apiQueryActivityCompareOverview({
       hall_name: activeHall.hall_code,
-      activity_id_hide: 88,
-      activity_detail_id_hide: currentChildAnalysis.id
+      activity_id_hide: 67,
+      // activity_detail_id_hide: currentChildAnalysis.id
+      activity_detail_id_hide: 1
     })
 
     const { return_code } = result.data.status
@@ -245,12 +246,12 @@ const transformPerformance = (data) => {
         .map((date) => dayjs(date).format(t('date.format_date_rule')))
         .join(' ~ '),
       date_count: t('activity_analysis.total_day_num', { day_num: dataObj.day_diff }),
-      deposit_day_avg: dataObj.commissionable_avg,
-      rate: FormatNumber('-2000923'),
-      commissionable_day_avg: dataObj.commissionable_avg,
-      profit_day_avg: dataObj.commissionable_avg,
-      bonus_day_avg: dataObj.commissionable_avg,
-      hall_profit_day_avg: dataObj.commissionable_avg
+      deposit_day_avg: FormatNumber(dataObj.commissionable_avg),
+      rate: FormatNumber('-2000923.3332'),
+      commissionable_day_avg: FormatNumber(dataObj.commissionable_avg),
+      profit_day_avg: FormatNumber(dataObj.commissionable_avg),
+      bonus_day_avg: FormatNumber(dataObj.commissionable_avg),
+      hall_profit_day_avg: FormatNumber(dataObj.commissionable_avg)
     }
 
     result.push(tempObj)

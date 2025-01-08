@@ -97,11 +97,9 @@ const organizeActivityDatail = () => {
   let subDetails = []
   subDetails = subActivities.value.map((ele) => {
     return {
-      end_date: '2024-11-01',
       name: ele.name,
       offer_id: ele.offer_id,
-      original_id: ele.original_id,
-      start_date: '2024-01-01'
+      original_id: ele.original_id
     }
   })
 

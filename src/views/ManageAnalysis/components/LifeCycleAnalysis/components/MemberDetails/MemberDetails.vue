@@ -322,8 +322,6 @@ defineExpose({ query_life_cycle_analysis_detail_tbl, tableGoToFirstPage })
   justify-content: space-between;
 }
 .history-button {
-  min-width: 80px !important;
-  width: 80px !important;
-  width: 100%;
+  min-width: 70px !important;
 }
 </style>

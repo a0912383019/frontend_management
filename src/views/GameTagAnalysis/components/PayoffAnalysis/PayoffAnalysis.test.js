@@ -36,116 +36,6 @@ describe('PayoffAnalysis', () => {
         },
         result: [
           {
-            payoff: '-3978691.1500',
-            lobby_name: 'AG視訊',
-            game_name: '百家樂'
-          },
-          {
-            payoff: '-2991161.3100',
-            lobby_name: 'BB視訊',
-            game_name: '百家樂'
-          },
-          {
-            payoff: '-1766293.9115',
-            lobby_name: '波音體育',
-            game_name: '足球'
-          },
-          {
-            payoff: '-1763512.3000',
-            lobby_name: 'TP彩票',
-            game_name: '六合彩'
-          },
-          {
-            payoff: '-1588598.9100',
-            lobby_name: 'New BB體育',
-            game_name: '籃球'
-          },
-          {
-            payoff: '-1407948.9100',
-            lobby_name: 'BB棋牌',
-            game_name: '極速百家樂'
-          },
-          {
-            payoff: '-1362202.0000',
-            lobby_name: 'BB視訊',
-            game_name: '區塊鏈色碟'
-          },
-          {
-            payoff: '-1344428.9700',
-            lobby_name: '沙巴體育',
-            game_name: '足球'
-          },
-          {
-            payoff: '-1117070.2200',
-            lobby_name: 'New BB體育',
-            game_name: '複式過關'
-          },
-          {
-            payoff: '-1002646.8400',
-            lobby_name: 'BB視訊',
-            game_name: '色碟'
-          },
-          {
-            payoff: '-882855.3500',
-            lobby_name: 'New BB體育',
-            game_name: '足球'
-          },
-          {
-            payoff: '-797309.2400',
-            lobby_name: 'BB彩票',
-            game_name: 'BB 幸運熊貓'
-          },
-          {
-            payoff: '-794460.0000',
-            lobby_name: 'BB電子',
-            game_name: '秘境冒險'
-          },
-          {
-            payoff: '-630517.7900',
-            lobby_name: '皇冠體育',
-            game_name: '足球'
-          },
-          {
-            payoff: '-606276.0545',
-            lobby_name: '波音體育',
-            game_name: '籃球'
-          },
-          {
-            payoff: '-509877.0000',
-            lobby_name: 'BB視訊',
-            game_name: '輪盤'
-          },
-          {
-            payoff: '-441527.7400',
-            lobby_name: 'FC電子',
-            game_name: '大過年'
-          },
-          {
-            payoff: '-415095.8000',
-            lobby_name: 'New BB體育',
-            game_name: '排球'
-          },
-          {
-            payoff: '-402692.3000',
-            lobby_name: 'BB電子',
-            game_name: '糖果派對'
-          },
-          {
-            payoff: '-394818.9800',
-            lobby_name: 'New BB體育',
-            game_name: '網球'
-          }
-        ]
-      }
-    }
-    const result2 = {
-      data: {
-        status: {
-          return_code: '0000',
-          message: 'success'
-        },
-        result: [
-          {
             payoff: '2086853.7500',
             lobby_name: 'BB棋牌',
             game_name: '區塊鏈百家樂'
@@ -248,6 +138,117 @@ describe('PayoffAnalysis', () => {
         ]
       }
     }
+    const result2 = {
+      data: {
+        status: {
+          return_code: '0000',
+          message: 'success'
+        },
+        result: [
+          {
+            payoff: '-3978691.1500',
+            lobby_name: 'AG視訊',
+            game_name: '百家樂'
+          },
+          {
+            payoff: '-2991161.3100',
+            lobby_name: 'BB視訊',
+            game_name: '百家樂'
+          },
+          {
+            payoff: '-1766293.9115',
+            lobby_name: '波音體育',
+            game_name: '足球'
+          },
+          {
+            payoff: '-1763512.3000',
+            lobby_name: 'TP彩票',
+            game_name: '六合彩'
+          },
+          {
+            payoff: '-1588598.9100',
+            lobby_name: 'New BB體育',
+            game_name: '籃球'
+          },
+          {
+            payoff: '-1407948.9100',
+            lobby_name: 'BB棋牌',
+            game_name: '極速百家樂'
+          },
+          {
+            payoff: '-1362202.0000',
+            lobby_name: 'BB視訊',
+            game_name: '區塊鏈色碟'
+          },
+          {
+            payoff: '-1344428.9700',
+            lobby_name: '沙巴體育',
+            game_name: '足球'
+          },
+          {
+            payoff: '-1117070.2200',
+            lobby_name: 'New BB體育',
+            game_name: '複式過關'
+          },
+          {
+            payoff: '-1002646.8400',
+            lobby_name: 'BB視訊',
+            game_name: '色碟'
+          },
+          {
+            payoff: '-882855.3500',
+            lobby_name: 'New BB體育',
+            game_name: '足球'
+          },
+          {
+            payoff: '-797309.2400',
+            lobby_name: 'BB彩票',
+            game_name: 'BB 幸運熊貓'
+          },
+          {
+            payoff: '-794460.0000',
+            lobby_name: 'BB電子',
+            game_name: '秘境冒險'
+          },
+          {
+            payoff: '-630517.7900',
+            lobby_name: '皇冠體育',
+            game_name: '足球'
+          },
+          {
+            payoff: '-606276.0545',
+            lobby_name: '波音體育',
+            game_name: '籃球'
+          },
+          {
+            payoff: '-509877.0000',
+            lobby_name: 'BB視訊',
+            game_name: '輪盤'
+          },
+          {
+            payoff: '-441527.7400',
+            lobby_name: 'FC電子',
+            game_name: '大過年'
+          },
+          {
+            payoff: '-415095.8000',
+            lobby_name: 'New BB體育',
+            game_name: '排球'
+          },
+          {
+            payoff: '-402692.3000',
+            lobby_name: 'BB電子',
+            game_name: '糖果派對'
+          },
+          {
+            payoff: '-394818.9800',
+            lobby_name: 'New BB體育',
+            game_name: '網球'
+          }
+        ]
+      }
+    }
+
     const result3 = {
       data: {
         status: {
@@ -285,7 +286,8 @@ describe('PayoffAnalysis', () => {
     expect(wrapper.vm.chartOptions.chart.height).toBe(300)
     expect(wrapper.vm.chartOptions.chart.marginLeft).toBe(100)
 
-    const nCategories = [
+    await wrapper.vm.$nextTick()
+    const pCategories = [
       'BB棋牌-區塊鏈百家樂',
       'PG電子-尋寶黃金城',
       'BG視訊-百家樂',
@@ -307,8 +309,8 @@ describe('PayoffAnalysis', () => {
       'CC彩票-CC極速六合彩',
       'AG電子-YP刮刮卡'
     ]
-    expect(wrapper.vm.nChartOptions.xAxis.categories).toStrictEqual(nCategories)
-    const pCategories = [
+    expect(wrapper.vm.pChartOptions.xAxis.categories).toStrictEqual(pCategories)
+    const nCategories = [
       'AG視訊-百家樂',
       'BB視訊-百家樂',
       '波音體育-足球',
@@ -330,9 +332,9 @@ describe('PayoffAnalysis', () => {
       'BB電子-糖果派對',
       'New BB體育-網球'
     ]
-    expect(wrapper.vm.pChartOptions.xAxis.categories).toStrictEqual(pCategories)
+    expect(wrapper.vm.nChartOptions.xAxis.categories).toStrictEqual(nCategories)
 
-    const nSeriesData = [
+    const pSeriesData = [
       { y: 2086853.75, color: 'rgb(245,105,84,0.7)', pointWidth: 55 },
       { y: 658910.98, color: 'rgb(0,166,90,0.7)', pointWidth: 55 },
       { y: 537578.6, color: 'rgb(243,156,18,0.7)', pointWidth: 55 },
@@ -354,8 +356,8 @@ describe('PayoffAnalysis', () => {
       { y: 37800.57, color: 'rgb(88,140,140,0.7)', pointWidth: 55 },
       { y: 35500, color: 'rgb(51,102,51,0.7)', pointWidth: 55 }
     ]
-    expect(wrapper.vm.nChartOptions.series[0].data).toStrictEqual(nSeriesData)
-    const pSeriesData = [
+    expect(wrapper.vm.pChartOptions.series[0].data).toStrictEqual(pSeriesData)
+    const nSeriesData = [
       { y: -3978691.15, color: 'rgb(245,105,84,0.7)', pointWidth: 55 },
       { y: -2991161.31, color: 'rgb(0,166,90,0.7)', pointWidth: 55 },
       { y: -1766293.9115, color: 'rgb(243,156,18,0.7)', pointWidth: 55 },
@@ -377,7 +379,7 @@ describe('PayoffAnalysis', () => {
       { y: -402692.3, color: 'rgb(88,140,140,0.7)', pointWidth: 55 },
       { y: -394818.98, color: 'rgb(51,102,51,0.7)', pointWidth: 55 }
     ]
-    expect(wrapper.vm.pChartOptions.series[0].data).toStrictEqual(pSeriesData)
+    expect(wrapper.vm.nChartOptions.series[0].data).toStrictEqual(nSeriesData)
 
     //觸發watch
     wrapper.vm.i18nLocale = 'en'
