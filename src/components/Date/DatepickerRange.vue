@@ -169,10 +169,13 @@ const disabledDate = (day) => {
   }
 
   // 禁選條件二：日期小於最小日期 或 日期大於結束日
-  let activeDate = dayjs(day).format(t('date.format_date_rule'))
-  let minDate = dayjs(dateMinDate.value).format(t('date.format_date_rule'))
-  let endDate = dayjs(dateValueEndDate.value).format(t('date.format_date_rule'))
+  let activeDate = dayjs(day).format('YYYY/MM/DD')
+  let minDate = dayjs(dateMinDate.value).format('YYYY/MM/DD')
+  let endDate = dayjs(dateValueEndDate.value).format('YYYY/MM/DD')
 
+  console.log('a:',activeDate);
+  console.log('m:',minDate);
+  console.log('e:',endDate);
   if (activeDate < minDate || activeDate > endDate) {
     return true
   }
