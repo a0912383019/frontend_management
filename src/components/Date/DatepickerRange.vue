@@ -173,9 +173,6 @@ const disabledDate = (day) => {
   let minDate = dayjs(dateMinDate.value).format('YYYY/MM/DD')
   let endDate = dayjs(dateValueEndDate.value).format('YYYY/MM/DD')
 
-  console.log('a:',activeDate);
-  console.log('m:',minDate);
-  console.log('e:',endDate);
   if (activeDate < minDate || activeDate > endDate) {
     return true
   }
