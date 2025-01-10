@@ -14,8 +14,8 @@ import { roundDecimal } from '@/utils/commonUtils.js'
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-const deoositStore = useRegisteredNoDepositAnalysisStore()
-const { selectDepositValue, deatilRangeDate, ipDuplicateRange } = storeToRefs(deoositStore)
+const depositStore = useRegisteredNoDepositAnalysisStore()
+const { selectDepositValue, deatilRangeDate, ipDuplicateRange } = storeToRefs(depositStore)
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
 const { updateMemberData } = dialogMemberDetailStore
