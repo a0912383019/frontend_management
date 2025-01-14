@@ -16,7 +16,6 @@ const vipStore = useVipCommercialAnalysisStore()
 const { defaultVipTag, livelyAnalysisFilter } = vipStore
 
 const globalStore = useGlobalStore()
-const { activeHall } = globalStore
 const { systemConfigIsOk } = storeToRefs(globalStore)
 
 const emit = defineEmits(['update:filter'])

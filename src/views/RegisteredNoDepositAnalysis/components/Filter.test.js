@@ -13,8 +13,8 @@ describe('Filter', () => {
 
   beforeEach(() => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
-    const deoositStore = useRegisteredNoDepositAnalysisStore(pinia)
-    deoositStore.activeHall = {
+    const depositStore = useRegisteredNoDepositAnalysisStore(pinia)
+    depositStore.activeHall = {
       hall_name: 'esb',
       hall_code: 'esb'
     }
@@ -63,9 +63,9 @@ describe('Filter', () => {
     wrapper.vm.slideValue = '0;10'
     await wrapper.vm.handleSubmitClick()
 
-    expect(wrapper.vm.deoositStore.selectDepositValue).toBe(true)
-    expect(wrapper.vm.deoositStore.deatilRangeDate).toBe('2023-12-03 ~ 2023-12-09')
-    expect(wrapper.vm.deoositStore.ipDuplicateRange).toBe('0;10')
+    expect(wrapper.vm.depositStore.selectDepositValue).toBe(true)
+    expect(wrapper.vm.depositStore.deatilRangeDate).toBe('2023-12-03 ~ 2023-12-09')
+    expect(wrapper.vm.depositStore.ipDuplicateRange).toBe('0;10')
   })
 
   it('handleSliderInput', async () => {
