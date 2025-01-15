@@ -10,6 +10,11 @@ import AccessHall from '@/views/AdminUserList/components/AccessHall.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 describe('UserAccountSetting', () => {
   let wrapper = null
@@ -21,10 +26,10 @@ describe('UserAccountSetting', () => {
     email: 'wayne_wang@superbtech.asia',
     google_picture_url: 'https://picture',
     id: 2,
-    last_login_date: '2023-02-15 06:12:37',
+    last_login_date: '2023-02-15Z06:12:37-4:00',
     login_num: 6,
     name: 'AI-Wayne',
-    updated_time: '2024-08-08 22:44:28',
+    updated_time: '2024-08-08Z22:44:28-4:00',
     user_status: 0,
     user_type: 9
   }
@@ -77,7 +82,7 @@ describe('UserAccountSetting', () => {
     spyPut.mockResolvedValue(putResult)
 
     // 讓console.error不要洗版
-    vi.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => { })
 
     wrapper = shallowMount(UserAccountSetting, {
       global: {
@@ -169,14 +174,14 @@ describe('UserAccountSetting', () => {
     expect(wrapper.vm.userDetail.userStatus).toStrictEqual('啟用')
     expect(wrapper.vm.form.userStatus).toStrictEqual('0')
     expect(wrapper.vm.userDetail.createTime).toStrictEqual(
-      dayjs(userMockData.created_time).format('YYYY/MM/DD HH:mm:ss')
+      dayjs(userMockData.created_time).tz('Etc/GMT+4').format('YYYY/MM/DD HH:mm:ss')
     )
     expect(wrapper.vm.userDetail.loginNum).toStrictEqual(userMockData.login_num)
     expect(wrapper.vm.userDetail.updateTime).toStrictEqual(
-      dayjs(userMockData.updated_time).format('YYYY/MM/DD HH:mm:ss')
+      dayjs(userMockData.updated_time).tz('Etc/GMT+4').format('YYYY/MM/DD HH:mm:ss')
     )
     expect(wrapper.vm.userDetail.lastLoginTime).toStrictEqual(
-      dayjs(userMockData.last_login_date).format('YYYY/MM/DD HH:mm:ss')
+      dayjs(userMockData.last_login_date).tz('Etc/GMT+4').format('YYYY/MM/DD HH:mm:ss')
     )
     expect(wrapper.vm.userHalls).toStrictEqual(['esx', 'jg', 'bmw'])
     expect(wrapper.vm.startRender).toBeTruthy()
