@@ -446,7 +446,6 @@ const updateUserByAdmin = async () => {
 <style lang="scss" scoped>
 .cdp-dialog {
   height: 810px;
-
   &__component {
     padding: 20px;
     padding-bottom: 0;
@@ -454,37 +453,29 @@ const updateUserByAdmin = async () => {
     border-radius: 5px;
     border: 1px #e6eaf2 solid;
   }
-
   &__header {
     color: #fff;
   }
 }
-
 .underline {
   text-decoration: underline;
 }
-
 :deep(.el-input .el-input__wrapper) {
   box-shadow: none !important;
-
   .el-input__inner {
     cursor: auto;
   }
 }
-
 .confirm-box {
   width: 100%;
-
   td {
     font-size: 14px;
     color: #404040;
     font-weight: normal;
-
     div {
       word-break: break-all;
     }
   }
-
   .max-box {
     max-height: 300px;
     overflow: scroll;
