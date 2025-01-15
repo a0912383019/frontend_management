@@ -92,19 +92,19 @@ const tableColumns = computed(() => {
       prop: 'activity_day',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '9%',
       sortable: 'custom'
     },
     {
-      label: t('data_name.daily_avg_deposit'),
+      label: t('data_name.active_daily_avg_deposit'),
       prop: 'deposit_amount_avg',
       headerAlign: 'center',
       align: 'center',
-      minWidth: '10%',
+      minWidth: '11%',
       sortable: 'custom'
     },
     {
-      label: t('data_name.daily_avg_bet_amount'),
+      label: t('data_name.active_daily_avg_bet_amount'),
       prop: 'bet_amount_avg',
       headerAlign: 'center',
       align: 'center',
@@ -112,7 +112,7 @@ const tableColumns = computed(() => {
       sortable: 'custom'
     },
     {
-      label: t('data_name.daily_avg_payoff'),
+      label: t('data_name.active_daily_avg_payoff'),
       prop: 'payoff_avg',
       headerAlign: 'center',
       align: 'center',
