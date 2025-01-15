@@ -22,7 +22,7 @@ describe('UserAccountSetting', () => {
   let spyPut
   const userMockData = {
     access_hall_name: 'esx,jg,bmw',
-    created_time: '2023-01-17 03:09:30',
+    created_time: '2023-01-17Z03:09:30-4:00',
     email: 'wayne_wang@superbtech.asia',
     google_picture_url: 'https://picture',
     id: 2,
