@@ -134,11 +134,11 @@ const transformUserData = (data) => {
     .format(t('date.format_datetime_rule'))
   userDetail.loginNum = data.login_num
   userDetail.updateTime =
-    data.updated_time === null
+    data.updated_time === ''
       ? '-'
       : dayjs(data.updated_time).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
   userDetail.lastLoginTime =
-    data.last_login_date === null
+    data.last_login_date === ''
       ? '-'
       : dayjs(data.last_login_date).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
 
