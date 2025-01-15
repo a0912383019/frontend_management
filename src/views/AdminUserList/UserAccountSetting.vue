@@ -8,6 +8,11 @@ import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import { dayjs, ElNotification } from 'element-plus'
 import { errorRespond } from '@/utils/commonUtils'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const { t } = useI18n()
 
@@ -124,16 +129,18 @@ const transformUserData = (data) => {
   userDetail.userType = userTypeConfig[data.user_type]
   form.userStatus = data.user_status.toString()
   userDetail.userStatus = userStatusConfig[data.user_status]
-  userDetail.createTime = dayjs(data.created_time).format(t('date.format_datetime_rule'))
+  userDetail.createTime = dayjs(data.created_time)
+    .tz('Etc/GMT+4')
+    .format(t('date.format_datetime_rule'))
   userDetail.loginNum = data.login_num
   userDetail.updateTime =
     data.updated_time === null
       ? '-'
-      : dayjs(data.updated_time).format(t('date.format_datetime_rule'))
+      : dayjs(data.updated_time).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
   userDetail.lastLoginTime =
     data.last_login_date === null
       ? '-'
-      : dayjs(data.last_login_date).format(t('date.format_datetime_rule'))
+      : dayjs(data.last_login_date).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
 
   userHalls.value = data.access_hall_name.split(',')
   startRender.value = true
@@ -439,6 +446,7 @@ const updateUserByAdmin = async () => {
 <style lang="scss" scoped>
 .cdp-dialog {
   height: 810px;
+
   &__component {
     padding: 20px;
     padding-bottom: 0;
@@ -446,29 +454,37 @@ const updateUserByAdmin = async () => {
     border-radius: 5px;
     border: 1px #e6eaf2 solid;
   }
+
   &__header {
     color: #fff;
   }
 }
+
 .underline {
   text-decoration: underline;
 }
+
 :deep(.el-input .el-input__wrapper) {
   box-shadow: none !important;
+
   .el-input__inner {
     cursor: auto;
   }
 }
+
 .confirm-box {
   width: 100%;
+
   td {
     font-size: 14px;
     color: #404040;
     font-weight: normal;
+
     div {
       word-break: break-all;
     }
   }
+
   .max-box {
     max-height: 300px;
     overflow: scroll;
