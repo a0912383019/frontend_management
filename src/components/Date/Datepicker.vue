@@ -71,9 +71,9 @@ const handleCalendarChange = (val) => {
 }
 
 const disabledDate = (time) => {
-  let day = dayjs(time).format(t('date.format_date_rule'))
-  let minDate = dayjs(dateMinDate.value).format(t('date.format_date_rule'))
-  let maxDate = dayjs(dateMaxDate.value).format(t('date.format_date_rule'))
+  let day = dayjs(time).format('YYYY/MM/DD')
+  let minDate = dayjs(dateMinDate.value).format('YYYY/MM/DD')
+  let maxDate = dayjs(dateMaxDate.value).format('YYYY/MM/DD')
   if (day > maxDate || day < minDate) {
     return true
   }

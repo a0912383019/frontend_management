@@ -8,6 +8,11 @@ import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import { dayjs, ElNotification } from 'element-plus'
 import { errorRespond } from '@/utils/commonUtils'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const { t } = useI18n()
 
@@ -124,16 +129,18 @@ const transformUserData = (data) => {
   userDetail.userType = userTypeConfig[data.user_type]
   form.userStatus = data.user_status.toString()
   userDetail.userStatus = userStatusConfig[data.user_status]
-  userDetail.createTime = dayjs(data.created_time).format(t('date.format_datetime_rule'))
+  userDetail.createTime = dayjs(data.created_time)
+    .tz('Etc/GMT+4')
+    .format(t('date.format_datetime_rule'))
   userDetail.loginNum = data.login_num
   userDetail.updateTime =
-    data.updated_time === null
+    data.updated_time === ''
       ? '-'
-      : dayjs(data.updated_time).format(t('date.format_datetime_rule'))
+      : dayjs(data.updated_time).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
   userDetail.lastLoginTime =
-    data.last_login_date === null
+    data.last_login_date === ''
       ? '-'
-      : dayjs(data.last_login_date).format(t('date.format_datetime_rule'))
+      : dayjs(data.last_login_date).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
 
   userHalls.value = data.access_hall_name.split(',')
   startRender.value = true

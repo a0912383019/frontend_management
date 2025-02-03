@@ -130,17 +130,17 @@ onMounted(() => {
 </script>
 <template>
   <ActivityChart
-    :title="$t('activity_analysis.activity_commissionable')"
+    :title="$t('rank_analysis.commissionable')"
     :apiObject="apiObjectCommissionable"
     sign="¥"
     :signPositionFront="true"
   />
   <ActivityChart
-    :title="$t('activity_analysis.activity_active_people')"
+    :title="$t('data_name.active_member')"
     :apiObject="apiObjectReal"
   />
   <ActivityChart
-    :title="$t('activity_analysis.activity_net_profit')"
+    :title="$t('rank_analysis.total_profit_loss')"
     :apiObject="apiObjectProfit"
     sign="¥"
     :signPositionFront="true"

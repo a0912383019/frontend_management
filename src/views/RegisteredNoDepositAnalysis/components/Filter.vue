@@ -8,7 +8,7 @@ import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 
 const { t, locale: i18nLocale } = useI18n()
 
-const deoositStore = useRegisteredNoDepositAnalysisStore()
+const depositStore = useRegisteredNoDepositAnalysisStore()
 
 //popover 開啟狀態
 const popoverVisible = ref(true)
@@ -19,7 +19,7 @@ const emit = defineEmits(['update:filter-submit'])
 const updatedTimeDate = ref('')
 
 // 目前存款狀態選取值
-const selectDepositValue = ref(deoositStore.selectDepositValue) // 預設 all
+const selectDepositValue = ref(depositStore.selectDepositValue) // 預設 all
 // 目前存款狀態 options
 const selectDepositOptions = computed(() => {
   return [
@@ -44,11 +44,11 @@ const handleSubmitClick = () => {
   popoverVisible.value = false
 
   // 目前存款狀態
-  deoositStore.selectDepositValue = selectDepositValue.value
+  depositStore.selectDepositValue = selectDepositValue.value
   // 更新時間
-  deoositStore.deatilRangeDate = updatedTimeDate.value
+  depositStore.deatilRangeDate = updatedTimeDate.value
   // IP重複次數
-  deoositStore.ipDuplicateRange = slideVlaue.value.join(';')
+  depositStore.ipDuplicateRange = slideVlaue.value.join(';')
 
   emit('update:filter-submit')
   closePopover()
@@ -61,7 +61,7 @@ const closePopover = () => {
   popover.value.hide()
 }
 
-const slideVlaue = ref(deoositStore.slideVlaue) // 預設[0, 10]
+const slideVlaue = ref(depositStore.slideVlaue) // 預設[0, 10]
 const marks = reactive({
   0: '0',
   10: '10',
