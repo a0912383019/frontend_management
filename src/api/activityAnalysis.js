@@ -41,7 +41,7 @@ export const apiExportActivityList = (params) => {
   )
 }
 
-// 總和_活動中-淨利
+// 總和_淨利
 export const apiQueryTotalActiveProfit = (params) => {
   const {
     hall_name,
@@ -75,245 +75,63 @@ export const apiQueryTotalActiveProfit = (params) => {
   })
 }
 
-// 總和_活動中-實動人數
+// 總和_實動人數
 export const apiQueryTotalActiveReal = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_total_real_activate', {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
+  const { hall_name, activity_id_list, analysis_date, interval_type, is_reward } = params
+  return axiosGoInstance.get('/api/auth/activity/total/active_people', {
+    params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward }
   })
 }
 
-// 總和_活動中-有效投注
+// 總和_有效投注
 export const apiQueryTotalActiveCommissionable = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_total_commissionable', {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
+  const { hall_name, activity_id_list, analysis_date, interval_type, is_reward } = params
+  return axiosGoInstance.get('/api/auth/activity/total/commissionable', {
+    params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward }
   })
 }
 
-// 成長差額_活動中-淨利
+// 成長差額_淨利
 export const apiQueryGrowthGapActiveProfit = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_profit_loss_growth_diff', {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
+  const { hall_name, activity_id_list, analysis_date, interval_type, is_reward } = params
+  return axiosGoInstance.get('/api/auth/activity/growth_diff/profit_loss', {
+    params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward }
   })
 }
 
-// 成長差額_活動中-實動人數
+// 成長差額_實動人數
 export const apiQueryGrowthGapActiveReal = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_real_activate_growth_diff', {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
+  const { hall_name, activity_id_list, analysis_date, interval_type, is_reward } = params
+  return axiosGoInstance.get('/api/auth/activity/growth_diff/active_people', {
+    params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward }
   })
 }
 
-// 成長差額_活動中-有效投注
+// 成長差額_有效投注
 export const apiQueryGrowthGapActiveCommissionable = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_commissionable_growth_diff', {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
+  const { hall_name, activity_id_list, analysis_date, interval_type, is_reward } = params
+  return axiosGoInstance.get('/api/auth/activity/growth_diff/commissionable', {
+    params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward }
   })
 }
 
-// 成長率_活動中-淨利
+// 成長率_淨利
 export const apiQueryGrowthRateActiveProfit = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_profit_loss_growth_rate', {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
+  const { hall_name, activity_id_list, analysis_date, interval_type, is_reward } = params
+  return axiosGoInstance.get('/api/auth/activity/growth_rate/profit_loss', {
+    params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward }
   })
 }
 
-// 成長率_活動中-實動人數
+// 成長率_實動人數
 export const apiQueryGrowthRateActiveReal = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_real_activate_growth_rate', {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
+  const { hall_name, activity_id_list, analysis_date, interval_type, is_reward } = params
+  return axiosGoInstance.get('/api/auth/activity/growth_rate/active_people', {
+    params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward }
   })
 }
 
-// 成長率_活動中-有效投注
+// 成長率_有效投注
 export const apiQueryGrowthRateActiveCommissionable = (params) => {
   const { hall_name, activity_id_list, analysis_date, interval_type, is_reward } = params
   return axiosGoInstance.get('/api/auth/activity/growth_rate/commissionable', {
@@ -370,11 +188,9 @@ export const apiQueryActivityCompareOverview = (params) => {
 }
 
 export const apiQueryActivityTagsRank = (params) => {
-  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_tags_rank', {
-    hall_name,
-    activity_id_hide,
-    activity_detail_id_hide
+  const { hall_name, id, is_reward } = params
+  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/tags_rank`, {
+    params: { hall_name, is_reward }
   })
 }
 
