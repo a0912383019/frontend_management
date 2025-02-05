@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive, watch } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryLatestLifeCycleSummary } from '@/api/home.js'
 import { useGlobalStore } from '@/stores/global.js'
@@ -19,7 +19,7 @@ import { useDateStore } from '@/stores/dateConfig.js'
 
 const { LAST_DATE } = useDateStore()
 
-const { t, locale: i18nLocale } = useI18n()
+const { t } = useI18n()
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore

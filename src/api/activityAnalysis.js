@@ -43,35 +43,9 @@ export const apiExportActivityList = (params) => {
 
 // 總和_淨利
 export const apiQueryTotalActiveProfit = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_total_profit_loss', {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
+  const { hall_name, activity_id_list, analysis_date, interval_type, is_reward } = params
+  return axiosGoInstance.get('/api/auth/activity/total/profit_loss', {
+    params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward }
   })
 }
 
