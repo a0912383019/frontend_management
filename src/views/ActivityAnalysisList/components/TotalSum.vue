@@ -3,11 +3,7 @@ import { reactive, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import ActivityChart from '@/views/ActivityAnalysisList/components/ActivityChart.vue'
-import {
-  apiQueryTotalActiveCommissionable,
-  apiQueryTotalActiveReal,
-  apiQueryTotalActiveProfit
-} from '@/api'
+import { apiQueryTotalCommissionable, apiQueryTotalReal, apiQueryTotalProfit } from '@/api'
 import { ElNotification } from 'element-plus'
 import { errorRespond } from '@/utils/commonUtils.js'
 
@@ -57,13 +53,16 @@ const queryActivityApi = async (api, apiObject) => {
       } else {
         apiObject.messageKey = 'noResult'
       }
-    } else if (return_code === '0001') {
-      apiObject.messageKey = 'noResult'
     } else {
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-      apiObject.messageKey = 'chartFailed'
-      hasError = true
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        apiObject.messageKey = 'noResult'
+      } else {
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+        apiObject.messageKey = 'chartFailed'
+        hasError = true
+      }
     }
     return hasError
   } catch (error) {
@@ -73,7 +72,7 @@ const queryActivityApi = async (api, apiObject) => {
       apiObject.messageKey = 'noPermission'
       globalStore.storeHandleApiError()
     } else {
-      apiObject.messageKey = 'queryFailed'
+      apiObject.messageKey = 'chartFailed'
     }
     return hasError
   }
@@ -81,9 +80,9 @@ const queryActivityApi = async (api, apiObject) => {
 
 const queryCharts = () => {
   let canvasPromises = [
-    queryActivityApi(apiQueryTotalActiveCommissionable, apiObjectCommissionable),
-    queryActivityApi(apiQueryTotalActiveReal, apiObjectReal),
-    queryActivityApi(apiQueryTotalActiveProfit, apiObjectProfit)
+    queryActivityApi(apiQueryTotalCommissionable, apiObjectCommissionable),
+    queryActivityApi(apiQueryTotalReal, apiObjectReal),
+    queryActivityApi(apiQueryTotalProfit, apiObjectProfit)
   ]
 
   Promise.allSettled(canvasPromises).then((results) => {
@@ -110,6 +109,7 @@ const queryCharts = () => {
     }
   })
 }
+
 watch([() => activityStore.chartFiltered, () => activityStore.currentTabs], () => {
   if (
     activityStore.chartFilteredArr[activityStore.currentTabs].status !==
@@ -135,10 +135,7 @@ onMounted(() => {
     sign="¥"
     :signPositionFront="true"
   />
-  <ActivityChart
-    :title="$t('data_name.active_member')"
-    :apiObject="apiObjectReal"
-  />
+  <ActivityChart :title="$t('data_name.active_member')" :apiObject="apiObjectReal" />
   <ActivityChart
     :title="$t('rank_analysis.total_profit_loss')"
     :apiObject="apiObjectProfit"

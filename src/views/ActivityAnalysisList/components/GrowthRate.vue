@@ -4,9 +4,9 @@ import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
 import ActivityChart from '@/views/ActivityAnalysisList/components/ActivityChart.vue'
 import {
-  apiQueryGrowthRateActiveCommissionable,
-  apiQueryGrowthRateActiveReal,
-  apiQueryGrowthRateActiveProfit
+  apiQueryGrowthRateCommissionable,
+  apiQueryGrowthRateReal,
+  apiQueryGrowthRateProfit
 } from '@/api'
 import { ElNotification } from 'element-plus'
 import { errorRespond } from '@/utils/commonUtils.js'
@@ -59,13 +59,16 @@ const queryActivityApi = async (api, apiObject) => {
       } else {
         apiObject.messageKey = 'noResult'
       }
-    } else if (return_code === '0001') {
-      apiObject.messageKey = 'noResult'
     } else {
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-      apiObject.messageKey = 'chartFailed'
-      hasError = true
+      const { error_code } = result.data.status
+      if (error_code === '210400000') {
+        apiObject.messageKey = 'noResult'
+      } else {
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+        apiObject.messageKey = 'chartFailed'
+        hasError = true
+      }
     }
     return hasError
   } catch (error) {
@@ -76,7 +79,7 @@ const queryActivityApi = async (api, apiObject) => {
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else {
-      apiObject.messageKey = 'queryFailed'
+      apiObject.messageKey = 'chartFailed'
     }
     return hasError
   }
@@ -84,9 +87,9 @@ const queryActivityApi = async (api, apiObject) => {
 
 const queryCharts = () => {
   let canvasPromises = [
-    queryActivityApi(apiQueryGrowthRateActiveCommissionable, apiObjectCommissionable),
-    queryActivityApi(apiQueryGrowthRateActiveReal, apiObjectReal),
-    queryActivityApi(apiQueryGrowthRateActiveProfit, apiObjectProfit)
+    queryActivityApi(apiQueryGrowthRateCommissionable, apiObjectCommissionable),
+    queryActivityApi(apiQueryGrowthRateReal, apiObjectReal),
+    queryActivityApi(apiQueryGrowthRateProfit, apiObjectProfit)
   ]
 
   Promise.allSettled(canvasPromises).then((results) => {
@@ -138,11 +141,7 @@ onMounted(() => {
     :apiObject="apiObjectCommissionable"
     sign="%"
   />
-  <ActivityChart
-    :title="$t('data_name.active_member')"
-    :apiObject="apiObjectReal"
-    sign="%"
-  />
+  <ActivityChart :title="$t('data_name.active_member')" :apiObject="apiObjectReal" sign="%" />
   <ActivityChart
     :title="$t('rank_analysis.total_profit_loss')"
     :apiObject="apiObjectProfit"

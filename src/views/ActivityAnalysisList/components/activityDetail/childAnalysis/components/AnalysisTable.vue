@@ -314,8 +314,6 @@ onMounted(() => {
         <template #data_duration="scope">
           <div>
             {{ scope.row.data_duration }}
-            <br />
-            {{ scope.row.date_count }}
           </div>
         </template>
         <template #deposit_day_avg="scope">
@@ -435,8 +433,6 @@ onMounted(() => {
         <template #data_duration="scope">
           <div>
             {{ scope.row.data_duration }}
-            <br />
-            {{ scope.row.date_count }}
           </div>
         </template>
         <template #deposit_day_avg="scope">

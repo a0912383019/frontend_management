@@ -3,7 +3,7 @@ import { onMounted, ref, computed, reactive, watch } from 'vue'
 import { useActivityAnalysisStore, useGlobalStore, useDialogMemberDetailStore } from '@/stores'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { apiQueryActivityCompareDetail } from '@/api'
-import { errorRespond, FormatNumber } from '@/utils/commonUtils.js'
+import { errorRespond, FormatNumber, extractNumberValue } from '@/utils/commonUtils.js'
 import CurrencySignText from '@/components/CurrencySignText.vue'
 import CustomPagination from '@/components/Pagination/Pagination.vue'
 import TotalPagination from '@/components/Pagination/TotalPagination.vue'
@@ -32,6 +32,9 @@ const tableData = ref([])
 const apiSuccess = ref(false)
 const messageKey = ref('loading')
 
+const sortCol = ref('before_commissionable_avg')
+const defaultOrder = ref('descending')
+
 const queryActivityCompareDetail = async () => {
   apiSuccess.value = false
   messageKey.value = 'loading'
@@ -44,8 +47,8 @@ const queryActivityCompareDetail = async () => {
       search_name: activityStore.searchChildDetailMemberName,
       length: apiLength.value,
       start: apiStart.value,
-      sort: 'before_commissionable_avg',
-      order: 'DESC'
+      sort: sortCol.value,
+      order: defaultOrder.value === 'descending' ? 'DESC' : 'ASC'
     })
 
     const { return_code } = result.data.status
@@ -53,6 +56,7 @@ const queryActivityCompareDetail = async () => {
       if (result.data.result.length !== 0) {
         transformCompareDetail(result.data.result)
         apiSuccess.value = true
+        sortTableData(sortCol.value, defaultOrder.value)
       } else {
         messageKey.value = 'noResult'
       }
@@ -69,11 +73,13 @@ const queryActivityCompareDetail = async () => {
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      messageKey.value = 'noPermission' // 更改message內容
+      messageKey.value = 'noPermission'
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
+    } else if (error.response.status === 404) {
+      messageKey.value = 'noResult'
     } else {
-      messageKey.value = 'queryFailed' // 更改message內容
+      messageKey.value = 'queryFailed'
     }
   }
 }
@@ -87,21 +93,21 @@ const transformCompareDetail = (data) => {
         user_name: ele.user_name,
         user_id: ele.user_id
       },
-      comm_before: FormatNumber(ele.before_commissionable_avg),
-      comm_now: {
+      before_commissionable_avg: FormatNumber(ele.before_commissionable_avg),
+      activity_commissionable_avg: {
         val: FormatNumber(ele.activity_commissionable_avg),
         rate: FormatNumber(ele.commissionable_rate_activity)
       },
-      comm_after: {
+      after_commissionable_avg: {
         val: FormatNumber(ele.after_commissionable_avg),
         rate: FormatNumber(ele.commissionable_rate_after)
       },
-      profit_before: FormatNumber(ele.before_profit_avg),
-      profit_now: {
+      before_profit_avg: FormatNumber(ele.before_profit_avg),
+      activity_profit_avg: {
         val: FormatNumber(ele.activity_profit_avg),
         rate: FormatNumber(ele.profit_rate_activity)
       },
-      profit_after: {
+      after_profit_avg: {
         val: FormatNumber(ele.after_profit_avg),
         rate: FormatNumber(ele.profit_rate_after)
       }
@@ -118,7 +124,7 @@ const apiLength = ref(20) // 每頁顯示筆數
 // 頁碼相關
 const page = reactive({
   currentPage: 1,
-  pageSize: 20
+  pageSize: apiLength.value
 })
 
 const updateCurrentPage = (val) => {
@@ -141,8 +147,27 @@ const pageTableTotal = computed(() => {
   }
 })
 
-const handleTableSort = (data) => {
-  console.log(data)
+const handleTableSort = ({ prop, order }) => {
+  sortCol.value = prop
+  defaultOrder.value = order
+  queryActivityCompareDetail()
+}
+
+// api 就會排序，但這邊還是再手動排一次
+function sortTableData(prop, order) {
+  return tableData.value.sort((a, b) => {
+    let valueA = extractNumberValue(a[prop].val)
+    let valueB = extractNumberValue(b[prop].val)
+    if (prop === 'before_commissionable_avg' || prop === 'before_profit_avg') {
+      valueA = extractNumberValue(a[prop])
+      valueB = extractNumberValue(b[prop])
+    }
+
+    if (isNaN(valueA)) return 1
+    if (isNaN(valueB)) return -1
+
+    return order === 'descending' ? valueB - valueA : valueA - valueB
+  })
 }
 
 const chartShow = ref(false)
@@ -167,6 +192,7 @@ onMounted(() => {
 watch(
   () => activityStore.isChildDetailListFiltered,
   () => {
+    apiStart.value = 0
     queryActivityCompareDetail()
   }
 )
@@ -178,6 +204,7 @@ watch(
     <el-table
       :data="tableData"
       @sort-change="handleTableSort"
+      :default-sort="{ prop: sortCol, order: defaultOrder }"
       :border="false"
       :stripe="true"
       class="activity-detail-table"
@@ -198,27 +225,27 @@ watch(
       </el-table-column>
       <el-table-column :label="$t('activity_analysis.daily_comm')" header-align="center">
         <el-table-column
-          prop="comm_before"
+          prop="before_commissionable_avg"
           :label="$t('activity_analysis.activity_before')"
-          sortable
+          sortable="custom"
           min-width="14%"
           align="center"
           header-align="center"
         />
         <el-table-column
-          prop="comm_now"
+          prop="activity_commissionable_avg"
           :label="$t('activity_analysis.activity_now')"
-          sortable
+          sortable="custom"
           min-width="13%"
           align="center"
           header-align="center"
         >
           <template #default="scope">
             <div>
-              {{ scope.row.comm_now.val }}
+              {{ scope.row.activity_commissionable_avg.val }}
               <br />
               <PercentWithIcon
-                :percentData="scope.row.comm_now.rate"
+                :percentData="scope.row.activity_commissionable_avg.rate"
                 iconSize="12"
                 fontSize="14"
                 fontWeight="normal"
@@ -227,19 +254,19 @@ watch(
           </template>
         </el-table-column>
         <el-table-column
-          prop="comm_after"
+          prop="after_commissionable_avg"
           :label="$t('activity_analysis.activity_after')"
-          sortable
+          sortable="custom"
           min-width="13%"
           align="center"
           header-align="center"
         >
           <template #default="scope">
             <div>
-              {{ scope.row.comm_after.val }}
+              {{ scope.row.after_commissionable_avg.val }}
               <br />
               <PercentWithIcon
-                :percentData="scope.row.comm_after.rate"
+                :percentData="scope.row.after_commissionable_avg.rate"
                 iconSize="12"
                 fontSize="14"
                 fontWeight="normal"
@@ -250,35 +277,37 @@ watch(
       </el-table-column>
       <el-table-column :label="$t('activity_analysis.daily_profit')" header-align="center">
         <el-table-column
-          prop="profit_before"
+          prop="before_profit_avg"
           :label="$t('activity_analysis.activity_before')"
-          sortable
+          sortable="custom"
           min-width="14%"
           align="center"
           header-align="center"
         >
           <template #default="scope">
-            <span :class="{ 'text-danger': scope.row.profit_before.indexOf('-') !== -1 }">
-              {{ scope.row.profit_before }}
+            <span :class="{ 'text-danger': scope.row.before_profit_avg.indexOf('-') !== -1 }">
+              {{ scope.row.before_profit_avg }}
             </span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="profit_now"
+          prop="activity_profit_avg"
           :label="$t('activity_analysis.activity_now')"
-          sortable
+          sortable="custom"
           min-width="13%"
           align="center"
           header-align="center"
         >
           <template #default="scope">
             <div>
-              <span :class="{ 'text-danger': scope.row.profit_now.val.indexOf('-') !== -1 }">
-                {{ scope.row.profit_now.val }}
+              <span
+                :class="{ 'text-danger': scope.row.activity_profit_avg.val.indexOf('-') !== -1 }"
+              >
+                {{ scope.row.activity_profit_avg.val }}
               </span>
               <br />
               <PercentWithIcon
-                :percentData="scope.row.profit_now.rate"
+                :percentData="scope.row.activity_profit_avg.rate"
                 iconSize="12"
                 fontSize="14"
                 fontWeight="normal"
@@ -287,21 +316,21 @@ watch(
           </template>
         </el-table-column>
         <el-table-column
-          prop="profit_after"
+          prop="after_profit_avg"
           :label="$t('activity_analysis.activity_after')"
-          sortable
+          sortable="custom"
           min-width="13%"
           align="center"
           header-align="center"
         >
           <template #default="scope">
             <div>
-              <span :class="{ 'text-danger': scope.row.profit_after.val.indexOf('-') !== -1 }">
-                {{ scope.row.profit_after.val }}
+              <span :class="{ 'text-danger': scope.row.after_profit_avg.val.indexOf('-') !== -1 }">
+                {{ scope.row.after_profit_avg.val }}
               </span>
               <br />
               <PercentWithIcon
-                :percentData="scope.row.profit_after.rate"
+                :percentData="scope.row.after_profit_avg.rate"
                 iconSize="12"
                 fontSize="14"
                 fontWeight="normal"
