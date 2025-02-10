@@ -25,7 +25,7 @@ describe('ActivityDetail', () => {
 
     wrapper = shallowMount(ActivityDetail, {
       global: {
-        plugins: [i18n, ElementPlus],
+        plugins: [i18n],
         stubs: {
           ElDialog: {
             template: '<div><slot /></div>'

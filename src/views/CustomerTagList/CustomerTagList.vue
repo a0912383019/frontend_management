@@ -396,7 +396,6 @@ onMounted(() => {
 .mb-0 {
   margin-bottom: 0 !important;
 }
-
 .tags {
   display: flex;
   width: 100%;
@@ -427,6 +426,9 @@ onMounted(() => {
       filter: drop-shadow(0 2px 2px $blue);
     }
   }
+}
+:deep(.el-table__empty-block) {
+  display: none;
 }
 </style>
 <style lang="scss">

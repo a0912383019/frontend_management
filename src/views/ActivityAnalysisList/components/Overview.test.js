@@ -3,7 +3,6 @@ import { flushPromises, shallowMount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
-import ElementPlus from 'element-plus'
 import Overview from '@/views/ActivityAnalysisList/components/Overview.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
 import { sortTableDate } from '@/utils/commonUtils.js'
@@ -80,7 +79,7 @@ describe('Overview', () => {
 
     wrapper = shallowMount(Overview, {
       global: {
-        plugins: [i18n, ElementPlus]
+        plugins: [i18n]
       }
     })
   })

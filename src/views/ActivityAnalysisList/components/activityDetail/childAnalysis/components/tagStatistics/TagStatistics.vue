@@ -6,7 +6,11 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
 import { apiQueryActivityTagsRank, apiQueryActivityBetAmountGrowthSpanTags } from '@/api'
-import { getSessionStorageEntity, generateMultipleColors, errorRespond } from '@/utils/commonUtils.js'
+import {
+  getSessionStorageEntity,
+  generateMultipleColors,
+  errorRespond
+} from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipColumnSeparate } from '@/utils/highchartsConfig.js'
 import CustomTable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/tagStatistics/CustomTable.vue'
 
@@ -118,8 +122,8 @@ const queryActivityTagsRank = async () => {
   tagsRankApiSuccess.value = false
   tagsRankMessageKey.value = 'loading'
   tableData.value = []
+
   try {
-    
     const result = await apiQueryActivityTagsRank({
       hall_name: activeHall.hall_code,
       is_reward: props.isRewarded,
@@ -147,11 +151,13 @@ const queryActivityTagsRank = async () => {
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      tagsRankMessageKey.value = 'noPermission' //更改message內容
+      tagsRankMessageKey.value = 'noPermission'
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
+    } else if (error.response.status === 404) {
+      tagsRankMessageKey.value = 'noResult'
     } else {
-      tagsRankMessageKey.value = 'queryFailed' //更改message內容
+      tagsRankMessageKey.value = 'queryFailed'
     }
   }
 }
@@ -223,7 +229,7 @@ const queryActivityBetAmountGrowthSpanTags = async () => {
       if (error_code === '210400000') {
         betAmountGrowthMessageKey.value = 'noResult'
       } else {
-        betAmountGrowthMessageKey.value = 'queryFailed'
+        betAmountGrowthMessageKey.value = 'chartFailed'
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
       }
@@ -231,11 +237,13 @@ const queryActivityBetAmountGrowthSpanTags = async () => {
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      betAmountGrowthMessageKey.value = 'noPermission' //更改message內容
+      betAmountGrowthMessageKey.value = 'noPermission'
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
+    } else if (error.response.status === 404) {
+      betAmountGrowthMessageKey.value = 'noResult'
     } else {
-      betAmountGrowthMessageKey.value = 'queryFailed' //更改message內容
+      betAmountGrowthMessageKey.value = 'chartFailed'
     }
   }
 }
