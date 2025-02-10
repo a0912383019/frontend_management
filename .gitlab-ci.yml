@@ -2,5 +2,5 @@ include:
   - project: "bi/cdp/cicd"
     ref: originmain
     file:
-      - "/project-yml/bbin/Frontend_Vue.yml"
+      - "/project-yml/bbin/Frontend_Vue/main-ci.yml" # CloudRun 加 gke
       # - "/gke-helm-ci/project-yml/bbin/Frontend_Vue.yml"  # GKE
