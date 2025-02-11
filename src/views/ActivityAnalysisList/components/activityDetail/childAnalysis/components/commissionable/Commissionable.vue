@@ -139,13 +139,13 @@ const queryActivityMemberParticipation = async () => {
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      memberPartiMessageKey.value = 'noPermission' //更改message內容
+      memberPartiMessageKey.value = 'noPermission'
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else if (error.response.status === 404) {
       memberPartiMessageKey.value = 'noResult'
     } else {
-      memberPartiMessageKey.value = 'queryFailed' //更改message內容
+      memberPartiMessageKey.value = 'queryFailed'
     }
   }
 }
@@ -212,11 +212,13 @@ const queryActivityBetAmountGrowthSpan = async () => {
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      commissionableMessageKey.value = 'noPermission' //更改message內容
+      commissionableMessageKey.value = 'noPermission'
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
+    } else if (error.response.status === 404) {
+      commissionableMessageKey.value = 'noResult'
     } else {
-      commissionableMessageKey.value = 'queryFailed' //更改message內容
+      commissionableMessageKey.value = 'queryFailed'
     }
   }
 }
@@ -288,7 +290,11 @@ onMounted(() => {
           </el-button>
         </template>
       </el-input>
-      <CdpMessage :messageKey="memberPartiMessageKey" v-if="memberPartiApiSuccess === false" />
+      <CdpMessage
+        :messageKey="memberPartiMessageKey"
+        :height="100"
+        v-if="memberPartiApiSuccess === false"
+      />
       <div v-else>
         <CustomTable
           :stripe="false"
@@ -308,6 +314,7 @@ onMounted(() => {
       ></SectionTitle>
       <CdpMessage
         :messageKey="commissionableMessageKey"
+        :height="144"
         v-if="commissionableApiSuccess === false"
       />
       <template v-else>

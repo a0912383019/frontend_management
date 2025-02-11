@@ -23,7 +23,7 @@ describe('ChildAnalysis', () => {
     }
     wrapper = shallowMount(ChildAnalysis, {
       global: {
-        plugins: [i18n, ElementPlus],
+        plugins: [i18n],
         stubs: {
           KeepAlive: {
             template: '<div><slot /></div>'
