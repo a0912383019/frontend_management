@@ -94,11 +94,11 @@ const deleteActivity = (idx) => {
 const transformChildData = () => {
   subActivities.value = []
   childListData.value.forEach((ele, idx) => {
-    const startDate = dayjs(ele.promotion_start_date).format(t('date.format_date_rule'))
+    const startDate = dayjs(ele.promotion_start_date.slice(0, 10)).format(t('date.format_date_rule'))
     const endDate =
       dayjs(ele.promotion_end_date).year() >= 2100
-        ? dayjs(ele.promotion_end_date).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
-        : dayjs(ele.promotion_end_date).format(t('date.format_date_rule'))
+        ? dayjs(ele.promotion_end_date.slice(0, 10)).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
+        : dayjs(ele.promotion_end_date.slice(0, 10)).format(t('date.format_date_rule'))
     subActivities.value[idx] = {
       name: ele.name, // 子活動名稱
       activity_date: startDate + ' ~ ' + endDate, // 子活動優惠區間
@@ -115,11 +115,11 @@ const transformChildData = () => {
 
 const updatePromotion = (val, scope) => {
   const proObj = JSON.parse(val)
-  const startDate = dayjs(proObj.start_time).format(t('date.format_date_rule'))
+  const startDate = dayjs(proObj.start_time.slice(0, 10)).format(t('date.format_date_rule'))
   const endDate =
     dayjs(proObj.end_time).year() >= 2100
-      ? dayjs(proObj.end_time).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
-      : dayjs(proObj.end_time).format(t('date.format_date_rule'))
+      ? dayjs(proObj.end_time.slice(0, 10)).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
+      : dayjs(proObj.end_time.slice(0, 10)).format(t('date.format_date_rule'))
   scope.row.activity_date = startDate + ' ~ ' + endDate
   scope.row.promotion_name = proObj.promotion_name
   scope.row.offer_id = proObj.offer_id

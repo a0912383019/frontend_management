@@ -149,6 +149,18 @@ export const apiAddActivity = (params) => {
   })
 }
 
+// 新增活動
+export const apiModifyActivity = (params) => {
+  const { hall_name, id, name, description, purpose, details } = params
+  return axiosGoInstance.put(`/api/auth/activity/${id}`, {
+    hall_name,
+    name,
+    description,
+    purpose,
+    details
+  })
+}
+
 // 主活動基本資訊
 export const apiActivityInfo = (params) => {
   const { hall_name, activity_id } = params
@@ -159,11 +171,9 @@ export const apiActivityInfo = (params) => {
 
 // 業績分析與占比與人數分析
 export const apiQueryActivityCompareOverview = (params) => {
-  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_compare_overview', {
-    hall_name,
-    activity_id_hide,
-    activity_detail_id_hide
+  const { hall_name, id, is_reward } = params
+  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/compare_overview`, {
+    params: { hall_name, is_reward }
   })
 }
 

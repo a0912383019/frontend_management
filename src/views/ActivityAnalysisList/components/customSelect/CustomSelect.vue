@@ -46,7 +46,7 @@ const getPromotionList = (val) => {
     dayjs(val[0]).format(t('date.format_date_rule')) +
     ' ~ ' +
     dayjs(val[1]).format(t('date.format_date_rule'))
-  promotionReturnMsg.value = promotionReturnMsg.value + ` --- ${selectDate} --- `
+  promotionReturnMsg.value = `${promotionReturnMsg.value} --- ${selectDate} ---`
   showDatePicker.value = false
   promotionOptions.value = []
   queryPromotionList()
@@ -150,9 +150,7 @@ onMounted(() => {
 
     queryPromotionList(
       infoStartDate,
-      infoEndDate,
-      props.promotionData.offer_id,
-      props.promotionData.original_id
+      infoEndDate
     )
   }
 })
