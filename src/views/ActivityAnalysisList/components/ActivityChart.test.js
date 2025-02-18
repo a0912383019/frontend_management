@@ -6,6 +6,8 @@ import ActivityChart from '@/views/ActivityAnalysisList/components/ActivityChart
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import HighchartsVue from 'highcharts-vue'
+import { useActivityAnalysisStore } from '@/stores'
+import { dayjs } from 'element-plus'
 
 describe('ActivityChart', () => {
   let wrapper = null
@@ -123,5 +125,29 @@ describe('ActivityChart', () => {
     expect(wrapper.vm.apiSuccess).toBeTruthy()
     expect(wrapper.vm.chartOptions.xAxis.categories).toStrictEqual(categories)
     expect(wrapper.vm.chartOptions.series).toStrictEqual(series)
+  })
+
+  it('analysisDateText', () => {
+    wrapper = shallowMount(ActivityChart, {
+      global: {
+        plugins: [i18n, HighchartsVue]
+      },
+      props: {
+        apiObject: {
+          apiSuccess: true,
+          result: []
+        }
+      }
+    })
+    const activityStore = useActivityAnalysisStore()
+    const startDate = '2024-01-01'
+    const endDate = '2024-01-31'
+    activityStore.chartApiParams.start_date = startDate
+    activityStore.chartApiParams.end_date = endDate
+
+    let newStartDate = dayjs(startDate).format('YYYY/MM/DD')
+    let newEndDate = dayjs(endDate).format('YYYY/MM/DD')
+    const analysisDateText = `分析區間 ${newStartDate} ~ ${newEndDate}`
+    expect(wrapper.vm.analysisDateText).toStrictEqual(analysisDateText)
   })
 })
