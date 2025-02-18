@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, toRefs, reactive } from 'vue'
+import { ref, watch, onMounted, toRefs, reactive, computed } from 'vue'
 import { generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -194,6 +194,13 @@ const handleApiResponse = () => {
   }
 }
 
+const analysisDateText = computed(() => {
+  let startDate = dayjs(chartApiParams.start_date).format(t('date.format_date_rule'))
+  let endDate = dayjs(chartApiParams.end_date).format(t('date.format_date_rule'))
+
+  return t('activity_analysis.analysis_duration') + ` ${startDate} ~ ${endDate}`
+})
+
 watch([() => apiObject.value.apiSuccess, () => apiObject.value.messageKey], () => {
   handleApiResponse()
 })
@@ -204,7 +211,10 @@ onMounted(() => {
 </script>
 <template>
   <section class="cdp-section-in">
-    <SectionTitle class="mb-15" :title="props.title"></SectionTitle>
+    <div class="flex justify-between">
+      <SectionTitle class="mb-15" :title="props.title"></SectionTitle>
+      <span class="font-size-14 font-medium" v-if="apiSuccess">{{ analysisDateText }}</span>
+    </div>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>
       <div class="cursor-pointer">
