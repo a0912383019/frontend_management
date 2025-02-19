@@ -320,14 +320,9 @@ onMounted(() => {
       <CdpMessage :messageKey="tagsRankMessageKey" v-if="tagsRankApiSuccess === false" />
       <div v-else>
         <CustomTable
-          :serverSide="false"
           :pageSize="10"
           :tableData="tableData"
           :tableColumns="tableColumns"
-          :stripe="false"
-          :border="true"
-          :hasPagination="true"
-          :hasTotalPagination="false"
           :cellStyle="generateCheckboxBar"
           class="customTable1 customTagNumberTable"
         >

@@ -9,21 +9,15 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import DialogMemberHistory from '@/views/ManageAnalysis/components/LifeCycleAnalysis/components/MemberDetails/DialogMemberHistory.vue'
 import CurrencySignText from '@/components/CurrencySignText.vue'
-import router from '@/router'
 
 describe('MemberDetails', () => {
   let wrapper = null
   const goToFirstPage = vi.fn()
+
   beforeEach(() => {
     wrapper = shallowMount(MemberDetails, {
       global: {
-        plugins: [
-          i18n,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn
-          })
-        ]
+        plugins: [i18n, createTestingPinia({ createSpy: vi.fn })]
       }
     })
     wrapper.vm.$refs.refTable.goToFirstPage = goToFirstPage

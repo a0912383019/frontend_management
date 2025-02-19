@@ -84,8 +84,11 @@ const queryActivityCompareDetail = async () => {
   }
 }
 
+const activeDate = ref(null)
 const transformCompareDetail = (data) => {
   tableTotal.value = data.records_total
+  activeDate.value = data.activity_detail_date
+
   let result = []
   data.data.forEach((ele) => {
     result.push({
@@ -176,7 +179,7 @@ const memberStepData = reactive({
 const handleStepClick = (row) => {
   memberStepData.member_name = row.member_name.user_name
   memberStepData.member_id = row.member_name.user_id
-  memberStepData.member_step_detail_date = row.activity_detail_date
+  memberStepData.member_step_detail_date = activeDate.value
 
   chartShow.value = true
 }

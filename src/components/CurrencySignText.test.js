@@ -10,8 +10,8 @@ describe('CurrencySignText', () => {
   let wrapper = null
 
   beforeEach(() => {
-    const pinia = createTestingPinia({ createSpy: vi.fn })
-    const globalStore = useGlobalStore(pinia)
+    createTestingPinia({ createSpy: vi.fn })
+    const globalStore = useGlobalStore()
     globalStore.activeHall = {
       hall_code: 'esx',
       hall_name: 'Esball'

@@ -5,8 +5,6 @@ import { dayjs } from 'element-plus'
 import { formatDateDuration } from '@/utils/commonUtils.js'
 
 describe('useDataRankAnalysisStore', () => {
-  let profitIsSearchedAgainNum
-  let growthDecayAgainNum
   let betAmountFilter
   let profitFilter
   let growthDecayFilter

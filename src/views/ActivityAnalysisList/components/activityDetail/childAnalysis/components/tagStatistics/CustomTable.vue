@@ -5,61 +5,31 @@ import TotalPagination from '@/components/Pagination/TotalPagination.vue'
 
 const props = defineProps({
   tableData: {
-    //表格資料
+    // 表格資料
     type: Array
   },
   tableColumns: {
-    //表頭
+    // 表頭
     type: Array
   },
-  tableTotal: {
-    //自定義資料總數，遇到每次換頁都需要call api，但又需要顯示資料總數逾頁面上
-    type: Number,
-    default: 0
-  },
-  tableHeight: {
-    //表格高度
-    type: String,
-    default: 'auto'
-  },
-  hasPagination: {
-    //頁碼
-    type: Boolean,
-    default: true
-  },
   pageSize: {
-    //一頁幾筆
+    // 一頁幾筆
     type: Number,
     default: 10
-  },
-  stripe: {
-    //斑馬紋表格樣式
-    type: Boolean,
-    default: false
-  },
-  border: {
-    //邊框
-    type: Boolean,
-    default: false
   },
   cellStyle: {
     type: Function
   },
   paginationLayout: {
-    //頁碼
+    // 頁碼
     type: String,
     default: 'prev, pager, next'
-  },
-  serverSide: {
-    //是否啟用後端服務器模式(每頁單獨發api)，啟用後pageTableData會有差異
-    type: Boolean,
-    default: false
   }
 })
 
 const emit = defineEmits(['update:currentPage'])
 
-//頁碼相關
+// 頁碼相關
 const page = reactive({
   currentPage: 1,
   pageSize: props.pageSize
@@ -70,41 +40,19 @@ const updateCurrentPage = (val) => {
   emit('update:currentPage', val)
 }
 
-const updatePageSize = (val) => {
-  page.pageSize = val
-}
-
-//表格資料
+// 表格資料
 const pageTableData = computed(() => {
-  let data
-  if (props.hasPagination && props.serverSide === false) {
-    data = props.tableData.slice(
-      (page.currentPage - 1) * page.pageSize,
-      page.pageSize * page.currentPage
-    )
-  } else {
-    data = props.tableData
-  }
-
-  return data
-})
-
-const pageTableTotal = computed(() => {
-  if (props.tableTotal === 0) {
-    return props.tableData.length
-  } else {
-    return props.tableTotal
-  }
+  return props.tableData.slice(
+    (page.currentPage - 1) * page.pageSize,
+    page.pageSize * page.currentPage
+  )
 })
 </script>
 <template>
   <div class="relative">
     <el-table
-      ref="tableRef"
       :data="pageTableData"
-      :height="tableHeight"
-      :stripe="props.stripe"
-      :border="props.border"
+      border
       :cell-style="props.cellStyle"
       class="cdp-table"
       style="width: 100%"
@@ -113,7 +61,6 @@ const pageTableTotal = computed(() => {
         <el-table-column
           :prop="column.prop"
           :label="column.label"
-          :width="column.width"
           :min-width="column.minWidth"
           :align="column.align"
           :header-align="column.headerAlign"
@@ -123,9 +70,6 @@ const pageTableTotal = computed(() => {
           <template #header>
             {{ column.label }}
             <slot :name="column.prop + '-header'"></slot>
-            <slot :name="column.headerSlot" v-if="column.headerSlot">
-              <span v-html="column.headerSlot"></span>
-            </slot>
           </template>
           <template #default="scope">
             <slot :name="column.prop" :row="scope.row" :idx="scope.$index">
@@ -134,26 +78,20 @@ const pageTableTotal = computed(() => {
           </template>
         </el-table-column>
       </template>
-      <!-- append插槽：插入至表格最后一行之后的内容 -->
-      <template #append><slot name="append"></slot></template>
-      <template #empty>
-        <div>{{ $t('table.sZeroRecords') }}</div>
-      </template>
     </el-table>
-    <div class="paginationBox" v-if="hasPagination">
+    <div class="paginationBox">
       <CustomPagination
         :page="page.currentPage"
         :pageSize="page.pageSize"
-        :total="pageTableTotal"
+        :total="props.tableData.length"
         :layout="paginationLayout"
         class="cdp-pagination"
         @update:currentPage="updateCurrentPage"
-        @update:pageSize="updatePageSize"
       />
       <TotalPagination
         :page="page.currentPage"
         :pageSize="props.pageSize"
-        :total="pageTableTotal"
+        :total="props.tableData.length"
       />
     </div>
   </div>
@@ -162,7 +100,6 @@ const pageTableTotal = computed(() => {
 .cdp-table {
   border-radius: 5px;
   overflow: hidden;
-
   &.el-table--border {
     border: none;
     &::before,
