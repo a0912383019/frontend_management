@@ -15,6 +15,7 @@ vi.mock('@/api', () => ({
 describe('DetailList', () => {
   let wrapper = null
   let activityStore
+
   beforeEach(() => {
     const router = createRouterMock({
       spy: {
@@ -31,6 +32,7 @@ describe('DetailList', () => {
         status: { return_code: '0000' },
         result: {
           records_total: 107,
+          activity_detail_date: '2024-09-26 ~ 2024-12-24',
           data: [
             {
               user_id: 457053870,
@@ -168,6 +170,8 @@ describe('DetailList', () => {
         }
       }
     ]
+    const activeDate = '2024-09-26 ~ 2024-12-24'
+    expect(wrapper.vm.activeDate).toStrictEqual(activeDate)
     expect(wrapper.vm.tableData).toStrictEqual(tableData)
     expect(wrapper.vm.tableTotal).toStrictEqual(107)
     expect(wrapper.vm.pageTableTotal).toStrictEqual(107)
@@ -216,13 +220,12 @@ describe('DetailList', () => {
       member_name: {
         user_name: 'rick',
         user_id: 2234332
-      },
-      activity_detail_date: '2024-01-01 ~ 2024-01-31'
+      }
     })
     expect(wrapper.vm.memberStepData).toStrictEqual({
       member_name: 'rick',
       member_id: 2234332,
-      member_step_detail_date: '2024-01-01 ~ 2024-01-31'
+      member_step_detail_date: '2024-09-26 ~ 2024-12-24'
     })
     expect(wrapper.vm.chartShow).toBeTruthy()
   })
