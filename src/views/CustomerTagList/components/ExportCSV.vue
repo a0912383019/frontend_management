@@ -124,7 +124,7 @@ const handelExportReport = async () => {
         globalStore.storeHandleApiError()
       } else {
         ElNotification({
-          title: t('msg.update_failed'),
+          title: t('msg.query_failed'),
           type: 'error'
         })
       }
