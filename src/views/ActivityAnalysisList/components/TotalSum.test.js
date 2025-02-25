@@ -9,11 +9,6 @@ import { apiQueryTotalCommissionable, apiQueryTotalReal, apiQueryTotalProfit } f
 import ActivityChart from '@/views/ActivityAnalysisList/components/ActivityChart.vue'
 import router from '@/router'
 
-// Mock modules
-vi.mock('element-plus', () => ({
-  ElNotification: vi.fn()
-}))
-
 vi.mock('element-plus', async () => {
   const actual = await vi.importActual('element-plus')
 

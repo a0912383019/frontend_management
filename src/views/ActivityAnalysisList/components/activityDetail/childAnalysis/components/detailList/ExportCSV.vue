@@ -31,22 +31,30 @@ const handelExportReport = async () => {
   try {
     const result = await apiExportActivityCompareDetail({
       hall_name: activeHall.hall_code,
-      activity_id_hide: 88,
-      activity_detail_id_hide: currentChildAnalysis.id,
-      reward_flag: props.isRewarded,
-      locale: i18nLocale.value
+      id: currentChildAnalysis.id,
+      is_reward: props.isRewarded,
+      locale: i18nLocale.value,
+      search_name: activityStore.searchChildDetailMemberName
     })
     const { return_code } = result.data.status
     globalStore.isLoading = false
     if (return_code === '0000') {
-      // window.location.href = result.data.result.url
-    } else if (return_code === '0001') {
-      ElNotification({
-        title: t('msg.no_results'),
-        type: 'error'
-      })
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+      if (error_code === undefined && result.data.result) {
+        window.location.href = result.data.result.url
+      } else if (error_code === '210400020') {
+        ElNotification({
+          title: t('msg.no_results'),
+          type: 'warning'
+        })
+      } else {
+        ElNotification({
+          title: t('msg.query_failed'),
+          type: 'error'
+        })
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     } else {
       ElNotification({
         title: t('msg.query_failed'),
@@ -56,6 +64,7 @@ const handelExportReport = async () => {
       console.error(failMsg)
     }
   } catch (error) {
+    console.error(error);
     // 失敗需關閉loading
     globalStore.isLoading = false
     if (error.code === 'ECONNABORTED') {
@@ -72,7 +81,7 @@ const handelExportReport = async () => {
         globalStore.storeHandleApiError()
       } else {
         ElNotification({
-          title: t('msg.update_failed'),
+          title: t('msg.query_failed'),
           type: 'error'
         })
       }

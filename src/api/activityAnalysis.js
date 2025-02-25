@@ -187,11 +187,13 @@ export const apiQueryActivityTagsRank = (params) => {
 
 // 子活動分析-標籤統計-有效投注成長率區間各標籤人數
 export const apiQueryActivityBetAmountGrowthSpanTags = (params) => {
-  const { hall_name, activity_id_hide, activity_detail_id_hide } = params
-  return axiosInstance.post('/api/auth/activity/query_activity_betAmount_growth_span_tags', {
-    hall_name,
-    activity_id_hide,
-    activity_detail_id_hide
+  const { hall_name, is_reward, id } = params
+  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/commissionable_growth_span_tags`, {
+    params: {
+      hall_name,
+      is_reward,
+      id
+    }
   })
 }
 
@@ -221,13 +223,14 @@ export const apiQueryActivityCompareDetail = (params) => {
 
 // 子活動分析-詳細名單(匯出)
 export const apiExportActivityCompareDetail = (params) => {
-  const { hall_name, activity_id_hide, activity_detail_id_hide, reward_flag, locale } = params
-  return axiosInstance.post('/api/auth/activity/export_activity_compare_detail', {
-    hall_name,
-    activity_id_hide,
-    activity_detail_id_hide,
-    reward_flag,
-    locale
+  const { hall_name, id, is_reward, locale, search_name } = params
+  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/export_compare_detail`, {
+    params: {
+      hall_name,
+      is_reward,
+      locale,
+      search_name
+    }
   })
 }
 
