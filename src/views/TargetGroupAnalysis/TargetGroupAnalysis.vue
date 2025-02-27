@@ -286,7 +286,12 @@ onMounted(() => {
           </div>
         </template>
       </CustomTable>
-      <TargetGroupDetail v-model="dialogVisible" :targetId="targetId" @closeDialog="closeDialog" />
+      <TargetGroupDetail
+        v-model="dialogVisible"
+        :targetId="targetId"
+        @closeDialog="closeDialog"
+        @updateSuccess="queryTargetGroups()"
+      />
       <AddTargetGroup
         v-model="addDialogVisible"
         @closeDialog="closeAddDialog"

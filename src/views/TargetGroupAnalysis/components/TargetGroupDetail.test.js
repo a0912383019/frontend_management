@@ -62,4 +62,14 @@ describe('TargetGroupDetail.vue', () => {
     expect(wrapper.vm.currentTabs).toStrictEqual('TargetData')
     expect(wrapper.emitted('closeDialog')).toBeTruthy()
   })
+
+  it('test updateSuccess', async () => {
+    wrapper.vm.currentTabs = 'AnalysisResult'
+    expect(wrapper.vm.currentTabs).toStrictEqual('AnalysisResult')
+
+    await wrapper.vm.updateSuccess()
+    expect(wrapper.vm.currentTabs).toStrictEqual('TargetData')
+    expect(wrapper.emitted('closeDialog')).toBeTruthy()
+    expect(wrapper.emitted('updateSuccess')).toBeTruthy()
+  })
 })
