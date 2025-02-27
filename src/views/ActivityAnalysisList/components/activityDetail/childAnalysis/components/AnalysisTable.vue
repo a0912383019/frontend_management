@@ -210,14 +210,16 @@ const transformCompareOverview = (data) => {
 
   durationKey.map((key, idx) => {
     let dataObj = data[key]
-    const startDate =
-      dayjs(dataObj.start_date).year() >= 2100
-        ? dayjs(dataObj.start_date).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
-        : dayjs(dataObj.start_date).format(t('date.format_date_rule'))
-    const endDate =
-      dayjs(dataObj.end_date).year() >= 2100
-        ? dayjs(dataObj.end_date).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
-        : dayjs(dataObj.end_date).format(t('date.format_date_rule'))
+    let startDate, endDate
+
+    // 如果活動尚未結束
+    if (key === 'after' && !data.is_activity_end) {
+      startDate = dayjs().format(t('date.format_date_rule')).replace(/\d/g, '⎻')
+      endDate = dayjs().format(t('date.format_date_rule')).replace(/\d/g, '⎻')
+    } else {
+      startDate = dayjs(dataObj.start_date).format(t('date.format_date_rule'))
+      endDate = dayjs(dataObj.end_date).format(t('date.format_date_rule'))
+    }
 
     let performanceTempObj = {
       activity_duration: durationName[idx],
@@ -243,17 +245,18 @@ const transformCompareOverview = (data) => {
       activity_duration: durationName[idx],
       data_duration: startDate + ' ~ ' + endDate,
       // 有效投注人數占比
-      commissionable_people_proportion: FormatNumber(dataObj.ratio.commissionable_count, '', 2),
+      commissionable_people_proportion:
+        FormatNumber(dataObj.ratio.commissionable_count, '', 2) + '%',
       commissionable_people_proportion_rate: FormatNumber(
         dataObj.growth_rate.ratio_commissionable_count,
         '',
         2
       ),
       // 整體有效投注占比
-      commissionable_proportion: FormatNumber(dataObj.ratio.commissionable, '', 2),
+      commissionable_proportion: FormatNumber(dataObj.ratio.commissionable, '', 2) + '%',
       commissionable_proportion_rate: FormatNumber(dataObj.growth_rate.ratio_commissionable, '', 2),
       // 整體存款佔比
-      deposit_proportion: FormatNumber(dataObj.ratio.deposit, '', 2),
+      deposit_proportion: FormatNumber(dataObj.ratio.deposit, '', 2) + '%',
       deposit_proportion_rate: FormatNumber(dataObj.growth_rate.ratio_deposit, '', 2),
       // 存款人數
       deposit_count: dataObj.count.deposit,
@@ -267,6 +270,19 @@ const transformCompareOverview = (data) => {
       // 註冊30天內人數
       register_in_30_days: dataObj.count.register,
       register_in_30_days_rate: FormatNumber(dataObj.growth_rate.register_count)
+    }
+
+    if (key === 'after' && !data.is_activity_end) {
+      for (const key in performanceTempObj) {
+        if (key !== 'activity_duration' && key !== 'data_duration') {
+          performanceTempObj[key] = '--'
+        }
+      }
+      for (const key in proportionTempObj) {
+        if (key !== 'activity_duration' && key !== 'data_duration') {
+          proportionTempObj[key] = '--'
+        }
+      }
     }
 
     performanceResult.push(performanceTempObj)
@@ -338,7 +354,7 @@ onMounted(() => {
             {{ scope.row.deposit_day_avg }}
             <br />
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.deposit_day_avg_rate !== '--'"
               :percentData="scope.row.deposit_day_avg_rate"
               iconSize="12"
               fontSize="14"
@@ -351,7 +367,7 @@ onMounted(() => {
             {{ scope.row.commissionable_day_avg }}
             <br />
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.commissionable_day_avg_rate !== '--'"
               :percentData="scope.row.commissionable_day_avg_rate"
               iconSize="12"
               fontSize="14"
@@ -363,7 +379,7 @@ onMounted(() => {
           <div class="flex flex-col">
             <div v-html="scope.row.payoff_day_avg"></div>
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.payoff_day_avg_rate !== '--'"
               :percentData="scope.row.payoff_day_avg_rate"
               iconSize="12"
               fontSize="14"
@@ -376,7 +392,7 @@ onMounted(() => {
             {{ scope.row.bonus_day_avg }}
             <br />
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.bonus_day_avg_rate !== '--'"
               :percentData="scope.row.bonus_day_avg_rate"
               iconSize="12"
               fontSize="14"
@@ -388,7 +404,7 @@ onMounted(() => {
           <div class="flex flex-col">
             <div v-html="scope.row.hall_profit_day_avg"></div>
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.profit_day_avg_rate !== '--'"
               :percentData="scope.row.profit_day_avg_rate"
               iconSize="12"
               fontSize="14"
@@ -452,10 +468,10 @@ onMounted(() => {
         </template>
         <template #commissionable_people_proportion="scope">
           <div>
-            {{ scope.row.commissionable_people_proportion + '%' }}
+            {{ scope.row.commissionable_people_proportion }}
             <br />
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.commissionable_people_proportion_rate !== '--'"
               :percentData="scope.row.commissionable_people_proportion_rate"
               iconSize="12"
               fontSize="14"
@@ -465,10 +481,10 @@ onMounted(() => {
         </template>
         <template #commissionable_proportion="scope">
           <div>
-            {{ scope.row.commissionable_proportion + '%' }}
+            {{ scope.row.commissionable_proportion }}
             <br />
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.commissionable_proportion_rate !== '--'"
               :percentData="scope.row.commissionable_proportion_rate"
               iconSize="12"
               fontSize="14"
@@ -478,10 +494,10 @@ onMounted(() => {
         </template>
         <template #deposit_proportion="scope">
           <div>
-            {{ scope.row.deposit_proportion + '%' }}
+            {{ scope.row.deposit_proportion }}
             <br />
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.deposit_proportion_rate !== '--'"
               :percentData="scope.row.deposit_proportion_rate"
               iconSize="12"
               fontSize="14"
@@ -494,7 +510,7 @@ onMounted(() => {
             {{ scope.row.deposit_count }}
             <br />
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.deposit_count_rate !== '--'"
               :percentData="scope.row.deposit_count_rate"
               iconSize="12"
               fontSize="14"
@@ -507,7 +523,7 @@ onMounted(() => {
             {{ scope.row.active_member }}
             <br />
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.active_member_rate !== '--'"
               :percentData="scope.row.active_member_rate"
               iconSize="12"
               fontSize="14"
@@ -520,7 +536,7 @@ onMounted(() => {
             {{ scope.row.people_tags_count }}
             <br />
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.people_tags_count_rate !== '--'"
               :percentData="scope.row.people_tags_count_rate"
               iconSize="12"
               fontSize="14"
@@ -533,7 +549,7 @@ onMounted(() => {
             {{ scope.row.register_in_30_days }}
             <br />
             <PercentWithIcon
-              v-if="scope.idx > 0"
+              v-if="scope.idx > 0 && scope.row.register_in_30_days_rate !== '--'"
               :percentData="scope.row.register_in_30_days_rate"
               iconSize="12"
               fontSize="14"
