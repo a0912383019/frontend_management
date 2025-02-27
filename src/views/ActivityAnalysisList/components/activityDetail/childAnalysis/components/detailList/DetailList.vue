@@ -56,7 +56,7 @@ const queryActivityCompareDetail = async () => {
       if (result.data.result.length !== 0) {
         transformCompareDetail(result.data.result)
         apiSuccess.value = true
-        sortTableData(sortCol.value, defaultOrder.value)
+        // sortTableData(sortCol.value, defaultOrder.value)
       } else {
         messageKey.value = 'noResult'
       }
@@ -84,8 +84,11 @@ const queryActivityCompareDetail = async () => {
   }
 }
 
+const activeDate = ref(null)
 const transformCompareDetail = (data) => {
   tableTotal.value = data.records_total
+  activeDate.value = data.activity_detail_date
+
   let result = []
   data.data.forEach((ele) => {
     result.push({
@@ -134,10 +137,6 @@ const updateCurrentPage = (val) => {
   page.currentPage = val
 }
 
-const updatePageSize = (val) => {
-  page.pageSize = val
-}
-
 const tableTotal = ref(0)
 const pageTableTotal = computed(() => {
   if (tableTotal.value === 0) {
@@ -153,22 +152,22 @@ const handleTableSort = ({ prop, order }) => {
   queryActivityCompareDetail()
 }
 
-// api 就會排序，但這邊還是再手動排一次
-function sortTableData(prop, order) {
-  return tableData.value.sort((a, b) => {
-    let valueA = extractNumberValue(a[prop].val)
-    let valueB = extractNumberValue(b[prop].val)
-    if (prop === 'before_commissionable_avg' || prop === 'before_profit_avg') {
-      valueA = extractNumberValue(a[prop])
-      valueB = extractNumberValue(b[prop])
-    }
+// // 手動排序，當api 排序亂掉時可以使用
+// function sortTableData(prop, order) {
+//   return tableData.value.sort((a, b) => {
+//     let valueA = extractNumberValue(a[prop].val)
+//     let valueB = extractNumberValue(b[prop].val)
+//     if (prop === 'before_commissionable_avg' || prop === 'before_profit_avg') {
+//       valueA = extractNumberValue(a[prop])
+//       valueB = extractNumberValue(b[prop])
+//     }
 
-    if (isNaN(valueA)) return 1
-    if (isNaN(valueB)) return -1
+//     if (isNaN(valueA)) return 1
+//     if (isNaN(valueB)) return -1
 
-    return order === 'descending' ? valueB - valueA : valueA - valueB
-  })
-}
+//     return order === 'descending' ? valueB - valueA : valueA - valueB
+//   })
+// }
 
 const chartShow = ref(false)
 const memberStepData = reactive({
@@ -180,7 +179,7 @@ const memberStepData = reactive({
 const handleStepClick = (row) => {
   memberStepData.member_name = row.member_name.user_name
   memberStepData.member_id = row.member_name.user_id
-  memberStepData.member_step_detail_date = row.activity_detail_date
+  memberStepData.member_step_detail_date = activeDate.value
 
   chartShow.value = true
 }
@@ -380,7 +379,6 @@ watch(
         layout="prev, pager, next"
         class="cdp-pagination"
         @update:currentPage="updateCurrentPage"
-        @update:pageSize="updatePageSize"
       />
       <TotalPagination :page="page.currentPage" :pageSize="page.pageSize" :total="pageTableTotal" />
     </div>

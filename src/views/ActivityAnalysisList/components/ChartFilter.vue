@@ -67,7 +67,7 @@ const selectRewardOptions = computed(() => {
 const selectActivityNameOptions = ref([])
 
 // 取得資料
-const queryListActivity = async (isFirst = false) => {
+const queryListActivity = async () => {
   apiSuccess.value = false
   try {
     const result = await apiQueryListActivity({
@@ -77,7 +77,7 @@ const queryListActivity = async (isFirst = false) => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       apiSuccess.value = true
-      transformActivityName(isFirst, result.data.result)
+      transformActivityName(result.data.result)
     } else {
       let failMsg = errorRespond(result.data.status)
       console.error(failMsg)
@@ -90,14 +90,10 @@ const queryListActivity = async (isFirst = false) => {
   }
 }
 
-const transformActivityName = (isFirst, data) => {
-  if (isFirst) {
-    const displayData = data.slice(0, 10)
-    filterData.activityNameList =
-      displayData.length === 0 ? [-1] : displayData.map((item) => item.id)
-
-    handleSubmitClick()
-  }
+const transformActivityName = (data) => {
+  const displayData = data.slice(0, 10)
+  filterData.activityNameList = displayData.length === 0 ? [-1] : displayData.map((item) => item.id)
+  handleSubmitClick()
 
   selectActivityNameOptions.value = []
   data.forEach((item) => {
@@ -139,14 +135,16 @@ const handleSubmitClick = () => {
   closePopover()
 }
 
+const filterDisabled = ref(false)
+
 onMounted(() => {
-  queryListActivity(true)
+  queryListActivity()
 })
 
 watch(
   () => activityStore.activityChange,
   () => {
-    queryListActivity(true)
+    queryListActivity()
   }
 )
 
@@ -154,12 +152,15 @@ watch(
   () => filterData.activityNameList,
   (val) => {
     if (val.length === 0) {
+      filterDisabled.value = true
       checkAll.value = false
       indeterminate.value = false
     } else if (val.length === selectActivityNameOptions.value.length) {
+      filterDisabled.value = false
       checkAll.value = true
       indeterminate.value = false
     } else {
+      filterDisabled.value = false
       indeterminate.value = true
     }
   }
@@ -284,6 +285,7 @@ watch(
         <div class="drop__item">
           <ButtonIcon
             icon="search"
+            :disabled="filterDisabled"
             size="large large-120"
             color="purple"
             @click="handleSubmitClick"

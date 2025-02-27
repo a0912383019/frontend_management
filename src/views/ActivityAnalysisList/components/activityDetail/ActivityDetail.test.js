@@ -17,8 +17,8 @@ describe('ActivityDetail', () => {
   const initChildData = vi.fn()
 
   beforeEach(() => {
-    const pinia = createTestingPinia({ createSpy: vi.fn })
-    activityStore = useActivityAnalysisStore(pinia)
+    createTestingPinia({ createSpy: vi.fn })
+    activityStore = useActivityAnalysisStore()
     activityStore.findSelectedOption = findSelectedOption
     activityStore.initChildData = initChildData
     activityStore.childListData = []

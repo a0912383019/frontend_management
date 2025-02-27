@@ -71,13 +71,8 @@ const createSubActivity = () => {
 const subActivities = ref([])
 
 const maxLimit = ref(false)
-const addBtnDisabled = computed({
-  get() {
-    return !props.canEdit || maxLimit.value
-  },
-  set(newValue) {
-    maxLimit.value = newValue
-  }
+const addBtnDisabled = computed(() => {
+  return !props.canEdit || maxLimit.value
 })
 
 const addChildActivity = () => {
@@ -94,11 +89,15 @@ const deleteActivity = (idx) => {
 const transformChildData = () => {
   subActivities.value = []
   childListData.value.forEach((ele, idx) => {
-    const startDate = dayjs(ele.promotion_start_date).format(t('date.format_date_rule'))
+    const startDate = dayjs(ele.promotion_start_date.slice(0, 10)).format(
+      t('date.format_date_rule')
+    )
     const endDate =
       dayjs(ele.promotion_end_date).year() >= 2100
-        ? dayjs(ele.promotion_end_date).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
-        : dayjs(ele.promotion_end_date).format(t('date.format_date_rule'))
+        ? dayjs(ele.promotion_end_date.slice(0, 10))
+            .format(t('date.format_date_rule'))
+            .replace(/\d/g, '⎻')
+        : dayjs(ele.promotion_end_date.slice(0, 10)).format(t('date.format_date_rule'))
     subActivities.value[idx] = {
       name: ele.name, // 子活動名稱
       activity_date: startDate + ' ~ ' + endDate, // 子活動優惠區間
@@ -115,11 +114,11 @@ const transformChildData = () => {
 
 const updatePromotion = (val, scope) => {
   const proObj = JSON.parse(val)
-  const startDate = dayjs(proObj.start_time).format(t('date.format_date_rule'))
+  const startDate = dayjs(proObj.start_time.slice(0, 10)).format(t('date.format_date_rule'))
   const endDate =
     dayjs(proObj.end_time).year() >= 2100
-      ? dayjs(proObj.end_time).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
-      : dayjs(proObj.end_time).format(t('date.format_date_rule'))
+      ? dayjs(proObj.end_time.slice(0, 10)).format(t('date.format_date_rule')).replace(/\d/g, '⎻')
+      : dayjs(proObj.end_time.slice(0, 10)).format(t('date.format_date_rule'))
   scope.row.activity_date = startDate + ' ~ ' + endDate
   scope.row.promotion_name = proObj.promotion_name
   scope.row.offer_id = proObj.offer_id
@@ -131,10 +130,6 @@ const clearActivityDate = (scope) => {
   scope.row.promotion_name = ''
   scope.row.offer_id = null
   scope.row.original_id = null
-}
-
-const getSubActivities = () => {
-  return subActivities.value
 }
 
 // 驗證資料
@@ -187,6 +182,10 @@ const validSubActivities = () => {
   })
 
   return !allValid // true 才是通過驗證
+}
+
+const getSubActivities = () => {
+  return subActivities.value
 }
 
 watch(
@@ -329,55 +328,6 @@ defineExpose({ getSubActivities, validSubActivities })
   </section>
 </template>
 <style lang="scss" scoped>
-// .cdp-dialog {
-//   &__component {
-//     padding: 20px;
-//     padding-bottom: 0;
-//     background-color: #fff;
-//     border-radius: 5px;
-//     border: 1px #e6eaf2 solid;
-//   }
-//   &__header {
-//     color: #fff;
-//   }
-// }
-// :deep(.el-form) {
-//   .cdp-activity-textarea {
-//     border: solid 1px #cfd8e6;
-//     border-radius: 5px;
-//     .el-textarea {
-//       &__inner {
-//         box-shadow: none;
-//         height: 180px;
-//         resize: none;
-//         &:hover {
-//           box-shadow: 0 0 0 1px #4f84cf !important;
-//         }
-//         &:focus {
-//           box-shadow: none;
-//         }
-//       }
-//     }
-//   }
-//   .is-error {
-//     .cdp-input {
-//       border: none;
-//       .el-input__wrapper:hover {
-//         box-shadow: 0 0 0 1px #f56c6c !important;
-//       }
-//     }
-//     .cdp-activity-textarea {
-//       border: solid 1px #f56c6c;
-//       .el-textarea {
-//         &__inner {
-//           &:hover {
-//             box-shadow: 0 0 0 1px #f56c6c !important;
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
 // 當無資料時隱藏查無資料
 .is-empty {
   :deep(.el-table__body-wrapper) {

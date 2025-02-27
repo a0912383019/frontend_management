@@ -67,7 +67,7 @@ const chartOptions = reactive({
   chart: {
     type: 'column',
     height: locale.value === 'en' ? 550 : 500,
-    marginLeft: locale.value === 'en' ? 130 : 120
+    marginLeft: locale.value === 'en' ? 120 : 55
   },
   xAxis: {
     gridLineColor: '#e8e8e8',
@@ -77,7 +77,7 @@ const chartOptions = reactive({
     tickWidth: 1,
     categories: [],
     labels: {
-      rotation: locale.value === 'en' ? -40 : -25,
+      rotation: locale.value === 'en' ? -40 : -19,
       style: {
         whiteSpace: 'nowrap', // 避免文字換行
         textOverflow: 'none', // 防止省略號(...)
@@ -85,7 +85,7 @@ const chartOptions = reactive({
       }
     },
     min: 0,
-    max: 10
+    max: 11
   },
   legend: {
     enabled: false
@@ -137,13 +137,16 @@ const queryActivityTagsRank = async () => {
         tagsRankApiSuccess.value = true
       } else {
         tagsRankMessageKey.value = 'noResult'
+        betAmountGrowthMessageKey.value = 'noResult'
       }
     } else {
       const { error_code } = result.data.status
       if (error_code === '210400000') {
         tagsRankMessageKey.value = 'noResult'
+        betAmountGrowthMessageKey.value = 'noResult'
       } else {
         tagsRankMessageKey.value = 'queryFailed'
+        betAmountGrowthMessageKey.value = 'queryFailed'
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
       }
@@ -152,12 +155,15 @@ const queryActivityTagsRank = async () => {
     console.error(error)
     if (error.response.status === 403) {
       tagsRankMessageKey.value = 'noPermission'
+      betAmountGrowthMessageKey.value = 'noPermission'
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else if (error.response.status === 404) {
       tagsRankMessageKey.value = 'noResult'
+      betAmountGrowthMessageKey.value = 'noResult'
     } else {
       tagsRankMessageKey.value = 'queryFailed'
+      betAmountGrowthMessageKey.value = 'queryFailed'
     }
   }
 }
@@ -186,7 +192,7 @@ const transformTagsRank = (data) => {
   })
 
   // 如果左邊沒資料，直接不打右邊 api
-  if (tagColorObj.value.length !== 0) {
+  if (Object.keys(tagColorObj.value).length !== 0) {
     queryActivityBetAmountGrowthSpanTags()
   } else {
     betAmountGrowthMessageKey.value = 'noResult'
@@ -212,8 +218,8 @@ const queryActivityBetAmountGrowthSpanTags = async () => {
   try {
     const result = await apiQueryActivityBetAmountGrowthSpanTags({
       hall_name: activeHall.hall_code,
-      activity_id_hide: 88,
-      activity_detail_id_hide: currentChildAnalysis.id
+      id: currentChildAnalysis.id,
+      is_reward: props.isRewarded
     })
 
     const { return_code } = result.data.status
@@ -249,18 +255,23 @@ const queryActivityBetAmountGrowthSpanTags = async () => {
 }
 
 const transformBetAmountGrowthSpanTags = (data) => {
-  chartOptions.xAxis.categories = data.span.map((ele) => {
-    if (ele.upper !== null) {
-      return t('activity_analysis.bet_amount_interval', { lower: ele.lower, upper: ele.upper })
-    } else {
+  chartOptions.xAxis.categories = data.map((ele) => {
+    if (ele.upper === 0 && ele.lower === 0) {
+      return t('activity_analysis.no_bet_amount_interval')
+    } else if (ele.upper === 0 && ele.lower === 100) {
       return t('activity_analysis.upper_bet_amount_interval', { lower: ele.lower })
+    } else {
+      return t('activity_analysis.bet_amount_interval', { lower: ele.lower, upper: ele.upper })
     }
   })
 
   const result = Object.keys(tagColorObj.value).map((key) => ({
     name: tag_description_dict[key].tag_name,
     tagCode: key.toString(),
-    data: data.map((item) => item[key]),
+    data: data.map((item) => {
+      const target = item.tag_count.find((ele) => ele.tag_code.toString() === key)
+      return target ? target.count : 0
+    }),
     color: tagColorObj.value[key],
     visible: true
   }))
@@ -320,14 +331,9 @@ onMounted(() => {
       <CdpMessage :messageKey="tagsRankMessageKey" v-if="tagsRankApiSuccess === false" />
       <div v-else>
         <CustomTable
-          :serverSide="false"
           :pageSize="10"
           :tableData="tableData"
           :tableColumns="tableColumns"
-          :stripe="false"
-          :border="true"
-          :hasPagination="true"
-          :hasTotalPagination="false"
           :cellStyle="generateCheckboxBar"
           class="customTable1 customTagNumberTable"
         >

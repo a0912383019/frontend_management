@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, toRefs, reactive } from 'vue'
+import { ref, watch, onMounted, toRefs, reactive, computed } from 'vue'
 import { generateRGBColors, generateMultipleColors } from '@/utils/commonUtils.js'
 import CdpMessage from '@/components/CdpMessage.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -132,8 +132,6 @@ const chartOptions = reactive({
 
 // 轉換資料
 const transformChartSeries = (data) => {
-  clearChart()
-
   chartOptions.xAxis.categories = data.map((ele) => {
     if (ele.interval_title.includes('~')) {
       const dateformat = ele.interval_title.split('~')
@@ -161,35 +159,19 @@ const transformChartSeries = (data) => {
     return
   }
 
-  let dataSet = {}
-
-  let colorCount = activityIdList.length
-  let colorArr = []
-  if (colorCount > 20) {
-    colorArr = generateMultipleColors(colorCount)['bg']
-  }
-
-  activityIdList.forEach((ele, idx) => {
-    dataSet[ele] = {
-      name: dataClone.activities[ele].activity_name,
-      type: 'line',
-      color: colorCount > 20 ? colorArr[idx] : generateRGBColors(latest_chart_color[idx], 1),
-      lineWidth: 2,
-      marker: {
-        symbol: 'circle',
-        radius: 3
-      },
-      data: data.map((item) => {
-        return parseFloat(item.activities[ele][valueKey])
-      })
-    }
-  })
+  let colorArr =
+    activityIdList.length > 20 ? generateMultipleColors(activityIdList.length)['bg'] : []
+  const seriesData = activityIdList.map((ele, idx) => ({
+    name: data[0].activities[ele].activity_name,
+    type: 'line',
+    color: colorArr.length ? colorArr[idx] : generateRGBColors(latest_chart_color[idx], 1),
+    lineWidth: 2,
+    marker: { symbol: 'circle', radius: 3 },
+    data: data.map((item) => parseFloat(item.activities[ele][valueKey]))
+  }))
 
   chartOptions.chart.marginLeft = chartApiParams.cut_type === 'week' ? 80 : 51
-
-  Object.keys(dataSet).forEach((item) => {
-    chartOptions.series.push(dataSet[item])
-  })
+  chartOptions.series = seriesData
 }
 
 const clearChart = () => {
@@ -198,6 +180,7 @@ const clearChart = () => {
 }
 
 const handleApiResponse = () => {
+  clearChart()
   apiSuccess.value = apiObject.value.apiSuccess
   messageKey.value = apiObject.value.messageKey
 
@@ -211,6 +194,13 @@ const handleApiResponse = () => {
   }
 }
 
+const analysisDateText = computed(() => {
+  let startDate = dayjs(chartApiParams.start_date).format(t('date.format_date_rule'))
+  let endDate = dayjs(chartApiParams.end_date).format(t('date.format_date_rule'))
+
+  return t('activity_analysis.analysis_duration') + ` ${startDate} ~ ${endDate}`
+})
+
 watch([() => apiObject.value.apiSuccess, () => apiObject.value.messageKey], () => {
   handleApiResponse()
 })
@@ -221,7 +211,10 @@ onMounted(() => {
 </script>
 <template>
   <section class="cdp-section-in">
-    <SectionTitle class="mb-15" :title="props.title"> </SectionTitle>
+    <div class="flex justify-between">
+      <SectionTitle class="mb-15" :title="props.title"></SectionTitle>
+      <span class="font-size-14 font-medium" v-if="apiSuccess">{{ analysisDateText }}</span>
+    </div>
     <CdpMessage :messageKey="messageKey" bg="white" v-if="apiSuccess === false" />
     <template v-else>
       <div class="cursor-pointer">

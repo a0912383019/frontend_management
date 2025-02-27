@@ -2,7 +2,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useActivityAnalysisStore } from '@/stores'
-import { apiActivityInfo } from '@/api'
+import { apiActivityInfo, apiModifyActivity } from '@/api'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ChildActivityList from '@/views/ActivityAnalysisList/components/ChildActivityList.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
@@ -194,8 +194,63 @@ const cancelSaved = () => {
 
 const confirmSaved = () => {
   confirmBox.value = false
-  edit.value = false
-  queryActivityInfo()
+  queryModifyActivity()
+}
+
+const organizeActivityDatail = () => {
+  let subDetails = []
+  subDetails = subActivities.value.map((ele) => {
+    return {
+      name: ele.name,
+      offer_id: ele.offer_id,
+      original_id: ele.original_id
+    }
+  })
+
+  return subDetails
+}
+
+const queryModifyActivity = async () => {
+  try {
+    const result = await apiModifyActivity({
+      hall_name: activeHall.hall_code,
+      id: props.activityId,
+      name: validateForm.name,
+      description: validateForm.description,
+      purpose: validateForm.purpose,
+      details: organizeActivityDatail()
+    })
+
+    const { return_code } = result.data.status
+    if (return_code === '0000') {
+      ElNotification({
+        title: t('msg.add_successful'),
+        type: 'success'
+      })
+      edit.value = false
+      queryActivityInfo()
+    } else {
+      ElNotification({
+        title: t('msg.add_failed'),
+        type: 'error'
+      })
+    }
+  } catch (error) {
+    console.error(error)
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
+    } else {
+      ElNotification({
+        title: t('msg.add_failed'),
+        type: 'error'
+      })
+    }
+  }
 }
 
 onMounted(() => {

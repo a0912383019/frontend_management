@@ -7,13 +7,19 @@ import AddActivity from '@/views/ActivityAnalysisList/AddActivity.vue'
 import CdpButton from '@/components/Button/CdpButton.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
+import { createRouterMock } from 'vue-router-mock'
 
 describe('AddActivity', () => {
   let wrapper = null
   let spyPost
 
   beforeEach(() => {
-    createTestingPinia({ createSpy: vi.fn })
+    const router = createRouterMock({
+      spy: {
+        create: (fn) => vi.fn(fn),
+        reset: (spy) => spy.mockClear()
+      }
+    })
 
     const postResult = {
       data: {
@@ -29,7 +35,7 @@ describe('AddActivity', () => {
 
     wrapper = shallowMount(AddActivity, {
       global: {
-        plugins: [i18n, ElementPlus],
+        plugins: [i18n, ElementPlus, router, createTestingPinia({ createSpy: vi.fn })],
         stubs: {
           ElDialog: {
             template: '<div><slot /></div>'

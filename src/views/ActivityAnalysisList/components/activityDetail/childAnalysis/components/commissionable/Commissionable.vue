@@ -2,11 +2,11 @@
 import { onMounted, ref, computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useActivityAnalysisStore, useGlobalStore } from '@/stores'
-import SectionTitle from '@/components/Title/SectionTitle.vue'
-import CdpMessage from '@/components/CdpMessage.vue'
 import { apiQueryActivityMemberParticipation, apiQueryActivityBetAmountGrowthSpan } from '@/api'
 import { errorRespond, generateRGBColors, FormatNumber } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipColumnSeparate } from '@/utils/highchartsConfig.js'
+import SectionTitle from '@/components/Title/SectionTitle.vue'
+import CdpMessage from '@/components/CdpMessage.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import { dayjs } from 'element-plus'
 import { latest_chart_color } from '@/../public/js/system_config.js'
@@ -204,7 +204,7 @@ const queryActivityBetAmountGrowthSpan = async () => {
       if (error_code === '210400000') {
         commissionableMessageKey.value = 'noResult'
       } else {
-        commissionableMessageKey.value = 'queryFailed'
+        commissionableMessageKey.value = 'chartFailed'
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
       }
@@ -218,7 +218,7 @@ const queryActivityBetAmountGrowthSpan = async () => {
     } else if (error.response.status === 404) {
       commissionableMessageKey.value = 'noResult'
     } else {
-      commissionableMessageKey.value = 'queryFailed'
+      commissionableMessageKey.value = 'chartFailed'
     }
   }
 }
@@ -234,13 +234,13 @@ const transformBetAmountGrowthSpan = (data) => {
     }
   })
 
-  data.forEach((ele, idx) => {
-    chartOptions.series[0].data.push({
-      name: idx,
-      y: ele.span_count,
-      color: generateRGBColors(latest_chart_color[idx], 0.7)
-    })
-  })
+  const seriesData = data.map((ele, idx) => ({
+    name: idx,
+    y: ele.span_count,
+    color: generateRGBColors(latest_chart_color[idx], 0.7)
+  }))
+
+  chartOptions.series[0].data = seriesData
 }
 
 const handleInput = (val) => {
@@ -250,7 +250,7 @@ const handleInput = (val) => {
 
   // 限制最小值-100
   if (Number(participateRate.value) < -100) {
-    participateRate.value = -100
+    participateRate.value = '-100'
   }
 }
 
