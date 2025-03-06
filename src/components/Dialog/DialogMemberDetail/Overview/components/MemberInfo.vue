@@ -3,7 +3,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryMemberInfo, apiQueryMemberLifeCycle } from '@/api/dialogMemberDetail.js'
 import { storeToRefs } from 'pinia'
-import { useGlobalStore } from '@/stores/global.js'
+import { useGlobalStore, useDateStore } from '@/stores'
 import { useDialogMemberDetailStore } from '@/stores/dialogMemberDetail.js'
 import { getSessionStorageEntity, checkTagUsage, errorRespond } from '@/utils/commonUtils.js'
 import { user_types } from '@/../public/js/system_config.js'
@@ -15,6 +15,8 @@ const { t } = useI18n()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 const { tableConfig } = storeToRefs(globalStore)
+
+const { LAST_DATE } = useDateStore()
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
 
@@ -86,7 +88,7 @@ const queryMemberLifeCycle = async () => {
     const result = await apiQueryMemberLifeCycle({
       hall_name: activeHall.hall_code,
       user_id: dialogMemberDetailStore.state.memberData.user_id,
-      data_date: dayjs().subtract(2, 'day').format('YYYY-MM-DD') // 預設取當下日期前兩天為條件
+      data_date: dayjs(LAST_DATE).format('YYYY-MM-DD') // 預設取當下日期前兩天為條件
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -94,6 +96,8 @@ const queryMemberLifeCycle = async () => {
     } else if (return_code === '0001') {
       // 該會員沒有生命週期紀錄
       apiMemberData.life_cycle = t('common.none')
+    } else {
+      apiMemberData.life_cycle = ''
     }
   } catch (error) {
     console.error(error)
