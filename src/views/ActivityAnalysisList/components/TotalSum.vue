@@ -94,17 +94,20 @@ const queryCharts = () => {
     if (errorCount === 0) {
       ElNotification({
         title: t('msg.query_successful'),
-        type: 'success'
+        type: 'success',
+        duration: 1500
       })
     } else if (errorCount === 3) {
       ElNotification({
         title: t('msg.query_failed'),
-        type: 'error'
+        type: 'error',
+        duration: 1500
       })
     } else {
       ElNotification({
         title: t('msg.query_failed_part'),
-        type: 'error'
+        type: 'error',
+        duration: 1500
       })
     }
   })

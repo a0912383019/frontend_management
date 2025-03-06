@@ -1,39 +1,12 @@
-import axiosInstance from './axiosInstance'
 import axiosGoInstance from './axiosGoInstance.js'
 
 // 匯出名單
-export const apiExportActivityList = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post(
-    '/api/auth/activity/export_activity_report',
+export const apiExportActivityGrowthReport = (params) => {
+  const { hall_name, activity_id_list, analysis_date, interval_type, is_reward, locale } = params
+  return axiosGoInstance.get(
+    '/api/auth/activity/export_growth_report',
     {
-      hall_name,
-      start_search_year,
-      start_search_month,
-      start_search_week,
-      start_date,
-      end_search_year,
-      end_search_month,
-      end_search_week,
-      end_date,
-      cut_type,
-      reward_flag,
-      reward_date_flag,
-      search_activity
+      params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward, locale }
     },
     {
       timeout: 10 * 1000 // 10秒
