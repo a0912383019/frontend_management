@@ -9,14 +9,14 @@ import ExportDialog from '@/components/ExportDialog.vue'
 import ExportReport from '@/components/Button/ExportReport.vue'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import LoadingBox from '@/components/Loading/LoadingBox.vue'
-import { apiQueryListActivity, apiExportActivityList } from '@/api'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
+import { apiQueryListActivity, apiExportActivityGrowthReport } from '@/api'
 import { ElNotification } from 'element-plus'
 
-const { t } = useI18n()
+const { t, locale: i18nLocale } = useI18n()
 
 const activityStore = useActivityAnalysisStore()
-const { dateRestraintion } = activityStore
+const { dateRestraintion, chartApiParams } = activityStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -136,52 +136,48 @@ const handleOpenDialog = () => {
 
 // Close事件觸發時，讓其回到初始狀態
 const handleCloseDialog = () => {
-  Object.assign(exportData, activityStore.filterData) // 屬性複製到目標物件
+  if (activityStore.chartFiltered === 0) {
+    Object.assign(exportData, activityStore.filterData) // 屬性複製到目標物件
+  }
 }
 
 // 匯出名單
 const handelExportList = async () => {
   globalStore.isLoading = true
-  const dateArr = exportData.analysisDate.split('~')
-  exportData.start_date = dateArr[0].trim()
-  exportData.end_date = dateArr[1].trim()
+
   try {
-    const result = await apiExportActivityList({
+    const result = await apiExportActivityGrowthReport({
       hall_name: activeHall.hall_code,
-      start_search_year: 2024,
-      start_search_month: 6,
-      start_search_week: 1,
-      start_date: exportData.start_date,
-      end_search_year: 2024,
-      end_search_month: 9,
-      end_search_week: 1,
-      end_date: exportData.end_date,
-      cut_type: exportData.selectDuration,
-      reward_flag: exportData.selectReward,
-      reward_date_flag: 0,
-      search_activity: exportData.activityNameList
+      analysis_date: exportData.analysisDate,
+      interval_type: exportData.selectDuration,
+      is_reward: exportData.selectReward,
+      activity_id_list: exportData.activityNameList,
+      locale: i18nLocale.value
     })
     const { return_code } = result.data.status
     globalStore.isLoading = false
     if (return_code === '0000') {
       dialogVisible.value = false
-      exportDialogVisible.value = true
-    } else if (return_code === '0001') {
-      ElNotification({
-        title: t('msg.no_results'),
-        type: 'error'
-      })
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      window.location.href = result.data.result.url
     } else {
-      ElNotification({
-        title: t('msg.query_failed'),
-        type: 'error'
-      })
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
+      const { error_code } = result.data.status
+
+      if (error_code === '210400020') {
+        ElNotification({
+          title: t('msg.no_results'),
+          type: 'warning'
+        })
+      } else {
+        ElNotification({
+          title: t('msg.query_failed'),
+          type: 'error'
+        })
+        let failMsg = errorRespond(result.data.status)
+        console.error(failMsg)
+      }
     }
   } catch (error) {
+    console.error(error)
     // 失敗需關閉loading
     globalStore.isLoading = false
     if (error.code === 'ECONNABORTED') {
@@ -198,7 +194,7 @@ const handelExportList = async () => {
         globalStore.storeHandleApiError()
       } else {
         ElNotification({
-          title: t('msg.update_failed'),
+          title: t('msg.query_failed'),
           type: 'error'
         })
       }
@@ -246,6 +242,7 @@ watch([() => exportData.activityNameList, () => selectActivityNameOptions.value]
 watch(
   () => activityStore.chartFiltered,
   () => {
+    console.log('cccc')
     Object.assign(exportData, activityStore.filterData) // 屬性複製到目標物件
   }
 )

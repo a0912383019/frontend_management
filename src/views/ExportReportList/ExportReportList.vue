@@ -146,23 +146,19 @@ const getSourceName = (type) => {
   let sourceName = ''
   switch (type) {
     case 1:
-      sourceName =
-        'sidebar.bbin_manage_analysis'
+      sourceName = 'sidebar.bbin_manage_analysis'
       break
     case 2:
-      sourceName =
-        'sidebar.bbin_customer_tag_list'
+      sourceName = 'sidebar.bbin_customer_tag_list'
       break
     case 3:
     case 4:
     case 5:
-      sourceName =
-        'sidebar.bbin_vip_commercial_analysis'
+      sourceName = 'sidebar.bbin_vip_commercial_analysis'
       break
     case 6:
     case 7:
-      sourceName =
-        'sidebar.bbin_offer_analysis_list'
+      sourceName = 'sidebar.bbin_offer_analysis_list'
       break
     case 8:
     case 9:
@@ -210,7 +206,8 @@ const detailBoxVisible = ref(false)
 const reportDetail = reactive({
   type: 0,
   source: '',
-  content: {}
+  content: {},
+  info: {}
 })
 
 const opendetail = (data) => {
@@ -222,6 +219,11 @@ const opendetail = (data) => {
     // 舊版沒有 search_content
     reportDetail.type = 9999
   }
+
+  if (data.extra_info) {
+    reportDetail.info = JSON.parse(data.extra_info)
+  }
+
   detailBoxVisible.value = true
 }
 
@@ -268,15 +270,13 @@ const deleteBoxClose = () => {
 watch(
   () => systemConfigIsOk.value,
   () => {
-    tag_description_dict.hall =
-      getSessionStorageEntity('system_config').tags_config
+    tag_description_dict.hall = getSessionStorageEntity('system_config').tags_config
     queryAgNameUserLevel()
   }
 )
 
 onMounted(() => {
-  tag_description_dict.hall =
-    getSessionStorageEntity('system_config').tags_config
+  tag_description_dict.hall = getSessionStorageEntity('system_config').tags_config
   queryAgNameUserLevel()
   queryUserExportList()
 })

@@ -86,7 +86,8 @@ describe('GrowthRate', () => {
     await flushPromises()
     expect(ElNotification).toHaveBeenCalledWith({
       title: '查詢成功',
-      type: 'success'
+      type: 'success',
+      duration: 1500
     })
     expect(apiQueryGrowthRateCommissionable).toHaveBeenCalledOnce()
     expect(apiQueryGrowthRateReal).toHaveBeenCalledOnce()
@@ -117,7 +118,8 @@ describe('GrowthRate', () => {
     await flushPromises()
     expect(ElNotification).toHaveBeenCalledWith({
       title: '部份查詢失敗，請重新操作',
-      type: 'error'
+      type: 'error',
+      duration: 1500
     })
     expect(apiQueryGrowthRateCommissionable).toHaveBeenCalledTimes(2)
     expect(apiQueryGrowthRateReal).toHaveBeenCalledTimes(2)
@@ -137,7 +139,8 @@ describe('GrowthRate', () => {
     await flushPromises()
     expect(ElNotification).toHaveBeenCalledWith({
       title: '查詢失敗，請重新操作',
-      type: 'error'
+      type: 'error',
+      duration: 1500
     })
     expect(apiQueryGrowthRateCommissionable).toHaveBeenCalledTimes(2)
     expect(apiQueryGrowthRateReal).toHaveBeenCalledTimes(2)

@@ -475,6 +475,117 @@ describe('SearchDetailBox.vue', () => {
     expect(wrapper.vm.tableData).toStrictEqual(tableData)
   })
 
+  it('test tableDataType8', async () => {
+    wrapper = shallowMount(SearchDetailBox, {
+      global: {
+        plugins: [i18n, ElementPlus],
+        stubs: {
+          ElDialog: {
+            template: '<div><slot /></div>'
+          }
+        }
+      },
+      props: {
+        reportDetail: {
+          type: 8,
+          source: 'sidebar.activity_analysis_list',
+          content: {
+            is_reward: true,
+            search_name: ''
+          },
+          info: {
+            activity: 'abc',
+            activity_detail: 'abc_child'
+          }
+        },
+        detailBoxVisible: true
+      },
+      components: {
+        FontAwesomeIcon
+      }
+    })
+
+    const tableData = [
+      {
+        contentData: '活動成效分析 - 詳細名單',
+        contentKey: '來源頁面'
+      },
+      {
+        contentData: 'abc',
+        contentKey: '活動名稱'
+      },
+      {
+        contentData: 'abc_child',
+        contentKey: '子活動名稱'
+      },
+      {
+        contentData: '是',
+        contentKey: '已領獎'
+      },
+      {
+        contentData: '',
+        contentKey: '會員名稱'
+      }
+    ]
+    expect(wrapper.vm.tableData).toStrictEqual(tableData)
+  })
+
+  it('test tableDataType9', async () => {
+    wrapper = shallowMount(SearchDetailBox, {
+      global: {
+        plugins: [i18n, ElementPlus],
+        stubs: {
+          ElDialog: {
+            template: '<div><slot /></div>'
+          }
+        }
+      },
+      props: {
+        reportDetail: {
+          type: 9,
+          source: 'sidebar.activity_analysis_list',
+          content: {
+            is_reward: true,
+            interval_type: 'week',
+            start_date: '2021-01-01',
+            end_date: '2023-10-11'
+          },
+          info: {
+            activity_names: ['cdk', 'nnj', '吃飯飯']
+          }
+        },
+        detailBoxVisible: true
+      },
+      components: {
+        FontAwesomeIcon
+      }
+    })
+
+    const tableData = [
+      {
+        contentData: '活動成效分析-成長率、成長差額、總和圖表',
+        contentKey: '來源頁面'
+      },
+      {
+        contentData: '週',
+        contentKey: '分析週期'
+      },
+      {
+        contentData: '2021/01/01 ~ 2023/10/11',
+        contentKey: '分析區間'
+      },
+      {
+        contentData: '領獎',
+        contentKey: '達檻狀態'
+      },
+      {
+        contentData: 'cdk、nnj、吃飯飯',
+        contentKey: '活動名稱'
+      }
+    ]
+    expect(wrapper.vm.tableData).toStrictEqual(tableData)
+  })
+
   it('test generateTags', () => {
     const tagString = '10001,10003;10001,10003'
     const result = '3C人工標籤湯瑪士改, ( 測試 or 3C人工標籤湯瑪士改),  測試'

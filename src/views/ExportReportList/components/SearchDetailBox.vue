@@ -84,6 +84,14 @@ const tableData = computed(() => {
       tableData = tableDataType5.value
       break
     }
+    case 8: {
+      tableData = tableDataType8.value
+      break
+    }
+    case 9: {
+      tableData = tableDataType9.value
+      break
+    }
     case 9999: {
       tableData = []
       break
@@ -333,6 +341,67 @@ const tableDataType5 = computed(() => {
           return tag_description_dict.hall[item].tag_name
         })
         .join(', ')
+    }
+  ]
+})
+
+// 活動成效分析-子活動分析-詳細名單 type = 8
+const tableDataType8 = computed(() => {
+  return [
+    {
+      contentKey: t('user_export_report.source_page'),
+      contentData: `${t(props.reportDetail.source)} - ${t(
+        'activity_analysis.activity_compare_detail_table'
+      )}`
+    },
+    {
+      contentKey: t('activity_analysis.activity_name'),
+      contentData: props.reportDetail.info.activity
+    },
+    {
+      contentKey: t('activity_analysis.activity_detail_name'),
+      contentData: props.reportDetail.info.activity_detail
+    },
+    {
+      contentKey: t('activity_analysis.rewarded'),
+      contentData: props.reportDetail.content.is_reward ? t('common.yes') : t('common.no')
+    },
+    {
+      contentKey: t('data_name.member_name'),
+      contentData: props.reportDetail.content.search_name
+    }
+  ]
+})
+
+// 活動成效分析-成長率圖表 type = 9
+const tableDataType9 = computed(() => {
+  return [
+    {
+      contentKey: t('user_export_report.source_page'),
+      contentData: t('activity_analysis.export_nine_charts_name')
+    },
+    {
+      contentKey: t('activity_analysis.analysis_cycle'),
+      contentData: t(
+        `tag_synchronization.activity_date_cycle_${props.reportDetail.content.interval_type}`
+      )
+    },
+    {
+      contentKey: t('activity_analysis.analysis_duration'),
+      contentData:
+        dayjs(props.reportDetail.content.start_date).format(t('date.format_date_rule')) +
+        ' ~ ' +
+        dayjs(props.reportDetail.content.end_date).format(t('date.format_date_rule'))
+    },
+    {
+      contentKey: t('activity_analysis.reward_status'),
+      contentData: props.reportDetail.content.is_reward
+        ? t('activity_analysis.award')
+        : t('activity_analysis.not_award')
+    },
+    {
+      contentKey: t('activity_analysis.activity_name'),
+      contentData: props.reportDetail.info.activity_names.join('、')
     }
   ]
 })
