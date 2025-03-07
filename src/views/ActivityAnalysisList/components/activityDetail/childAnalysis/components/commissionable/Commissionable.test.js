@@ -8,13 +8,13 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import HighchartsVue from 'highcharts-vue'
-import { apiQueryActivityMemberParticipation, apiQueryActivityBetAmountGrowthSpan } from '@/api'
+import { apiQueryActivityMemberParticipation, apiQueryActivityCommissionableGrowthSpan } from '@/api'
 import { createRouterMock } from 'vue-router-mock'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 vi.mock('@/api', () => ({
   apiQueryActivityMemberParticipation: vi.fn(),
-  apiQueryActivityBetAmountGrowthSpan: vi.fn()
+  apiQueryActivityCommissionableGrowthSpan: vi.fn()
 }))
 
 describe('Commissionable', () => {
@@ -39,7 +39,7 @@ describe('Commissionable', () => {
         }
       }
     })
-    apiQueryActivityBetAmountGrowthSpan.mockResolvedValue({
+    apiQueryActivityCommissionableGrowthSpan.mockResolvedValue({
       data: {
         status: { return_code: '0000' },
         result: [
@@ -171,7 +171,7 @@ describe('Commissionable', () => {
   it('api correctly', async () => {
     await flushPromises()
     expect(apiQueryActivityMemberParticipation).toBeCalledTimes(1)
-    expect(apiQueryActivityBetAmountGrowthSpan).toBeCalledTimes(1)
+    expect(apiQueryActivityCommissionableGrowthSpan).toBeCalledTimes(1)
 
     const tableData = [
       {
