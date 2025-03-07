@@ -7,13 +7,13 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import CustomTable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/tagStatistics/CustomTable.vue'
 import HighchartsVue from 'highcharts-vue'
-import { apiQueryActivityTagsRank, apiQueryActivityBetAmountGrowthSpanTags } from '@/api'
+import { apiQueryActivityTagsRank, apiQueryActivityCommissionableGrowthSpanTags } from '@/api'
 import { createTestingPinia } from '@pinia/testing'
 import { createRouterMock } from 'vue-router-mock'
 
 vi.mock('@/api', () => ({
   apiQueryActivityTagsRank: vi.fn(),
-  apiQueryActivityBetAmountGrowthSpanTags: vi.fn()
+  apiQueryActivityCommissionableGrowthSpanTags: vi.fn()
 }))
 
 describe('TagStatistics', () => {
@@ -79,7 +79,7 @@ describe('TagStatistics', () => {
         ]
       }
     })
-    apiQueryActivityBetAmountGrowthSpanTags.mockResolvedValue({
+    apiQueryActivityCommissionableGrowthSpanTags.mockResolvedValue({
       data: {
         status: { return_code: '0000' },
         result: [

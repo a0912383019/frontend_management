@@ -159,7 +159,7 @@ export const apiQueryActivityTagsRank = (params) => {
 }
 
 // 子活動分析-標籤統計-有效投注成長率區間各標籤人數
-export const apiQueryActivityBetAmountGrowthSpanTags = (params) => {
+export const apiQueryActivityCommissionableGrowthSpanTags = (params) => {
   const { hall_name, is_reward, id } = params
   return axiosGoInstance.get(`/api/auth/activity_detail/${id}/commissionable_growth_span_tags`, {
     params: {
@@ -179,9 +179,9 @@ export const apiQueryActivityMemberParticipation = (params) => {
 }
 
 // 子活動分析-有效投注統計-區間人數
-export const apiQueryActivityBetAmountGrowthSpan = (params) => {
+export const apiQueryActivityCommissionableGrowthSpan = (params) => {
   const { hall_name, id, is_reward } = params
-  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/betAmount_growth_span`, {
+  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/commissionable_growth_span`, {
     params: { hall_name, is_reward }
   })
 }

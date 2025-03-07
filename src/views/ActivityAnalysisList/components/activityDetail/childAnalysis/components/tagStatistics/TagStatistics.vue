@@ -5,7 +5,7 @@ import { useActivityAnalysisStore, useGlobalStore } from '@/stores'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
-import { apiQueryActivityTagsRank, apiQueryActivityBetAmountGrowthSpanTags } from '@/api'
+import { apiQueryActivityTagsRank, apiQueryActivityCommissionableGrowthSpanTags } from '@/api'
 import {
   getSessionStorageEntity,
   generateMultipleColors,
@@ -216,7 +216,7 @@ const queryActivityBetAmountGrowthSpanTags = async () => {
   betAmountGrowthMessageKey.value = 'loading'
   tableData.value = []
   try {
-    const result = await apiQueryActivityBetAmountGrowthSpanTags({
+    const result = await apiQueryActivityCommissionableGrowthSpanTags({
       hall_name: activeHall.hall_code,
       id: currentChildAnalysis.id,
       is_reward: props.isRewarded

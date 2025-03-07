@@ -2,7 +2,7 @@
 import { onMounted, ref, computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useActivityAnalysisStore, useGlobalStore } from '@/stores'
-import { apiQueryActivityMemberParticipation, apiQueryActivityBetAmountGrowthSpan } from '@/api'
+import { apiQueryActivityMemberParticipation, apiQueryActivityCommissionableGrowthSpan } from '@/api'
 import { errorRespond, generateRGBColors, FormatNumber } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipColumnSeparate } from '@/utils/highchartsConfig.js'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -185,7 +185,7 @@ const queryActivityBetAmountGrowthSpan = async () => {
   commissionableApiSuccess.value = false
   commissionableMessageKey.value = 'loading'
   try {
-    const result = await apiQueryActivityBetAmountGrowthSpan({
+    const result = await apiQueryActivityCommissionableGrowthSpan({
       hall_name: activeHall.hall_code,
       id: currentChildAnalysis.id,
       is_reward: props.isRewarded
