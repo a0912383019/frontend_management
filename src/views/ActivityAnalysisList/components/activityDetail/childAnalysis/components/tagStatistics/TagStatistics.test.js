@@ -336,7 +336,7 @@ describe('TagStatistics', () => {
     expect(wrapper.findComponent(CustomTable).exists()).toBeTruthy()
 
     wrapper.vm.tagsRankApiSuccess = false
-    wrapper.vm.betAmountGrowthApiSuccess = false
+    wrapper.vm.commissionableGrowthApiSuccess = false
     await wrapper.vm.$nextTick()
     expect(wrapper.findComponent(CdpMessage).exists()).toBeTruthy()
     expect(wrapper.findComponent(CustomTable).exists()).toBeFalsy()
@@ -401,7 +401,7 @@ describe('TagStatistics', () => {
       30412: 'rgb(245,105,84,0.7)'
     }
     expect(wrapper.vm.tagColorObj).toStrictEqual(tagColorObj)
-    expect(wrapper.vm.betAmountGrowthApiSuccess).toBeTruthy()
+    expect(wrapper.vm.commissionableGrowthApiSuccess).toBeTruthy()
     const categories = [
       '比較週均無貨量',
       '-100%(含) ~ -80%(不含)',

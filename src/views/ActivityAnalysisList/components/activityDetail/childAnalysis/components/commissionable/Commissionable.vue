@@ -181,7 +181,7 @@ const transformMemberParticipation = (data) => {
   ]
 }
 
-const queryActivityBetAmountGrowthSpan = async () => {
+const queryActivityCommissionableGrowthSpan = async () => {
   commissionableApiSuccess.value = false
   commissionableMessageKey.value = 'loading'
   try {
@@ -194,7 +194,7 @@ const queryActivityBetAmountGrowthSpan = async () => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       if (result.data.result.length !== 0) {
-        transformBetAmountGrowthSpan(result.data.result)
+        transformCommissionableGrowthSpan(result.data.result)
         commissionableApiSuccess.value = true
       } else {
         commissionableMessageKey.value = 'noResult'
@@ -223,7 +223,7 @@ const queryActivityBetAmountGrowthSpan = async () => {
   }
 }
 
-const transformBetAmountGrowthSpan = (data) => {
+const transformCommissionableGrowthSpan = (data) => {
   chartOptions.xAxis.categories = data.map((ele) => {
     if (ele.upper === 0 && ele.lower === 0) {
       return t('activity_analysis.no_bet_amount_interval')
@@ -260,7 +260,7 @@ const handleSerach = () => {
 
 onMounted(() => {
   queryActivityMemberParticipation()
-  queryActivityBetAmountGrowthSpan()
+  queryActivityCommissionableGrowthSpan()
 })
 </script>
 <template>
