@@ -5,11 +5,12 @@ import { useActivityAnalysisStore, useGlobalStore } from '@/stores'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import GenerateTagsBadge from '@/components/GenerateTagsBadge.vue'
-import { apiQueryActivityTagsRank, apiQueryActivityBetAmountGrowthSpanTags } from '@/api'
+import { apiQueryActivityTagsRank, apiQueryActivityCommissionableGrowthSpanTags } from '@/api'
 import {
   getSessionStorageEntity,
   generateMultipleColors,
-  errorRespond
+  errorRespond,
+  checkTagUsage
 } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipColumnSeparate } from '@/utils/highchartsConfig.js'
 import CustomTable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/tagStatistics/CustomTable.vue'
@@ -60,8 +61,8 @@ const tableColumns = computed(() => {
 })
 
 // 有效投注成長率區間各標籤人數
-const betAmountGrowthApiSuccess = ref(false)
-const betAmountGrowthMessageKey = ref('loading')
+const commissionableGrowthApiSuccess = ref(false)
+const commissionableGrowthMessageKey = ref('loading')
 
 const chartOptions = reactive({
   chart: {
@@ -137,16 +138,16 @@ const queryActivityTagsRank = async () => {
         tagsRankApiSuccess.value = true
       } else {
         tagsRankMessageKey.value = 'noResult'
-        betAmountGrowthMessageKey.value = 'noResult'
+        commissionableGrowthMessageKey.value = 'noResult'
       }
     } else {
       const { error_code } = result.data.status
       if (error_code === '210400000') {
         tagsRankMessageKey.value = 'noResult'
-        betAmountGrowthMessageKey.value = 'noResult'
+        commissionableGrowthMessageKey.value = 'noResult'
       } else {
         tagsRankMessageKey.value = 'queryFailed'
-        betAmountGrowthMessageKey.value = 'queryFailed'
+        commissionableGrowthMessageKey.value = 'queryFailed'
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
       }
@@ -155,15 +156,15 @@ const queryActivityTagsRank = async () => {
     console.error(error)
     if (error.response.status === 403) {
       tagsRankMessageKey.value = 'noPermission'
-      betAmountGrowthMessageKey.value = 'noPermission'
+      commissionableGrowthMessageKey.value = 'noPermission'
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else if (error.response.status === 404) {
       tagsRankMessageKey.value = 'noResult'
-      betAmountGrowthMessageKey.value = 'noResult'
+      commissionableGrowthMessageKey.value = 'noResult'
     } else {
       tagsRankMessageKey.value = 'queryFailed'
-      betAmountGrowthMessageKey.value = 'queryFailed'
+      commissionableGrowthMessageKey.value = 'queryFailed'
     }
   }
 }
@@ -178,6 +179,7 @@ const transformTagsRank = (data) => {
   let color = generateMultipleColors(data.length)['bg']
 
   data.forEach((ele, idx) => {
+    if(!checkTagUsage(ele.tag_code)) return
     let tableData = {
       tag_name: tag_description_dict[ele.tag_code].tag_name,
       unit_people: ele.count,
@@ -193,9 +195,9 @@ const transformTagsRank = (data) => {
 
   // 如果左邊沒資料，直接不打右邊 api
   if (Object.keys(tagColorObj.value).length !== 0) {
-    queryActivityBetAmountGrowthSpanTags()
+    queryActivityCommissionableGrowthSpanTags()
   } else {
-    betAmountGrowthMessageKey.value = 'noResult'
+    commissionableGrowthMessageKey.value = 'noResult'
   }
 
   return result
@@ -211,12 +213,12 @@ const generateCheckboxBar = ({ row }) => {
 
 const checkAll = ref(true)
 
-const queryActivityBetAmountGrowthSpanTags = async () => {
-  betAmountGrowthApiSuccess.value = false
-  betAmountGrowthMessageKey.value = 'loading'
+const queryActivityCommissionableGrowthSpanTags = async () => {
+  commissionableGrowthApiSuccess.value = false
+  commissionableGrowthMessageKey.value = 'loading'
   tableData.value = []
   try {
-    const result = await apiQueryActivityBetAmountGrowthSpanTags({
+    const result = await apiQueryActivityCommissionableGrowthSpanTags({
       hall_name: activeHall.hall_code,
       id: currentChildAnalysis.id,
       is_reward: props.isRewarded
@@ -225,17 +227,17 @@ const queryActivityBetAmountGrowthSpanTags = async () => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       if (result.data.result.length !== 0) {
-        transformBetAmountGrowthSpanTags(result.data.result)
-        betAmountGrowthApiSuccess.value = true
+        transformCommissionableGrowthSpanTags(result.data.result)
+        commissionableGrowthApiSuccess.value = true
       } else {
-        betAmountGrowthMessageKey.value = 'noResult'
+        commissionableGrowthMessageKey.value = 'noResult'
       }
     } else {
       const { error_code } = result.data.status
       if (error_code === '210400000') {
-        betAmountGrowthMessageKey.value = 'noResult'
+        commissionableGrowthMessageKey.value = 'noResult'
       } else {
-        betAmountGrowthMessageKey.value = 'chartFailed'
+        commissionableGrowthMessageKey.value = 'chartFailed'
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
       }
@@ -243,18 +245,18 @@ const queryActivityBetAmountGrowthSpanTags = async () => {
   } catch (error) {
     console.error(error)
     if (error.response.status === 403) {
-      betAmountGrowthMessageKey.value = 'noPermission'
+      commissionableGrowthMessageKey.value = 'noPermission'
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
     } else if (error.response.status === 404) {
-      betAmountGrowthMessageKey.value = 'noResult'
+      commissionableGrowthMessageKey.value = 'noResult'
     } else {
-      betAmountGrowthMessageKey.value = 'chartFailed'
+      commissionableGrowthMessageKey.value = 'chartFailed'
     }
   }
 }
 
-const transformBetAmountGrowthSpanTags = (data) => {
+const transformCommissionableGrowthSpanTags = (data) => {
   chartOptions.xAxis.categories = data.map((ele) => {
     if (ele.upper === 0 && ele.lower === 0) {
       return t('activity_analysis.no_bet_amount_interval')
@@ -363,8 +365,8 @@ onMounted(() => {
         class="mb-15"
       ></SectionTitle>
       <CdpMessage
-        :messageKey="betAmountGrowthMessageKey"
-        v-if="betAmountGrowthApiSuccess === false"
+        :messageKey="commissionableGrowthMessageKey"
+        v-if="commissionableGrowthApiSuccess === false"
       />
       <template v-else>
         <div class="cursor-pointer">

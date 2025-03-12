@@ -7,13 +7,13 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import CustomTable from '@/views/ActivityAnalysisList/components/activityDetail/childAnalysis/components/tagStatistics/CustomTable.vue'
 import HighchartsVue from 'highcharts-vue'
-import { apiQueryActivityTagsRank, apiQueryActivityBetAmountGrowthSpanTags } from '@/api'
+import { apiQueryActivityTagsRank, apiQueryActivityCommissionableGrowthSpanTags } from '@/api'
 import { createTestingPinia } from '@pinia/testing'
 import { createRouterMock } from 'vue-router-mock'
 
 vi.mock('@/api', () => ({
   apiQueryActivityTagsRank: vi.fn(),
-  apiQueryActivityBetAmountGrowthSpanTags: vi.fn()
+  apiQueryActivityCommissionableGrowthSpanTags: vi.fn()
 }))
 
 describe('TagStatistics', () => {
@@ -79,7 +79,7 @@ describe('TagStatistics', () => {
         ]
       }
     })
-    apiQueryActivityBetAmountGrowthSpanTags.mockResolvedValue({
+    apiQueryActivityCommissionableGrowthSpanTags.mockResolvedValue({
       data: {
         status: { return_code: '0000' },
         result: [
@@ -336,7 +336,7 @@ describe('TagStatistics', () => {
     expect(wrapper.findComponent(CustomTable).exists()).toBeTruthy()
 
     wrapper.vm.tagsRankApiSuccess = false
-    wrapper.vm.betAmountGrowthApiSuccess = false
+    wrapper.vm.commissionableGrowthApiSuccess = false
     await wrapper.vm.$nextTick()
     expect(wrapper.findComponent(CdpMessage).exists()).toBeTruthy()
     expect(wrapper.findComponent(CustomTable).exists()).toBeFalsy()
@@ -401,7 +401,7 @@ describe('TagStatistics', () => {
       30412: 'rgb(245,105,84,0.7)'
     }
     expect(wrapper.vm.tagColorObj).toStrictEqual(tagColorObj)
-    expect(wrapper.vm.betAmountGrowthApiSuccess).toBeTruthy()
+    expect(wrapper.vm.commissionableGrowthApiSuccess).toBeTruthy()
     const categories = [
       '比較週均無貨量',
       '-100%(含) ~ -80%(不含)',

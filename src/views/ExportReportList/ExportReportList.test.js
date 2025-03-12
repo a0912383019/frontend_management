@@ -59,6 +59,7 @@ describe('ExportReportList.vue', () => {
             is_expired: false,
             search_content:
               '{"report_date":"2024-04-17","vip_tag":[10001,10003],"locale":"zh-TW","user_id":249}',
+            extra_info: '',
             type: 4
           }
         ],
@@ -175,6 +176,7 @@ describe('ExportReportList.vue', () => {
         is_expired: false,
         search_content:
           '{"report_date":"2024-04-17","vip_tag":[10001,10003],"locale":"zh-TW","user_id":249}',
+        extra_info: '',
         source_page: 'sidebar.bbin_vip_commercial_analysis',
         status: 'completed',
         type: 4
@@ -261,12 +263,14 @@ describe('ExportReportList.vue', () => {
     expect(wrapper.vm.reportDetail).toStrictEqual({
       type: 0,
       source: '',
-      content: {}
+      content: {},
+      info: {}
     })
 
     wrapper.vm.opendetail({
       search_content:
         '{"report_date":"2024-04-17","vip_tag":[10001,10003],"locale":"zh-TW","user_id":249}',
+      extra_info: '',
       source_page: 'sidebar.bbin_vip_commercial_analysis',
       status: 'completed',
       type: 4
@@ -279,6 +283,7 @@ describe('ExportReportList.vue', () => {
         user_id: 249,
         vip_tag: [10001, 10003]
       },
+      info: {},
       source: 'sidebar.bbin_vip_commercial_analysis',
       type: 4
     })

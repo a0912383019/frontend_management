@@ -82,7 +82,8 @@ describe('TotalSum', () => {
     await flushPromises()
     expect(ElNotification).toHaveBeenCalledWith({
       title: '查詢成功',
-      type: 'success'
+      type: 'success',
+      duration: 1500
     })
     expect(apiQueryTotalCommissionable).toHaveBeenCalledOnce()
     expect(apiQueryTotalReal).toHaveBeenCalledOnce()
@@ -113,7 +114,8 @@ describe('TotalSum', () => {
     await flushPromises()
     expect(ElNotification).toHaveBeenCalledWith({
       title: '部份查詢失敗，請重新操作',
-      type: 'error'
+      type: 'error',
+      duration: 1500
     })
     expect(apiQueryTotalCommissionable).toHaveBeenCalledTimes(2)
     expect(apiQueryTotalReal).toHaveBeenCalledTimes(2)
@@ -133,7 +135,8 @@ describe('TotalSum', () => {
     await flushPromises()
     expect(ElNotification).toHaveBeenCalledWith({
       title: '查詢失敗，請重新操作',
-      type: 'error'
+      type: 'error',
+      duration: 1500
     })
     expect(apiQueryTotalCommissionable).toHaveBeenCalledTimes(2)
     expect(apiQueryTotalReal).toHaveBeenCalledTimes(2)

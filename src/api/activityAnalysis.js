@@ -1,39 +1,12 @@
-import axiosInstance from './axiosInstance'
 import axiosGoInstance from './axiosGoInstance.js'
 
 // 匯出名單
-export const apiExportActivityList = (params) => {
-  const {
-    hall_name,
-    start_search_year,
-    start_search_month,
-    start_search_week,
-    start_date,
-    end_search_year,
-    end_search_month,
-    end_search_week,
-    end_date,
-    cut_type,
-    reward_flag,
-    reward_date_flag,
-    search_activity
-  } = params
-  return axiosInstance.post(
-    '/api/auth/activity/export_activity_report',
+export const apiExportActivityGrowthReport = (params) => {
+  const { hall_name, activity_id_list, analysis_date, interval_type, is_reward, locale } = params
+  return axiosGoInstance.get(
+    '/api/auth/activity/export_growth_report',
     {
-      hall_name,
-      start_search_year,
-      start_search_month,
-      start_search_week,
-      start_date,
-      end_search_year,
-      end_search_month,
-      end_search_week,
-      end_date,
-      cut_type,
-      reward_flag,
-      reward_date_flag,
-      search_activity
+      params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward, locale }
     },
     {
       timeout: 10 * 1000 // 10秒
@@ -186,7 +159,7 @@ export const apiQueryActivityTagsRank = (params) => {
 }
 
 // 子活動分析-標籤統計-有效投注成長率區間各標籤人數
-export const apiQueryActivityBetAmountGrowthSpanTags = (params) => {
+export const apiQueryActivityCommissionableGrowthSpanTags = (params) => {
   const { hall_name, is_reward, id } = params
   return axiosGoInstance.get(`/api/auth/activity_detail/${id}/commissionable_growth_span_tags`, {
     params: {
@@ -206,9 +179,9 @@ export const apiQueryActivityMemberParticipation = (params) => {
 }
 
 // 子活動分析-有效投注統計-區間人數
-export const apiQueryActivityBetAmountGrowthSpan = (params) => {
+export const apiQueryActivityCommissionableGrowthSpan = (params) => {
   const { hall_name, id, is_reward } = params
-  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/betAmount_growth_span`, {
+  return axiosGoInstance.get(`/api/auth/activity_detail/${id}/commissionable_growth_span`, {
     params: { hall_name, is_reward }
   })
 }

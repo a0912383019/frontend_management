@@ -18,7 +18,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['closeDialog'])
+const emit = defineEmits(['closeDialog', 'updateSuccess'])
 
 //當前顯示的tab
 const currentTabs = ref('TargetData')
@@ -50,6 +50,11 @@ const currentTabComponent = computed(() => {
   return result
 })
 
+const updateSuccess = () => {
+  handleDialogClosed()
+  emit('updateSuccess')
+}
+
 // 關閉 dialog
 const handleDialogClosed = () => {
   currentTabs.value = 'TargetData'
@@ -74,11 +79,7 @@ const handleDialogClosed = () => {
     <div class="cdp-dialog__content">
       <el-row :gutter="20" class="mb-16">
         <el-col :span="8">
-          <Tab
-            :tabData="tabList"
-            :activeName="currentTabs"
-            v-model="currentTabs"
-          ></Tab>
+          <Tab :tabData="tabList" :activeName="currentTabs" v-model="currentTabs"></Tab>
         </el-col>
         <el-col :span="4" :offset="12" class="text-right">
           <Filter v-if="currentTabs === 'AnalysisResult'"></Filter>
@@ -89,7 +90,7 @@ const handleDialogClosed = () => {
           <component
             :is="currentTabComponent"
             :targetId="props.targetId"
-            @updateSuccess="handleDialogClosed"
+            @updateSuccess="updateSuccess"
           ></component>
         </keep-alive>
       </div>

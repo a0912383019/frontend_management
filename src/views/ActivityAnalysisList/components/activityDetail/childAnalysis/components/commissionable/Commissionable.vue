@@ -2,7 +2,7 @@
 import { onMounted, ref, computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useActivityAnalysisStore, useGlobalStore } from '@/stores'
-import { apiQueryActivityMemberParticipation, apiQueryActivityBetAmountGrowthSpan } from '@/api'
+import { apiQueryActivityMemberParticipation, apiQueryActivityCommissionableGrowthSpan } from '@/api'
 import { errorRespond, generateRGBColors, FormatNumber } from '@/utils/commonUtils.js'
 import { tooltipDarkConfig, tooltipColumnSeparate } from '@/utils/highchartsConfig.js'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
@@ -181,11 +181,11 @@ const transformMemberParticipation = (data) => {
   ]
 }
 
-const queryActivityBetAmountGrowthSpan = async () => {
+const queryActivityCommissionableGrowthSpan = async () => {
   commissionableApiSuccess.value = false
   commissionableMessageKey.value = 'loading'
   try {
-    const result = await apiQueryActivityBetAmountGrowthSpan({
+    const result = await apiQueryActivityCommissionableGrowthSpan({
       hall_name: activeHall.hall_code,
       id: currentChildAnalysis.id,
       is_reward: props.isRewarded
@@ -194,7 +194,7 @@ const queryActivityBetAmountGrowthSpan = async () => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       if (result.data.result.length !== 0) {
-        transformBetAmountGrowthSpan(result.data.result)
+        transformCommissionableGrowthSpan(result.data.result)
         commissionableApiSuccess.value = true
       } else {
         commissionableMessageKey.value = 'noResult'
@@ -223,7 +223,7 @@ const queryActivityBetAmountGrowthSpan = async () => {
   }
 }
 
-const transformBetAmountGrowthSpan = (data) => {
+const transformCommissionableGrowthSpan = (data) => {
   chartOptions.xAxis.categories = data.map((ele) => {
     if (ele.upper === 0 && ele.lower === 0) {
       return t('activity_analysis.no_bet_amount_interval')
@@ -260,7 +260,7 @@ const handleSerach = () => {
 
 onMounted(() => {
   queryActivityMemberParticipation()
-  queryActivityBetAmountGrowthSpan()
+  queryActivityCommissionableGrowthSpan()
 })
 </script>
 <template>
