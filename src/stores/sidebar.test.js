@@ -199,7 +199,7 @@ describe('useSystemStore', () => {
     })
   })
 
-  it('calls apiLogout and clears storage on storeLogout', async () => {
+  it('menuLists & toggleSidebarOpen', async () => {
     // 取得 store 實例
     const sidebarStore = useSidebarStore()
 

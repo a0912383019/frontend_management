@@ -27,11 +27,6 @@ export default ({ mode }) => {
     },
     server: {
       proxy: {
-        '/php-api': {
-          target: 'https://qa-cdp-api.caino.club',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/php-api/, '')
-        },
         '/go-api': {
           target: 'https://qa-cdp-v-api.caino.club',
           changeOrigin: true,

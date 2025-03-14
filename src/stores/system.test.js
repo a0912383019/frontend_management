@@ -7,7 +7,7 @@ import {
   useDateStore
 } from '@/stores'
 import { useRouter } from 'vue-router'
-import { apiLogout, apiRevoke } from '@/api'
+import { apiRevoke } from '@/api'
 import { dayjs } from 'element-plus'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
 
@@ -42,7 +42,7 @@ describe('useSystemStore', () => {
     useDateStore.mockReturnValue(mockLastDate)
   })
 
-  it('calls apiLogout and clears storage on storeLogout', async () => {
+  it('calls apiRevoke and clears storage on storeLogout', async () => {
     const sessionStorageMock = {
       clear: vi.fn()
     }
@@ -51,9 +51,8 @@ describe('useSystemStore', () => {
       clear: vi.fn()
     }
     global.localStorage = localStorageMock
-    // 用 mock 函数替换 apiLogout
+    // 用 mock 函数替换 apiRevoke
     vi.mock('@/api/system.js', () => ({
-      apiLogout: vi.fn(),
       apiRevoke: vi.fn()
     }))
 
@@ -72,7 +71,6 @@ describe('useSystemStore', () => {
     // 調用 storeLogout 方法
     await systemStore.storeLogout()
     expect(globalStore.isLoading).toBe(false)
-    expect(apiLogout).toBeCalled()
     expect(apiRevoke).toBeCalled()
     expect(resetStateMock).toHaveBeenCalled()
     expect(useRouter().push).toHaveBeenCalledWith({ name: 'Login' })

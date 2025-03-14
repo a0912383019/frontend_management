@@ -2,13 +2,13 @@ import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import { ElNotification } from 'element-plus'
 import { useGlobalStore, useSidebarStore, useVipCommercialAnalysisStore } from '@/stores'
-import { apiLogout, apiHalls, apiRevoke } from '@/api'
 import {
-  apiRefresh,
   apiGoRefresh,
   apiGetMenusConfig,
   apiGetTagsConfig,
-  apiGetServerTime
+  apiGetServerTime,
+  apiHalls,
+  apiRevoke
 } from '@/api'
 import { i18n } from '@/global/i18n'
 import { errorRespond, getSessionStorageEntity } from '@/utils/commonUtils.js'
@@ -24,7 +24,7 @@ export const useSystemStore = defineStore('system', () => {
   const storeLogout = async () => {
     globalStore.isLoading = true
     try {
-      await Promise.all([apiLogout(), apiRevoke()])
+      await apiRevoke()
       ElNotification({
         title: '',
         message: t('msg.logout'),
@@ -123,22 +123,19 @@ export const useSystemStore = defineStore('system', () => {
   // call refreshToken
   const storeRefreshToken = async () => {
     try {
-      const [phpResponse, goResponse] = await Promise.all([apiRefresh(), apiGoRefresh()])
-      const { return_code: phpReturnCode } = phpResponse.data.status
+      const goResponse = await apiGoRefresh()
       const { return_code: goReturnCode } = goResponse.data.status
-      const { access_token: phpAccessToken } = phpResponse.data
       const {
         user_type,
         access_hall,
         token_type,
         access_token: goAccessToken
       } = goResponse.data.result
-      if (phpReturnCode === '0000' && goReturnCode === '0000') {
+      if (goReturnCode === '0000') {
         let user_info_entity = getSessionStorageEntity('user_info')
         user_info_entity.user_type = user_type // 更新使用者身份權限
         user_info_entity.access_hall = access_hall // 更新使用者可存取廳別
         sessionStorage.setItem('user_info', JSON.stringify(user_info_entity))
-        sessionStorage.access_token = token_type + ' ' + phpAccessToken // 將新取得的access_token更新至sessionStorage
         sessionStorage.access_token_go = token_type + ' ' + goAccessToken // 將新取得的access_token更新至sessionStorage
         return Promise.resolve(true) //表示Promise物件執行成功，可往下繼續執行
       } else {

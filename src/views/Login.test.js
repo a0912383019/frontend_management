@@ -8,7 +8,6 @@ import router from '@/router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import Login from '@/views/Login.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
-import axiosInstance from '@/api/axiosInstance.js'
 
 describe('Login', () => {
   let wrapper = null
@@ -104,14 +103,6 @@ describe('Login', () => {
         message: 'success'
       }
     }
-    const phpResponse = {
-      token_type: 'bearer',
-      access_token: 'phptoken',
-      status: {
-        return_code: '0000',
-        message: 'Successfully login_google'
-      }
-    }
     const error = {
       return_code: '9999',
       message: 'Unexpected error.',
@@ -126,14 +117,7 @@ describe('Login', () => {
           return error
       }
     })
-    vi.spyOn(axiosInstance, 'post').mockImplementation((url) => {
-      switch (url) {
-        case '/api/auth/login_google':
-          return Promise.resolve({ data: phpResponse })
-        default:
-          return error
-      }
-    })
+
     wrapper.vm.googleLoginCallback(data)
     await flushPromises()
     expect(globalStore.isLoading).toBe(false)
@@ -151,7 +135,6 @@ describe('Login', () => {
     expect(userInfo).toStrictEqual(goResponseUserInfo)
 
     // 驗證 accsee token
-    expect(sessionStorage.access_token).toBe('bearer phptoken')
     expect(sessionStorage.access_token_go).toBe('bearer gotoken')
   })
 

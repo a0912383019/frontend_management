@@ -15,7 +15,7 @@ describe('ExportDialog', () => {
       user_name: 'test'
     }
     sessionStorage.setItem('user_info', JSON.stringify(user_info))
-    sessionStorage.setItem('access_token', JSON.stringify('awdedwaefjihiu'))
+    sessionStorage.setItem('access_token_go', JSON.stringify('awdedwaefjihiu'))
     wrapper = shallowMount(ExportDialog, {
       global: {
         plugins: [
@@ -51,6 +51,7 @@ describe('ExportDialog', () => {
     wrapper.vm.handleGo()
     // 等待路由準備
     await router.isReady()
+    await wrapper.vm.$nextTick()
 
     // 預期前往匯出報表清單頁面
     expect(router.currentRoute.value.path).toBe('/user-export-report')
