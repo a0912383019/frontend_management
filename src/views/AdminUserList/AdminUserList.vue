@@ -1,12 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import {
-  apiListUserByAdmin,
-  apiSimulateUserDataPhp,
-  apiSimulateUserDataGo,
-  apiDeleteUserByAdmin
-} from '@/api'
+import { apiListUserByAdmin, apiSimulateUserDataGo, apiDeleteUserByAdmin } from '@/api'
 import { useGlobalStore } from '@/stores'
 import { ElNotification, dayjs } from 'element-plus'
 import {
@@ -157,7 +152,7 @@ const transformUserList = (data) => {
       status: ele.user_status,
       login_num: ele.login_num,
       last_login_time:
-        ele.last_login_date === null || ele.last_login_date === ""
+        ele.last_login_date === null || ele.last_login_date === ''
           ? '-'
           : dayjs(ele.last_login_date).format(t('date.format_datetime_rule'))
     }
@@ -206,20 +201,14 @@ const closeUserDialog = () => {
 }
 
 const querySimulateUserData = async (user_id) => {
-  const [phpResponse, goResponse] = await Promise.all([
-    apiSimulateUserDataPhp({
-      user_id
-    }),
-    apiSimulateUserDataGo({
-      user_id
-    })
-  ])
+  const goResponse = await apiSimulateUserDataGo({
+    user_id
+  })
 
-  const { return_code: phpReturnCode } = phpResponse.data.status
   const { return_code: goReturnCode } = goResponse.data.status
 
-  if (phpReturnCode === '0000' && goReturnCode === '0000') {
-    simulationUser(phpResponse.data.result, goResponse.data.result)
+  if (goReturnCode === '0000') {
+    simulationUser(goResponse.data.result)
   } else {
     const failMsg = errorRespond(result.data.status)
     console.error(failMsg)
@@ -238,8 +227,7 @@ const simulationRoute = router.resolve({
   }
 })
 
-const simulationUser = (phpData, goData) => {
-  const { token_type: phpTokenType, access_token: phpAccessToken } = phpData
+const simulationUser = (goData) => {
   const {
     user_id,
     user_name,
@@ -258,15 +246,12 @@ const simulationUser = (phpData, goData) => {
   }
 
   let curUserData = getSessionStorageEntity('user_info')
-  let curUserTokenPhp = sessionStorage.access_token
   let curUserTokenGo = sessionStorage.access_token_go
 
-  let simulateUserTokenPhp = phpTokenType + ' ' + phpAccessToken
   let simulateUserTokenGo = goTokenType + ' ' + goAccessToken
 
   //  將模擬的使用者資料更新至sessionStorage
   sessionStorage.setItem('user_info', JSON.stringify(user_info_entity))
-  sessionStorage.setItem('access_token', simulateUserTokenPhp)
   sessionStorage.setItem('access_token_go', simulateUserTokenGo)
 
   //  開啟模擬視窗
@@ -274,7 +259,6 @@ const simulationUser = (phpData, goData) => {
 
   //  將目前的使用者資料更新回sessionStorage
   sessionStorage.setItem('user_info', JSON.stringify(curUserData))
-  sessionStorage.setItem('access_token', curUserTokenPhp)
   sessionStorage.setItem('access_token_go', curUserTokenGo)
 }
 

@@ -5,6 +5,11 @@ import { apiQueryUserInfo } from '@/api'
 import { useGlobalStore } from '@/stores'
 import { ElNotification, dayjs } from 'element-plus'
 import { storeToRefs } from 'pinia'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const { t } = useI18n()
 
@@ -75,16 +80,16 @@ const transformUserInfo = (data) => {
   memberData.createdTime =
     data.created_time === null
       ? '-'
-      : dayjs(data.created_time).format(t('date.format_datetime_rule'))
+      : dayjs(data.created_time).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
   memberData.loginNum = data.login_num.toString()
   memberData.lastUpdateTime =
     data.updated_time === null
       ? '-'
-      : dayjs(data.updated_time).format(t('date.format_datetime_rule'))
+      : dayjs(data.updated_time).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
   memberData.lastLoginTime =
     data.last_login_date === null
       ? '-'
-      : dayjs(data.last_login_date).format(t('date.format_datetime_rule'))
+      : dayjs(data.last_login_date).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
 }
 
 // 開啟 dialog

@@ -15,14 +15,12 @@ import UserAccountSetting from '@/views/AdminUserList/UserAccountSetting.vue'
 import AddUserAccount from '@/views/AdminUserList/AddUserAccount.vue'
 import ConfirmBox from '@/components/ConfirmBox.vue'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
-import axiosInstance from '@/api/axiosInstance.js'
 import router from '@/router'
 import { sortTableData, sortTableDate } from '@/utils/commonUtils.js'
 
 describe('AdminUserList', () => {
   let wrapper = null
   let spyGet
-  let spyPost
   let spyDelete
   let setItemSpy
   const simulateUserId = 24
@@ -63,7 +61,6 @@ describe('AdminUserList', () => {
     useGlobalStore(pinia)
 
     setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
-    sessionStorage.access_token = 'original_php_token'
     sessionStorage.access_token_go = 'original_go_token'
 
     const result1 = {
@@ -123,17 +120,6 @@ describe('AdminUserList', () => {
     }
 
     const result3 = {
-      result: {
-        access_token: 'b.b.b.b.b',
-        token_type: 'bearer'
-      },
-      status: {
-        return_code: '0000',
-        message: 'success'
-      }
-    }
-
-    const result4 = {
       status: {
         return_code: '0000',
         message: 'success'
@@ -148,8 +134,7 @@ describe('AdminUserList', () => {
           return Promise.resolve({ data: result2 })
       }
     })
-    spyPost = vi.spyOn(axiosInstance, 'post').mockResolvedValue({ data: result3 })
-    spyDelete = vi.spyOn(axiosGoInstance, 'delete').mockResolvedValue({ data: result4 })
+    spyDelete = vi.spyOn(axiosGoInstance, 'delete').mockResolvedValue({ data: result3 })
 
     wrapper = shallowMount(AdminUserList, {
       global: {
@@ -321,9 +306,6 @@ describe('AdminUserList', () => {
 
     await wrapper.vm.$nextTick()
     await flushPromises()
-    expect(spyPost).toHaveBeenCalledWith('/api/auth/get_simulate_user_data', {
-      user_id: simulateUserId
-    })
     expect(spyGet).toHaveBeenCalledWith(`/api/auth/admin/user/${simulateUserId}/token`)
     expect(setItemSpy).toBeCalledWith(
       'user_info',
@@ -335,7 +317,6 @@ describe('AdminUserList', () => {
         picture: 'https://google.picture.danny'
       })
     )
-    expect(setItemSpy).toBeCalledWith('access_token', 'bearer b.b.b.b.b')
     expect(setItemSpy).toBeCalledWith('access_token_go', 'bearer a.a.a.a')
 
     expect(window.open).toBeCalled()
@@ -351,7 +332,6 @@ describe('AdminUserList', () => {
         picture: 'https://google.picture.yuyu'
       })
     )
-    expect(setItemSpy).toBeCalledWith('access_token', 'original_php_token')
     expect(setItemSpy).toBeCalledWith('access_token_go', 'original_go_token')
   })
 

@@ -258,18 +258,15 @@ export const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const globalStore = useGlobalStore()
   globalStore.isLoading = true
-  const sessionStorageUserInfo = sessionStorage.user_info
-  //將from page寫入window內
-  sessionStorage.from_page = `?fromPage=${to.meta.fromPage}`
+
+  // 判斷使用者是否登入
   let isLogin = false
-  if (sessionStorageUserInfo !== '') {
-    const accessToken = sessionStorage.access_token
-    if (accessToken === undefined) {
-      isLogin = false
-    } else {
-      isLogin = true
-    }
+  if (!sessionStorage.access_token_go || !sessionStorage.user_info) {
+    isLogin = false
+  } else {
+    isLogin = true
   }
+
   if (isLogin || whiteList.includes(to.path)) {
     const systemStore = useSystemStore()
 
