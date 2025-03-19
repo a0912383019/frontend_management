@@ -9,8 +9,8 @@ const member = ref(null)
 
 const callApi = () => {
   step.value.query_life_cycle_analysis_avg_data()
-  member.value.query_life_cycle_analysis_detail_tbl()
   member.value.tableGoToFirstPage() //表格頁碼切換到第一頁
+  member.value.query_life_cycle_analysis_detail_tbl()
 }
 </script>
 <template>
