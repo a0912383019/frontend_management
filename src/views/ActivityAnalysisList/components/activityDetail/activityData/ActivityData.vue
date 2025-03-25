@@ -210,6 +210,8 @@ const organizeActivityDatail = () => {
   return subDetails
 }
 
+const emit = defineEmits(['updateSuccess'])
+
 const queryModifyActivity = async () => {
   try {
     const result = await apiModifyActivity({
@@ -224,14 +226,14 @@ const queryModifyActivity = async () => {
     const { return_code } = result.data.status
     if (return_code === '0000') {
       ElNotification({
-        title: t('msg.add_successful'),
+        title: t('msg.updated_successfully'),
         type: 'success'
       })
       edit.value = false
-      queryActivityInfo()
+      emit('updateSuccess')
     } else {
       ElNotification({
-        title: t('msg.add_failed'),
+        title: t('msg.update_failed'),
         type: 'error'
       })
     }
@@ -246,7 +248,7 @@ const queryModifyActivity = async () => {
       globalStore.storeHandleApiError()
     } else {
       ElNotification({
-        title: t('msg.add_failed'),
+        title: t('msg.update_failed'),
         type: 'error'
       })
     }
@@ -270,6 +272,7 @@ onMounted(() => {
               :placeholder="edit ? $t('activity_analysis.input_activity_name') : ''"
               class="cdp-input"
               :class="{ 'cdp-input-disabled': !edit }"
+              :readonly="!edit"
               :validate-event="false"
             >
               <template #append v-if="!edit"
@@ -286,6 +289,7 @@ onMounted(() => {
               :placeholder="edit ? $t('activity_analysis.input_activity_purpose') : ''"
               class="cdp-input"
               :class="{ 'cdp-input-disabled': !edit }"
+              :readonly="!edit"
               :validate-event="false"
             >
               <template #append v-if="!edit"
@@ -324,8 +328,9 @@ onMounted(() => {
               type="textarea"
               :placeholder="edit ? $t('activity_analysis.input_activity_description') : ''"
               class="cdp-data-textarea"
+              :class="{ 'cdp-data-textarea-disabled': !edit }"
               :validate-event="false"
-              :disabled="!edit"
+              :readonly="!edit"
             />
           </el-form-item>
         </el-col>
@@ -429,6 +434,11 @@ onMounted(() => {
         &:focus {
           box-shadow: none;
         }
+      }
+    }
+    &-disabled {
+      .el-textarea__inner {
+        background-color: rgba(207, 216, 230, 0.2) !important;
       }
     }
   }

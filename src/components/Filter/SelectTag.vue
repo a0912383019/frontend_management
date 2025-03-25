@@ -1,7 +1,6 @@
 <script setup>
 import { ref, reactive, watch, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useGlobalStore } from '@/stores/global.js'
 import { generateTagBySortIndex } from '@/utils/commonUtils.js'
 import SelectTagDropdown from '@/components/Filter/SelectTagDropdown.vue'
 import { dayjs } from 'element-plus'
@@ -10,9 +9,6 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const { t } = useI18n()
-
-const globalStore = useGlobalStore()
-const { activeHall } = globalStore
 
 const props = defineProps({
   modelValue: {
@@ -169,7 +165,7 @@ const changeGenerateCategoryLists = () => {
 // 標籤下拉
 const selectTagLists = ref([])
 const originalSelectTagLists = ref([])
-const tagsConfig = generateTagBySortIndex([1,2,3,4,5,6,7,9])
+const tagsConfig = generateTagBySortIndex([1, 2, 3, 4, 5, 6, 7, 9])
 const tagsConfigTransformData = reactive({})
 
 // 轉換資料，優化tagsConfig
@@ -410,13 +406,21 @@ watch(
         :key="index"
         @click="handleTagDelete({ item, index })"
       >
-        <div
-          class="select-tag__box__tag__item"
-          :class="{ isActive: item.active, [`select-tag-${props.color}__box__tag__item`]: true }"
+        <el-tooltip
+          effect="dark"
+          :content="item.tag_description"
+          placement="top"
+          :hide-after="0"
+          :disabled="!item.tag_description"
         >
-          {{ item.label }}
-          <div class="select-tag__box__tag__close" v-if="!props.isDisabled"></div>
-        </div>
+          <div
+            class="select-tag__box__tag__item"
+            :class="{ isActive: item.active, [`select-tag-${props.color}__box__tag__item`]: true }"
+          >
+            {{ item.label }}
+            <div class="select-tag__box__tag__close" v-if="!props.isDisabled"></div>
+          </div>
+        </el-tooltip>
       </div>
       <div class="select-tag__box__text" v-for="(item, index) in tagTextAry" :key="index">
         <div class="select-tag__box__text__item" :class="{ isActive: item.active }">
