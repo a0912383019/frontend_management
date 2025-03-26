@@ -196,6 +196,7 @@ const handleStepClick = (val) => {
 
 //表格頁碼切換到第一頁
 const tableGoToFirstPage = () => {
+  apiStart.value = 0
   refTable.value.goToFirstPage()
 }
 

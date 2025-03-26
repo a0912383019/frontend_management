@@ -10,6 +10,7 @@ import {
   generateRGBColors,
   errorRespond,
   checkTagUsage,
+  roundDecimal,
   getSessionStorageEntity
 } from '@/utils/commonUtils.js'
 import { ElNotification, dayjs } from 'element-plus'
@@ -185,7 +186,9 @@ const transformMemberJourney = (data) => {
     chartOptions.xAxis.plotBands = chart_data_this_day_step
 
     //  處理累積淨利比資料
-    chart_data_accumulate_net_profit_ratio.push(parseFloat(item.accumulate_net_profit_ratio))
+    chart_data_accumulate_net_profit_ratio.push(
+      parseFloat(roundDecimal(item.accumulate_net_profit_ratio))
+    )
     if (item.net_profit_ratio_tiptitle) {
       let net_profit_ratio_tiptitle_data = {
         x: index,
@@ -208,7 +211,8 @@ const transformMemberJourney = (data) => {
           text: t('customer_detail_info.accumulate_bet_amount_level_text', {
             accumulate_bet_amount: FormatNumber(
               item.accumulate_bet_amount,
-              globalStore.currencySign
+              globalStore.currencySign,
+              2
             )
           }),
           title: t(
@@ -230,7 +234,8 @@ const transformMemberJourney = (data) => {
           text: t('customer_detail_info.accumulate_deposit_amount_level_text', {
             accumulate_deposit_amount: FormatNumber(
               item.accumulate_deposit_amount,
-              globalStore.currencySign
+              globalStore.currencySign,
+              2
             )
           }),
           title: t(
@@ -249,8 +254,7 @@ const transformMemberJourney = (data) => {
       if (!user_tag_ary.includes(key)) {
         delete chart_data_user_tag_flag_dict[key]
 
-        let tag_config =
-          getSessionStorageEntity('system_config').tags_config[key]
+        let tag_config = getSessionStorageEntity('system_config').tags_config[key]
         chart_data_user_tag_flag.push({
           x: index,
           text: t('customer_detail_info.remove_tag_from_member', { tag_name: tag_config.tag_name }),
@@ -268,10 +272,7 @@ const transformMemberJourney = (data) => {
       ) {
         chart_data_user_tag_flag_dict[user_tag_ary[j]] = label
 
-        let tag_config =
-          getSessionStorageEntity('system_config').tags_config[
-            user_tag_ary[j]
-          ]
+        let tag_config = getSessionStorageEntity('system_config').tags_config[user_tag_ary[j]]
         chart_data_user_tag_flag.push({
           x: index,
           text: t('customer_detail_info.tag_member_to', { tag_name: tag_config.tag_name }),

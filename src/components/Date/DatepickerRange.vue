@@ -227,4 +227,7 @@ watch(i18nLocale, () => {
   right: 0 !important;
   inset: 90px 0 auto auto !important;
 }
+:deep(.el-date-range-picker table) {
+  table-layout: auto;
+}
 </style>

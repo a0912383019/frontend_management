@@ -242,7 +242,6 @@ watch([() => exportData.activityNameList, () => selectActivityNameOptions.value]
 watch(
   () => activityStore.chartFiltered,
   () => {
-    console.log('cccc')
     Object.assign(exportData, activityStore.filterData) // 屬性複製到目標物件
   }
 )

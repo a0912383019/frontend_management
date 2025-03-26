@@ -78,6 +78,11 @@ const generateChildListOptions = () => {
   findSelectedOption()
 }
 
+const updateSuccess = () => {
+  activityStore.islistFiltered = Date.now()
+  handleDialogClosed()
+}
+
 watch(
   () => childListData.value,
   () => {
@@ -121,7 +126,11 @@ watch(
       </el-col>
     </el-row>
     <keep-alive>
-      <component :is="currentTabComponent" :activityId="props.activityId"></component>
+      <component
+        :is="currentTabComponent"
+        :activityId="props.activityId"
+        @updateSuccess="updateSuccess"
+      ></component>
     </keep-alive>
   </el-dialog>
 </template>
