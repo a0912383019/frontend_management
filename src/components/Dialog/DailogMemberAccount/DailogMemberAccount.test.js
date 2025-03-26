@@ -33,9 +33,9 @@ describe('DailogMemberAccount.vue', () => {
           access_hall_name: 'esx,hf8,jg,bmw,b9,rb',
           google_picture_url: 'https://test.ggg-c',
           login_num: 339,
-          last_login_date: '2024-05-22 03:09:22',
-          created_time: '2023-05-12 05:18:42',
-          updated_time: '2024-01-19 03:13:24'
+          last_login_date: '2024-05-22T03:09:22-04:00',
+          created_time: '2023-05-12T05:18:42-04:00',
+          updated_time: '2024-01-19T03:13:24-04:00'
         }
       }
     }

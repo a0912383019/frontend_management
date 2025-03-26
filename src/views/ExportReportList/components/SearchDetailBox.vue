@@ -174,11 +174,15 @@ const tableDataType2 = computed(() => {
     },
     {
       contentKey: t('data_name.active_date'),
-      contentData: `${dayjs(props.reportDetail.content.activated_date_start).format(
-        t('date.format_date_rule')
-      )} ~ ${dayjs(props.reportDetail.content.activated_date_end).format(
-        t('date.format_date_rule')
-      )}`
+      contentData:
+        props.reportDetail.content.activated_date_start !== '' &&
+        props.reportDetail.content.activated_date_end !== ''
+          ? `${dayjs(props.reportDetail.content.activated_date_start).format(
+              t('date.format_date_rule')
+            )} ~ ${dayjs(props.reportDetail.content.activated_date_end).format(
+              t('date.format_date_rule')
+            )}`
+          : ''
     },
     {
       contentKey: t('data_name.register_date'),

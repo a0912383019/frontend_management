@@ -254,7 +254,7 @@ defineExpose({ getSubActivities, validSubActivities })
       <template #activity_detail_name="scope">
         <div class="w-full text-left mr-5">
           <div v-if="!props.canEdit">
-            <el-input v-model="scope.row.name" class="cdp-input cdp-input-disabled">
+            <el-input v-model="scope.row.name" class="cdp-input cdp-input-disabled" readonly>
               <template #append><font-awesome-icon icon="fa-solid fa-lock" /></template>
             </el-input>
           </div>

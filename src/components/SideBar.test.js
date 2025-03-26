@@ -16,7 +16,7 @@ describe('SideBar', () => {
       user_name: 'test'
     }
     sessionStorage.setItem('user_info', JSON.stringify(user_info))
-    sessionStorage.setItem('access_token', JSON.stringify('awdedwaefjihiu'))
+    sessionStorage.setItem('access_token_go', JSON.stringify('awdedwaefjihiu'))
     wrapper = mount(SideBar, {
       global: {
         plugins: [
