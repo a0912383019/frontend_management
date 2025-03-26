@@ -110,36 +110,36 @@ describe('Tags', () => {
     //初始資料是否正確
     const tagConfigEsb = {
       all: [
-        {
-          mutual_tags_code: '',
-          sort_index: 6011000,
-          tag_code: '60110',
-          tag_category: 1,
-          tag_description: 'AI 判定有對打嫌疑玩百家樂視訊的會員',
-          tag_enabled: true,
-          tag_name: '百家樂視訊疑似對打客',
-          tag_type: 6
-        },
-        {
-          mutual_tags_code: '',
-          sort_index: 6021000,
-          tag_code: '60210',
-          tag_category: 1,
-          tag_description: 'AI 判定有對打嫌疑玩龍虎鬥視訊的會員',
-          tag_enabled: true,
-          tag_name: '龍虎鬥視訊疑似對打客',
-          tag_type: 6
-        },
-        {
-          mutual_tags_code: '',
-          sort_index: 6031000,
-          tag_code: '60310',
-          tag_category: 1,
-          tag_description: 'AI 判定有對打嫌疑玩骰寶視訊的會員',
-          tag_enabled: true,
-          tag_name: '骰寶視訊疑似對打客',
-          tag_type: 6
-        },
+        // {
+        //   mutual_tags_code: '',
+        //   sort_index: 6011000,
+        //   tag_code: '60110',
+        //   tag_category: 1,
+        //   tag_description: 'AI 判定有對打嫌疑玩百家樂視訊的會員',
+        //   tag_enabled: true,
+        //   tag_name: '百家樂視訊疑似對打客',
+        //   tag_type: 6
+        // },
+        // {
+        //   mutual_tags_code: '',
+        //   sort_index: 6021000,
+        //   tag_code: '60210',
+        //   tag_category: 1,
+        //   tag_description: 'AI 判定有對打嫌疑玩龍虎鬥視訊的會員',
+        //   tag_enabled: true,
+        //   tag_name: '龍虎鬥視訊疑似對打客',
+        //   tag_type: 6
+        // },
+        // {
+        //   mutual_tags_code: '',
+        //   sort_index: 6031000,
+        //   tag_code: '60310',
+        //   tag_category: 1,
+        //   tag_description: 'AI 判定有對打嫌疑玩骰寶視訊的會員',
+        //   tag_enabled: true,
+        //   tag_name: '骰寶視訊疑似對打客',
+        //   tag_type: 6
+        // },
         {
           mutual_tags_code: '30009,30010,30011,30013,30014',
           sort_index: 3000012,
@@ -257,38 +257,38 @@ describe('Tags', () => {
       ],
       type4: [],
       type5: [],
-      type6: [
-        {
-          mutual_tags_code: '',
-          sort_index: 6011000,
-          tag_code: '60110',
-          tag_category: 1,
-          tag_description: 'AI 判定有對打嫌疑玩百家樂視訊的會員',
-          tag_enabled: true,
-          tag_name: '百家樂視訊疑似對打客',
-          tag_type: 6
-        },
-        {
-          mutual_tags_code: '',
-          sort_index: 6021000,
-          tag_code: '60210',
-          tag_category: 1,
-          tag_description: 'AI 判定有對打嫌疑玩龍虎鬥視訊的會員',
-          tag_enabled: true,
-          tag_name: '龍虎鬥視訊疑似對打客',
-          tag_type: 6
-        },
-        {
-          mutual_tags_code: '',
-          sort_index: 6031000,
-          tag_code: '60310',
-          tag_category: 1,
-          tag_description: 'AI 判定有對打嫌疑玩骰寶視訊的會員',
-          tag_enabled: true,
-          tag_name: '骰寶視訊疑似對打客',
-          tag_type: 6
-        }
-      ],
+      // type6: [
+      //   {
+      //     mutual_tags_code: '',
+      //     sort_index: 6011000,
+      //     tag_code: '60110',
+      //     tag_category: 1,
+      //     tag_description: 'AI 判定有對打嫌疑玩百家樂視訊的會員',
+      //     tag_enabled: true,
+      //     tag_name: '百家樂視訊疑似對打客',
+      //     tag_type: 6
+      //   },
+      //   {
+      //     mutual_tags_code: '',
+      //     sort_index: 6021000,
+      //     tag_code: '60210',
+      //     tag_category: 1,
+      //     tag_description: 'AI 判定有對打嫌疑玩龍虎鬥視訊的會員',
+      //     tag_enabled: true,
+      //     tag_name: '龍虎鬥視訊疑似對打客',
+      //     tag_type: 6
+      //   },
+      //   {
+      //     mutual_tags_code: '',
+      //     sort_index: 6031000,
+      //     tag_code: '60310',
+      //     tag_category: 1,
+      //     tag_description: 'AI 判定有對打嫌疑玩骰寶視訊的會員',
+      //     tag_enabled: true,
+      //     tag_name: '骰寶視訊疑似對打客',
+      //     tag_type: 6
+      //   }
+      // ],
       type8: [],
       type9: []
     }

@@ -38,7 +38,8 @@ const badge_class = computed(() => {
         badgeClass += ' badge-custom-orange'
         break
       case 6:
-        badgeClass += ' badge-custom-danger'
+        // 風控註解
+        // badgeClass += ' badge-custom-danger'
         break
       case 8:
         badgeClass += ' badge-custom-sky-blue'

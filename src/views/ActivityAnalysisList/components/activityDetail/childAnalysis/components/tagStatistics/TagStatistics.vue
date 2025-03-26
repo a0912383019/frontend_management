@@ -179,18 +179,19 @@ const transformTagsRank = (data) => {
   let color = generateMultipleColors(data.length)['bg']
 
   data.forEach((ele, idx) => {
-    if(!checkTagUsage(ele.tag_code)) return
-    let tableData = {
-      tag_name: tag_description_dict[ele.tag_code].tag_name,
-      unit_people: ele.count,
-      tag_code: ele.tag_code.toString(),
-      bar_color: color[idx],
-      is_selected: true
+    if (checkTagUsage(ele.tag_code)) {
+      let tableData = {
+        tag_name: tag_description_dict[ele.tag_code].tag_name,
+        unit_people: ele.count,
+        tag_code: ele.tag_code.toString(),
+        bar_color: color[idx],
+        is_selected: true
+      }
+
+      tagColorObj.value[ele.tag_code] = color[idx]
+
+      result.push(tableData)
     }
-
-    tagColorObj.value[ele.tag_code] = color[idx]
-
-    result.push(tableData)
   })
 
   // 如果左邊沒資料，直接不打右邊 api

@@ -172,7 +172,12 @@ export function generateMultipleColors(count) {
  */
 export function checkTagUsage(tag_code) {
   let tag_description_dict = getSessionStorageEntity('system_config').tags_config
-  return tag_description_dict[tag_code] && tag_description_dict[tag_code].tag_enabled
+  return (
+    tag_description_dict[tag_code] &&
+    tag_description_dict[tag_code].tag_enabled &&
+    // 風控註解
+    tag_description_dict[tag_code].tag_type !== 6
+  )
 }
 
 /**
