@@ -5,15 +5,16 @@ import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
 
 const widthClass = computed(() => {
-  return locale.value === 'en' ? 'width-en' : 'width-ch';
+  return locale.value === 'en' ? 'width-en' : 'width-ch'
 })
 
 const tagsList = computed(() => {
   return [
-    {
-      color: 'red',
-      name: t('tags.type_6')
-    },
+    // 風控註解
+    // {
+    //   color: 'red',
+    //   name: t('tags.type_6')
+    // },
     {
       color: 'green',
       name: t('tags.type_1')
