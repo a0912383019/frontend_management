@@ -29,6 +29,7 @@ describe('useSystemStore', () => {
   afterEach(() => {
     // restoring date after each test run
     vi.useRealTimers()
+    vi.clearAllMocks()
   })
 
   it('initializes with correct values', () => {
