@@ -55,6 +55,11 @@ const handelExportReport = async () => {
         let failMsg = errorRespond(result.data.status)
         console.error(failMsg)
       }
+    } else if (return_code === '0001') {
+      ElNotification({
+        title: t('msg.no_results'),
+        type: 'warning'
+      })
     } else {
       ElNotification({
         title: t('msg.query_failed'),
@@ -64,7 +69,7 @@ const handelExportReport = async () => {
       console.error(failMsg)
     }
   } catch (error) {
-    console.error(error);
+    console.error(error)
     // 失敗需關閉loading
     globalStore.isLoading = false
     if (error.code === 'ECONNABORTED') {
