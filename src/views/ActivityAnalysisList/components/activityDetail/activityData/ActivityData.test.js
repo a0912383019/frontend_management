@@ -43,7 +43,7 @@ describe('ActivityData', () => {
           purpose: '',
           operator_id: 249,
           operator_name: 'BI-CDP-Yu_Lan',
-          created_time: '2025-01-16T06:12:46-04:00',
+          created_time: '2025-01-16 06:12:46',
           detail_data: [
             {
               id: 98,
@@ -52,7 +52,7 @@ describe('ActivityData', () => {
               original_id: 3,
               offer_id: 61,
               operator_id: 249,
-              created_time: '2025-01-16T06:12:46-04:00',
+              created_time: '2025-01-16 06:12:46',
               promotion_name: 'enoki-test-活動期間-隔日派發_簽到送_簽到活動_2024-03-19',
               promotion_start_date: '2024-03-19',
               promotion_end_date: '2024-04-03'
@@ -64,7 +64,7 @@ describe('ActivityData', () => {
               original_id: 4,
               offer_id: 61,
               operator_id: 249,
-              created_time: '2025-01-16T06:12:46-04:00',
+              created_time: '2025-01-16 06:12:46',
               promotion_name: 'test-即時-每週-累積-門檻_簽到送_簽到活動_2024-03-20',
               promotion_start_date: '2024-03-20',
               promotion_end_date: '2024-03-25'
@@ -133,10 +133,10 @@ describe('ActivityData', () => {
     expect(wrapper.vm.validateForm.name).toStrictEqual('oa')
     expect(wrapper.vm.validateForm.purpose).toStrictEqual('')
     expect(wrapper.vm.validateForm.operatedName).toStrictEqual('BI-CDP-Yu_Lan')
-    expect(wrapper.vm.validateForm.createdTime).toStrictEqual('2025/01/16')
+    expect(wrapper.vm.validateForm.createdTime).toStrictEqual('2025/01/16 06:12:46')
     expect(wrapper.vm.validateForm.description).toStrictEqual('')
     expect(wrapper.vm.originalData).toStrictEqual({
-      createdTime: '2025/01/16',
+      createdTime: '2025/01/16 06:12:46',
       description: '',
       name: 'oa',
       operatedName: 'BI-CDP-Yu_Lan',
@@ -144,7 +144,7 @@ describe('ActivityData', () => {
     })
     expect(wrapper.vm.childListData).toStrictEqual([
       {
-        created_time: '2025-01-16T06:12:46-04:00',
+        created_time: '2025-01-16 06:12:46',
         id: 98,
         name: 'oaoa',
         offer_id: 61,
@@ -156,7 +156,7 @@ describe('ActivityData', () => {
         promotion_start_date: '2024-03-19'
       },
       {
-        created_time: '2025-01-16T06:12:46-04:00',
+        created_time: '2025-01-16 06:12:46',
         id: 99,
         name: 'oaoaoa',
         offer_id: 61,
@@ -261,7 +261,7 @@ describe('ActivityData', () => {
     expect(wrapper.vm.validateForm.name).toStrictEqual('oa')
     expect(wrapper.vm.validateForm.purpose).toStrictEqual('')
     expect(wrapper.vm.validateForm.operatedName).toStrictEqual('BI-CDP-Yu_Lan')
-    expect(wrapper.vm.validateForm.createdTime).toStrictEqual('2025/01/16')
+    expect(wrapper.vm.validateForm.createdTime).toStrictEqual('2025/01/16 06:12:46')
     expect(wrapper.vm.validateForm.description).toStrictEqual('')
     expect(wrapper.vm.edit).toBeFalsy()
     expect(wrapper.vm.cancelEditBox).toBeFalsy()

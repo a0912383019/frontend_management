@@ -4,7 +4,7 @@
 
 # namespace 預設 default
 namespace: cdp-web
-replicaCount: 1
+replicaCount: 2
 nodePool: web
 
 # deployment 設定
