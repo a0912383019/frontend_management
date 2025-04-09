@@ -100,10 +100,11 @@ const apiRequestKey = ref('')
 // 標籤類型下拉
 const selectTypeValue = ref()
 const selectTypeLists = ref([
-  {
-    value: 6,
-    label: t('tags.type_6')
-  },
+  // 風控註解
+  // {
+  //   value: 6,
+  //   label: t('tags.type_6')
+  // },
   {
     value: 3,
     label: t('tags.type_3')

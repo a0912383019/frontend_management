@@ -160,7 +160,7 @@ const transformActivityData = (data) => {
   validateForm.name = data.name
   validateForm.purpose = data.purpose ? data.purpose : ''
   validateForm.operatedName = data.operator_name
-  validateForm.createdTime = dayjs(data.created_time).format(t('date.format_date_rule'))
+  validateForm.createdTime = dayjs(data.created_time).format(t('date.format_datetime_rule'))
   validateForm.description = data.description ? data.description : ''
 
   originalData.value = JSON.parse(JSON.stringify(validateForm))

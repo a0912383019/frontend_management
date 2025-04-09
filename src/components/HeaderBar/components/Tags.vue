@@ -45,10 +45,11 @@ const tabData = computed(() => {
       label: t('tags.all_tags'),
       name: 'all'
     },
-    {
-      label: t('tags.type_6'),
-      name: 'type6'
-    },
+    // 風控註解
+    // {
+    //   label: t('tags.type_6'),
+    //   name: 'type6'
+    // },
     {
       label: t('tags.type_3'),
       name: 'type3'
@@ -83,7 +84,7 @@ const tagsData = reactive({
   type3: [],
   type4: [],
   type5: [],
-  type6: [],
+  // type6: [],
   type8: [],
   type9: []
 })
@@ -114,7 +115,7 @@ const transformTagsConfig = () => {
       } else if (value.tag_type === 5) {
         tagsData['type5'].push(value)
       } else if (value.tag_type === 6) {
-        tagsData['type6'].push(value)
+        // tagsData['type6'].push(value)
       } else if (value.tag_type === 8) {
         tagsData['type8'].push(value)
       } else if (value.tag_type === 9) {
@@ -151,7 +152,7 @@ const transformTagsConfig = () => {
   // 將資料合併到all和type3內
   tagsData['type3'] = tagsData['type3'].concat(type3_data)
   tagsData['all'] = tagsData['all']
-    .concat(tagsData['type6'])
+    // .concat(tagsData['type6'])
     .concat(tagsData['type3'])
     .concat(tagsData['type4'])
     .concat(tagsData['type5'])

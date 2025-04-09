@@ -22,10 +22,10 @@ describe('CustomTagTooltip.vue', () => {
     })
 
     const tagsList = [
-      {
-        color: 'red',
-        name: '風控'
-      },
+      // {
+      //   color: 'red',
+      //   name: '風控'
+      // },
       {
         color: 'green',
         name: '人工'
