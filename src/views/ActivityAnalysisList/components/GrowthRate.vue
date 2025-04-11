@@ -45,10 +45,10 @@ const queryActivityApi = async (api, apiObject) => {
   try {
     const result = await api({
       hall_name: activeHall.hall_code,
-      analysis_date: '2111-01-01 ~ 2111-01-02',
+      analysis_date: chartApiParams.start_date + '~' + chartApiParams.end_date,
       interval_type: chartApiParams.cut_type,
       is_reward: chartApiParams.reward_flag,
-      activity_id_list: [98]
+      activity_id_list: chartApiParams.search_activity
     })
     const { return_code } = result.data.status
 
