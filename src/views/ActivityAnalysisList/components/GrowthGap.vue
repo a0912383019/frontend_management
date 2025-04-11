@@ -76,6 +76,8 @@ const queryActivityApi = async (api, apiObject) => {
       apiObject.messageKey = 'noPermission'
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
+    } else if (error.response.status === 404) {
+      apiObject.messageKey = 'noResult'
     } else {
       apiObject.messageKey = 'chartFailed'
     }
@@ -143,10 +145,7 @@ onMounted(() => {
     sign="¥"
     :signPositionFront="true"
   />
-  <ActivityChart
-    :title="$t('data_name.active_member')"
-    :apiObject="apiObjectReal"
-  />
+  <ActivityChart :title="$t('data_name.active_member')" :apiObject="apiObjectReal" />
   <ActivityChart
     :title="$t('rank_analysis.total_profit_loss')"
     :apiObject="apiObjectProfit"

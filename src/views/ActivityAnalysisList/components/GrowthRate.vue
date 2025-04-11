@@ -45,10 +45,10 @@ const queryActivityApi = async (api, apiObject) => {
   try {
     const result = await api({
       hall_name: activeHall.hall_code,
-      analysis_date: chartApiParams.start_date + '~' + chartApiParams.end_date,
+      analysis_date: '2111-01-01 ~ 2111-01-02',
       interval_type: chartApiParams.cut_type,
       is_reward: chartApiParams.reward_flag,
-      activity_id_list: chartApiParams.search_activity
+      activity_id_list: [98]
     })
     const { return_code } = result.data.status
 
@@ -78,6 +78,8 @@ const queryActivityApi = async (api, apiObject) => {
       apiObject.messageKey = 'noPermission'
     } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
+    } else if (error.response.status === 404) {
+      apiObject.messageKey = 'noResult'
     } else {
       apiObject.messageKey = 'chartFailed'
     }
