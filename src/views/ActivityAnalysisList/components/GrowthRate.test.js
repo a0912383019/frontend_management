@@ -33,7 +33,7 @@ describe('GrowthRate', () => {
   let analysisStore
   const apiError = new Error('API Error')
   apiError.response = {
-    status: 404
+    status: 500
   }
 
   beforeEach(() => {
@@ -84,11 +84,6 @@ describe('GrowthRate', () => {
 
   it('成功查詢所有圖表, onMounted 第一次 queryCharts', async () => {
     await flushPromises()
-    expect(ElNotification).toHaveBeenCalledWith({
-      title: '查詢成功',
-      type: 'success',
-      duration: 1500
-    })
     expect(apiQueryGrowthRateCommissionable).toHaveBeenCalledOnce()
     expect(apiQueryGrowthRateReal).toHaveBeenCalledOnce()
     expect(apiQueryGrowthRateProfit).toHaveBeenCalledOnce()

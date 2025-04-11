@@ -93,7 +93,7 @@ const queryListActivity = async () => {
 const transformActivityName = (data) => {
   filterData.activityNameList = []
   const displayData = data.slice(0, 10)
-  filterData.activityNameList = displayData.length === 0 ? [-1] : displayData.map((item) => item.id)
+  filterData.activityNameList = displayData.length === 0 ? [] : displayData.map((item) => item.id)
   handleSubmitClick()
 
   selectActivityNameOptions.value = []
