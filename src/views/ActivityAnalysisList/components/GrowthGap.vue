@@ -47,7 +47,8 @@ const queryActivityApi = async (api, apiObject) => {
       analysis_date: chartApiParams.start_date + '~' + chartApiParams.end_date,
       interval_type: chartApiParams.cut_type,
       is_reward: chartApiParams.reward_flag,
-      activity_id_list: chartApiParams.search_activity
+      activity_id_list:
+        chartApiParams.search_activity.length === 0 ? [-1] : chartApiParams.search_activity
     })
     const { return_code } = result.data.status
     if (return_code === '0000') {
@@ -78,6 +79,7 @@ const queryActivityApi = async (api, apiObject) => {
       globalStore.storeHandleApiError()
     } else if (error.response.status === 404) {
       apiObject.messageKey = 'noResult'
+      hasError = false
     } else {
       apiObject.messageKey = 'chartFailed'
     }
@@ -98,25 +100,13 @@ const queryCharts = () => {
       errorCount += Number(result.value)
     })
 
-    if (errorCount === 0) {
-      ElNotification({
-        title: t('msg.query_successful'),
-        type: 'success',
-        duration: 1500
-      })
-    } else if (errorCount === 3) {
-      ElNotification({
-        title: t('msg.query_failed'),
-        type: 'error',
-        duration: 1500
-      })
-    } else {
-      ElNotification({
-        title: t('msg.query_failed_part'),
-        type: 'error',
-        duration: 1500
-      })
-    }
+    if (errorCount === 0) return
+
+    ElNotification({
+      title: errorCount === 3 ? t('msg.query_failed') : t('msg.query_failed_part'),
+      type: 'error',
+      duration: 1500
+    })
   })
 }
 

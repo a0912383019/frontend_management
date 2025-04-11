@@ -151,7 +151,7 @@ const handelExportList = async () => {
       analysis_date: exportData.analysisDate,
       interval_type: exportData.selectDuration,
       is_reward: exportData.selectReward,
-      activity_id_list: exportData.activityNameList,
+      activity_id_list: exportData.activityNameList.length === 0 ? [-1] : exportData.activityNameList,
       locale: i18nLocale.value
     })
     const { return_code } = result.data.status
