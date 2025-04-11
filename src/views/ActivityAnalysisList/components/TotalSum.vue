@@ -70,7 +70,10 @@ const queryActivityApi = async (api, apiObject) => {
     console.error(error)
     if (error.response.status === 403) {
       apiObject.messageKey = 'noPermission'
+    } else if (error.response.status === 401) {
       globalStore.storeHandleApiError()
+    } else if (error.response.status === 404) {
+      apiObject.messageKey = 'noResult'
     } else {
       apiObject.messageKey = 'chartFailed'
     }
