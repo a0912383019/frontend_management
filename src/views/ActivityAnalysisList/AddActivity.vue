@@ -54,7 +54,7 @@ const validActivityAdd = async () => {
   activityForm.purpose = activityForm.purpose.trim()
   activityForm.description = activityForm.description.trim()
 
-  const infoValid = formRef.value.validate((valid) => {
+  const infoValid = await formRef.value.validate((valid) => {
     return valid
   })
 
