@@ -12,6 +12,11 @@ import ConfirmBox from '@/components/ConfirmBox.vue'
 import ActivityDetail from '@/views/ActivityAnalysisList/components/activityDetail/ActivityDetail.vue'
 import { ElNotification } from 'element-plus'
 import { sortTableDate } from '@/utils/commonUtils.js'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const { t } = useI18n()
 
@@ -98,7 +103,7 @@ const transformActivityList = (data) => {
     activityList.push({
       activityName: ele.name,
       operator: ele.operator_name,
-      createdTime: dayjs(ele.created_time).format(t('date.format_datetime_rule')),
+      createdTime: dayjs(ele.created_time).tz('Etc/GMT+4').format(t('date.format_datetime_rule')),
       activityId: ele.id,
       canOperate: ele.can_operate
     })

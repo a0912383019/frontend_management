@@ -9,6 +9,11 @@ import ConfirmBox from '@/components/ConfirmBox.vue'
 import { ElNotification } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { dayjs } from 'element-plus'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const { t, locale } = useI18n()
 
@@ -160,7 +165,7 @@ const transformActivityData = (data) => {
   validateForm.name = data.name
   validateForm.purpose = data.purpose ? data.purpose : ''
   validateForm.operatedName = data.operator_name
-  validateForm.createdTime = dayjs(data.created_time).format(t('date.format_datetime_rule'))
+  validateForm.createdTime = dayjs(data.created_time).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
   validateForm.description = data.description ? data.description : ''
 
   originalData.value = JSON.parse(JSON.stringify(validateForm))
