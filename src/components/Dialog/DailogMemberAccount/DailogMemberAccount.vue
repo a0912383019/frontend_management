@@ -78,16 +78,16 @@ const transformUserInfo = (data) => {
   memberData.email = data.email
   memberData.accountType = userTypeConfig.value[data.user_type]
   memberData.createdTime =
-    data.created_time === null
+    data.created_time === null || data.created_time.trim() === ''
       ? '-'
       : dayjs(data.created_time).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
   memberData.loginNum = data.login_num.toString()
   memberData.lastUpdateTime =
-    data.updated_time === null
+    data.updated_time === null || data.updated_time.trim() === ''
       ? '-'
       : dayjs(data.updated_time).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
   memberData.lastLoginTime =
-    data.last_login_date === null
+    data.last_login_date === null || data.last_login_date.trim() === ''
       ? '-'
       : dayjs(data.last_login_date).tz('Etc/GMT+4').format(t('date.format_datetime_rule'))
 }
