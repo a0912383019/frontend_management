@@ -45,12 +45,12 @@ export const useDateStore = defineStore('dateStore', () => {
     }
   })
 
-  // config_2 : 預設選取近20年
+  // config_2 : 預設選取近3個月
   const date_range_picker_config_2 = computed(() => {
     return {
       startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(3, 'month'), //預設起始時間
       endDate: LAST_DATE.value, //預設結束時間
-      minDate: dayjs(LAST_DATE.value).subtract(20, 'year'), //限制最小可選日期
+      minDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(20, 'year'), //限制最小可選日期
       maxDate: LAST_DATE.value //限制最大可選日期
     }
   })
@@ -121,6 +121,16 @@ export const useDateStore = defineStore('dateStore', () => {
       startDate: dayjs(LAST_DATE.value).format('YYYY-MM'), //預設起始時間
       endDate: dayjs(LAST_DATE.value).format('YYYY-MM'), //預設結束時間
       minDate: MIN_DATE, //限制最小可選日期
+      maxDate: LAST_DATE.value //限制最大可選日期
+    }
+  })
+
+  // config_10 : 預設選取近20年
+  const date_range_picker_config_10 = computed(() => {
+    return {
+      startDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(20, 'year'), //預設起始時間
+      endDate: LAST_DATE.value, //預設結束時間
+      minDate: dayjs(LAST_DATE.value).add(1, 'day').subtract(20, 'year'), //限制最小可選日期
       maxDate: LAST_DATE.value //限制最大可選日期
     }
   })
@@ -278,6 +288,7 @@ export const useDateStore = defineStore('dateStore', () => {
     date_range_picker_config_7,
     date_range_picker_config_8,
     date_range_picker_config_9,
+    date_range_picker_config_10,
     shortcutsConfig1,
     shortcutsConfig2,
     shortcutsConfig3

@@ -24,7 +24,7 @@ import Filter from './components/Filter.vue'
 import { useDateStore } from '@/stores/dateConfig.js'
 import TooltipCustomTag from '@/components/TooltipCustomTag.vue'
 
-const { date_range_picker_config_1, date_range_picker_config_2 } = useDateStore()
+const { date_range_picker_config_1, date_range_picker_config_10 } = useDateStore()
 
 const { t, locale: i18nLocale } = useI18n()
 
@@ -114,9 +114,9 @@ const formData = reactive({
       dayjs(date_range_picker_config_1.endDate).format(t('date.format_date_rule'))
   ), //實動日期
   registerDate: formatDateDuration(
-    dayjs(date_range_picker_config_2.startDate).format(t('date.format_date_rule')) +
+    dayjs(date_range_picker_config_10.startDate).format(t('date.format_date_rule')) +
       '~' +
-      dayjs(date_range_picker_config_2.endDate).format(t('date.format_date_rule'))
+      dayjs(date_range_picker_config_10.endDate).format(t('date.format_date_rule'))
   ), //註冊日期
   searchTag: '', //包含標籤
   excludeTag: '', //排除標籤

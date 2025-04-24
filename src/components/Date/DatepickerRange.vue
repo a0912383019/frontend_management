@@ -11,6 +11,7 @@ const {
   date_range_picker_config_7,
   date_range_picker_config_8,
   date_range_picker_config_9,
+  date_range_picker_config_10,
   shortcutsConfig1,
   shortcutsConfig2,
   shortcutsConfig3
@@ -95,6 +96,12 @@ switch (props.config) {
     dateValueEndDate.value = date_range_picker_config_9.endDate
     dateMinDate.value = date_range_picker_config_9.minDate
     dateMaxDate.value = date_range_picker_config_9.maxDate
+    break
+  case 10:
+    dateValueStartDate.value = date_range_picker_config_10.startDate
+    dateValueEndDate.value = date_range_picker_config_10.endDate
+    dateMinDate.value = date_range_picker_config_10.minDate
+    dateMaxDate.value = date_range_picker_config_10.maxDate
     break
 }
 //如果props rangedate有值，優先使用
