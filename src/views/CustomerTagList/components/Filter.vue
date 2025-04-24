@@ -229,8 +229,9 @@ watch(
           </SectionTitle>
           <DatepickerRange
             v-model="form.registerDate"
-            :config="2"
-            :shortcutsConfig="1"
+            :config="10"
+            :shortcutsConfig="2"
+            :enabledThreeMonth="false"
             :disabled="formDisabled"
             class="w-full filter-datepicker custom-tag-date-picker"
             classColor="purple"
