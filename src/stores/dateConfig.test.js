@@ -41,7 +41,7 @@ describe('useSystemStore', () => {
     const date_range_picker_config_2 = {
       startDate: dayjs(newLastDate).add(1, 'day').subtract(3, 'month'),
       endDate: newLastDate,
-      minDate: dayjs(newLastDate).subtract(20, 'year'),
+      minDate: dayjs(newLastDate).add(1, 'day').subtract(20, 'year'),
       maxDate: newLastDate
     }
     expect(store.date_range_picker_config_2).toEqual(date_range_picker_config_2)
@@ -101,6 +101,14 @@ describe('useSystemStore', () => {
       maxDate: newLastDate
     }
     expect(store.date_range_picker_config_9).toEqual(date_range_picker_config_9)
+
+    const date_range_picker_config_10 = {
+      startDate: dayjs(newLastDate).add(1, 'day').subtract(20, 'year'),
+      endDate: newLastDate,
+      minDate: dayjs(newLastDate).add(1, 'day').subtract(20, 'year'),
+      maxDate: newLastDate
+    }
+    expect(store.date_range_picker_config_10).toEqual(date_range_picker_config_10)
 
     const shortcutsConfig1 = [
       { text: '近1週', value: expect.any(Function) },
