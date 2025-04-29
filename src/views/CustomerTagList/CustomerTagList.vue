@@ -303,11 +303,11 @@ onMounted(() => {
   <section class="cdp-section mb-0">
     <canvas ref="canvas" style="display: none"></canvas>
     <div class="flex items-center justify-between mb-20" ref="refContent">
-      <!-- justify-between -->
       <PageTitle icon="menuTag" :title="$t('sidebar.bbin_customer_tag_list')" />
       <div class="flex">
         <ExportCSV
           v-if="tableData.length !== 0"
+          :key="key"
           class="mr-10"
           :formData="formData"
           :total="apiRecordsTotal"
