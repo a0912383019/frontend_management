@@ -64,8 +64,8 @@ export const apiExportMemberList = (params) => {
     search_date,
     search_name,
     search_tag,
-    show_report_data,
-    user_level_id
+    user_level_id,
+    file_path
   } = params
   return axiosGoInstance.post(
     '/api/auth/member/export_member_list',
@@ -85,11 +85,8 @@ export const apiExportMemberList = (params) => {
       search_date,
       search_name,
       search_tag,
-      show_report_data,
-      user_level_id
-    },
-    {
-      timeout: 10 * 1000 // 10秒
+      user_level_id,
+      file_path
     }
   )
 }

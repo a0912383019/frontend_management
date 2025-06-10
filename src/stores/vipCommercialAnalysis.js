@@ -18,12 +18,13 @@ export const useVipCommercialAnalysisStore = defineStore('vipCommercialAnalysis'
   const livelyAnalysisFilter = reactive({
     searchName: '',
     searchDate: dayjs(date_range_picker_config_4.endDate).format('YYYY-MM-DD'),
-    custom: false,
+    useCustomList: false,
     vipTag: defaultVipTag,
     customUserList: [],
     fuzzySearch: false,
     detailType: null,
-    livelyLevel: null
+    livelyLevel: null,
+    filePath: ''
   })
 
   // filter: 活躍時段分析
@@ -34,7 +35,7 @@ export const useVipCommercialAnalysisStore = defineStore('vipCommercialAnalysis'
         ' ~ ' +
         dayjs(date_range_picker_config_8.endDate).format('YYYY-MM-DD')
     ),
-    custom: false,
+    useCustomList: false,
     containWeeks: defaultWeeks,
     vipTag: defaultVipTag,
     customUserList: [],

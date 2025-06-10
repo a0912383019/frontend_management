@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch, computed, onMounted } from 'vue'
+import { ref, reactive, watch, computed, onMounted, onUnmounted, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiQueryUserExportList } from '@/api'
 import { useGlobalStore, useExportListStore } from '@/stores'
@@ -82,10 +82,9 @@ const tableColumns = computed(() => {
 
 // 取得資料
 const queryUserExportList = async () => {
-  apiSuccess.value = false
-  messageKey.value = 'loading'
-  tableData.value = []
-  allLinkList.value = []
+  // 如果匯出條件打開就不呼叫 api
+  if (detailBoxVisible.value) return
+
   try {
     const result = await apiQueryUserExportList({
       hall_name: activeHall.hall_code
@@ -100,6 +99,7 @@ const queryUserExportList = async () => {
       }
     }
   } catch (error) {
+    apiSuccess.value = false
     console.error(error)
     if (error.response.status === 403) {
       messageKey.value = 'noPermission' //更改message內容
@@ -118,6 +118,7 @@ const allLinkList = ref([])
 
 // 轉換資料
 const transformExportList = (data) => {
+  allLinkList.value = []
   let result = []
 
   data.map((item) => {
@@ -199,7 +200,7 @@ const upadteCurrentSort = ({ prop, order }) => {
 
 // 打開下載鏈結
 const downloadReport = (link) => {
-  window.open(link, '_blank')
+  window.open(link, '_blank', 'noopener')
 }
 
 const detailBoxVisible = ref(false)
@@ -214,6 +215,7 @@ const opendetail = (data) => {
   if (data.search_content) {
     reportDetail.type = data.type
     reportDetail.source = data.source_page
+    reportDetail.isExpired = data.is_expired
     reportDetail.content = JSON.parse(data.search_content)
   } else {
     // 舊版沒有 search_content
@@ -275,10 +277,20 @@ watch(
   }
 )
 
-onMounted(() => {
+let timer
+
+onMounted(async () => {
+  messageKey.value = 'loading'
+  apiSuccess.value = false
   tag_description_dict.hall = getSessionStorageEntity('system_config').tags_config
   queryAgNameUserLevel()
-  queryUserExportList()
+  await queryUserExportList()
+
+  timer = setInterval(queryUserExportList, 10000)
+})
+
+onUnmounted(() => {
+  clearInterval(timer) // 離開元件時清除定時器
 })
 </script>
 <template>
@@ -319,15 +331,15 @@ onMounted(() => {
         </template>
         <template #status="scope">
           <div class="font-size-14">
-            <span class="cdp-text-celticblue" v-show="scope.row.status === 'processing'">{{
-              $t('common.processing')
-            }}</span>
-            <span class="cdp-text-harvestgold" v-show="scope.row.status === 'completed'">{{
-              $t('common.completed')
-            }}</span>
-            <span class="cdp-text-candypink" v-show="scope.row.status === 'expired'">{{
-              $t('common.expired')
-            }}</span>
+            <span class="cdp-text-celticblue" v-show="scope.row.status === 'processing'">
+              {{ $t('common.processing') }}
+            </span>
+            <span class="cdp-text-harvestgold" v-show="scope.row.status === 'completed'">
+              {{ $t('common.completed') }}
+            </span>
+            <span class="cdp-text-candypink" v-show="scope.row.status === 'expired'">
+              {{ $t('common.expired') }}
+            </span>
           </div>
         </template>
         <template #download_link="scope">

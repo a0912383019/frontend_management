@@ -81,7 +81,7 @@ describe('SearchDetailBox.vue', () => {
             length: 0,
             search_name: '',
             fuzzy_search: false,
-            custom_user_list: [],
+            file_path: 'http://zzzz.com/123.csv',
             sort: 'deposit_amount',
             order: 'DESC',
             locale: 'zh-TW',
@@ -142,7 +142,7 @@ describe('SearchDetailBox.vue', () => {
             length: 0,
             search_name: '',
             fuzzy_search: false,
-            custom_user_list: [],
+            file_path: 'http://zzzz.com/123.csv',
             sort: 'deposit_amount',
             order: 'DESC',
             locale: 'zh-TW',
@@ -166,7 +166,8 @@ describe('SearchDetailBox.vue', () => {
         contentKey: '會員名稱'
       },
       {
-        contentData: '否',
+        contentData: 'http://zzzz.com/123.csv',
+        slotKey: 'url',
         contentKey: '匯入名單'
       },
       {
@@ -204,7 +205,7 @@ describe('SearchDetailBox.vue', () => {
             fuzzy_search: false,
             start: 0,
             length: 0,
-            custom_user_list: [],
+            file_path: 'http://zzzz.com/123.csv',
             ag_name: '',
             user_level_id: 3,
             search_tag: '',
@@ -270,7 +271,8 @@ describe('SearchDetailBox.vue', () => {
         slotKey: 'tags'
       },
       {
-        contentData: '否',
+        contentData: 'http://zzzz.com/123.csv',
+        slotKey: 'url',
         contentKey: '匯入名單'
       },
       {
@@ -315,7 +317,7 @@ describe('SearchDetailBox.vue', () => {
             vip_tag: [10001, 10003],
             search_name: '',
             fuzzy_search: false,
-            custom_user_list: [],
+            file_path: 'http://zzzz.com/123.csv',
             detail_type: 0,
             lively_level: 0,
             locale: 'zh-TW',
@@ -343,7 +345,8 @@ describe('SearchDetailBox.vue', () => {
         contentKey: '日期'
       },
       {
-        contentData: '否',
+        contentData: 'http://zzzz.com/123.csv',
+        slotKey: 'url',
         contentKey: '匯入名單'
       },
       {

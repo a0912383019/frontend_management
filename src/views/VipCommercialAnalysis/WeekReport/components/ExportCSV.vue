@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n'
 import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiExportWeekReport } from '@/api'
 import { ElNotification } from 'element-plus'
-import { errorRespond } from '@/utils/commonUtils.js'
 import ExportDialog from '@/components/ExportDialog.vue'
 import ExportReport from '@/components/Button/ExportReport.vue'
 
@@ -17,11 +16,11 @@ const { weekReportFilter } = vipStore
 
 const exportDialogVisible = ref(false)
 
-const handelExportReport = async () => {
-  globalStore.isLoading = true
+const handelExportReport = () => {
   const { financialMonth, financialWeek, financialYear, vipTag } = weekReportFilter
+
   try {
-    const result = await apiExportWeekReport({
+    apiExportWeekReport({
       hall_name: activeHall.hall_code,
       financial_month: financialMonth,
       financial_week: financialWeek,
@@ -29,35 +28,25 @@ const handelExportReport = async () => {
       locale: i18nLocale.value,
       vip_tag: vipTag.split(',')
     })
-    const { return_code } = result.data.status
-    globalStore.isLoading = false
-    if (return_code === '0000') {
-      window.location.href = result.data.result.url
-    } else {
+  } catch (error) {
+    console.error(error)
+    // 處理其他錯誤
+    if (error.response.status === 403) {
       ElNotification({
-        title: t('msg.query_failed'),
+        title: t('msg.no_permission'),
         type: 'error'
       })
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-    }
-  } catch (error) {
-    // 失敗需關閉loading
-    globalStore.isLoading = false
-    if (error.code === 'ECONNABORTED') {
-      // timeout引起的錯誤
-      exportDialogVisible.value = true
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
     } else {
-      if (error.response.status === 401) {
-        globalStore.storeHandleApiError()
-      } else {
-        ElNotification({
-          title: t('msg.update_failed'),
-          type: 'error'
-        })
-      }
+      ElNotification({
+        title: t('msg.export_failed'),
+        type: 'error'
+      })
     }
   }
+
+  exportDialogVisible.value = true
 }
 </script>
 <template>

@@ -215,14 +215,9 @@ describe('ExportList', () => {
       }
     })
 
-    const url = 'http://dummy.com/'
-    Object.defineProperty(window, 'location', {
-      value: new URL(url)
-    })
-    // 呼叫第一次
     wrapper.vm.handelExportList()
     await flushPromises()
-    expect(window.location.href).toEqual('https://www.google.com/')
-    expect(wrapper.vm.dialogVisible).toBeFalsy()
+    expect(wrapper.vm.exportDialogVisible).toBe(true)
+    expect(wrapper.vm.dialogVisible).toBe(false)
   })
 })

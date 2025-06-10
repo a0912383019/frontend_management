@@ -8,7 +8,6 @@ import { apiExportLifeCycleAnalysisDetail } from '@/api/manageAnalysis.js'
 import ExportDialog from '@/components/ExportDialog.vue'
 import ExportReport from '@/components/Button/ExportReport.vue'
 import { ElNotification } from 'element-plus'
-import { errorRespond } from '@/utils/commonUtils.js'
 
 const { t, locale: i18nLocale } = useI18n()
 const globalStore = useGlobalStore()
@@ -25,16 +24,16 @@ const {
   apiLength,
   querySortRule,
   deatilRangeDate,
-  filterCustomUserList
+  filterCustomUserList,
+  filePath
 } = storeToRefs(manageAnalysisStore)
 
 const exportDialogVisible = ref(false)
 
 // 匯出報表
-const handelExportReport = async () => {
-  globalStore.isLoading = true
+const handelExportReport = () => {
   try {
-    const result = await apiExportLifeCycleAnalysisDetail({
+    apiExportLifeCycleAnalysisDetail({
       custom_user_list: filterCustomUserList.value,
       detail_type: detailType.value,
       fuzzy_search: fuzzySearch.value,
@@ -47,50 +46,27 @@ const handelExportReport = async () => {
       query_date: queryDate,
       search_name: searchName.value,
       sort: querySortRule.value['sort'],
-      start: apiStart.value
+      start: apiStart.value,
+      file_path: filePath.value
     })
-    const { return_code } = result.data.status
-    globalStore.isLoading = false
-    if (return_code === '0000') {
-      window.location.href = result.data.result.url
-    } else if (return_code === '0001') {
-      ElNotification({
-        title: t('msg.no_results'),
-        type: 'error'
-      })
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-    } else {
-      ElNotification({
-        title: t('msg.query_failed'),
-        type: 'error'
-      })
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-    }
   } catch (error) {
-    // 失敗需關閉loading
-    globalStore.isLoading = false
-    if (error.code === 'ECONNABORTED') {
-      // timeout引起的錯誤
-      exportDialogVisible.value = true
+    // 處理其他錯誤
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
     } else {
-      // 處理其他錯誤
-      if (error.response.status === 403) {
-        ElNotification({
-          title: t('msg.no_permission'),
-          type: 'error'
-        })
-      } else if (error.response.status === 401) {
-        globalStore.storeHandleApiError()
-      } else {
-        ElNotification({
-          title: t('msg.update_failed'),
-          type: 'error'
-        })
-      }
+      ElNotification({
+        title: t('msg.export_failed'),
+        type: 'error'
+      })
     }
   }
+
+  exportDialogVisible.value = true
 }
 </script>
 <template>

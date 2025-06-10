@@ -5,7 +5,7 @@ import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiExportMemberLivelyList } from '@/api'
 import { ElNotification } from 'element-plus'
 import { dayjs } from 'element-plus'
-import { errorRespond, formatDateDuration, stringToIntArray } from '@/utils/commonUtils.js'
+import { formatDateDuration, stringToIntArray } from '@/utils/commonUtils.js'
 import ExportDialog from '@/components/ExportDialog.vue'
 import ExportReport from '@/components/Button/ExportReport.vue'
 
@@ -18,14 +18,14 @@ const { livelyAnalysisFilter } = vipStore
 
 const exportDialogVisible = ref(false)
 
-const handelExportReport = async () => {
-  globalStore.isLoading = true
+const handelExportReport = () => {
   let startDate = dayjs(livelyAnalysisFilter.searchDate).subtract(6, 'day').format('YYYY-MM-DD')
   let endDate = dayjs(livelyAnalysisFilter.searchDate).format('YYYY-MM-DD')
-  const { customUserList, detailType, fuzzySearch, livelyLevel, searchName, vipTag } =
+  const { customUserList, detailType, fuzzySearch, livelyLevel, searchName, vipTag, filePath } =
     livelyAnalysisFilter
+
   try {
-    const result = await apiExportMemberLivelyList({
+    apiExportMemberLivelyList({
       custom_user_list: customUserList,
       detail_type: detailType,
       fuzzy_search: fuzzySearch,
@@ -34,37 +34,26 @@ const handelExportReport = async () => {
       lively_level: livelyLevel,
       search_date: formatDateDuration(`${startDate}~${endDate}`),
       search_name: searchName,
-      vip_tag: stringToIntArray(vipTag)
+      vip_tag: stringToIntArray(vipTag),
+      file_path: filePath
     })
-    const { return_code } = result.data.status
-    globalStore.isLoading = false
-    if (return_code === '0000') {
-      window.location.href = result.data.result.url
-    } else {
+  } catch (error) {
+    if (error.response.status === 403) {
       ElNotification({
-        title: t('msg.query_failed'),
+        title: t('msg.no_permission'),
         type: 'error'
       })
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-    }
-  } catch (error) {
-    // 失敗需關閉loading
-    globalStore.isLoading = false
-    if (error.code === 'ECONNABORTED') {
-      // timeout引起的錯誤
-      exportDialogVisible.value = true
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
     } else {
-      if (error.response.status === 401) {
-        globalStore.storeHandleApiError()
-      } else {
-        ElNotification({
-          title: t('msg.update_failed'),
-          type: 'error'
-        })
-      }
+      ElNotification({
+        title: t('msg.export_failed'),
+        type: 'error'
+      })
     }
   }
+
+  exportDialogVisible.value = true
 }
 </script>
 <template>

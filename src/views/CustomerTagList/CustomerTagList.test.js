@@ -1,5 +1,5 @@
 import { it, describe, expect, afterEach, vi, beforeEach } from 'vitest'
-import { shallowMount } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { i18n } from '@/global/i18n'
 import ElementPlus from 'element-plus'
@@ -12,10 +12,9 @@ import 'vitest-canvas-mock'
 
 describe('CustomerTagList', () => {
   let wrapper = null
-  let spy
 
   beforeEach(() => {
-    spy = vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
+    vi.spyOn(module, 'getSessionStorageEntity').mockImplementation(vi.fn())
     //模擬呼叫getSessionStorageEntity
     module.getSessionStorageEntity.mockReturnValueOnce({
       tags_config: {
@@ -41,46 +40,33 @@ describe('CustomerTagList', () => {
     })
 
     let result = {
-      result: {
-        records_total: 717,
-        data: [
-          {
-            hall_id: 3820698,
-            domain_id: 0,
-            ag_name: 'dcash888',
-            user_level_id: 20230,
-            tag_str: '10001',
-            tag_name_str:
-              '贏了會衝,電子客,體育客,再存客,已流失客,週五客,22:00客,疑似刷水客,電腦端,初期會員,省級地區標_廣東,常用入款_CGPAY支付,AI-即將流失客',
-            register_date: '2023-08-21 16:34:54',
-            user_id: 953351378,
-            user_name: 'xjf326958',
-            user_level: '第1層'
-          }
-        ]
-      },
-      status: {
-        return_code: '0000',
-        message: 'success'
+      data: {
+        result: {
+          records_total: 717,
+          data: [
+            {
+              hall_id: 3820698,
+              domain_id: 0,
+              ag_name: 'dcash888',
+              user_level_id: 20230,
+              tag_str: '10001',
+              tag_name_str:
+                '贏了會衝,電子客,體育客,再存客,已流失客,週五客,22:00客,疑似刷水客,電腦端,初期會員,省級地區標_廣東,常用入款_CGPAY支付,AI-即將流失客',
+              register_date: '2023-08-21 16:34:54',
+              user_id: 953351378,
+              user_name: 'xjf326958',
+              user_level: '第1層'
+            }
+          ]
+        },
+        status: {
+          return_code: '0000',
+          message: 'success'
+        }
       }
     }
 
     vi.spyOn(axiosGoInstance, 'post').mockResolvedValue(result)
-
-    const error = {
-      return_code: '9999',
-      message: 'Unexpected error.',
-      error_code: '210400001',
-      errors: 'Unexpected error.'
-    }
-    vi.spyOn(axiosGoInstance, 'post').mockImplementation((url) => {
-      switch (url) {
-        case '/api/auth/member/list_member_tags':
-          return Promise.resolve({ data: result })
-        default:
-          return error
-      }
-    })
 
     const pinia = createTestingPinia({ createSpy: vi.fn })
     const globalStore = useGlobalStore(pinia)
@@ -96,12 +82,14 @@ describe('CustomerTagList', () => {
       }
     })
   })
+
   afterEach(() => {
     wrapper.unmount()
   })
 
   // 測試api資料
-  it('expect mock api', () => {
+  it('expect mock api', async () => {
+    await flushPromises()
     expect(wrapper.vm.apiRecordsTotal).toBe(717)
   })
 

@@ -17,9 +17,6 @@ const { t } = useI18n()
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
-//popover 開啟狀態
-const popoverVisible = ref(false)
-
 const emit = defineEmits(['update:filter-submit'])
 
 // 代理帳號 options
@@ -56,11 +53,13 @@ const form = reactive({
   searchTag: '', //包含標籤
   excludeTag: '', //排除標籤
   fuzzySearch: false, //模糊搜尋
-  custom_user_list: [] //golang api 會用到的 CSV username
+  custom_user_list: [], //golang api 會用到的 CSV username
+  filePath: '' // 上傳後放置csv的地址
 })
 
 const handleSubmitClick = () => {
-  popoverVisible.value = false
+  // 如果手動匯出按鈕是 false，把紀錄的 url 清掉
+  form.filePath = useCustomList.value === false ? '' : form.filePath
   emit('update:filter-submit', form)
   closePopover()
 }
@@ -112,7 +111,8 @@ const transformAgNameUserLevel = (data) => {
 
 // csv 上傳成功
 const handleCsvSuccess = (result) => {
-  form.custom_user_list = result
+  form.custom_user_list = result.data
+  form.filePath = result.url
   handleSubmitClick()
 }
 
@@ -126,6 +126,12 @@ const popover = ref(null) //popover
 
 // 關閉 popover
 const closePopover = () => {
+  const active = document.activeElement
+  const popoverEl = popover.value?.popperRef?.contentRef
+  if (popoverEl && popoverEl.contains(active)) {
+    active.blur()
+  }
+
   popover.value.hide()
 }
 

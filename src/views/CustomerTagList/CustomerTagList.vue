@@ -120,7 +120,8 @@ const formData = reactive({
   ), //註冊日期
   searchTag: '', //包含標籤
   excludeTag: '', //排除標籤
-  fuzzySearch: false //模糊搜尋
+  fuzzySearch: false, //模糊搜尋
+  filePath: ''
 })
 
 // 取得資料
@@ -149,7 +150,6 @@ const queryListMemberTags = async ({ searchType = '', filterType = false }) => {
       start: apiStart.value,
       user_level_id: parseInt(formData['selectLevel']) //會員層級
     })
-
     const { return_code } = result.data.status
     if (return_code === '0000') {
       if (searchType !== 'page') {
@@ -282,6 +282,7 @@ const handleFilterSubmit = (data) => {
   formData['searchTag'] = data['searchTag']
   formData['excludeTag'] = data['excludeTag']
   formData['fuzzySearch'] = data['fuzzySearch']
+  formData['filePath'] = data['filePath']
   queryListMemberTags({ filterType: true })
 }
 

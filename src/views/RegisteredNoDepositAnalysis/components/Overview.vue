@@ -14,7 +14,7 @@ const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const depositStore = useRegisteredNoDepositAnalysisStore()
-const { selectDepositValue, deatilRangeDate, ipDuplicateRange } = storeToRefs(depositStore)
+const { selectDepositValue, ipDuplicateRange } = storeToRefs(depositStore)
 
 const { t } = useI18n()
 
@@ -74,7 +74,6 @@ const queryActionScoreSpan = async () => {
     const result = await apiQueryActionScoreSpan({
       hall_name: activeHall.hall_code,
       deposit_status: selectDepositValue.value,
-      action_score_analysis_date: deatilRangeDate.value,
       ip_duplicate_range: ipDuplicateRange.value
     })
     const { return_code } = result.data.status

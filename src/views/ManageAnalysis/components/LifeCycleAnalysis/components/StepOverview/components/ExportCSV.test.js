@@ -11,11 +11,9 @@ import ExportReport from '@/components/Button/ExportReport.vue'
 
 describe('ExportCSV', () => {
   let wrapper = null
-  let assignMock
 
   afterEach(() => {
     wrapper.unmount()
-    assignMock.mockClear()
   })
 
   it('handelExportReport', async () => {
@@ -31,11 +29,6 @@ describe('ExportCSV', () => {
       }
     }
     vi.spyOn(axiosGoInstance, 'post').mockResolvedValue(result)
-
-    assignMock = vi.fn()
-
-    delete window.location
-    window.location = { assign: assignMock }
 
     wrapper = shallowMount(ExportCSV, {
       global: {
@@ -60,7 +53,6 @@ describe('ExportCSV', () => {
     // 等待異步執行
     await flushPromises()
 
-    // 驗證window.location.href
-    expect(window.location.href).toBe('https://www.google.com.tw/')
+    expect(wrapper.vm.exportDialogVisible).toBe(true)
   })
 })
