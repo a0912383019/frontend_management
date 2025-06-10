@@ -133,12 +133,9 @@ const tableDataType1 = computed(() => {
       contentData: props.reportDetail.content.search_name
     },
     {
+      slotKey: 'url',
       contentKey: t('import_export_file.import'),
-      contentData:
-        props.reportDetail.content.custom_user_list &&
-        props.reportDetail.content.custom_user_list.length !== 0
-          ? t('common.yes')
-          : t('common.no')
+      contentData: props.reportDetail.content.file_path
     },
     {
       contentKey: t('date.date'),
@@ -205,12 +202,9 @@ const tableDataType2 = computed(() => {
       contentData: generateTags(props.reportDetail.content.exclude_tag)
     },
     {
+      slotKey: 'url',
       contentKey: t('import_export_file.import'),
-      contentData:
-        props.reportDetail.content.custom_user_list &&
-        props.reportDetail.content.custom_user_list.length !== 0
-          ? t('common.yes')
-          : t('common.no')
+      contentData: props.reportDetail.content.file_path
     },
     {
       contentKey: t('customer_tag_list.current_duration'),
@@ -262,12 +256,9 @@ const tableDataType3 = computed(() => {
       )} ~ ${dayjs(props.reportDetail.content.active_end_date).format(t('date.format_date_rule'))}`
     },
     {
+      slotKey: 'url',
       contentKey: t('import_export_file.import'),
-      contentData:
-        props.reportDetail.content.custom_user_list &&
-        props.reportDetail.content.custom_user_list.length !== 0
-          ? t('common.yes')
-          : t('common.no')
+      contentData: props.reportDetail.content.file_path
     },
     {
       slotKey: 'steps',
@@ -437,6 +428,10 @@ const showTags = (tagString) => {
 const handleCloseDialog = () => {
   emit('detailBoxClose')
 }
+
+const download = (link) => {
+  window.open(link, '_blank', 'noopener')
+}
 </script>
 <template>
   <div class="flex">
@@ -475,6 +470,18 @@ const handleCloseDialog = () => {
                   :icon="['fa-regular', scope.row.contentData.icon.icon]"
                 />
               </el-tooltip>
+            </div>
+            <div v-else-if="scope.row.slotKey === 'url'">
+              <span v-if="!scope.row.contentData && !props.isExpired"></span>
+              <span
+                v-else-if="scope.row.contentData && props.reportDetail.isExpired"
+                class="cdp-text-candypink"
+              >
+                {{ $t('common.file_expired') }}
+              </span>
+              <span v-else @click="download(scope.row.contentData)" class="cdp-link-click">
+                {{ $t('common.import_link') }}
+              </span>
             </div>
             <div v-else>{{ scope.row.contentData }}</div>
           </template>

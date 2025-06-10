@@ -5,7 +5,6 @@ import { useGlobalStore, useVipCommercialAnalysisStore } from '@/stores'
 import { apiExportDayReport } from '@/api'
 import { ElNotification } from 'element-plus'
 import { dayjs } from 'element-plus'
-import { errorRespond } from '@/utils/commonUtils.js'
 import ExportDialog from '@/components/ExportDialog.vue'
 import ExportReport from '@/components/Button/ExportReport.vue'
 
@@ -18,45 +17,33 @@ const { dayReportFilter } = vipStore
 
 const exportDialogVisible = ref(false)
 
-const handelExportReport = async () => {
-  globalStore.isLoading = true
+const handelExportReport = () => {
   const { searchDate, vipTag } = dayReportFilter
+
   try {
-    const result = await apiExportDayReport({
+    apiExportDayReport({
       hall_name: activeHall.hall_code,
       locale: i18nLocale.value,
       report_date: dayjs(searchDate).format('YYYY-MM-DD'),
       vip_tag: vipTag.split(',')
     })
-    const { return_code } = result.data.status
-    globalStore.isLoading = false
-    if (return_code === '0000') {
-      window.location.href = result.data.result.url
-    } else {
+  } catch (error) {
+    if (error.response.status === 403) {
       ElNotification({
-        title: t('msg.query_failed'),
+        title: t('msg.no_permission'),
         type: 'error'
       })
-      let failMsg = errorRespond(result.data.status)
-      console.error(failMsg)
-    }
-  } catch (error) {
-    // 失敗需關閉loading
-    globalStore.isLoading = false
-    if (error.code === 'ECONNABORTED') {
-      // timeout引起的錯誤
-      exportDialogVisible.value = true
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
     } else {
-      if (error.response.status === 401) {
-        globalStore.storeHandleApiError()
-      } else {
-        ElNotification({
-          title: t('msg.update_failed'),
-          type: 'error'
-        })
-      }
+      ElNotification({
+        title: t('msg.export_failed'),
+        type: 'error'
+      })
     }
   }
+
+  exportDialogVisible.value = true
 }
 </script>
 <template>

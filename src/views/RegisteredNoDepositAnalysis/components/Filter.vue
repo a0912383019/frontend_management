@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n'
 import { useRegisteredNoDepositAnalysisStore } from '@/stores/registeredNoDepositAnalysis.js'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
 import SectionTitle from '@/components/Title/SectionTitle.vue'
-import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 
 const { t, locale: i18nLocale } = useI18n()
 
@@ -14,9 +13,6 @@ const depositStore = useRegisteredNoDepositAnalysisStore()
 const popoverVisible = ref(true)
 
 const emit = defineEmits(['update:filter-submit'])
-
-// 更新時間日期
-const updatedTimeDate = ref('')
 
 // 目前存款狀態選取值
 const selectDepositValue = ref(depositStore.selectDepositValue) // 預設 all
@@ -45,8 +41,7 @@ const handleSubmitClick = () => {
 
   // 目前存款狀態
   depositStore.selectDepositValue = selectDepositValue.value
-  // 更新時間
-  depositStore.deatilRangeDate = updatedTimeDate.value
+
   // IP重複次數
   depositStore.ipDuplicateRange = slideVlaue.value.join(';')
 
@@ -124,22 +119,7 @@ onMounted(() => {
         />
       </template>
       <el-row :gutter="15">
-        <el-col :span="12" class="mb-15">
-          <SectionTitle
-            size="small"
-            class="cdp-text-purple mb-10"
-            :title="$t('data_name.updated_time')"
-          >
-          </SectionTitle>
-          <DatepickerRange
-            v-model="updatedTimeDate"
-            :config="8"
-            :shortcutsConfig="1"
-            class="w-full filter-datepicker deposit-date-picker"
-            classColor="purple"
-          />
-        </el-col>
-        <el-col :span="12" class="mb-15">
+        <el-col :span="24" class="mb-15">
           <SectionTitle
             size="small"
             class="cdp-text-purple mb-10"

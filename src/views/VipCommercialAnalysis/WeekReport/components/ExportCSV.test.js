@@ -63,20 +63,8 @@ describe('ExportCSV', () => {
   })
 
   it('handelExportReport', async () => {
-    // 儲存原始的 window.location.href
-    const originalHref = window.location.href
-
-    // 創建 window.location 的模擬
-    const mockLocation = { writable: true, value: originalHref }
-    Object.defineProperty(global, 'window', { value: { location: mockLocation } })
-
     // 呼叫函數
     await wrapper.vm.handelExportReport()
-
-    // 斷言 window.location.href 是否已經被更新
-    expect(global.window.location.href).toBe('https://www.google.com/')
-
-    // 還原 window.location.href 的原始值
-    global.window.location.href = originalHref
+    expect(wrapper.vm.exportDialogVisible).toBe(true)
   })
 })

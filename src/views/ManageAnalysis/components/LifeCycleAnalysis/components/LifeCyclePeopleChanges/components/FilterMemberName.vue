@@ -4,21 +4,26 @@ import { useManageAnalysisStore } from '@/stores/manageAnalysis.js'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import ButtonIcon from '@/components/Button/ButtonIcon.vue'
-
 import ImportCSV from '@/components/Filter/ImportCSV.vue'
 
 const route = useRoute()
 
 const manageAnalysisStore = useManageAnalysisStore()
-const { filterCustomUserList } = storeToRefs(manageAnalysisStore)
+const { filterCustomUserList, useCustomList, filePath } = storeToRefs(manageAnalysisStore)
 const searchName = ref('') //搜尋的名稱
-const useCustomList = ref(manageAnalysisStore.useCustomList) //手動匯入名單
 const fuzzySearch = ref(manageAnalysisStore.fuzzySearch) //模糊搜尋
 
 const popover = ref(null) //popover
 
 // 關閉 popover
 const closePopover = () => {
+  // 移除 popover 內目前的焦點（避免 aria-hidden 時仍有 focus）
+  const active = document.activeElement
+  const popoverEl = popover.value?.popperRef?.contentRef
+  if (popoverEl && popoverEl.contains(active)) {
+    active.blur()
+  }
+
   popover.value.hide()
 }
 
@@ -44,15 +49,16 @@ const handleBeforeSubmit = () => {
   } else {
     //如果useCustomList為false，清空上傳csv檔後回傳的名單資料
     filterCustomUserList.value = []
+    filePath.value = ''
   }
 }
 
 // csv 上傳成功
 const handleCsvSuccess = (result) => {
   handleBeforeSubmit()
-  handleFileUpload(result)
+  handleFileUpload(result.data)
+  filePath.value = result.url
   updateFilterTimestamp() //更新timestamp已更新資料
-  manageAnalysisStore.useCustomList = true
   closePopover()
 }
 
@@ -61,7 +67,6 @@ const handleClick = () => {
   //將資料寫到pinia
   handleBeforeSubmit()
   manageAnalysisStore.searchName = searchName.value
-  manageAnalysisStore.useCustomList = useCustomList.value
   manageAnalysisStore.fuzzySearch = fuzzySearch.value
   closePopover()
   updateFilterTimestamp()

@@ -64,7 +64,6 @@ describe('Filter', () => {
     await wrapper.vm.handleSubmitClick()
 
     expect(wrapper.vm.depositStore.selectDepositValue).toBe(true)
-    expect(wrapper.vm.depositStore.deatilRangeDate).toBe('2023-12-03 ~ 2023-12-09')
     expect(wrapper.vm.depositStore.ipDuplicateRange).toBe('0;10')
   })
 

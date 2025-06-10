@@ -7,9 +7,6 @@ export const apiExportActivityGrowthReport = (params) => {
     '/api/auth/activity/export_growth_report',
     {
       params: { hall_name, activity_id_list, analysis_date, interval_type, is_reward, locale }
-    },
-    {
-      timeout: 10 * 1000 // 10秒
     }
   )
 }

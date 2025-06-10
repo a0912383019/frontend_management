@@ -10,12 +10,13 @@ import SectionTitle from '@/components/Title/SectionTitle.vue'
 import CustomTable from '@/components/CustomTable/CustomTable.vue'
 import CdpMessage from '@/components/CdpMessage.vue'
 import { roundDecimal } from '@/utils/commonUtils.js'
+import { dayjs } from 'element-plus'
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
 
 const depositStore = useRegisteredNoDepositAnalysisStore()
-const { selectDepositValue, deatilRangeDate, ipDuplicateRange } = storeToRefs(depositStore)
+const { selectDepositValue, ipDuplicateRange } = storeToRefs(depositStore)
 
 const dialogMemberDetailStore = useDialogMemberDetailStore()
 const { updateMemberData } = dialogMemberDetailStore
@@ -130,7 +131,6 @@ const queryActionScoreDetail = async (actionScore) => {
   depositProb.value = actionScore.split(';')
   try {
     const result = await apiQueryActionScoreDetail({
-      action_score_analysis_date: deatilRangeDate.value,
       action_score_span: actionScore,
       deposit_status: selectDepositValue.value,
       hall_name: activeHall.hall_code,
@@ -175,6 +175,8 @@ const transformActionScoreDetail = (data) => {
   return data.map((item) => {
     return {
       ...item,
+      register_date: dayjs(item.register_date).format(t('date.format_datetime_rule')),
+      update_date: dayjs(item.update_date).format(t('date.format_datetime_rule')),
       action_score: roundDecimal(item.action_score) + '%',
       deposit_status: item.deposit_status
     }

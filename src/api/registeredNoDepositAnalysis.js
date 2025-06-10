@@ -2,12 +2,11 @@ import axiosGoInstance from './axiosGoInstance.js'
 
 //存款機率區間總覽
 export const apiQueryActionScoreSpan = (params) => {
-  const { hall_name, deposit_status, action_score_analysis_date, ip_duplicate_range } = params
+  const { hall_name, deposit_status, ip_duplicate_range } = params
   return axiosGoInstance.get('/api/auth/deposit_probability/action_score_span', {
     params: {
       hall_name,
       deposit_status,
-      action_score_analysis_date,
       ip_duplicate_range
     }
   })
@@ -16,7 +15,6 @@ export const apiQueryActionScoreSpan = (params) => {
 //存款機率區間會員明細
 export const apiQueryActionScoreDetail = (params) => {
   const {
-    action_score_analysis_date,
     action_score_span,
     deposit_status,
     hall_name,
@@ -28,7 +26,6 @@ export const apiQueryActionScoreDetail = (params) => {
   } = params
   return axiosGoInstance.get('/api/auth/deposit_probability/action_score_detail', {
     params: {
-      action_score_analysis_date,
       action_score_span,
       deposit_status,
       hall_name,

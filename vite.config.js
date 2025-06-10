@@ -30,7 +30,7 @@ export default ({ mode }) => {
         '/go-api': {
           target: 'https://dev-cdp.caino.team/v2',
           changeOrigin: true,
-          // secure: false,
+          secure: false,
           rewrite: (path) => path.replace(/^\/go-api/, '')
         }
       }

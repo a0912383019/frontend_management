@@ -23,6 +23,13 @@ const emit = defineEmits(['update:filter'])
 const popover = ref(null) // popover
 // 關閉 popover
 const closePopover = () => {
+  // 移除 popover 內目前的焦點（避免 aria-hidden 時仍有 focus）
+  const active = document.activeElement
+  const popoverEl = popover.value?.popperRef?.contentRef
+  if (popoverEl && popoverEl.contains(active)) {
+    active.blur()
+  }
+
   popover.value.hide()
 }
 
@@ -30,10 +37,11 @@ const closePopover = () => {
 const filterData = reactive({
   searchName: '',
   searchDate: '',
-  custom: false,
+  useCustomList: false,
   vipTag: defaultVipTag,
   customUserList: [],
-  fuzzySearch: false
+  fuzzySearch: false,
+  filePath: ''
 })
 
 // 取得 system_config 資料
@@ -71,8 +79,9 @@ const originalSelectTypeLists = JSON.parse(JSON.stringify(selectTypeLists.value)
 const key = ref(0)
 
 // csv 上傳成功
-const handleCsvSuccess = (data) => {
-  filterData.customUserList = data
+const handleCsvSuccess = (result) => {
+  filterData.customUserList = result.data
+  filterData.filePath = result.url
   handleClick()
 }
 
@@ -91,12 +100,16 @@ const handleClick = () => {
     // 恢復為預設值
     selectTypeLists.value = originalSelectTypeLists
   }
+  if (!filterData.useCustomList) {
+    filterData.filePath = ''
+  }
   livelyAnalysisFilter.searchDate = filterData.searchDate
   livelyAnalysisFilter.searchName = filterData.searchName
-  livelyAnalysisFilter.custom = filterData.custom
+  livelyAnalysisFilter.useCustomList = filterData.useCustomList
   livelyAnalysisFilter.vipTag = filterData.vipTag
   livelyAnalysisFilter.fuzzySearch = filterData.fuzzySearch
   livelyAnalysisFilter.customUserList = filterData.customUserList
+  livelyAnalysisFilter.filePath = filterData.filePath
   emit('update:filter')
   closePopover()
 }
@@ -160,7 +173,7 @@ watch(
         <div class="drop__footer">
           <div class="drop__footer__item">
             <ImportCSV
-              v-model="filterData.custom"
+              v-model="filterData.useCustomList"
               :csvType="1"
               @update:success="handleCsvSuccess"
               @update:clear="handleCsvClear"

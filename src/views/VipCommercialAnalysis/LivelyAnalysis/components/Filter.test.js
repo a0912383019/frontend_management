@@ -76,12 +76,16 @@ describe('Filter', () => {
     expect(hide).toHaveBeenCalled()
   })
 
-  it('handleCsvSuccess', async () => {
-    const data = {
-      name: 'test'
+  it('handleCsvSuccess', () => {
+    wrapper.vm.filterData.useCustomList = true
+
+    const result = {
+      data: ['zzz'],
+      url: 'test'
     }
-    await wrapper.vm.handleCsvSuccess(data)
-    expect(wrapper.vm.filterData.customUserList).toStrictEqual(data)
+    wrapper.vm.handleCsvSuccess(result)
+    expect(wrapper.vm.filterData.customUserList).toStrictEqual(result.data)
+    expect(wrapper.vm.filterData.filePath).toStrictEqual(result.url)
   })
 
   it('handleCsvClear', async () => {

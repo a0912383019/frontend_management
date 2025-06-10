@@ -82,12 +82,10 @@ describe('ExportCSV', () => {
 
     wrapper.vm.handelExportReport()
 
-    expect(wrapper.vm.globalStore.isLoading).toBe(true)
-
     // 等待異步執行
     await flushPromises()
 
-    // 驗證window.location.href
-    expect(window.location.href).toBe('https://www.google.com.tw/')
+    expect(wrapper.vm.exportDialogVisible).toBe(true)
+    expect(wrapper.vm.dialogVisible).toBe(false)
   })
 })

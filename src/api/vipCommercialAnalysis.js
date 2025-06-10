@@ -48,7 +48,8 @@ export const apiExportMemberLivelyList = (params) => {
     locale,
     search_date,
     search_name,
-    vip_tag
+    vip_tag,
+    file_path
   } = params
   return axiosGoInstance.post('/api/auth/vip/export_member_lively_list', {
     custom_user_list,
@@ -59,7 +60,8 @@ export const apiExportMemberLivelyList = (params) => {
     locale,
     search_date,
     search_name,
-    vip_tag
+    vip_tag,
+    file_path
   })
 }
 

@@ -16,7 +16,7 @@ import { ElNotification } from 'element-plus'
 const { t, locale: i18nLocale } = useI18n()
 
 const activityStore = useActivityAnalysisStore()
-const { dateRestraintion, chartApiParams } = activityStore
+const { dateRestraintion } = activityStore
 
 const globalStore = useGlobalStore()
 const { activeHall } = globalStore
@@ -142,64 +142,37 @@ const handleCloseDialog = () => {
 }
 
 // 匯出名單
-const handelExportList = async () => {
-  globalStore.isLoading = true
-
+const handelExportList = () => {
   try {
-    const result = await apiExportActivityGrowthReport({
+    apiExportActivityGrowthReport({
       hall_name: activeHall.hall_code,
       analysis_date: exportData.analysisDate,
       interval_type: exportData.selectDuration,
       is_reward: exportData.selectReward,
-      activity_id_list: exportData.activityNameList.length === 0 ? [-1] : exportData.activityNameList,
+      activity_id_list:
+        exportData.activityNameList.length === 0 ? [-1] : exportData.activityNameList,
       locale: i18nLocale.value
     })
-    const { return_code } = result.data.status
-    globalStore.isLoading = false
-    if (return_code === '0000') {
-      dialogVisible.value = false
-      window.location.href = result.data.result.url
-    } else {
-      const { error_code } = result.data.status
-
-      if (error_code === '210400020') {
-        ElNotification({
-          title: t('msg.no_results'),
-          type: 'warning'
-        })
-      } else {
-        ElNotification({
-          title: t('msg.query_failed'),
-          type: 'error'
-        })
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
-    }
   } catch (error) {
     console.error(error)
-    // 失敗需關閉loading
-    globalStore.isLoading = false
-    if (error.code === 'ECONNABORTED') {
-      // timeout引起的錯誤
-      exportDialogVisible.value = true
+    // 處理其他錯誤
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
     } else {
-      // 處理其他錯誤
-      if (error.response.status === 403) {
-        ElNotification({
-          title: t('msg.no_permission'),
-          type: 'error'
-        })
-      } else if (error.response.status === 401) {
-        globalStore.storeHandleApiError()
-      } else {
-        ElNotification({
-          title: t('msg.query_failed'),
-          type: 'error'
-        })
-      }
+      ElNotification({
+        title: t('msg.export_failed'),
+        type: 'error'
+      })
     }
   }
+
+  dialogVisible.value = false
+  exportDialogVisible.value = true
 }
 
 const dateRestraint = (event) => {

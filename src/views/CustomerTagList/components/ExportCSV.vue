@@ -5,7 +5,6 @@ import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/stores/global.js'
 import { apiExportMemberList } from '@/api/customerTagList.js'
 import { ElNotification } from 'element-plus'
-import { errorRespond } from '@/utils/commonUtils.js'
 import DatepickerRange from '@/components/Date/DatepickerRange.vue'
 import ExportDialog from '@/components/ExportDialog.vue'
 import ExportReport from '@/components/Button/ExportReport.vue'
@@ -50,8 +49,7 @@ const currentDate = ref('') // 現況區間
 const averageDate = ref('') // 平均區間
 const monthAverageDate = ref('') // 月平均區間
 
-const handelExportReport = async () => {
-  globalStore.isLoading = true
+const handelExportReport = () => {
   const {
     member,
     selectAcount,
@@ -61,10 +59,11 @@ const handelExportReport = async () => {
     registerDate,
     searchTag,
     excludeTag,
-    fuzzySearch
+    fuzzySearch,
+    filePath
   } = props.formData
   try {
-    const result = await apiExportMemberList({
+    apiExportMemberList({
       activated_date: activatedDate,
       ag_name: selectAcount === '0' ? '' : selectAcount,
       average_date: averageDate.value,
@@ -79,57 +78,28 @@ const handelExportReport = async () => {
       search_date: registerDate,
       search_name: member,
       search_tag: searchTag,
-      show_report_data: false, // true -> 會在response印出整張報表的資料
-      user_level_id: parseInt(selectLevel)
+      user_level_id: parseInt(selectLevel),
+      file_path: filePath
     })
-    globalStore.isLoading = false
-    const { return_code } = result.data.status
-
-    if (return_code === '0000') {
-      window.location.href = result.data.result.url
-      dialogVisible.value = false
-    } else {
-      const { error_code } = result.data.status
-      if (error_code === '210400000') {
-        ElNotification({
-          title: t('msg.no_results'),
-          type: 'error'
-        })
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      } else {
-        ElNotification({
-          title: t('msg.query_failed'),
-          type: 'error'
-        })
-        let failMsg = errorRespond(result.data.status)
-        console.error(failMsg)
-      }
-    }
   } catch (error) {
-    // 失敗需關閉loading
-    globalStore.isLoading = false
-    if (error.code === 'ECONNABORTED') {
-      // timeout引起的錯誤
-      exportDialogVisible.value = true
-      dialogVisible.value = false
+    // 處理其他錯誤
+    if (error.response.status === 403) {
+      ElNotification({
+        title: t('msg.no_permission'),
+        type: 'error'
+      })
+    } else if (error.response.status === 401) {
+      globalStore.storeHandleApiError()
     } else {
-      // 處理其他錯誤
-      if (error.response.status === 403) {
-        ElNotification({
-          title: t('msg.no_permission'),
-          type: 'error'
-        })
-      } else if (error.response.status === 401) {
-        globalStore.storeHandleApiError()
-      } else {
-        ElNotification({
-          title: t('msg.query_failed'),
-          type: 'error'
-        })
-      }
+      ElNotification({
+        title: t('msg.export_failed'),
+        type: 'error'
+      })
     }
   }
+
+  exportDialogVisible.value = true
+  dialogVisible.value = false
 }
 </script>
 <template>

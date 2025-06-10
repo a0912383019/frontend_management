@@ -34,6 +34,7 @@ describe('useVipCommercialAnalysisStore', () => {
     expect(filter.fuzzySearch).toBeFalsy()
     expect(filter.detailType).toBe(null)
     expect(filter.livelyLevel).toBe(null)
+    expect(filter.useCustomList).toBeFalsy()
   })
 
   // filter: 活躍時段分析
@@ -52,6 +53,7 @@ describe('useVipCommercialAnalysisStore', () => {
     expect(filter.vipTag).toBe(defaultVipTag)
     expect(filter.customUserList).toStrictEqual([])
     expect(filter.fuzzySearch).toBeFalsy()
+    expect(filter.useCustomList).toBeFalsy()
   })
 
   // filter: 日報表

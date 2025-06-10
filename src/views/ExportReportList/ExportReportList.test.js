@@ -249,15 +249,6 @@ describe('ExportReportList.vue', () => {
     expect(wrapper.vm.tableData).toStrictEqual(originData)
   })
 
-  it('test window open', async () => {
-    global.open = vi.fn()
-
-    wrapper.vm.downloadReport('https://fake.link')
-    await wrapper.vm.$nextTick()
-    expect(window.open).toBeCalled()
-    expect(window.open).toHaveBeenCalledWith('https://fake.link', '_blank')
-  })
-
   it('test opendetail & detailBoxClose', () => {
     expect(wrapper.vm.detailBoxVisible).toBeFalsy()
     expect(wrapper.vm.reportDetail).toStrictEqual({
@@ -271,6 +262,7 @@ describe('ExportReportList.vue', () => {
       search_content:
         '{"report_date":"2024-04-17","vip_tag":[10001,10003],"locale":"zh-TW","user_id":249}',
       extra_info: '',
+      is_expired: false,
       source_page: 'sidebar.bbin_vip_commercial_analysis',
       status: 'completed',
       type: 4
@@ -285,7 +277,8 @@ describe('ExportReportList.vue', () => {
       },
       info: {},
       source: 'sidebar.bbin_vip_commercial_analysis',
-      type: 4
+      type: 4,
+      isExpired: false
     })
 
     wrapper.vm.detailBoxClose()

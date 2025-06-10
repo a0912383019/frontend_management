@@ -1,5 +1,5 @@
 import { it, describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { mount, flushPromises } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { i18n } from '@/global/i18n'
 import { createTestingPinia } from '@pinia/testing'
 import ElementPlus from 'element-plus'
@@ -40,18 +40,6 @@ describe('FilterMemberName', () => {
   // 測試 closePopover
   it('test closePopover', () => {
     wrapper.vm.closePopover()
-
-    const el = wrapper.find('.unit-test-people-changes')
-    const attr = el.attributes()['aria-hidden']
-
-    // 預期執行關閉後，aria-hidden要為true
-    expect(attr).toBe('true')
-  })
-
-  // 測試 handleCsvSuccess
-  it('test handleCsvSuccess', () => {
-    wrapper.vm.handleCsvSuccess()
-    expect(manageAnalysisStore.useCustomList).toBe(true)
 
     const el = wrapper.find('.unit-test-people-changes')
     const attr = el.attributes()['aria-hidden']
