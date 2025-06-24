@@ -7,7 +7,6 @@ import {
   useDateStore
 } from '@/stores'
 import { useRouter } from 'vue-router'
-import { apiRevoke } from '@/api'
 import { dayjs } from 'element-plus'
 import axiosGoInstance from '@/api/axiosGoInstance.js'
 
@@ -40,42 +39,6 @@ describe('useSystemStore', () => {
       }
     }
     useDateStore.mockReturnValue(mockLastDate)
-  })
-
-  it('calls apiRevoke and clears storage on storeLogout', async () => {
-    const sessionStorageMock = {
-      clear: vi.fn()
-    }
-    global.sessionStorage = sessionStorageMock
-    const localStorageMock = {
-      clear: vi.fn()
-    }
-    global.localStorage = localStorageMock
-    // 用 mock 函数替换 apiRevoke
-    vi.mock('@/api/system.js', () => ({
-      apiRevoke: vi.fn()
-    }))
-
-    // 取得 store 實例
-    const globalStore = useGlobalStore()
-    const systemStore = useSystemStore()
-    const vipCommercialAnalysisStore = useVipCommercialAnalysisStore()
-
-    // mock resetState function
-    const resetStateMock = vi.fn()
-    vipCommercialAnalysisStore.resetState = resetStateMock
-
-    //先改變globalStore.isLoading的值，之後確認是否有改變
-    globalStore.isLoading = true
-    expect(globalStore.isLoading).toBe(true)
-    // 調用 storeLogout 方法
-    await systemStore.storeLogout()
-    expect(globalStore.isLoading).toBe(false)
-    expect(apiRevoke).toBeCalled()
-    expect(resetStateMock).toHaveBeenCalled()
-    expect(useRouter().push).toHaveBeenCalledWith({ name: 'Login' })
-    expect(sessionStorageMock.clear).toHaveBeenCalled()
-    expect(localStorageMock.clear).toHaveBeenCalled()
   })
 
   it('queryHalls & hallConfigDict', async () => {

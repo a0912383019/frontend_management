@@ -23,11 +23,6 @@ export const router = createRouter({
       component: () => import('../views/Login.vue')
     },
     {
-      path: '/member-details-popup',
-      name: 'member-details-popup',
-      component: () => import('../views/MemberDetailsPopup/MemberDetailsPopup.vue')
-    },
-    {
       path: '/home',
       name: 'Home',
       component: MainLayout,
@@ -76,23 +71,6 @@ export const router = createRouter({
       ]
     },
     {
-      path: '/registered-no-deposit-analysis',
-      name: 'registered-no-deposit-analysis',
-      component: MainLayout,
-      meta: {
-        pageName: '存款機率預測',
-        fromPage: 'bbin_registered_no_deposit_analysis'
-      },
-      children: [
-        {
-          path: '/registered-no-deposit-analysis',
-          name: 'registered-no-deposit-analysis',
-          component: () =>
-            import('../views/RegisteredNoDepositAnalysis/RegisteredNoDepositAnalysis.vue')
-        }
-      ]
-    },
-    {
       path: '/vip-commercial-analysis',
       name: 'vip-commercial-analysis',
       component: MainLayout,
@@ -109,38 +87,6 @@ export const router = createRouter({
       ]
     },
     {
-      path: '/target-group-analysis-list',
-      name: 'target-group-analysis-list',
-      component: MainLayout,
-      meta: {
-        pageName: '目標族群分析',
-        fromPage: 'target_group_analysis_list'
-      },
-      children: [
-        {
-          path: '/target-group-analysis-list',
-          name: 'target-group-analysis-list',
-          component: () => import('../views/TargetGroupAnalysis/TargetGroupAnalysis.vue')
-        }
-      ]
-    },
-    {
-      path: '/game-tag-analysis',
-      name: 'game-tag-analysis',
-      component: MainLayout,
-      meta: {
-        pageName: '遊戲標籤分析',
-        fromPage: 'bbin_game_tag_analysis'
-      },
-      children: [
-        {
-          path: '/game-tag-analysis',
-          name: 'game-tag-analysis',
-          component: () => import('../views/GameTagAnalysis/GameTagAnalysis.vue')
-        }
-      ]
-    },
-    {
       path: '/activity-analysis-list',
       name: 'activity-analysis-list',
       component: MainLayout,
@@ -153,54 +99,6 @@ export const router = createRouter({
           path: '/activity-analysis-list',
           name: 'activity-analysis-list',
           component: () => import('../views/ActivityAnalysisList/ActivityAnalysisList.vue')
-        }
-      ]
-    },
-    {
-      path: '/offer-analysis-list',
-      name: 'offer-analysis-list',
-      component: MainLayout,
-      meta: {
-        pageName: '優惠成效分析',
-        fromPage: 'bbin_offer_analysis_list'
-      },
-      children: [
-        {
-          path: '/offer-analysis-list',
-          name: 'offer-analysis-list'
-          // component: () => import('../views/Home/Home.vue')
-        }
-      ]
-    },
-    {
-      path: '/rank-analysis',
-      name: 'rank-analysis',
-      component: MainLayout,
-      meta: {
-        pageName: '數據排名分析',
-        fromPage: 'bbin_rank_analysis'
-      },
-      children: [
-        {
-          path: '/rank-analysis',
-          name: 'rank-analysis',
-          component: () => import('../views/DataRankAnalysis/DataRankAnalysis.vue')
-        }
-      ]
-    },
-    {
-      path: '/risk-controll-analysis',
-      name: 'risk_controll_analysis',
-      component: MainLayout,
-      meta: {
-        pageName: '風險控管分析',
-        fromPage: 'risk_controll_analysis'
-      },
-      children: [
-        {
-          path: '/risk_controll_analysis',
-          name: 'risk_controll_analysis'
-          // component: () => import('../views/Home/Home.vue')
         }
       ]
     },

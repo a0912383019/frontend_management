@@ -109,8 +109,8 @@ const selectTagLists = computed({
         disabled: true
       },
       {
-        value: 10003,
-        label: tagsConfig.value[10003].tag_name,
+        value: 10002,
+        label: tagsConfig.value[10002].tag_name,
         disabled: true
       }
     ]

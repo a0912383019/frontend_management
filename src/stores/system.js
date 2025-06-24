@@ -7,8 +7,7 @@ import {
   apiGetMenusConfig,
   apiGetTagsConfig,
   apiGetServerTime,
-  apiHalls,
-  apiRevoke
+  apiHalls
 } from '@/api'
 import { i18n } from '@/global/i18n'
 import { errorRespond, getSessionStorageEntity } from '@/utils/commonUtils.js'
@@ -24,7 +23,6 @@ export const useSystemStore = defineStore('system', () => {
   const storeLogout = async () => {
     globalStore.isLoading = true
     try {
-      await apiRevoke()
       ElNotification({
         title: '',
         message: t('msg.logout'),

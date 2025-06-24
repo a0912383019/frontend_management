@@ -75,6 +75,29 @@ const googleLoginCallback = (response) => {
     })
 }
 
+const mockLogin = () => {
+  handleLogin({ credential: 'fake' })
+    .then((isLogin) => {
+      globalStore.isLoading = false
+      if (!isLogin) throw new Error()
+
+      //  登入成功取得 api access_token_go 後才導至首頁
+      router.push({ path: '/home' })
+
+      let { user_name } = JSON.parse(sessionStorage.user_info)
+      ElNotification({
+        title: '',
+        message: `Hello, ${user_name}`,
+        type: 'success'
+      })
+    })
+    .catch((err) => {
+      console.error(err)
+      globalStore.isLoading = false
+      shake()
+    })
+}
+
 const handleLogin = async ({ credential }) => {
   hideErrorMsg()
   globalStore.isLoading = true
@@ -155,7 +178,8 @@ onMounted(() => {
     <div class="login__content">
       <div class="login__logo"><img src="@/assets/images/logo.svg" alt="" /></div>
       <div class="login__form" :class="{ isShake }">
-        <GoogleLogin :callback="googleLoginCallback" />
+        <!-- <GoogleLogin :callback="googleLoginCallback" /> -->
+        <button class="mock-login-button" @click="mockLogin">模擬登入</button>
         <div class="login__msg">
           <div class="login__fail__msg">
             <ErrorText v-show="failMsg.msg1.isShow">{{ failMsg.msg1.text }}</ErrorText>
@@ -175,6 +199,15 @@ onMounted(() => {
   </section>
 </template>
 <style lang="scss" scoped>
+.mock-login-button {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 0.4em 2em;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
 @keyframes rotateAni {
   0% {
     transform: rotate(0deg);
@@ -264,7 +297,7 @@ onMounted(() => {
     }
   }
   &__form {
-    padding: 20px 30px 12px;
+    padding: 12px 30px 12px;
     background-color: #fff;
     border-radius: 0.25rem;
   }
